@@ -37,6 +37,10 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'odalc.base',
+    'odalc.odalc_admin',
+    'odalc.students',
+    'odalc.teachers',
 )
 
 MIDDLEWARE_CLASSES = (
