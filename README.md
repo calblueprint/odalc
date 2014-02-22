@@ -9,8 +9,11 @@ Oakland Digital Arts & Literacy Center (ODALC) is a 501(c)(3) community building
 Project Structure
 =======
 odalc/base/ - common models and views that could be shared between different apps in this project, or are general to the entire project. Things like a Course model, an abstract User model and the views for the homepage and course pages could go here
+
 odalc/odalc_admin - things related to the ODALC admins. Models for the AdminUser and the views for the pages that the admin uses could go here
+
 odalc/students - things related to the students taking the class. Models for StudentUser and CourseFeedback and their related views could go here
+
 odalc/teachers - things related to the teachers. Models for TeacherUser and the views for the teacher dashboard could go here
 
 odalc/templates and odalc/static is structured in the same way as above, so that templates and static files are namespaced and we won't have to worry about clashing names
