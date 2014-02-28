@@ -22,4 +22,4 @@ class Course(models.Model):
   flyer = models.FileField(upload_to='Flyer Uploads')
   course_material = models.FileField(upload_to='Course Material')
   
-  additional_info = models.TextField()
+  additional_info = models.TextField(blank=True)
