@@ -4,7 +4,7 @@ from django.db import models
 
 class CourseFeedback(models.Model):
 	first_name = models.ForeignKey('StudentUser')
-	course = models.ForeignKey('Course')
+	course = models.ForeignKey('base.Course')
 
 	encourage_questions = models.BooleanField()
 
