@@ -3,8 +3,6 @@ from django.contrib.auto import User
 
 # Create your models here.
 class Student(User):
-    reviews = models.OneToManyField(Review, verbose_name="Reviews", null=True, blank=True)
-    classes = models.OneToManyField(Class, verbose_name="Classes", null=True, blank=True)
 
     class Meta:
-        verbose_name = "Instructor"
+        verbose_name = "Student"

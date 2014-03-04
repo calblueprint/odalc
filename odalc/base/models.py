@@ -8,6 +8,3 @@ class User(AbstractBaseUser):
     last_name = models.CharField("Last_Name", max_length=255)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['email']
-
-    class Meta:
-    	abstract = True
