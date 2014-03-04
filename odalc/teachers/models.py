@@ -3,7 +3,7 @@ from base import User
 from localflavor import us.models
 
 # Create your models here.
-class Teacher(User):
+class TeacherUser(User):
     street_address = models.CharField(max_length=255, blank=True)
     city = models.CharField(max_length=255, blank=True)
     zipcode = models.CharField()
