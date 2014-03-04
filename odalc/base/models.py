@@ -12,7 +12,7 @@ class User(AbstractBaseUser):
     objects = UserManager()
 
 class UserManager(BaseUserManager):
-	def create_user(self, email, first_name, last_name, password=None):
+    def create_user(self, email, first_name, last_name, password=None):
         """
         Creates and saves a User with the given email, date of
         birth and password.
@@ -27,5 +27,10 @@ class UserManager(BaseUserManager):
         )
 
         user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, email, first_name, last_name, password=None):
+        user = self.create_user(email, first_name, last_name, password=None)
         user.save(using=self._db)
         return user
