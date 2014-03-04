@@ -1,5 +1,5 @@
 from django.db import models
-from base import User
+from odalc.base.models import User
 
 # Create your models here.
 class StudentUser(User):
