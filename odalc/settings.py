@@ -57,6 +57,7 @@ ROOT_URLCONF = 'odalc.urls'
 
 WSGI_APPLICATION = 'odalc.wsgi.application'
 
+AUTH_USER_MODEL = 'base.User'
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
