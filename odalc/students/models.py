@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auto import User
+from base import User
 
 # Create your models here.
 class StudentUser(User):

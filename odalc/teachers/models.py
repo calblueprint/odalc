@@ -1,6 +1,6 @@
 from django.db import models
 from base import User
-from localflavor import us.models
+from localflavor import us
 
 # Create your models here.
 class TeacherUser(User):
