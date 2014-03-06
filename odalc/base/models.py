@@ -59,7 +59,7 @@ class Course(models.Model):
   additional_info = models.TextField(blank=True)
 
 class CourseAvailability(models.Model):
-  course = models.OneToOne('Course')
+  course = models.OneToOneField('Course')
 
   start_datetime1 = models.DateTimeField(blank=True,null=True)
   end_datetime1 = models.DateTimeField(blank=True,null=True)
