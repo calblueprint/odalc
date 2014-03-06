@@ -7,5 +7,5 @@ from odalc.students.models import CourseFeedback
 class SubmitCourseFeedback(CreateView):
 	model = CourseFeedback
 	template_name = 'students/course_feedback_form.html'
-
+	form_class = FeedbackForm
 
