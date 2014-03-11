@@ -5,7 +5,7 @@ __pycache__/
 # C extensions
 *.so
 
-# VIM 
+# VIM
 *.swp
 *.un~
 
@@ -55,6 +55,7 @@ coverage.xml
 *.log
 *.pot
 staticfiles/
+uploads/
 
 # Sphinx documentation
 docs/_build/
