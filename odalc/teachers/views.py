@@ -1,11 +1,12 @@
 from django.shortcuts import render
+from django.core.urlresolvers import reverse_lazy
 
 # Create your views here.
 class CreateCourse(FormView):
 	model = Course
 	template_name = 'teachers/create_course_form.html'
 	form_class = CreateCourseForm
-	success_url = 'placeholder' #please dont complain or change this
+	success_url = reverse_lazy('home') #please dont complain or change this
 
 	def form_valid(self, form):
 		new_course = form.save(commit=False)
@@ -34,3 +35,4 @@ class TeacherRegisteration(CreateView):
 	model = TeacherUser
 	template_name = "teachers/teacher_register.html"
 	form_class = TeacherCreateForm
+	success_url = reverse_lazy('home')
