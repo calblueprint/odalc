@@ -38,22 +38,27 @@ class User(AbstractBaseUser):
     objects = UserManager()
 
 class Course(models.Model):
-  teacher = models.ForeignKey('teachers.TeacherUser')
-  students = models.ManyToManyField('students.StudentUser')
-  
-  title = models.CharField(max_length=50)
-  description = models.TextField()
-  size = models.IntegerField()
-  start_datetime = models.DateTimeField(blank=True,null=True)
-  end_datetime = models.DateTimeField(blank=True,null=True)
-  
-  prereqs = models.CharField(max_length=100)
-  skill_level = models.CharField(max_length=25,choices=(('BEG','Beginner'),('INT','Intermediate'),('ADV','Advanced')))
-  cost = models.DecimalField(max_digits=5,decimal_places=2,validators=[MinValueValidator(5.00)])
-  odalc_cost_split = models.DecimalField(max_digits=5,decimal_places=2)
+    SKILL_CHOICES = (
+        ('BEG','Beginner'),
+        ('INT','Intermediate'),
+        ('ADV','Advanced')
+    )
 
-  need_flyer = models.BooleanField()  
-  flyer = models.FileField(upload_to='Flyer Uploads')
-  course_material = models.FileField(upload_to='Course Material')
-  
-  additional_info = models.TextField(blank=True)
+    teacher = models.ForeignKey('teachers.TeacherUser')
+    students = models.ManyToManyField('students.StudentUser',blank=True)
+
+    title = models.CharField(max_length=50)
+    description = models.TextField()
+    size = models.IntegerField()
+    start_datetime = models.DateTimeField(blank=True,null=True)
+    end_datetime = models.DateTimeField(blank=True,null=True)
+
+    prereqs = models.TextField()
+    skill_level = models.CharField(max_length=25,choices=SKILL_CHOICES)
+    cost = models.DecimalField(max_digits=5,decimal_places=2,validators=[MinValueValidator(5.00)])
+    odalc_cost_split = models.DecimalField(max_digits=5,decimal_places=2)
+
+    flyer = models.ImageField(upload_to='course_images')
+    course_material = models.FileField(upload_to='course_material')
+
+    additional_info = models.TextField(blank=True)
