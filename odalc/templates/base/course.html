@@ -1,0 +1,11 @@
+{% extends "base/tmp_base.html" %}
+
+{% block body %}
+
+	<h1>Course: {{ course.title }}</h1>
+	<p> <b>Description:</b> {{ course.description }}</p>
+	<p> <b>Teacher:</b> {{ course.teacher.first_name }} {{ course.teacher.last_name }}</p>
+	<p> <b>Students Enrolled:</b> {{ course.size }}</p>
+
+
+{% endblock %}

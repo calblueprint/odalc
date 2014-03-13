@@ -3,13 +3,13 @@ from odalc.base.models import Course
 
 # Create your views here.
 
-class CourseView(DetailView):
+class CourseDetailView(DetailView):
 	model = Course
 	context_object_name = 'course'
 	template_name = 'base/course.html'
 
 	def get_context_data(self, **kwargs):
-		context = super(CourseView, self).get_context_data(**kwargs)
+		context = super(CourseDetailView, self).get_context_data(**kwargs)
 		return context 
 
 
