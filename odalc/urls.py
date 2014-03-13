@@ -3,5 +3,6 @@ from odalc.base.views import HomePageView
 
 urlpatterns = patterns('',
     url(r'^$', HomePageView.as_view(), name='home'),
-    url(r'^courses/', include('odalc.base.urls', app_name = 'base', namespace = 'course'))
+    url(r'^courses/', include('odalc.base.urls', app_name = 'base', namespace = 'course')),
+    url(r'^students/', include('odalc.students.urls', namespace='students'))
 )
