@@ -15,7 +15,10 @@ from sampledatahelper.model_helper import ModelDataHelper
 US='us'
 DIR = os.path.dirname(os.path.abspath(__file__))
 TEST_FILE_PATH = os.path.join(DIR,'blank.pdf')
+TEST_IMAGE_PATH = os.path.join(DIR,'test.jpeg')
+TEST_IMAGE_FILE = File(open(TEST_IMAGE_PATH))
 TEST_FILE = File(open(TEST_FILE_PATH))
+TEST_UPLOADED_FILE = SimpleUploadedFile('test_upload.txt', 'This is a test upload')
 TEST_UPLOADED_FILE = SimpleUploadedFile('test_upload.txt', 'This is a test upload')
 
 class Command(BaseCommand):
@@ -71,8 +74,7 @@ class Command(BaseCommand):
                 skill_level='BEG',
                 cost=decimal.Decimal('5.00'),
                 odalc_cost_split=decimal.Decimal('2.50'),
-                need_flyer=False,
-                flyer=TEST_UPLOADED_FILE,
+                image=TEST_IMAGE_FILE,
                 course_material=TEST_UPLOADED_FILE,
                 additional_info=self.sd.paragraph(),
             )
