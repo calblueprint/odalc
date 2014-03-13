@@ -2,10 +2,16 @@
 
 {% block body %}
 
-	<h1>Course: {{ course.title }}</h1>
-	<p> <b>Description:</b> {{ course.description }}</p>
-	<p> <b>Teacher:</b> {{ course.teacher.first_name }} {{ course.teacher.last_name }}</p>
+	<h1><b>Course:</b> {{ course.title }}</h1>
+	<img src="{{ course.image }}"> </img>
+	<p><b>Description:</b> {{ course.description }}</p>
+	<p><b>Teacher:</b> {{ course.teacher.first_name }} {{ course.teacher.last_name }}</p>
+	<p> <b>Date:</b> {{ course.start_datetime }} to {{ course.end_datetime }}</p>
 	<p> <b>Students Enrolled:</b> {{ course.size }}</p>
-
+	<p> <b>Difficulty:</b> {{ course.get_skill_level_display }}</p>
+	<p> <b>Prerequisites:</b> {{ course.prereqs }}</p>
+	<p> <b>Cost:</b> ${{ course.cost }}</p>
+	<p> <b>Additional Information:</b> {{ course.additional_info }}</p>
+	<p> <b>Course Material:</b> {{ course.course_material }}</p>
 
 {% endblock %}
