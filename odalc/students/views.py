@@ -19,7 +19,7 @@ class SubmitCourseFeedbackView(CreateView):
 		course_feedback.course = Course.objects.get(pk=pk)
 		course_feedback.student = StudentUser.objects.order_by('?').first()
 		course_feedback.save()
-		return redirect(SubmitCourseFeedbackView.get_success_url())
+		return redirect(SubmitCourseFeedbackView.success_url)
 
 
 	def get_context_data(self, **kwargs):
