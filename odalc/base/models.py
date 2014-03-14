@@ -38,12 +38,28 @@ class User(AbstractBaseUser):
     objects = UserManager()
 
 class Course(models.Model):
+    SKILL_BEGINNER = 'BEG'
+    SKILL_INTERMEDIATE = 'INT'
+    SKILL_ADVANCED = 'ADV'
+
     SKILL_CHOICES = (
-        ('BEG','Beginner'),
-        ('INT','Intermediate'),
-        ('ADV','Advanced')
+        (SKILL_BEGINNER,'Beginner'),
+        (SKILL_INTERMEDIATE,'Intermediate'),
+        (SKILL_ADVANCED,'Advanced')
     )
 
+    STATUS_PENDING = 'PEN'
+    STATUS_ACCEPTED = 'ACC'
+    STATUS_DENIED = 'DEN'   
+    STATUS_FINISHED = 'FIN'
+
+    STATUS_CHOICES = (
+        (STATUS_PENDING, 'Pending'),
+        (STATUS_ACCEPTED, 'Accepted'),
+        (STATUS_DENIED, 'Denied'),
+        (STATUS_FINISHED, 'Finished')
+    )
+    
     teacher = models.ForeignKey('teachers.TeacherUser')
     students = models.ManyToManyField('students.StudentUser',blank=True)
 
@@ -54,7 +70,7 @@ class Course(models.Model):
     end_datetime = models.DateTimeField(blank=True,null=True)
 
     prereqs = models.TextField()
-    skill_level = models.CharField(max_length=25,choices=SKILL_CHOICES)
+    skill_level = models.CharField(max_length=3,choices=SKILL_CHOICES)
     cost = models.DecimalField(max_digits=5,decimal_places=2,validators=[MinValueValidator(5.00)])
     odalc_cost_split = models.DecimalField(max_digits=5,decimal_places=2)
 
@@ -63,6 +79,7 @@ class Course(models.Model):
 
     additional_info = models.TextField(blank=True)
 
+    status = models.CharField(max_length=3,choices=STATUS_CHOICES,default=STATUS_PENDING)
 
 class CourseAvailability(models.Model):
     course = models.OneToOneField('Course')
