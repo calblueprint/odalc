@@ -16,10 +16,10 @@ US='us'
 DIR = os.path.dirname(os.path.abspath(__file__))
 TEST_FILE_PATH = os.path.join(DIR,'blank.pdf')
 TEST_IMAGE_PATH = os.path.join(DIR,'test.jpeg')
-TEST_IMAGE_FILE = File(open(TEST_IMAGE_PATH))
+IMAGE_FILE = File(open(TEST_IMAGE_PATH))
 TEST_FILE = File(open(TEST_FILE_PATH))
-TEST_UPLOADED_FILE = SimpleUploadedFile('test_upload.txt', 'This is a test upload')
-TEST_UPLOADED_FILE = SimpleUploadedFile('test_upload.txt', 'This is a test upload')
+TEST_IMAGE_FILE = SimpleUploadedFile(IMAGE_FILE.name, IMAGE_FILE.file.read())
+TEST_UPLOADED_FILE = SimpleUploadedFile(TEST_FILE.name, TEST_FILE.file.read())
 
 class Command(BaseCommand):
     args = ''
@@ -71,12 +71,13 @@ class Command(BaseCommand):
                 start_datetime=self.sd.future_datetime(60, 1440),
                 end_datetime=self.sd.future_datetime(1440, 2880),
                 prereqs=self.sd.words(3, 7),
-                skill_level='BEG',
+                skill_level=Course.SKILL_BEGINNER,
                 cost=decimal.Decimal('5.00'),
                 odalc_cost_split=decimal.Decimal('2.50'),
-                image=TEST_IMAGE_FILE,
+                image=self.sd.image(100,100),
                 course_material=TEST_UPLOADED_FILE,
                 additional_info=self.sd.paragraph(),
+                status=Course.STATUS_PENDING
             )
             course.save()
             for s in course_students:
