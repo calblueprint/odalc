@@ -1,4 +1,8 @@
 from django.shortcuts import render
+<<<<<<< HEAD
+from django.views.generic import FormView
+from odalc.base.models import Course, CourseAvailability
+from odalc.teachers.forms import CreateCourseForm
 from django.core.urlresolvers import reverse_lazy
 
 # Create your views here.
