@@ -71,12 +71,13 @@ class Command(BaseCommand):
                 start_datetime=self.sd.future_datetime(60, 1440),
                 end_datetime=self.sd.future_datetime(1440, 2880),
                 prereqs=self.sd.words(3, 7),
-                skill_level='BEG',
+                skill_level=Course.SKILL_BEGINNER,
                 cost=decimal.Decimal('5.00'),
                 odalc_cost_split=decimal.Decimal('2.50'),
                 image=self.sd.image(100,100),
                 course_material=TEST_UPLOADED_FILE,
                 additional_info=self.sd.paragraph(),
+                status=Course.STATUS_PENDING
             )
             course.save()
             for s in course_students:
