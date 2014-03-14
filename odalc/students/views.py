@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.views.generic import CreateView
 from odalc.students.forms import FeedbackForm
-from odalc.students.models import CourseFeedback
+from odalc.students.models import CourseFeedback, StudentUser
+from odalc.base.models import Course
 from django.core.urlresolvers import reverse_lazy
 
 # Create your views here.
@@ -16,9 +17,9 @@ class SubmitCourseFeedbackView(CreateView):
 		course_feedback = form.save(commit=False)
 		pk = self.kwargs.get('pk', None)
 		course_feedback.course = Course.objects.get(pk=pk)
-		course_feedback.student = Students.objects.order_by('?').first()
+		course_feedback.student = StudentUser.objects.order_by('?').first()
 		course_feedback.save()
-		return redirect(self.get_success_url())
+		return redirect(SubmitCourseFeedbackView.get_success_url())
 
 
 	def get_context_data(self, **kwargs):
