@@ -79,4 +79,16 @@ class Course(models.Model):
 
     additional_info = models.TextField(blank=True)
 
-    status = models.CharField(max_length=3,choices=STATUS_CHOICES)
+    status = models.CharField(max_length=3,choices=STATUS_CHOICES,default=STATUS_PENDING)
+
+class CourseAvailability(models.Model):
+    course = models.OneToOneField('Course')
+
+    start_datetime1 = models.DateTimeField(blank=True,null=True)
+    end_datetime1 = models.DateTimeField(blank=True,null=True)
+
+    start_datetime2 = models.DateTimeField(blank=True,null=True)
+    end_datetime2 = models.DateTimeField(blank=True,null=True)
+
+    start_datetime3 = models.DateTimeField(blank=True,null=True)
+    end_datetime3 = models.DateTimeField(blank=True,null=True)

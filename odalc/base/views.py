@@ -10,7 +10,7 @@ class CourseDetailView(DetailView):
 
 	def get_context_data(self, **kwargs):
 		context = super(CourseDetailView, self).get_context_data(**kwargs)
-		return context 
+		return context
 
 
 class HomePageView(TemplateView):
