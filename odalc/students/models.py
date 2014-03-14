@@ -12,7 +12,7 @@ class CourseFeedback(models.Model):
 	course = models.ForeignKey('base.Course')
 
 	encourage_questions_choices = ('yes', 'Yes'),('no','No')
-	encourage_questions = models.CharField(max_length=2, choices=encourage_questions_choices)
+	encourage_questions = models.CharField(max_length=3, choices=encourage_questions_choices)
 
 	time_length_choices = ('too_long', 'Too Long'),('too_short','Too Short'),('just_right','Just Right')
 	time_length = models.CharField(max_length=10, choices=time_length_choices)
