@@ -38,34 +38,40 @@ class User(AbstractBaseUser):
     objects = UserManager()
 
 class Course(models.Model):
-  teacher = models.ForeignKey('teachers.TeacherUser')
-  students = models.ManyToManyField('students.StudentUser')
+    SKILL_CHOICES = (
+        ('BEG','Beginner'),
+        ('INT','Intermediate'),
+        ('ADV','Advanced')
+    )
 
-  title = models.CharField(max_length=50)
-  description = models.TextField()
-  size = models.IntegerField()
-  start_datetime = models.DateTimeField(blank=True,null=True)
-  end_datetime = models.DateTimeField(blank=True,null=True)
+    teacher = models.ForeignKey('teachers.TeacherUser')
+    students = models.ManyToManyField('students.StudentUser',blank=True)
 
-  prereqs = models.CharField(max_length=100)
-  skill_level = models.CharField(max_length=25,choices=(('BEG','Beginner'),('INT','Intermediate'),('ADV','Advanced')))
-  cost = models.DecimalField(max_digits=5,decimal_places=2,validators=[MinValueValidator(5.00)])
-  odalc_cost_split = models.DecimalField(max_digits=5,decimal_places=2)
+    title = models.CharField(max_length=50)
+    description = models.TextField()
+    size = models.IntegerField()
+    start_datetime = models.DateTimeField(blank=True,null=True)
+    end_datetime = models.DateTimeField(blank=True,null=True)
 
-  need_flyer = models.BooleanField()
-  flyer = models.FileField(upload_to='Flyer Uploads')
-  course_material = models.FileField(upload_to='Course Material')
+    prereqs = models.TextField()
+    skill_level = models.CharField(max_length=25,choices=SKILL_CHOICES)
+    cost = models.DecimalField(max_digits=5,decimal_places=2,validators=[MinValueValidator(5.00)])
+    odalc_cost_split = models.DecimalField(max_digits=5,decimal_places=2)
 
-  additional_info = models.TextField(blank=True)
+    image = models.ImageField(upload_to='course_images')
+    course_material = models.FileField(upload_to='course_material')
+
+    additional_info = models.TextField(blank=True)
+
 
 class CourseAvailability(models.Model):
-  course = models.OneToOneField('Course')
+    course = models.OneToOneField('Course')
 
-  start_datetime1 = models.DateTimeField(blank=True,null=True)
-  end_datetime1 = models.DateTimeField(blank=True,null=True)
+    start_datetime1 = models.DateTimeField(blank=True,null=True)
+    end_datetime1 = models.DateTimeField(blank=True,null=True)
 
-  start_datetime2 = models.DateTimeField(blank=True,null=True)
-  end_datetime2 = models.DateTimeField(blank=True,null=True)
+    start_datetime2 = models.DateTimeField(blank=True,null=True)
+    end_datetime2 = models.DateTimeField(blank=True,null=True)
 
-  start_datetime3 = models.DateTimeField(blank=True,null=True)
-  end_datetime3 = models.DateTimeField(blank=True,null=True)
+    start_datetime3 = models.DateTimeField(blank=True,null=True)
+    end_datetime3 = models.DateTimeField(blank=True,null=True)
