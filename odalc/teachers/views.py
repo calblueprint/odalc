@@ -1,5 +1,4 @@
 from django.shortcuts import render
-<<<<<<< HEAD
 from django.views.generic import CreateView
 from odalc.teachers.forms import TeacherCreateForm
 from odalc.teachers.models import TeacherUser
