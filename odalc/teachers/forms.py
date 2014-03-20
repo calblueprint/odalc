@@ -12,6 +12,8 @@ class TeacherRegisterForm(UserRegisterForm):
     class Meta:
         model = TeacherUser
         fields = ('email',
+                  'first_name',
+                  'last_name',
                   'street_address',
                   'city',
                   'zipcode',

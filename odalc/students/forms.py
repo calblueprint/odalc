@@ -7,7 +7,7 @@ class StudentRegisterForm(UserRegisterForm):
 
     class Meta:
         model = StudentUser
-        fields = ('email',)
+        fields = ('email', 'first_name', 'last_name')
 
 class FeedbackForm(forms.ModelForm):
     class Meta:
