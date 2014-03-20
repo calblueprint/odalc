@@ -7,4 +7,3 @@ urlpatterns = patterns('',
     url(r'^courses/', include('odalc.base.urls', app_name='base', namespace='courses')),
     url(r'^students/', include('odalc.students.urls', namespace='students'))
 )
-
