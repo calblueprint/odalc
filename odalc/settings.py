@@ -84,6 +84,12 @@ DATABASES = {
 
 SETTINGS_PATH = os.path.dirname(os.path.realpath(__file__))
 
+# Setup email backends - during development, write email out to console
+if "IS_STAGE" in os.environ or "IS_PROD" in os.environ:
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+else:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
