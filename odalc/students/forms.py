@@ -1,8 +1,15 @@
 from django import forms
-from odalc.students.models import StudentUser
+from odalc.base.forms import UserRegisterForm
+from django.core.exceptions import ValidationError
+from odalc.students.models import CourseFeedback, StudentUser
 
-class StudentRegisterForm(forms.ModelForm):
+class StudentRegisterForm(UserRegisterForm):
 
     class Meta:
         model = StudentUser
-        exclude = ['last_login']
+        fields = ('email',)
+
+class FeedbackForm(forms.ModelForm):
+    class Meta:
+        model = CourseFeedback
+        exclude = ['course', 'student']
