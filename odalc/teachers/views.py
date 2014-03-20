@@ -1,5 +1,4 @@
 from django.shortcuts import render
-<<<<<<< HEAD
 from django.views.generic import FormView
 from odalc.base.models import Course, CourseAvailability
 from odalc.teachers.forms import CreateCourseForm
