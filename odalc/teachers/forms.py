@@ -2,6 +2,9 @@ from django.utils.translation import ugettext as _
 from django import forms
 from localflavor.us import forms as localflavor_forms
 from odalc.teachers.models import TeacherUser
+from odalc.base.models import Course
+from django.forms import ModelForm
+from django import forms
 
 class TeacherCreateForm(forms.ModelForm):
     """
@@ -32,3 +35,18 @@ class TeacherCreateForm(forms.ModelForm):
                   'resume',
                   'experience',
                   'info_source')
+
+class CreateCourseForm(ModelForm):
+
+	start_datetime1 = forms.DateTimeField()
+	end_datetime1 = forms.DateTimeField()
+
+	start_datetime2 = forms.DateTimeField()
+	end_datetime2 = forms.DateTimeField()
+
+	start_datetime3 = forms.DateTimeField()
+	end_datetime3 = forms.DateTimeField()
+
+	class Meta:
+		model = Course
+		exclude = ['teacher', 'students', 'start_datetime', 'end_datetime']
