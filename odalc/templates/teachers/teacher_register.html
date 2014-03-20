@@ -2,7 +2,7 @@
 
 {% block body %}
 
-<form action="{% url "teachers:register" %}" method="POST">
+<form action="{% url "teachers:register" %}" method="POST" enctype="multipart/form-data">
   {% csrf_token %}
   <ul>
     {{ form.as_ul }}
