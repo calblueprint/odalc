@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import CreateView
-from odalc.teachers.forms import TeacherCreateForm
+from odalc.teachers.forms import TeacherRegisterForm
 from odalc.teachers.models import TeacherUser
 from django.views.generic import FormView
 from odalc.base.models import Course, CourseAvailability
@@ -11,7 +11,7 @@ from django.core.urlresolvers import reverse_lazy
 class TeacherRegisteration(CreateView):
     model = TeacherUser
     template_name = "teachers/teacher_register.html"
-    form_class = TeacherCreateForm
+    form_class = TeacherRegisterForm
     success_url = reverse_lazy('home')
 
 class CreateCourse(FormView):

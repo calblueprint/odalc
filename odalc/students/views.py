@@ -1,28 +1,33 @@
 from django.shortcuts import render, redirect
 from django.views.generic import CreateView
-from odalc.students.forms import FeedbackForm
+from odalc.students.forms import StudentRegisterForm, FeedbackForm
 from odalc.students.models import CourseFeedback, StudentUser
 from odalc.base.models import Course
 from django.core.urlresolvers import reverse_lazy
 
 # Create your views here.
+class StudentRegisterView(CreateView):
+    model = StudentUser
+    template_name = "students/register.html"
+    form_class = StudentRegisterForm
+    success_url = reverse_lazy('home')
+
 
 class SubmitCourseFeedbackView(CreateView):
-	model = CourseFeedback
-	template_name = 'students/course_feedback_form.html'
-	form_class = FeedbackForm
-	success_url = reverse_lazy('home')
+    model = CourseFeedback
+    template_name = 'students/course_feedback_form.html'
+    form_class = FeedbackForm
+    success_url = reverse_lazy('home')
 
-	def form_valid(self, form):
-		course_feedback = form.save(commit=False)
-		pk = self.kwargs.get('pk', None)
-		course_feedback.course = Course.objects.get(pk=pk)
-		course_feedback.student = StudentUser.objects.order_by('?').first()
-		course_feedback.save()
-		return redirect(SubmitCourseFeedbackView.success_url)
+    def form_valid(self, form):
+        course_feedback = form.save(commit=False)
+        pk = self.kwargs.get('pk', None)
+        course_feedback.course = Course.objects.get(pk=pk)
+        course_feedback.student = StudentUser.objects.order_by('?').first()
+        course_feedback.save()
+        return redirect(SubmitCourseFeedbackView.success_url)
 
-
-	def get_context_data(self, **kwargs):
-		context = super(SubmitCourseFeedbackView, self).get_context_data(**kwargs)
-		context['pk'] = self.kwargs.get('pk', None)
-		return context
+    def get_context_data(self, **kwargs):
+        context = super(SubmitCourseFeedbackView, self).get_context_data(**kwargs)
+        context['pk'] = self.kwargs.get('pk', None)
+        return context
