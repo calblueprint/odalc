@@ -4,6 +4,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.debug import sensitive_post_parameters
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.shortcuts import redirect
+from django.contrib import messages
 from odalc.base.models import Course
 
 # Create your views here.
