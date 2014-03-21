@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.conf import settings
 from django.core.validators import MinValueValidator
+from django.core.exceptions import ObjectDoesNotExist
 
 # Create your models here.
 class UserManager(BaseUserManager):
@@ -36,6 +37,16 @@ class User(AbstractBaseUser):
     USERNAME_FIELD = 'email'
 
     objects = UserManager()
+
+    @property
+    def child(self):
+        for related_object in self._meta.get_all_related_objects():
+            if not issubclass(related_object.model, self.__class__):
+                continue
+            try:
+                return getattr(self, related_object.get_accessor_name())
+            except ObjectDoesNotExist:
+                pass
 
 class Course(models.Model):
     SKILL_BEGINNER = 'BEG'
