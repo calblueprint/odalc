@@ -5,7 +5,7 @@ from django.core.management.base import BaseCommand
 from django.core.files import File
 from django.core.files.uploadedfile import SimpleUploadedFile
 
-from odalc.base.models import User, UserManager, Course
+from odalc.base.models import User, UserManager, Course, CourseAvailability
 from odalc.students.models import StudentUser, CourseFeedback
 from odalc.teachers.models import TeacherUser
 #from odalc.odalc_admin.models import AdminUser
@@ -72,7 +72,7 @@ class Command(BaseCommand):
                 end_datetime=self.sd.future_datetime(1440, 2880),
                 prereqs=self.sd.words(3, 7),
                 skill_level=Course.SKILL_BEGINNER,
-                cost=decimal.Decimal('5.00'),
+                cost=decimal.Decimal('6.00'),
                 odalc_cost_split=decimal.Decimal('2.50'),
                 image=self.sd.image(100,100),
                 course_material=TEST_UPLOADED_FILE,
@@ -87,6 +87,25 @@ class Command(BaseCommand):
     def generate_course_feedback(self, instances):
         self.md.fill_model(CourseFeedback, instances, encourage_questions='no', time_length='too_long')
 
+    def generate_course_availability(self):
+        courses = Course.objects.all()
+        for course in courses:
+            try:
+                if course.courseavailability:
+                    pass
+            except CourseAvailability.DoesNotExist:
+                avail = CourseAvailability(
+                    course=course,
+                    start_datetime1=self.sd.future_datetime(60, 1440),
+                    end_datetime1=self.sd.future_datetime(1440, 2880),
+                    start_datetime2=self.sd.future_datetime(2880, 4320),
+                    end_datetime2=self.sd.future_datetime(4320, 5760),
+                    start_datetime3=self.sd.future_datetime(7200, 8640),
+                    end_datetime3=self.sd.future_datetime(10080, 11520)
+                )
+                avail.save()
+
+
     def handle(self, *args, **options):
         print "Generating Teachers..."
         self.generate_teachers(5)
@@ -96,4 +115,6 @@ class Command(BaseCommand):
         self.generate_courses(5)
         print "Generating Course Feedback..."
         self.generate_course_feedback(10)
+        print "Generating Course Availabilities..."
+        self.generate_course_availability()
         print "Done!"
