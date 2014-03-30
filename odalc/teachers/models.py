@@ -17,6 +17,5 @@ class TeacherUser(User):
                                                            ('WEB', 'Our website'),
                                                            ('OTH', 'Other')))
 
-
     class Meta:
         verbose_name = "Teacher"
