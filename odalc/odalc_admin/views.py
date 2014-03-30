@@ -16,7 +16,7 @@ class ApplicationReviewView(UpdateView):
 		'cost',
 		'odalc_cost_split',
 		'image',
-		'additional_info'
+		'additional_info',
 	]
 	context_object_name = 'course'
 	template_name = 'odalc_admin/course_application_review.html'
