@@ -1,5 +1,5 @@
 {% extends "base/tmp_base.html" %}
-
+{% load staticfiles %}
 {% block body %}
 
 <h1>INSTRUCTOR INFORMATION</h1>
@@ -7,7 +7,7 @@
 <img src="{{ course.teacher.picture }}"></img>
 <p><b>About: </b>{{ course.teacher.about }}</p>
 <p><b>Experience: </b>{{ course.teacher.experience }}</p> 
-<p><b>Resume: </b>{{ course.teacher.resume }}
+<p><b>Resume: </b> <a href="{% static course.teacher.resume %}">{{ course.teacher.resume }}</a></p>
 <p><b>Address: </b>{{ course.teacher.street_address }}, {{ course.teacher.city }} {{ course.teacher.zipcode }}</p>
 <p><b>Phone: </b>{{ course.teacher.phone }}</p>
 <p><b>Heard about ODALC from: </b>{{ course.teacher.get_info_source_display }}</p>
@@ -20,10 +20,14 @@
   <ul>
     {{ form.as_ul }}
   </ul>
-  <input id="approve_course" type="submit" value="Approve" />
-  <input id="deny_course" type="submit" value="Deny" />
 </form>
 
-{{ course.course_material }}
+<o>Course Materials <a href="{% static course.course_material %}">{{ course.course_material }}</a></p>
+
+<p>Course Availability:</p>
+<table> {{ course.course_availability }} </table>
+
+<input id="approve_course" type="submit" value="Approve" />
+<input id="deny_course" type="submit" value="Deny" />
 
 {% endblock %}
