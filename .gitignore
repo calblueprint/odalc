@@ -62,3 +62,7 @@ docs/_build/
 
 # OS X
 .DS_Store
+
+# Extra
+raw_templates/node_modules/
+raw_templates/bower_components/
