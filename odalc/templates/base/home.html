@@ -1,13 +1,10 @@
-{% extends "base/tmp_base.html" %}
+{% extends "base/base.html" %}
 
-{% block title %}
-  Welcome to ODALC Courses!  
-{% endblock %}
+{% block title %}Welcome to ODALC Courses!{% endblock %}
 
 {% block body %}
+  <!-- TODO: FILL THIS SHIT OUT EVENTUALLY -->
   {% if user.is_authenticated %}
-    <p>Welcome, {{ user.email }}. Thanks for logging in.</p>
   {% else %}
-    <p>Welcome, new user. Please log in.</p>
   {% endif %}
 {% endblock %}
