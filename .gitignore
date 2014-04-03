@@ -66,3 +66,5 @@ docs/_build/
 # Extra
 raw_templates/node_modules/
 raw_templates/bower_components/
+odalc/static/bower_components/
+node_modules/
