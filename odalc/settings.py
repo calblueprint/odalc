@@ -29,6 +29,10 @@ TEMPLATE_DEBUG = not IS_PROD
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
+PROJECT_ROOT = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), ".."),
+)
+
 # Application definition
 
 INSTALLED_APPS = (
@@ -39,6 +43,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'localflavor',
+    'djangobower',
     'odalc.base',
     'odalc.odalc_admin',
     'odalc.students',
@@ -104,6 +109,12 @@ USE_L10N = True
 USE_TZ = True
 
 
+# djangobower settings
+BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, 'static')
+BOWER_INSTALLED_APPS = (
+    'foundation',
+)
+
 ###################
 # Heroku Settings #
 ###################
@@ -125,6 +136,12 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
+)
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'djangobower.finders.BowerFinder',
 )
 
 MEDIA_ROOT = os.path.join(BASE_DIR,"uploads")
