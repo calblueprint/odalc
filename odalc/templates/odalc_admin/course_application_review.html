@@ -3,52 +3,52 @@
 {% block body %}
 
 <h1>INSTRUCTOR INFORMATION</h1>
-
-<p><b>Name: </b>{{ course.teacher.first_name }} {{ course.teacher.last_name }}</p>
-<img src="{{ course.teacher.picture }}"></img>
-<p><b>About: </b>{{ course.teacher.about }}</p>
-<p><b>Experience: </b>{{ course.teacher.experience }}</p> 
-<p><b>Resume: </b> <a href="{% static course.teacher.resume %}">{{ course.teacher.resume }}</a></p>
-<p><b>Address: </b>{{ course.teacher.street_address }}, {{ course.teacher.city }} {{ course.teacher.zipcode }}</p>
-<p><b>Phone: </b>{{ course.teacher.phone }}</p>
-<p><b>Heard about ODALC from: </b>{{ course.teacher.get_info_source_display }}</p>
-
-<br>
+	<p><b>Name: </b>{{ course.teacher.first_name }} {{ course.teacher.last_name }}</p>
+	<img src="{% static course.teacher.picture %}"></img>
+	<p><b>About: </b>{{ course.teacher.about }}</p>
+	<p><b>Experience: </b>{{ course.teacher.experience }}</p> 
+	<p><b>Resume: </b> <a href="{% static course.teacher.resume %}">{{ course.teacher.resume }}</a></p>
+	<p><b>Address: </b>{{ course.teacher.street_address }}, {{ course.teacher.city }} {{ course.teacher.zipcode }}</p>
+	<p><b>Phone: </b>{{ course.teacher.phone }}</p>
+	<p><b>Heard about ODALC from: </b>{{ course.teacher.get_info_source_display }}</p>
 
 <h2> COURSE INFORMATION </h2>
+	<form action="" method="POST">
+		{% csrf_token %}
+		<!--Display all editable Course information in a form-->
+		<ul>
+		{{ form.as_ul }}
+		</ul>
+		<!--Input Buttons (Approve and Deny)-->
+		<input id="approve_course" name="_approve" type="submit" value="Approve" />
+		<input id="deny_course" name="_deny" type="submit" value="Deny" />
+	</form>
 
-<form action="" method="POST">
-  {% csrf_token %}
-  <ul>
-    {{ form.as_ul }}
-  </ul>
-</form>
-<o>Course Materials <a href="{% static course.course_material %}">{{ course.course_material }}</a></p>
-<p>Course Availability:</p>
-<table> 
-<tr>
-	<th> </th>
-	<th> Start </th>
-	<th> End </th>
-</tr>
-<tr>
-	<td> Option 1 </td>
-	<td> {{ course.courseavailability.start_datetime1 }}  </td>
-	<td> {{ course.courseavailability.end_datetime1 }}  </td>
-</tr>
-<tr>
-	<td> Option 2 </td>
-	<td> {{ course.courseavailability.start_datetime2 }}  </td>
-	<td> {{ course.courseavailability.end_datetime2 }}  </td>
-</tr>
-<tr>
-	<td> Option 3 </td>
-	<td> {{ course.courseavailability.start_datetime3 }}  </td>
-	<td> {{ course.courseavailability.end_datetime3 }}  </td>
-</tr>
-</table>
-
-<input id="approve_course" type="submit" value="Approve" />
-<input id="deny_course" type="submit" value="Deny" />
+	<!--Course Materials and Availability-->
+	<o>Course Materials 
+		<a href="{% static course.course_material %}">{{ course.course_material }}</a></p>
+	<p>Course Availability:</p>
+		<table> 
+			<tr>
+				<th> </th>
+				<th> Start </th>
+				<th> End </th>
+			</tr>
+			<tr>
+				<td> Option 1 </td>
+				<td> {{ course.courseavailability.start_datetime1 }}  </td>
+				<td> {{ course.courseavailability.end_datetime1 }}  </td>
+			</tr>
+			<tr>
+				<td> Option 2 </td>
+				<td> {{ course.courseavailability.start_datetime2 }}  </td>
+				<td> {{ course.courseavailability.end_datetime2 }}  </td>
+			</tr>
+			<tr>
+				<td> Option 3 </td>
+				<td> {{ course.courseavailability.start_datetime3 }}  </td>
+				<td> {{ course.courseavailability.end_datetime3 }}  </td>
+			</tr>
+		</table>
 
 {% endblock %}

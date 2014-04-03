@@ -1,6 +1,8 @@
 from django.conf.urls import patterns, include, url
 from odalc.base.views import HomePageView
 from odalc.base.views import LoginView, LogoutView
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = patterns('',
 	url(r'^admins/', include('odalc.odalc_admin.urls', namespace='admins')),
@@ -10,4 +12,4 @@ urlpatterns = patterns('',
     url(r'^login/', LoginView.as_view(), name='login'),
     url(r'^logout/', LogoutView.as_view(), name='logout'),
     url(r'^$', HomePageView.as_view(), name='home'),
-)
+) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
