@@ -1,0 +1,23 @@
+{% load staticfiles %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}{% endblock %} | ODALC</title>
+
+    <link rel="stylesheet" href="{% static "base/css/app.css" %}" />
+    {% block css %}{% endblock %}
+    <script src="{% static "bower_components/modernizr/modernizr.js" %}"></script>
+  </head>
+  <body>
+    {% include "base/partials/nav.html" %}
+    {% block body %}
+    {% endblock %}
+    <script src="{% static "bower_components/jquery/dist/jquery.min.js" %}"></script>
+    <script src="{% static "bower_components/foundation/js/foundation.min.js" %}"></script>
+    <script src="{% static "base/js/app.js" %}"></script>
+    {% block javascripts %}
+    {% endblock %}
+  </body>
+</html>
