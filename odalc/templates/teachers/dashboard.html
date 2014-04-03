@@ -1,0 +1,20 @@
+{% extends "base/tmp_base.html" %}
+
+
+{% block body %}
+
+<h1>Teacher Dashboard</h1>
+
+<h3>Profile</h3>
+<p>{{ user.email }}</p>
+
+<h3>Courses</h3>
+<ul>
+{% for course in courses %}
+  <li>{{ course.title }}</li>
+{% empty %}
+  <li>No courses yet.</li>
+{% endfor %}
+</ul>
+
+{% endblock %}

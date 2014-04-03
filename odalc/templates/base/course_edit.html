@@ -1,0 +1,14 @@
+{% extends "base/tmp_base.html" %}
+
+
+{% block body %}
+
+<form action="{% url "courses:edit" course.pk %}" method="POST">
+  {% csrf_token %}
+  <ul>
+    {{ form.as_ul }}
+  </ul>
+  <input id="save_edit" type="submit" value="Save" />
+</form>
+
+{% endblock %}
