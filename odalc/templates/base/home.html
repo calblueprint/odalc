@@ -1,4 +1,5 @@
 {% extends "base/base.html" %}
+{% load staticfiles %}
 
 {% block title %}Welcome to ODALC Courses!{% endblock %}
 
@@ -7,4 +8,73 @@
   {% if user.is_authenticated %}
   {% else %}
   {% endif %}
+
+
+  <div class="main-splash">
+    <div class="row">
+      <div class="large-7 columns">
+        <h1><strong>Welcome to ODALC</strong></h1>
+        <br>
+        <h2>Take <strong>courses</strong> from the Bay Area's leading <strong>professionals</strong>.</h2>
+      </div>
+      <div class="large-5 columns">
+      </div>
+    </div>
+  </div>
+
+  <!-- Upcoming courses title/description -->
+  <div class="row course-items-description">
+    <div class="large-12 columns">
+      <h3>Upcoming courses</h3>
+    </div>
+  </div>
+
+  <!-- Upcoming courses items -->
+  <div class="row">
+    <div class="course-box" onclick="window.location='http://google.com'">
+      <div class="top-shelf">
+        <div class="title-wrap">
+          <h4>Introduction to Yelp</h4>
+        </div>
+        <img src="{% static "base/img/yelp_class.png"%}" alt="Yelp people having fun"/>
+      </div>
+      <div class="bottom-shelf">
+        <h4>By John Du <span class="date">| Starting January 24, 2014</span></h4>
+      </div>
+    </div>
+
+    <div class="course-box">
+      <div class="top-shelf">
+        <div class="title-wrap">
+          <h4>Web development 101</h4>
+        </div>
+        <img src="{% static "base/img/coding.jpg"%}" alt="Yelp people having fun"/>
+      </div>
+      <div class="bottom-shelf">
+        <h4>By Sunny Dee <span class="date">| Starting March 11, 2014</span></h4>
+      </div>
+    </div>
+
+    <div class="course-box">
+      <div class="top-shelf">
+        <div class="title-wrap">
+          <h4>Public Speaking Seminar</h4>
+        </div>
+        <img src="{% static "base/img/classroom_boy_small.jpg"%}" alt="Yelp people having fun"/>
+      </div>
+      <div class="bottom-shelf">
+        <h4>By Mr. Atsu <span class="date">| Starting April 18, 2014</span></h4>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="dark-section">
+    <div class="row">
+      <div class="large-7 columns">
+      <h1><strong>Why ODALC | Courses?</strong></h1>
+      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p><p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?</p>
+      </div>
+    </div>
+  </div>
 {% endblock %}
