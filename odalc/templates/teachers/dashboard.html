@@ -11,10 +11,11 @@
 <h3>Courses</h3>
 <ul>
 {% for course in courses %}
-  <li>{{ course.title }}</li>
+<li><a href="{% url "courses:edit" course.pk %}">{{ course.title }}</a></li>
 {% empty %}
   <li>No courses yet.</li>
 {% endfor %}
 </ul>
+<a href="{% url "teachers:create-course" %}">Create A New Course</a>
 
 {% endblock %}
