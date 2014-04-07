@@ -1,8 +1,8 @@
 from django.shortcuts import render
-from django.views.generic import CreateView
+from django.views.generic import CreateView, FormView, UpdateView, View, TemplateView
+from django.contrib.auth import login, authenticate
 from odalc.teachers.forms import TeacherRegisterForm
 from odalc.teachers.models import TeacherUser
-from django.views.generic import FormView
 from odalc.base.models import Course, CourseAvailability
 from odalc.teachers.forms import CreateCourseForm
 from django.core.urlresolvers import reverse_lazy
@@ -12,18 +12,26 @@ class TeacherRegisteration(CreateView):
     model = TeacherUser
     template_name = "teachers/teacher_register.html"
     form_class = TeacherRegisterForm
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('teachers:dashboard')
+
+    def form_valid(self, form):
+        a = super(TeacherRegisteration, self).form_valid(form)
+        user = authenticate(username=self.request.POST['email'],
+                         password=self.request.POST['password1'])
+        login(self.request, user)
+        return a
+
 
 class CreateCourse(FormView):
     model = Course
     template_name = 'teachers/create_course_form.html'
     form_class = CreateCourseForm
-    success_url = reverse_lazy('home') #please dont complain or change this
+    success_url = reverse_lazy('teachers:dashboard') #please dont complain or change this
 
     def form_valid(self, form):
         new_course = form.save(commit=False)
 
-        new_course.teacher = Teacher.objects.order_by('?').first() #change this to the teacher later
+        new_course.teacher = self.request.user.child
 
         new_course.save()
 
@@ -41,5 +49,24 @@ class CreateCourse(FormView):
 
         new_course_availability.save()
 
-        return super(CreateCourse, self).form_valid(self, form)
+        return super(CreateCourse, self).form_valid(form)
 
+class TeacherDashboardView(TemplateView):
+    template_name = "teachers/dashboard.html"
+
+    def get(self, request, *args, **kwargs):
+        self.user = request.user
+        context = self.get_context_data()
+        
+        return self.render_to_response(context)
+
+    def get_context_data(self, **kwargs):
+        """
+        Insert the single object into the context dict.
+        """
+        context = {}
+        context['user'] = self.user
+        user = TeacherUser.objects.get(id=self.user.id)
+        context['courses'] = Course.objects.filter(teacher=user)
+        context['view'] = self
+        return super(TeacherDashboardView, self).get_context_data(**context)

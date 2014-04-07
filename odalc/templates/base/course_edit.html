@@ -1,13 +1,14 @@
 {% extends "base/tmp_base.html" %}
 
+
 {% block body %}
 
-<form action="{% url "teachers:register" %}" method="POST" enctype="multipart/form-data">
+<form action="{% url "courses:edit" course.pk %}" method="POST">
   {% csrf_token %}
   <ul>
     {{ form.as_ul }}
   </ul>
-  <input type="submit" value="Save" />
+  <input id="save_edit" type="submit" value="Save" />
 </form>
 
 {% endblock %}
