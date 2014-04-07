@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import CreateView, FormView, UpdateView, View, TemplateView
+from django.contrib.auth import login, authenticate
 from odalc.teachers.forms import TeacherRegisterForm
 from odalc.teachers.models import TeacherUser
 from odalc.base.models import Course, CourseAvailability
@@ -11,18 +12,26 @@ class TeacherRegisteration(CreateView):
     model = TeacherUser
     template_name = "teachers/teacher_register.html"
     form_class = TeacherRegisterForm
-    success_url = reverse_lazy('teachers/dashboard')
+    success_url = reverse_lazy('teachers:dashboard')
+
+    def form_valid(self, form):
+        a = super(TeacherRegisteration, self).form_valid(form)
+        user = authenticate(username=self.request.POST['email'],
+                         password=self.request.POST['password1'])
+        login(self.request, user)
+        return a
+
 
 class CreateCourse(FormView):
     model = Course
     template_name = 'teachers/create_course_form.html'
     form_class = CreateCourseForm
-    success_url = reverse_lazy('home') #please dont complain or change this
+    success_url = reverse_lazy('teachers:dashboard') #please dont complain or change this
 
     def form_valid(self, form):
         new_course = form.save(commit=False)
 
-        new_course.teacher = TeacherUser.objects.order_by('?').first() #change this to the teacher later
+        new_course.teacher = self.request.user.child
 
         new_course.save()
 
@@ -58,6 +67,6 @@ class TeacherDashboardView(TemplateView):
         context = {}
         context['user'] = self.user
         user = TeacherUser.objects.get(id=self.user.id)
-        context['courses'] = list(Course.objects.filter(teacher=user))
+        context['courses'] = Course.objects.filter(teacher=user)
         context['view'] = self
-        return context
+        return super(TeacherDashboardView, self).get_context_data(**context)

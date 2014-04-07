@@ -6,6 +6,7 @@ from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.shortcuts import redirect
 from django.contrib import messages
 from odalc.base.models import Course
+from odalc.teachers.forms import CreateCourseForm
 from django.core.urlresolvers import reverse_lazy
 
 # Create your views here.
@@ -21,9 +22,10 @@ class CourseDetailView(DetailView):
 
 class CourseEditView(UpdateView):
     model = Course
+    form_class = CreateCourseForm
     context_object_name = 'course'
     template_name = 'base/course_edit.html'
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('teacher:dashboard')
 
 class HomePageView(TemplateView):
     template_name = 'base/home.html'
