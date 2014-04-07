@@ -1,5 +1,4 @@
-from django.shortcuts import render
-from django.views.generic import CreateView, FormView, UpdateView, View, TemplateView
+from django.views.generic import CreateView, FormView, TemplateView
 from django.contrib.auth import login, authenticate
 from odalc.teachers.forms import TeacherRegisterForm
 from odalc.teachers.models import TeacherUser
@@ -26,7 +25,7 @@ class CreateCourse(FormView):
     model = Course
     template_name = 'teachers/create_course_form.html'
     form_class = CreateCourseForm
-    success_url = reverse_lazy('teachers:dashboard') #please dont complain or change this
+    success_url = reverse_lazy('teachers:dashboard')
 
     def form_valid(self, form):
         new_course = form.save(commit=False)
@@ -57,7 +56,7 @@ class TeacherDashboardView(TemplateView):
     def get(self, request, *args, **kwargs):
         self.user = request.user
         context = self.get_context_data()
-        
+
         return self.render_to_response(context)
 
     def get_context_data(self, **kwargs):
