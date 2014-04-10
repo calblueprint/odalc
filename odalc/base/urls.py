@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import patterns, url
 from odalc.base.views import CourseDetailView, CourseEditView
 from odalc.students.views import SubmitCourseFeedbackView
 
