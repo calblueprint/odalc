@@ -94,6 +94,9 @@ if "IS_STAGE" in os.environ or "IS_PROD" in os.environ:
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 else:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_TEMPLATES_PATH = os.path.join(SETTINGS_PATH, 'templates', 'emails', 'emails.yml')
+
+DEFAULT_EMAIL = 'odalc@odalc.org'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
