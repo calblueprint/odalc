@@ -60,7 +60,8 @@ class CourseDetailView(UserDataMixin, DetailView):
         return context
 
     def post(self, request, *args, **kwargs):
-        self.object = None
+        self.object = self.get_object()
+        context = self.get_context_data(object=self.object)
         return super(BaseCreateView, self).post(request, *args, **kwargs)
 
 class CourseEditView(UserDataMixin, UpdateView):
