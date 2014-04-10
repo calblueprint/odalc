@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.views.generic import CreateView
 from odalc.students.forms import StudentRegisterForm, FeedbackForm
 from odalc.students.models import CourseFeedback, StudentUser
@@ -17,15 +17,19 @@ class SubmitCourseFeedbackView(CreateView):
     model = CourseFeedback
     template_name = 'students/course_feedback_form.html'
     form_class = FeedbackForm
-    success_url = reverse_lazy('home')
+
+    def dispatch(self, request, *args, **kwargs):
+        self.user = request.user
+        # TODO: Error checking to make sure that user is a StudentUser
+        return super(SubmitCourseFeedbackView, self).dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         course_feedback = form.save(commit=False)
         pk = self.kwargs.get('pk', None)
         course_feedback.course = Course.objects.get(pk=pk)
-        course_feedback.student = StudentUser.objects.order_by('?').first()
+        course_feedback.student = StudentUser.objects.get(id=self.user.id)
         course_feedback.save()
-        return redirect(SubmitCourseFeedbackView.success_url)
+        return redirect('courses:detail', pk)
 
     def get_context_data(self, **kwargs):
         context = super(SubmitCourseFeedbackView, self).get_context_data(**kwargs)
