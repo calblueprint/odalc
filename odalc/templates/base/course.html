@@ -11,6 +11,20 @@
 	<p> <b>Difficulty:</b> {{ course.get_skill_level_display }}</p>
 	<p> <b>Prerequisites:</b> {{ course.prereqs }}</p>
 	<p> <b>Cost:</b> ${{ course.cost }}</p>
+	<form action="/students/register">
+	  {% if user.is_authenticated %}
+	  <script
+	    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+	    data-key="pk_test_2IbsMYbzDjE6RKtGbVgPt7pK"
+	    data-amount="900001"
+	    data-name="Course Name Here"
+	    data-description="Cost ($9000.01)"
+	    >
+  	</script>
+		{% else %}
+		<button class="enroll-btn large success">Enroll now</button>
+		{% endif %}
+	</form>
 	<p> <b>Additional Information:</b> {{ course.additional_info }}</p>
     <p> <b>Course Material:</b> <a href="{{ course.course_material.url }}">Materials</a></p>
 
