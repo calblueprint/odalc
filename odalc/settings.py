@@ -98,6 +98,10 @@ EMAIL_TEMPLATES_PATH = os.path.join(SETTINGS_PATH, 'templates', 'emails', 'email
 
 DEFAULT_EMAIL = 'odalc@odalc.org'
 
+# Stripe API Keys
+STRIPE_SECRET_KEY = sk_test_jQUK6ubDrTtpW1i2ar4QFuMl
+STRIPE_PUBLIC_KEY = pk_test_2IbsMYbzDjE6RKtGbVgPt7pK
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
