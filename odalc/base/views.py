@@ -13,6 +13,10 @@ from odalc.students.models import StudentUser
 from odalc.teachers.models import TeacherUser
 from odalc.teachers.forms import EditCourseForm
 
+from django.core.urlresolvers import reverse_lazy
+import stripe, json
+from django.conf import settings
+
 # Create your views here.
 
 class UserDataMixin(object):
@@ -57,11 +61,43 @@ class CourseDetailView(UserDataMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(CourseDetailView, self).get_context_data(**kwargs)
+        context['stripe_public_key'] = settings.STRIPE_PUBLIC_KEY
+        context['email'] = self.user.email
         return context
+
+    def dispatch(self, request, *args, **kwargs):
+        # Try to dispatch to the right method; if a method doesn't exist,
+        # defer to the error handler. Also defer to the error handler if the
+        # request method isn't on the approved list.
+        self.user = request.user
+        return super(CourseDetailView, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         context = self.get_context_data(object=self.object)
+
+        # Set your secret key: remember to change this to your live secret key in production
+        # See your keys here https://manage.stripe.com/account
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+
+        # Get the credit card details submitted by the form
+        token = request.POST['stripeToken']
+        stripe_json = json.loads(request.POST['json'])
+        print stripe_json
+
+        # Create the charge on Stripe's servers - this will charge the user's card
+        try:
+          charge = stripe.Charge.create(
+              amount=1000, # amount in cents, again
+              currency="usd",
+              card=token,
+              description="payinguser@example.com"
+          )
+        except stripe.CardError, e:
+          # The card has been declined
+          pass
+
+
         return super(BaseCreateView, self).post(request, *args, **kwargs)
 
 class CourseEditView(UserDataMixin, UpdateView):

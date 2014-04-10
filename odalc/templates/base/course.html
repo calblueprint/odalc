@@ -11,14 +11,16 @@
 	<p> <b>Difficulty:</b> {{ course.get_skill_level_display }}</p>
 	<p> <b>Prerequisites:</b> {{ course.prereqs }}</p>
 	<p> <b>Cost:</b> ${{ course.cost }}</p>
-	<form action="/students/register">
+	<form method='POST'>
+		{% csrf_token %}
 	  {% if user.is_authenticated %}
 	  <script
 	    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-	    data-key="pk_test_2IbsMYbzDjE6RKtGbVgPt7pK"
+	    data-key="{{ stripe_public_key }}"
 	    data-amount="900001"
 	    data-name="Course Name Here"
 	    data-description="Cost ($9000.01)"
+	    data-email="{{ email }}"
 	    >
   	</script>
 		{% else %}
