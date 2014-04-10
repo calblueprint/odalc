@@ -114,7 +114,7 @@ class Command(BaseCommand):
             course.save()
 
     def generate_course_feedback(self, instances):
-        self.md.fill_model(CourseFeedback, instances, encourage_questions='no', time_length='too_long')
+        self.md.fill_model(CourseFeedback, instances)
 
     def generate_course_availability(self):
         courses = Course.objects.all()
