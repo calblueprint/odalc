@@ -1,9 +1,11 @@
+from django.core.urlresolvers import reverse_lazy
+from django.contrib.auth import login, authenticate
 from django.shortcuts import redirect
 from django.views.generic import CreateView
+
+from odalc.base.models import Course
 from odalc.students.forms import StudentRegisterForm, FeedbackForm
 from odalc.students.models import CourseFeedback, StudentUser
-from odalc.base.models import Course
-from django.core.urlresolvers import reverse_lazy
 
 # Create your views here.
 class StudentRegisterView(CreateView):
@@ -11,6 +13,15 @@ class StudentRegisterView(CreateView):
     template_name = "students/register.html"
     form_class = StudentRegisterForm
     success_url = reverse_lazy('home')
+
+    def form_valid(self, form):
+        resp = super(StudentRegisterView, self).form_valid(form)
+        user = authenticate(
+            username=self.request.POST['email'],
+            password=self.request.POST['password1']
+        )
+        login(self.request, user)
+        return resp
 
 
 class SubmitCourseFeedbackView(CreateView):
