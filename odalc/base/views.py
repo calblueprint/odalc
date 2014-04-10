@@ -59,6 +59,9 @@ class CourseDetailView(UserDataMixin, DetailView):
         context = super(CourseDetailView, self).get_context_data(**kwargs)
         return context
 
+    def post(self, request, *args, **kwargs):
+        self.object = None
+        return super(BaseCreateView, self).post(request, *args, **kwargs)
 
 class CourseEditView(UserDataMixin, UpdateView):
     model = Course
