@@ -12,3 +12,4 @@ django-localflavor
 pillow
 django-sampledatahelper
 django-bower
+pyyaml
