@@ -65,6 +65,8 @@ class CourseDetailView(UserDataMixin, DetailView):
         context['email'] = self.user.email
         context['cost'] = self.object.cost
         context['cost_in_cents'] = int(self.object.cost * 100)
+        context['room_left'] = self.object.students.count() < self.object.size
+        context['in_class'] = self.object.students.filter(id=self.user.id).exists()
         return context
 
     def dispatch(self, request, *args, **kwargs):
@@ -87,15 +89,15 @@ class CourseDetailView(UserDataMixin, DetailView):
         token = request.POST['stripeToken']
 
         # Create the charge on Stripe's servers - this will charge the user's card
-        if course.students.count() <= course.size:
+        if context['room_left']:
             messages.error(request, "This course is already full. Your card hasn't been charged")
-            return redirect('courses:detail',self.object.pk)
-        if course.students.filter(id=self.user.id).exists():
+            return redirect('courses:detail',course.pk)
+        if context['in_class']:
             messages.error(request, "You are already signed up for this course. Your card hasn't been charged")
-            return redirect('courses:detail',self.object.pk)
+            return redirect('courses:detail',course.pk)
         try:
           charge = stripe.Charge.create(
-              amount=int(self.object.cost * 100), # amount in cents, again
+              amount=int(course.cost * 100), # amount in cents, again
               currency="usd",
               card=token,
               description='This is a payment for ' + self.object.title,
@@ -103,11 +105,11 @@ class CourseDetailView(UserDataMixin, DetailView):
                 'first_name':self.user.first_name,
                 'last_name':self.user.last_name,
                 'email':self.user.email,
-                'course':self.object.title,
-                'teacher_first_name':self.object.teacher.first_name,
-                'teacher_last_name':self.object.teacher.last_name,
-                'teacher_email':self.object.teacher.email,
-                'odalc_funds': self.object.odalc_cost_split
+                'course':course.title,
+                'teacher_first_name':course.teacher.first_name,
+                'teacher_last_name':course.teacher.last_name,
+                'teacher_email':course.teacher.email,
+                'odalc_funds': course.odalc_cost_split
                 }
           )
         except stripe.CardError, e:
@@ -115,9 +117,9 @@ class CourseDetailView(UserDataMixin, DetailView):
             return self.render_to_response(self.get_context_data())
 
         #add student to course
-        self.object.students.add(self.user)
-        self.object.save()
-        return redirect('courses:detail',self.object.pk)
+        course.students.add(self.user)
+        course.save()
+        return redirect('courses:detail',course.pk)
 
 class CourseEditView(UserDataMixin, UpdateView):
     model = Course
