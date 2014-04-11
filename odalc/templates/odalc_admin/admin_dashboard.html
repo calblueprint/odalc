@@ -1,0 +1,84 @@
+{% extends "base/tmp_base.html" %}
+{% block body %}
+
+<h1>Pending Courses</h1>
+    <table>
+        <tr> 
+            <th> Course </th>
+            <th> Teacher </th>
+            <th> Start </th>
+            <th> End </th>
+            <th> Skill Level </th>
+            <th> Cost </th> 
+            <th> ODALC Cost </th>
+        </tr>
+    {% for course in pending_courses %}
+        <tr>
+            <td> <a href="{% url "admins:course_review" course.id %}"> {{ course.title }}</a> </td>
+            <td> {{ course.teacher.first_name }} {{ course.teacher.last_name }} </td>
+            <td> {{ course.start_datetime }} </td>
+            <td> {{ course.end_datetime }} </td>
+            <td> {{ course.skill_level }} </td>
+            <td> {{ course.cost }} </td>
+            <td> {{ course.odalc_cost_split }} </td>
+        <tr>
+    {% empty %}
+        <li> There are no pending courses currently. </li>
+    {% endfor %}
+    </table>
+
+<h1>Live Courses</h1>
+    <table>
+        <tr> 
+            <th> Course </th>
+            <th> Teacher </th>
+            <th> Start </th>
+            <th> End </th>
+            <th> Skill Level </th>
+            <th> Cost </th> 
+            <th> ODALC Cost </th>
+        </tr>
+    {% for course in live_courses %}
+        <tr>
+            <td> <a href="{% url "admins:course_review" course.id %}"> {{ course.title }}</a> </td>
+            <td> {{ course.teacher.first_name }} {{ course.teacher.last_name }} </td>
+            <td> {{ course.start_datetime }} </td>
+            <td> {{ course.end_datetime }} </td>
+            <td> {{ course.skill_level }} </td>
+            <td> {{ course.cost }} </td>
+            <td> {{ course.odalc_cost_split }} </td>
+        <tr>
+     {% empty %}
+        <li> There are no live courses currently. </li>
+    {% endfor %}
+    </table>
+
+<h1>Finished Courses</h1>
+    <table>
+        <tr> 
+            <th> Course </th>
+            <th> Teacher </th>
+            <th> Start </th>
+            <th> End </th>
+            <th> Skill Level </th>
+            <th> Cost </th> 
+            <th> ODALC Cost </th>
+            <th> Feedback </th>
+        </tr>
+    {% for course in finished_courses %}
+        <tr>
+            <td> <a href="{% url "admins:course_review" course.id %}"> {{ course.title }}</a> </td>
+            <td> {{ course.teacher.first_name }} {{ course.teacher.last_name }} </td>
+            <td> {{ course.start_datetime }} </td>
+            <td> {{ course.end_datetime }} </td>
+            <td> {{ course.skill_level }} </td>
+            <td> {{ course.cost }} </td>
+            <td> {{ course.odalc_cost_split }} </td>
+            <td>  <a href="{% url "courses:review" course.id %}"> feedback </a> </td>
+        <tr>
+    {% empty %}
+        <li> There are no finished courses currently. </li>
+    {% endfor %}
+    </table>
+
+{% endblock %}
