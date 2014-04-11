@@ -88,7 +88,10 @@ class CourseDetailView(UserDataMixin, DetailView):
 
         # Create the charge on Stripe's servers - this will charge the user's card
         if course.students.count() <= course.size:
-            messages.error(request, 'Course is already full.')
+            messages.error(request, "This course is already full. Your card hasn't been charged")
+            return redirect('courses:detail',self.object.pk)
+        if course.students.filter(id=self.user.id).exists():
+            messages.error(request, "You are already signed up for this course. Your card hasn't been charged")
             return redirect('courses:detail',self.object.pk)
         try:
           charge = stripe.Charge.create(
