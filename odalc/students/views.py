@@ -1,7 +1,7 @@
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth import login, authenticate
 from django.shortcuts import redirect
-from django.views.generic import CreateView
+from django.views.generic import CreateView, TemplateView
 
 from odalc.base.models import Course
 from odalc.students.forms import StudentRegisterForm, FeedbackForm
@@ -45,4 +45,20 @@ class SubmitCourseFeedbackView(CreateView):
     def get_context_data(self, **kwargs):
         context = super(SubmitCourseFeedbackView, self).get_context_data(**kwargs)
         context['pk'] = self.kwargs.get('pk', None)
+        return context
+
+"""StudentDashboardView shows the student his/her basic information and courses taken."""
+class StudentDashboardView(TemplateView):
+    template_name = "students/student_dashboard.html"
+
+    def get(self, request, *args, **kwargs):
+        self.user = request.user
+        context = self.get_context_data()
+        return self.render_to_response(context)
+
+    def get_context_data(self, **kwargs):
+        student_user=self.user.child
+        context = super(StudentDashboardView, self).get_context_data(**kwargs)
+        context['user'] = student_user
+        context["courses_taken"] = student_user.course_set.all()
         return context
