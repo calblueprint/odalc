@@ -30,7 +30,7 @@ class ApplicationReviewView(UpdateView):
     ]
     context_object_name = 'course'
     template_name = 'odalc_admin/course_application_review.html'
-    success_url = reverse_lazy('home') #TODO: change to admin dashboard...but doesn't work
+    success_url = reverse_lazy('admins:admin_dashboard') 
 
     def get_context_data(self, **kwargs):
         context = super(ApplicationReviewView, self).get_context_data(**kwargs)
