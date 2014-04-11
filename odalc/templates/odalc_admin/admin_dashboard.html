@@ -22,7 +22,7 @@
             <td> {{ course.skill_level }} </td>
             <td> {{ course.cost }} </td>
             <td> {{ course.odalc_cost_split }} </td>
-        <tr>
+        </tr>
     {% empty %}
         <li> There are no pending courses currently. </li>
     {% endfor %}
@@ -48,7 +48,7 @@
             <td> {{ course.skill_level }} </td>
             <td> {{ course.cost }} </td>
             <td> {{ course.odalc_cost_split }} </td>
-        <tr>
+        </tr>
      {% empty %}
         <li> There are no live courses currently. </li>
     {% endfor %}
@@ -76,7 +76,7 @@
             <td> {{ course.cost }} </td>
             <td> {{ course.odalc_cost_split }} </td>
             <td>  <a href="{% url "courses:feedback_review" course.id %}"> feedback </a> </td>
-        <tr>
+        </tr>
     {% empty %}
         <li> There are no finished courses currently. </li>
     {% endfor %}
