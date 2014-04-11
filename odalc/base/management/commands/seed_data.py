@@ -23,6 +23,7 @@ TEST_UPLOADED_FILE = SimpleUploadedFile(TEST_FILE.name, TEST_FILE.file.read())
 TEST_TEACHER_EMAIL = 'teacher@teacher.com'
 TEST_STUDENT_EMAIL = 'student@student.com'
 TEST_PASSWORD = 'odalc'
+COURSE_STATUS_CHOICES = [s[0] for s in Course.STATUS_CHOICES] 
 
 class Command(BaseCommand):
     args = ''
@@ -106,7 +107,7 @@ class Command(BaseCommand):
                 image=self.sd.image(100,100),
                 course_material=TEST_UPLOADED_FILE,
                 additional_info=self.sd.paragraph(),
-                status=Course.STATUS_PENDING
+                status=self.sd.choice(COURSE_STATUS_CHOICES)
             )
             course.save()
             for s in course_students:

@@ -1,6 +1,7 @@
-{% extends "base/tmp_base.html" %}
+{% extends "base/base.html" %}
 {% block body %}
 
+<div class="row"><div class="large-12 columns">
 <h1>Course Feedback</h1>
     <p><b>Course:</b> {{ course.title }} </p>
     <p><b>Teacher:</b> {{ course.teacher.first_name }} {{ course.teacher.last_name }}</p>
@@ -64,6 +65,5 @@
     <p> {{ form.other_topics }} </p>
     {% endfor %}
 
-
-
+</div></div>
 {% endblock %}

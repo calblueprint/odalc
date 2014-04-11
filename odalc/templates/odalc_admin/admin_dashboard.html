@@ -1,6 +1,7 @@
-{% extends "base/tmp_base.html" %}
+{% extends "base/base.html" %}
 {% block body %}
 
+<div class="row"><div class="large-12 columns">
 <h1>Pending Courses</h1>
     <table>
         <tr> 
@@ -74,11 +75,12 @@
             <td> {{ course.skill_level }} </td>
             <td> {{ course.cost }} </td>
             <td> {{ course.odalc_cost_split }} </td>
-            <td>  <a href="{% url "courses:review" course.id %}"> feedback </a> </td>
+            <td>  <a href="{% url "courses:feedback_review" course.id %}"> feedback </a> </td>
         <tr>
     {% empty %}
         <li> There are no finished courses currently. </li>
     {% endfor %}
     </table>
 
+</div></div> 
 {% endblock %}
