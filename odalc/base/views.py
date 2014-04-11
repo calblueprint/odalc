@@ -84,8 +84,6 @@ class CourseDetailView(UserDataMixin, DetailView):
 
         # Get the credit card details submitted by the form
         token = request.POST['stripeToken']
-        #stripe_json = json.loads(request.POST['json'])
-        #print stripe_json
 
         # Create the charge on Stripe's servers - this will charge the user's card
         try:
