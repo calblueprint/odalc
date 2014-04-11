@@ -1,4 +1,7 @@
 {% extends "base/base.html" %}
+{% block title %}
+	{{ course.title }}
+{% endblock %}
 
 {% block body %}
 
@@ -11,22 +14,42 @@
 	<p> <b>Difficulty:</b> {{ course.get_skill_level_display }}</p>
 	<p> <b>Prerequisites:</b> {{ course.prereqs }}</p>
 	<p> <b>Cost:</b> ${{ course.cost }}</p>
-	<form method='POST'>
-		{% csrf_token %}
-	  {% if user.is_authenticated %}
-	  <script
-	    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-	    data-key="{{ stripe_public_key }}"
-	    data-amount="{{ cost_in_cents }}"
-	    data-name="Course Name Here"
-	    data-description="Cost (${{ cost }})"
-	    data-email="{{ email }}"
-	    >
-  	</script>
+	{% if user.is_authenticated %}
+		{% if course_full %}
+		<button class="enroll-btn large success">Course Full</button>
+		{% elif in_class %}
+		<button class="enroll-btn large success">Already Enrolled</button>
+		{% elif is_teacher %}
+		<button class="enroll-btn large alert">Cannot Enroll</button>
 		{% else %}
-		<button class="enroll-btn large success">Enroll now</button>
+		<form method='POST'>
+			{% csrf_token %}
+		  <script src="https://checkout.stripe.com/checkout.js"></script>
+
+			<button id="enroll-btn" class="enroll-btn large success">Enroll Now</button>
+
+			<script>
+			  var handler = StripeCheckout.configure({
+			    key: 'pk_test_2IbsMYbzDjE6RKtGbVgPt7pK',
+			    token: function(token, args) {
+			    }
+			  });
+			  document.getElementById('enroll-btn').addEventListener('click', function(e) {
+			    // Open Checkout with further options
+			    handler.open({
+			      name: '{{ course.title }}',
+			      description: 'Cost (${{ cost }})',
+			      amount: {{ cost_in_cents }},
+			      allowRememberMe: false
+			    });
+			    e.preventDefault();
+			  });
+			</script>
+		</form>
 		{% endif %}
-	</form>
+	{% else %}
+	<button class="enroll-btn large success">Enroll now</button>
+	{% endif %}
 	<p> <b>Additional Information:</b> {{ course.additional_info }}</p>
     <p> <b>Course Material:</b> <a href="{{ course.course_material.url }}">Materials</a></p>
 
