@@ -1,4 +1,4 @@
-from django.views.generic import DetailView, TemplateView, FormView, View
+from django.views.generic import DetailView, UpdateView, TemplateView, FormView, View
 from django.contrib.auth.forms import AuthenticationForm
 from django.utils.decorators import method_decorator
 from django.views.decorators.debug import sensitive_post_parameters
@@ -6,21 +6,29 @@ from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.shortcuts import redirect
 from django.contrib import messages
 from odalc.base.models import Course
+from odalc.teachers.forms import EditCourseForm
+from django.core.urlresolvers import reverse_lazy
 
 # Create your views here.
 
 class CourseDetailView(DetailView):
-	model = Course
-	context_object_name = 'course'
-	template_name = 'base/course.html'
+    model = Course
+    context_object_name = 'course'
+    template_name = 'base/course.html'
 
-	def get_context_data(self, **kwargs):
-		context = super(CourseDetailView, self).get_context_data(**kwargs)
-		return context
+    def get_context_data(self, **kwargs):
+        context = super(CourseDetailView, self).get_context_data(**kwargs)
+        return context
 
+class CourseEditView(UpdateView):
+    model = Course
+    form_class = EditCourseForm
+    context_object_name = 'course'
+    template_name = 'base/course_edit.html'
+    success_url = reverse_lazy('teachers:dashboard')
 
 class HomePageView(TemplateView):
-	template_name = 'base/home.html'
+    template_name = 'base/home.html'
 
 class LoginView(FormView):
     template_name = 'base/login.html'

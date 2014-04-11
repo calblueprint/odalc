@@ -29,6 +29,10 @@ TEMPLATE_DEBUG = not IS_PROD
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
+PROJECT_ROOT = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), ".."),
+)
+
 # Application definition
 
 INSTALLED_APPS = (
@@ -39,6 +43,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'localflavor',
+    'djangobower',
     'odalc.base',
     'odalc.odalc_admin',
     'odalc.students',
@@ -89,6 +94,9 @@ if "IS_STAGE" in os.environ or "IS_PROD" in os.environ:
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 else:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_TEMPLATES_PATH = os.path.join(SETTINGS_PATH, 'templates', 'emails', 'emails.yml')
+
+DEFAULT_EMAIL = 'odalc@odalc.org'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
@@ -103,6 +111,12 @@ USE_L10N = True
 
 USE_TZ = True
 
+
+# djangobower settings
+BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, 'static')
+BOWER_INSTALLED_APPS = (
+    'foundation',
+)
 
 ###################
 # Heroku Settings #
@@ -127,6 +141,12 @@ MEDIA_URL = '/uploads/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
     os.path.join(BASE_DIR, 'uploads'),
+)
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'djangobower.finders.BowerFinder',
 )
 
 MEDIA_ROOT = os.path.join(BASE_DIR,"uploads")

@@ -1,0 +1,21 @@
+{% extends "base/base.html" %}
+
+
+{% block body %}
+
+<h1>Teacher Dashboard</h1>
+
+<h3>Profile</h3>
+<p>{{ user.email }}</p>
+
+<h3>Courses</h3>
+<ul>
+{% for course in courses %}
+<li><a href="{% url "courses:edit" course.pk %}">{{ course.title }}</a></li>
+{% empty %}
+  <li>No courses yet.</li>
+{% endfor %}
+</ul>
+<a href="{% url "teachers:create-course" %}">Create A New Course</a>
+
+{% endblock %}

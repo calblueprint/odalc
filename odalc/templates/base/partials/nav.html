@@ -1,0 +1,35 @@
+<!-- NAV section -->
+<div class="bp-black-container">
+  <div class="row">
+    <div class="large-12 columns">
+      <nav class="top-bar" data-topbar>
+        <ul class="title-area">
+          <li class="name">
+          <h1><a href="{% url "home" %}">ODALC | Courses</a></h1>
+          </li>
+          <li class="toggle-topbar menu-icon"><a href="{% url "home" %}">Menu</a></li>
+        </ul>
+
+        <section class="top-bar-section">
+          <!-- Right Nav Section -->
+          <ul class="right">
+          {% if user.is_authenticated %}
+              <li><a href="#">Hi {{ user.first_name }}!</a></li>
+              <li><a href="{% url "logout" %}">Logout</a></li>
+          {% else %}
+              <li><a href="{% url "login" %}">Teacher Login</a></li>
+              <li class="active"><a href="{% url "login" %}">Student Login</a></li>
+          {% endif %}
+          </ul>
+
+          <!-- Left Nav Section -->
+          <ul class="left">
+            <li class="{% block is_about_page %}{% endblock %}"><a href="#">About</a></li>
+            <li class="{% block is_courses_page %}{% endblock %}"><a href="#">Courses</a></li>
+          </ul>
+        </section>
+      </nav>
+    </div>
+  </div>
+</div>
+<!-- end NAV section -->

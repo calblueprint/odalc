@@ -5,7 +5,7 @@ from django.core.management.base import BaseCommand
 from django.core.files import File
 from django.core.files.uploadedfile import SimpleUploadedFile
 
-from odalc.base.models import User, UserManager, Course, CourseAvailability
+from odalc.base.models import Course, CourseAvailability
 from odalc.students.models import StudentUser, CourseFeedback
 from odalc.teachers.models import TeacherUser
 #from odalc.odalc_admin.models import AdminUser
@@ -20,6 +20,9 @@ IMAGE_FILE = File(open(TEST_IMAGE_PATH))
 TEST_FILE = File(open(TEST_FILE_PATH))
 TEST_IMAGE_FILE = SimpleUploadedFile(IMAGE_FILE.name, IMAGE_FILE.file.read())
 TEST_UPLOADED_FILE = SimpleUploadedFile(TEST_FILE.name, TEST_FILE.file.read())
+TEST_TEACHER_EMAIL = 'teacher@teacher.com'
+TEST_STUDENT_EMAIL = 'student@student.com'
+TEST_PASSWORD = 'odalc'
 
 class Command(BaseCommand):
     args = ''
@@ -42,6 +45,23 @@ class Command(BaseCommand):
                 experience='Here is my experience',
                 info_source='WEB'
             )
+            teacher.set_password(TEST_PASSWORD)
+            teacher.save()
+        if not TeacherUser.objects.filter(email=TEST_TEACHER_EMAIL).exists():
+            teacher = TeacherUser.objects.create(
+                email=TEST_TEACHER_EMAIL,
+                first_name='TEACHER',
+                last_name='ODALC',
+                street_address=self.sd.number_string(3) + ' ' + self.sd.word() + ' St.',
+                city='Berkeley',
+                zipcode='94709',
+                phone=self.sd.phone('es', 1),
+                picture=self.sd.image(100,100),
+                resume=TEST_UPLOADED_FILE,
+                experience='Here is my experience',
+                info_source='WEB'
+            )
+            teacher.set_password(TEST_PASSWORD)
             teacher.save()
         return
 
@@ -52,6 +72,15 @@ class Command(BaseCommand):
                 first_name=self.sd.name(locale=US),
                 last_name=self.sd.surname(locale=US)
             )
+            student.set_password(TEST_PASSWORD)
+            student.save()
+        if not StudentUser.objects.filter(email=TEST_STUDENT_EMAIL).exists():
+            student = StudentUser.objects.create(
+                email=TEST_STUDENT_EMAIL,
+                first_name='STUDENT',
+                last_name='ODALC'
+            )
+            student.set_password(TEST_PASSWORD)
             student.save()
         return
 
@@ -85,7 +114,7 @@ class Command(BaseCommand):
             course.save()
 
     def generate_course_feedback(self, instances):
-        self.md.fill_model(CourseFeedback, instances, encourage_questions='no', time_length='too_long')
+        self.md.fill_model(CourseFeedback, instances)
 
     def generate_course_availability(self):
         courses = Course.objects.all()
