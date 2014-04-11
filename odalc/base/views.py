@@ -76,7 +76,8 @@ class CourseDetailView(UserDataMixin, DetailView):
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
-        context = self.get_context_data(object=self.object)
+        course = self.object
+        context = self.get_context_data(object=course)
 
         # Set your secret key: remember to change this to your live secret key in production
         # See your keys here https://manage.stripe.com/account
@@ -86,6 +87,9 @@ class CourseDetailView(UserDataMixin, DetailView):
         token = request.POST['stripeToken']
 
         # Create the charge on Stripe's servers - this will charge the user's card
+        if course.students.count() <= course.size:
+            messages.error(request, 'Course is already full.')
+            return redirect('courses:detail',self.object.pk)
         try:
           charge = stripe.Charge.create(
               amount=int(self.object.cost * 100), # amount in cents, again
@@ -107,6 +111,9 @@ class CourseDetailView(UserDataMixin, DetailView):
           # The card has been declined
             return self.render_to_response(self.get_context_data())
 
+        #add student to course
+        self.object.students.add(self.user)
+        self.object.save()
         return redirect('courses:detail',self.object.pk)
 
 class CourseEditView(UserDataMixin, UpdateView):
