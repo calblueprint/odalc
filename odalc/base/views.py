@@ -107,10 +107,9 @@ class CourseDetailView(UserDataMixin, DetailView):
           )
         except stripe.CardError, e:
           # The card has been declined
-          pass
+            return self.render_to_response(self.get_context_data())
 
-
-        return super(CourseDetailView, self).post(request, *args, **kwargs)
+        return redirect('courses:detail',self.object.pk)
 
 class CourseEditView(UserDataMixin, UpdateView):
     model = Course
