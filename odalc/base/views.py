@@ -63,6 +63,8 @@ class CourseDetailView(UserDataMixin, DetailView):
         context = super(CourseDetailView, self).get_context_data(**kwargs)
         context['stripe_public_key'] = settings.STRIPE_PUBLIC_KEY
         context['email'] = self.user.email
+        context['cost'] = self.object.cost
+        context['cost_in_cents'] = int(self.object.cost * 100)
         return context
 
     def dispatch(self, request, *args, **kwargs):
@@ -82,23 +84,33 @@ class CourseDetailView(UserDataMixin, DetailView):
 
         # Get the credit card details submitted by the form
         token = request.POST['stripeToken']
-        stripe_json = json.loads(request.POST['json'])
-        print stripe_json
+        #stripe_json = json.loads(request.POST['json'])
+        #print stripe_json
 
         # Create the charge on Stripe's servers - this will charge the user's card
         try:
           charge = stripe.Charge.create(
-              amount=1000, # amount in cents, again
+              amount=int(self.object.cost * 100), # amount in cents, again
               currency="usd",
               card=token,
-              description="payinguser@example.com"
+              description='This is a payment for ' + self.object.title,
+              metadata={
+                'first_name':self.user.first_name,
+                'last_name':self.user.last_name,
+                'email':self.user.email,
+                'course':self.object.title,
+                'teacher_first_name':self.object.teacher.first_name,
+                'teacher_last_name':self.object.teacher.last_name,
+                'teacher_email':self.object.teacher.email,
+                'odalc_funds': self.object.odalc_cost_split
+                }
           )
         except stripe.CardError, e:
           # The card has been declined
           pass
 
 
-        return super(BaseCreateView, self).post(request, *args, **kwargs)
+        return super(CourseDetailView, self).post(request, *args, **kwargs)
 
 class CourseEditView(UserDataMixin, UpdateView):
     model = Course

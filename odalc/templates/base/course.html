@@ -17,9 +17,9 @@
 	  <script
 	    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
 	    data-key="{{ stripe_public_key }}"
-	    data-amount="900001"
+	    data-amount="{{ cost_in_cents }}"
 	    data-name="Course Name Here"
-	    data-description="Cost ($9000.01)"
+	    data-description="Cost (${{ cost }})"
 	    data-email="{{ email }}"
 	    >
   	</script>
