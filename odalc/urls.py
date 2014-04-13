@@ -13,3 +13,4 @@ urlpatterns = patterns('',
     url(r'^logout/', LogoutView.as_view(), name='logout'),
     url(r'^$', HomePageView.as_view(), name='home'),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
