@@ -1,0 +1,24 @@
+{% extends "base/base.html" %}
+{% load staticfiles %}
+
+{% block title %}Donate{% endblock %}
+
+{% block body %}
+<div class="white-section">
+    <div class="row">
+        <div class="large-5 columns">
+            <h1>Contribute today</h1>
+            <p>Oakland digital is a non-profit effort. We heavily rely on your blah blah blah for blah blah. Please consider blah blah blah-ing and blah blah blah-ing for our cause.</p>
+
+            <p>Falafels are great and i really enjoy eating them. This is some more text to encourage donating.</p>
+
+            <p><button class="btn large">Donate</button></p>
+
+            <p><small>Donations are tax refundable blah blah stuff.</small></p>
+        </div>
+        <div class="large-7 columns">
+            <img src="{% static "base/img/smiling-people.jpg" %}"/>
+        </div>
+    </div>
+</div>
+{% endblock %}
