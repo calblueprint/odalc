@@ -17,8 +17,12 @@
     {% endblock %}
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
     <script src="{% static "bower_components/foundation/js/foundation.min.js" %}"></script>
+    <script src="{% static "bower_components/foundation/js/foundation.alerts.js" %}"></script>
     <script src="{% static "base/js/app.js" %}"></script>
     {% block javascripts %}
     {% endblock %}
+    <script>
+      $(document).foundation();
+    </script>
   </body>
 </html>

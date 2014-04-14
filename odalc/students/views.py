@@ -4,11 +4,12 @@ from django.shortcuts import redirect
 from django.views.generic import CreateView, TemplateView
 
 from odalc.base.models import Course
+from odalc.base.views import UserDataMixin
 from odalc.students.forms import StudentRegisterForm, FeedbackForm
 from odalc.students.models import CourseFeedback, StudentUser
 
 # Create your views here.
-class StudentRegisterView(CreateView):
+class StudentRegisterView(UserDataMixin, CreateView):
     model = StudentUser
     template_name = "students/register.html"
     form_class = StudentRegisterForm
@@ -24,7 +25,7 @@ class StudentRegisterView(CreateView):
         return resp
 
 
-class SubmitCourseFeedbackView(CreateView):
+class SubmitCourseFeedbackView(UserDataMixin, CreateView):
     model = CourseFeedback
     template_name = 'students/course_feedback_form.html'
     form_class = FeedbackForm
@@ -48,7 +49,7 @@ class SubmitCourseFeedbackView(CreateView):
         return context
 
 """StudentDashboardView shows the student his/her basic information and courses taken."""
-class StudentDashboardView(TemplateView):
+class StudentDashboardView(UserDataMixin, TemplateView):
     template_name = "students/student_dashboard.html"
 
     def get(self, request, *args, **kwargs):
