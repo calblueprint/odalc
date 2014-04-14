@@ -12,6 +12,13 @@
 // Allows the use of rem-calc() or lower-bound() in your settings
 @import "foundation/functions";
 
+// COLORS
+$light-primary-color: #008cba;
+$light-secondary-color: #dddddd;
+
+$dark-primary-color: #333333;
+$dark-secondary-color: #888888;
+
 // $experimental: true;
 
 // The default font-size is set to 100% of the browser style sheet (usually 16px)
@@ -1127,7 +1134,7 @@
 // $include-html-top-bar-classes: $include-html-classes;
 
 // Background color for the top bar
-// $topbar-bg-color: #333;
+$topbar-bg-color: $dark-primary-color;
 // $topbar-bg: $topbar-bg-color;
 
 // Height and margin
@@ -1156,7 +1163,7 @@
 // $topbar-link-font-size: rem-calc(13);
 // $topbar-link-hover-lightness: -10%; // Darken by 10%
 // $topbar-link-bg-hover: #272727;
-// $topbar-link-bg-active: $primary-color;
+$topbar-link-bg-active: $light-primary-color;
 // $topbar-link-bg-active-hover: scale-color($primary-color, $lightness: -14%);
 // $topbar-link-font-family: $body-font-family;
 // $topbar-link-text-transform: none;

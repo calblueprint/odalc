@@ -1,50 +1,9 @@
 @import "settings";
 @import "foundation";
 
-// Or selectively include components
-// @import
-//   "foundation/components/accordion",
-//   "foundation/components/alert-boxes",
-//   "foundation/components/block-grid",
-//   "foundation/components/breadcrumbs",
-//   "foundation/components/button-groups",
-//   "foundation/components/buttons",
-//   "foundation/components/clearing",
-//   "foundation/components/dropdown",
-//   "foundation/components/dropdown-buttons",
-//   "foundation/components/flex-video",
-//   "foundation/components/forms",
-//   "foundation/components/grid",
-//   "foundation/components/inline-lists",
-//   "foundation/components/joyride",
-//   "foundation/components/keystrokes",
-//   "foundation/components/labels",
-//   "foundation/components/magellan",
-//   "foundation/components/orbit",
-//   "foundation/components/pagination",
-//   "foundation/components/panels",
-//   "foundation/components/pricing-tables",
-//   "foundation/components/progress-bars",
-//   "foundation/components/reveal",
-//   "foundation/components/side-nav",
-//   "foundation/components/split-buttons",
-//   "foundation/components/sub-nav",
-//   "foundation/components/switch",
-//   "foundation/components/tables",
-//   "foundation/components/tabs",
-//   "foundation/components/thumbs",
-//   "foundation/components/tooltips",
-//   "foundation/components/top-bar",
-//   "foundation/components/type",
-//   "foundation/components/offcanvas",
-//   "foundation/components/visibility";
 
 .bp-black-container {
-    background-color: #333333;
-    //.top-bar, .top-bar-selection {
-    //    background-color: #383a85;
-    //}
-
+    background-color: $dark-primary-color;
 }
 
 .main-splash {
@@ -119,7 +78,7 @@
     }
     .bottom-shelf {
         display: block;
-        background-color: #333;
+        background-color: $dark-primary-color;
         border-bottom-left-radius: 5px;
         border-bottom-right-radius: 5px;
         z-index: 2;
@@ -129,7 +88,7 @@
             color: #fff;
             font-size: 0.9em;
             span.date {
-                color: #888;
+                color: $dark-secondary-color;
                 font-weight: bold;
             }
         }
@@ -142,7 +101,7 @@
 
 .dark-section {
     @include section-padding();
-    background-color: #333;
+    background-color: $dark-primary-color;
 
     p {
         color: #ccc;
@@ -156,7 +115,7 @@
 
 .mid-dark-section {
     @include section-padding();
-    background-color: #ddd;
+    background-color: $light-secondary-color; 
 
     p {
         color: #888;
@@ -169,7 +128,7 @@
 }
 
 .blue-section {
-    background-color: #008cba;
+    background-color: $light-primary-color;
 }
 
 .course-listing-container {
