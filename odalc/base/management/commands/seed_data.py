@@ -6,9 +6,10 @@ from django.core.files import File
 from django.core.files.uploadedfile import SimpleUploadedFile
 
 from odalc.base.models import Course, CourseAvailability
+from odalc.odalc_admin.models import AdminUser
 from odalc.students.models import StudentUser, CourseFeedback
 from odalc.teachers.models import TeacherUser
-from odalc.odalc_admin.models import AdminUser
+
 from sampledatahelper.helper import SampleDataHelper
 from sampledatahelper.model_helper import ModelDataHelper
 

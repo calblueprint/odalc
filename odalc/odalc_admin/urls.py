@@ -1,4 +1,5 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import patterns, url
+
 from odalc.odalc_admin.views import ApplicationReviewView, AdminDashboardView
 
 urlpatterns = patterns('',

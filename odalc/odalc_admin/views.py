@@ -1,12 +1,13 @@
-from django.views.generic import UpdateView,TemplateView,DetailView
-from odalc.base.models import Course
-from odalc.base.views import UserDataMixin
-from odalc.teachers.models import TeacherUser
-from odalc.students.models import StudentUser,CourseFeedback
-from odalc.mailer import send_odalc_emails
-from django.shortcuts import redirect
 from django.core.urlresolvers import reverse_lazy
 from django.db.models import Avg
+from django.shortcuts import redirect
+from django.views.generic import UpdateView,TemplateView,DetailView
+
+from odalc.base.models import Course
+from odalc.base.views import UserDataMixin
+from odalc.mailer import send_odalc_emails
+from odalc.students.models import StudentUser
+from odalc.teachers.models import TeacherUser
 
 # Create your views here.
 

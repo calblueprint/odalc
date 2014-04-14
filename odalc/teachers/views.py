@@ -1,11 +1,11 @@
-from django.views.generic import CreateView, FormView, TemplateView
 from django.contrib.auth import login, authenticate
-from odalc.teachers.forms import TeacherRegisterForm
-from odalc.teachers.models import TeacherUser
+from django.core.urlresolvers import reverse_lazy
+from django.views.generic import CreateView, FormView, TemplateView
+
 from odalc.base.models import Course, CourseAvailability
 from odalc.base.views import UserDataMixin
-from odalc.teachers.forms import CreateCourseForm
-from django.core.urlresolvers import reverse_lazy
+from odalc.teachers.forms import CreateCourseForm, TeacherRegisterForm
+from odalc.teachers.models import TeacherUser
 
 # Create your views here.
 class TeacherRegisteration(UserDataMixin, CreateView):
