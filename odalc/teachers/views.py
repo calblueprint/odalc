@@ -3,11 +3,12 @@ from django.contrib.auth import login, authenticate
 from odalc.teachers.forms import TeacherRegisterForm
 from odalc.teachers.models import TeacherUser
 from odalc.base.models import Course, CourseAvailability
+from odalc.base.views import UserDataMixin
 from odalc.teachers.forms import CreateCourseForm
 from django.core.urlresolvers import reverse_lazy
 
 # Create your views here.
-class TeacherRegisteration(CreateView):
+class TeacherRegisteration(UserDataMixin, CreateView):
     model = TeacherUser
     template_name = "teachers/teacher_register.html"
     form_class = TeacherRegisterForm
@@ -21,7 +22,7 @@ class TeacherRegisteration(CreateView):
         return a
 
 
-class CreateCourse(FormView):
+class CreateCourse(UserDataMixin, FormView):
     model = Course
     template_name = 'teachers/create_course_form.html'
     form_class = CreateCourseForm
@@ -50,7 +51,7 @@ class CreateCourse(FormView):
 
         return super(CreateCourse, self).form_valid(form)
 
-class TeacherDashboardView(TemplateView):
+class TeacherDashboardView(UserDataMixin, TemplateView):
     template_name = "teachers/dashboard.html"
 
     def get(self, request, *args, **kwargs):
