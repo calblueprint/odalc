@@ -8,7 +8,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from odalc.base.models import Course, CourseAvailability
 from odalc.students.models import StudentUser, CourseFeedback
 from odalc.teachers.models import TeacherUser
-#from odalc.odalc_admin.models import AdminUser
+from odalc.odalc_admin.models import AdminUser
 from sampledatahelper.helper import SampleDataHelper
 from sampledatahelper.model_helper import ModelDataHelper
 
@@ -22,8 +22,9 @@ TEST_IMAGE_FILE = SimpleUploadedFile(IMAGE_FILE.name, IMAGE_FILE.file.read())
 TEST_UPLOADED_FILE = SimpleUploadedFile(TEST_FILE.name, TEST_FILE.file.read())
 TEST_TEACHER_EMAIL = 'teacher@teacher.com'
 TEST_STUDENT_EMAIL = 'student@student.com'
+TEST_ADMIN_EMAIL = 'admin@admin.com'
 TEST_PASSWORD = 'odalc'
-COURSE_STATUS_CHOICES = [s[0] for s in Course.STATUS_CHOICES] 
+COURSE_STATUS_CHOICES = [s[0] for s in Course.STATUS_CHOICES]
 
 class Command(BaseCommand):
     args = ''
@@ -85,6 +86,17 @@ class Command(BaseCommand):
             student.save()
         return
 
+    def generate_admin(self):
+        if not AdminUser.objects.filter(email=TEST_ADMIN_EMAIL).exists():
+            admin = AdminUser.objects.create(
+                email=TEST_ADMIN_EMAIL,
+                first_name='ADMIN',
+                last_name='ODALC'
+            )
+            admin.set_password(TEST_PASSWORD)
+            admin.save()
+        return
+
     def generate_courses(self, instances):
         for x in range(instances):
             student_qs = StudentUser.objects.all()
@@ -141,6 +153,8 @@ class Command(BaseCommand):
         self.generate_teachers(5)
         print "Generating Students..."
         self.generate_students(20)
+        print "Generating Admins..."
+        self.generate_admin()
         print "Generating Courses..."
         self.generate_courses(5)
         print "Generating Course Feedback..."
