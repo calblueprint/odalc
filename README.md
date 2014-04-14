@@ -45,3 +45,5 @@ To ensure that Heroku correctly detects this as a Django app, specify the buildp
 ```bash
 heroku config:set BUILDPACK_URL=https://github.com/heroku/heroku-buildpack-python
 ```
+
+Installation of Node, npm, and Bower and configuration of static files happens in the build scripts in ``bin/``.
