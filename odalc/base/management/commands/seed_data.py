@@ -102,7 +102,7 @@ class Command(BaseCommand):
         for x in range(instances):
             student_qs = StudentUser.objects.all()
             course_students = []
-            for x in range(3):
+            for x in range(8):
                 s = self.sd.db_object_from_queryset(student_qs)
                 course_students.append(s)
                 student_qs = student_qs.exclude(pk=s.pk)
@@ -157,7 +157,7 @@ class Command(BaseCommand):
         print "Generating Admins..."
         self.generate_admin()
         print "Generating Courses..."
-        self.generate_courses(5)
+        self.generate_courses(10)
         print "Generating Course Feedback..."
         self.generate_course_feedback(10)
         print "Generating Course Availabilities..."
