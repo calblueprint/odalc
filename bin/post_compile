@@ -27,6 +27,12 @@ if [ -f bin/install_nodejs ]; then
     fi
 fi
 
+if [ -f bin/install_bower_components ]; then
+    echo "-----> Running manage.py bower_install"
+    chmod +x bin/install_bower_components
+    bin/install_bower_components
+fi
+
 if [ -f bin/run_collectstatic ]; then
     echo "-----> Running run_collectstatic"
     chmod +x bin/run_collectstatic
