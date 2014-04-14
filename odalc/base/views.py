@@ -17,6 +17,12 @@ from odalc.teachers.forms import EditCourseForm
 
 class UserDataMixin(object):
     def dispatch(self, request, *args, **kwargs):
+        """ dispatch() gets request.user and downcasts self.user to the actual
+        user type, if possible. If the user isn't logged in, then self.user is
+        an AnonymousUser, which is a built-in Django user type. If the user is
+        logged in, self.user is either a TeacherUser, StudentUser, or
+        AdminUser.
+        """
         self.user = request.user
         if isinstance(self.user, User):
             self.is_student_user = isinstance(self.user.child, StudentUser)
@@ -30,7 +36,14 @@ class UserDataMixin(object):
         return super(UserDataMixin, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
+        """ 'odalc_user' is included here for convenience. By default, the
+        variable {{ user }} in the templates refers to 'request.user' above,
+        which is either an AnonymousUser or a User (in odalc.base.models).
+        We may want access to attributes in the downcasted user type, so to
+        access these we can use {{ odalc_user }} in the templates.
+        """
         context = super(UserDataMixin, self).get_context_data(**kwargs)
+        context['odalc_user'] = self.user
         context['is_student_user'] = self.is_student_user
         context['is_teacher_user'] = self.is_teacher_user
         context['is_admin_user'] = self.is_admin_user
