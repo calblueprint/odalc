@@ -30,11 +30,6 @@ class SubmitCourseFeedbackView(UserDataMixin, CreateView):
     template_name = 'students/course_feedback_form.html'
     form_class = FeedbackForm
 
-    def dispatch(self, request, *args, **kwargs):
-        self.user = request.user
-        # TODO: Error checking to make sure that user is a StudentUser
-        return super(SubmitCourseFeedbackView, self).dispatch(request, *args, **kwargs)
-
     def form_valid(self, form):
         course_feedback = form.save(commit=False)
         pk = self.kwargs.get('pk', None)
@@ -52,13 +47,8 @@ class SubmitCourseFeedbackView(UserDataMixin, CreateView):
 class StudentDashboardView(UserDataMixin, TemplateView):
     template_name = "students/student_dashboard.html"
 
-    def get(self, request, *args, **kwargs):
-        self.user = request.user
-        context = self.get_context_data()
-        return self.render_to_response(context)
-
     def get_context_data(self, **kwargs):
-        student_user=self.user.child
+        student_user=self.user
         context = super(StudentDashboardView, self).get_context_data(**kwargs)
         context['user'] = student_user
         context["courses_taken"] = student_user.course_set.all()

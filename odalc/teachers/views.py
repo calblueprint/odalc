@@ -54,12 +54,6 @@ class CreateCourse(UserDataMixin, FormView):
 class TeacherDashboardView(UserDataMixin, TemplateView):
     template_name = "teachers/dashboard.html"
 
-    def get(self, request, *args, **kwargs):
-        self.user = request.user
-        context = self.get_context_data()
-
-        return self.render_to_response(context)
-
     def get_context_data(self, **kwargs):
         """
         Insert the single object into the context dict.
