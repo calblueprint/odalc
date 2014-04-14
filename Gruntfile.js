@@ -13,7 +13,8 @@ module.exports = function(grunt) {
           outputStyle: 'compressed'
         },
         files: {
-          'odalc/static/base/css/app.css': 'odalc/static/base/scss/app.scss'
+          'odalc/static/base/css/app.css': 'odalc/static/base/scss/app.scss',
+          'odalc/static/base/css/courses.css': 'odalc/static/base/scss/courses.scss'
         }
       }
     },
