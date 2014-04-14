@@ -46,6 +46,7 @@ class CourseDetailView(UserDataMixin, DetailView):
         context = super(CourseDetailView, self).get_context_data(**kwargs)
         return context
 
+
 class CourseEditView(UserDataMixin, UpdateView):
     model = Course
     form_class = EditCourseForm
@@ -53,8 +54,18 @@ class CourseEditView(UserDataMixin, UpdateView):
     template_name = 'base/course_edit.html'
     success_url = reverse_lazy('teachers:dashboard')
 
+
 class HomePageView(UserDataMixin, TemplateView):
     template_name = 'base/home.html'
+
+
+class AboutPageView(UserDataMixin, TemplateView):
+    template_name = 'base/about.html'
+
+
+class DonatePageView(UserDataMixin, TemplateView):
+    template_name = 'base/donate.html'
+
 
 class LoginView(UserDataMixin, FormView):
     template_name = 'base/login.html'
