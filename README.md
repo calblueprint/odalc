@@ -38,3 +38,12 @@ Change to the project root directory, then install the project's dependencies in
 Run ``grunt`` to begin watching files.
 
 To add a new SASS file, add the source-destination mapping in ``Gruntfile.js`` under ``sass: dist: files:``.
+
+Deployment (Heroku)
+==========
+To ensure that Heroku correctly detects this as a Django app, specify the buildpack to be a Python project:
+```bash
+heroku config:set BUILDPACK_URL=https://github.com/heroku/heroku-buildpack-python
+```
+
+Installation of Node, npm, and Bower and configuration of static files happens in the build scripts in ``bin/``.

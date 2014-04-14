@@ -5,7 +5,7 @@
       <nav class="top-bar" data-topbar>
         <ul class="title-area">
           <li class="name">
-          <h1><a href="{% url "home" %}">ODALC | Courses</a></h1>
+          <h1><a href="{% url "home" %}">Oakland Digital | Courses</a></h1>
           </li>
           <li class="toggle-topbar menu-icon"><a href="{% url "home" %}">Menu</a></li>
         </ul>
@@ -24,8 +24,9 @@
 
           <!-- Left Nav Section -->
           <ul class="left">
-            <li class="{% block is_about_page %}{% endblock %}"><a href="#">About</a></li>
+            <li class="{% block is_about_page %}{% endblock %}"><a href="/about">About</a></li>
             <li class="{% block is_courses_page %}{% endblock %}"><a href="#">Courses</a></li>
+            <li class="{% block is_donate %}{% endblock %}"><a href="/donate">Donate</a></li>
           </ul>
         </section>
       </nav>

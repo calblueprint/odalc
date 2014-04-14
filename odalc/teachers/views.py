@@ -63,9 +63,8 @@ class TeacherDashboardView(TemplateView):
         """
         Insert the single object into the context dict.
         """
-        context = {}
+        context = super(TeacherDashboardView, self).get_context_data(**kwargs)
         context['user'] = self.user
         user = TeacherUser.objects.get(id=self.user.id)
         context['courses'] = Course.objects.filter(teacher=user)
-        context['view'] = self
-        return super(TeacherDashboardView, self).get_context_data(**context)
+        return context

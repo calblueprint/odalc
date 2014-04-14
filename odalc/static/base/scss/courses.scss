@@ -1,0 +1,35 @@
+@import "app";
+
+table.course-logistic {
+    @include grid-column(12);
+
+    border: none;
+    margin-top: 1.25rem; // bottom margin from column
+    background: transparent;
+
+    td {
+        color: #fff;
+        &.item {
+            font-weight: bold;
+        }
+    }
+}
+
+.author {
+    .pic {
+        @include grid-column(5);
+    }
+
+    .details {
+        @include grid-column(7);
+
+        .role {
+            color: #888;
+        }
+
+        .inst {
+            color: #888;
+            margin-top: 0.5em;
+        }
+    }
+}

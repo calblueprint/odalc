@@ -9,8 +9,8 @@ class TeacherUser(User):
     zipcode = models.CharField(max_length=9, blank=True)
     phone = localflavor_models.PhoneNumberField()
     about = models.TextField(blank=True)
-    picture = models.ImageField(upload_to="Picture Uploads")
-    resume = models.FileField(upload_to="Resume Uploads")
+    picture = models.ImageField(upload_to="teacher_picture_uploads")
+    resume = models.FileField(upload_to="teacher_resume_uploads")
     experience = models.TextField(blank=True)
 
     info_source = models.CharField(max_length=11, choices=(('FFR', 'From a friend'),
