@@ -69,7 +69,6 @@ class CourseDetailView(UserDataMixin, DetailView):
             context['cost_in_cents'] = int(self.object.cost * 100)
             context['course_full'] = self.object.students.count() >= self.object.size
             context['in_class'] = self.object.students.filter(id=self.user.id).exists()
-            context['is_teacher'] = isinstance(self.user.child, TeacherUser)
         return context
 
     def dispatch(self, request, *args, **kwargs):
@@ -89,7 +88,10 @@ class CourseDetailView(UserDataMixin, DetailView):
         stripe.api_key = settings.STRIPE_SECRET_KEY
 
         # Get the credit card details submitted by the form
-        token = request.POST['stripeToken']
+        token = request.POST.get('stripeToken', False)
+        if not token:
+            messages.error(request, "No payment information was included in your submission. Your card hasn't been charged")
+            return redirect('courses:detail',course.pk)
 
         # Create the charge on Stripe's servers - this will charge the user's card
         if context['course_full']:
