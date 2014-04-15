@@ -13,3 +13,4 @@ pillow
 django-sampledatahelper
 django-bower
 pyyaml
+stripe

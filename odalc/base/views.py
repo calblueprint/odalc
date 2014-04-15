@@ -13,6 +13,11 @@ from odalc.students.models import StudentUser
 from odalc.teachers.models import TeacherUser
 from odalc.teachers.forms import EditCourseForm
 
+from django.core.urlresolvers import reverse_lazy
+from odalc.teachers.models import TeacherUser
+import stripe, json
+from django.conf import settings
+
 # Create your views here.
 
 class UserDataMixin(object):
@@ -57,8 +62,69 @@ class CourseDetailView(UserDataMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(CourseDetailView, self).get_context_data(**kwargs)
+        context['stripe_public_key'] = settings.STRIPE_PUBLIC_KEY
+        if self.user.is_authenticated():
+            context['email'] = self.user.email
+            context['cost'] = self.object.cost
+            context['cost_in_cents'] = int(self.object.cost * 100)
+            context['course_full'] = self.object.students.count() >= self.object.size
+            context['in_class'] = self.object.students.filter(id=self.user.id).exists()
         return context
 
+    def dispatch(self, request, *args, **kwargs):
+        # Try to dispatch to the right method; if a method doesn't exist,
+        # defer to the error handler. Also defer to the error handler if the
+        # request method isn't on the approved list.
+        self.user = request.user
+        return super(CourseDetailView, self).dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        course = self.object
+        context = self.get_context_data(object=course)
+
+        # Set your secret key: remember to change this to your live secret key in production
+        # See your keys here https://manage.stripe.com/account
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+
+        # Get the credit card details submitted by the form
+        token = request.POST.get('stripeToken', False)
+        if not token:
+            messages.error(request, "No payment information was included in your submission. Your card hasn't been charged")
+            return redirect('courses:detail',course.pk)
+
+        # Create the charge on Stripe's servers - this will charge the user's card
+        if context['course_full']:
+            messages.error(request, "This course is already full. Your card hasn't been charged")
+            return redirect('courses:detail',course.pk)
+        if context['in_class']:
+            messages.error(request, "You are already signed up for this course. Your card hasn't been charged")
+            return redirect('courses:detail',course.pk)
+        try:
+          charge = stripe.Charge.create(
+              amount=int(course.cost * 100), # amount in cents, again
+              currency="usd",
+              card=token,
+              description='This is a payment for ' + self.object.title,
+              metadata={
+                'first_name':self.user.first_name,
+                'last_name':self.user.last_name,
+                'email':self.user.email,
+                'course':course.title,
+                'teacher_first_name':course.teacher.first_name,
+                'teacher_last_name':course.teacher.last_name,
+                'teacher_email':course.teacher.email,
+                'odalc_funds': course.odalc_cost_split
+                }
+          )
+        except stripe.CardError, e:
+          # The card has been declined
+            return self.render_to_response(self.get_context_data())
+
+        #add student to course
+        course.students.add(self.user)
+        course.save()
+        return redirect('courses:detail',course.pk)
 
 class CourseEditView(UserDataMixin, UpdateView):
     model = Course
