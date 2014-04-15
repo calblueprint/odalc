@@ -102,7 +102,7 @@ class Command(BaseCommand):
         for x in range(instances):
             student_qs = StudentUser.objects.all()
             course_students = []
-            for x in range(8):
+            for x in range(6):
                 s = self.sd.db_object_from_queryset(student_qs)
                 course_students.append(s)
                 student_qs = student_qs.exclude(pk=s.pk)
@@ -110,7 +110,7 @@ class Command(BaseCommand):
                 teacher=self.sd.db_object(TeacherUser),
                 title=self.sd.words(1, 3),
                 description=self.sd.paragraph(),
-                size=self.sd.int(6, 10),
+                size=self.sd.int(8, 10),
                 start_datetime=self.sd.future_datetime(60, 1440),
                 end_datetime=self.sd.future_datetime(1440, 2880),
                 prereqs=self.sd.words(3, 7),
