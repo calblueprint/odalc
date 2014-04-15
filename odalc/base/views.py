@@ -8,6 +8,7 @@ from django.contrib import messages
 from odalc.base.models import Course
 from odalc.teachers.forms import EditCourseForm
 from django.core.urlresolvers import reverse_lazy
+from django.core.exceptions import PermissionDenied
 
 # Create your views here.
 
@@ -20,12 +21,29 @@ class CourseDetailView(DetailView):
         context = super(CourseDetailView, self).get_context_data(**kwargs)
         return context
 
+    def dispatch(self, *args, **kwargs):
+        user = self.request.user
+        course = self.get_object()
+        if (course.status == Course.STATUS_ACCEPTED or
+            (user.has_perm('base.teacher_permission') and course.teacher.email == user.email) or
+            user.has_perm('base.admin_permission')):
+            return super(CourseDetailView, self).dispatch(*args, **kwargs)
+        raise PermissionDenied()
+
 class CourseEditView(UpdateView):
     model = Course
     form_class = EditCourseForm
     context_object_name = 'course'
     template_name = 'base/course_edit.html'
     success_url = reverse_lazy('teachers:dashboard')
+
+    def dispatch(self, *args, **kwargs):
+        user = self.request.user
+        course = self.get_object()
+        if ((user.has_perm('base.teacher_permission') and course.teacher.email == user.email) or
+            user.has_perm('base.admin_permission')):
+            return super(CourseEditView, self).dispatch(*args, **kwargs)
+        raise PermissionDenied()
 
 class HomePageView(TemplateView):
     template_name = 'base/home.html'

@@ -69,7 +69,4 @@ class UserRegisterForm(forms.ModelForm):
                 raise Exception()
             user.save()
             group.user_set.add(user)
-            a = user.get_all_permissions()
-            b = user.has_perm('base.teacher_permission')
-            raise Exception()
         return user
