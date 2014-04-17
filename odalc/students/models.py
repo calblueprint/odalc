@@ -14,12 +14,13 @@ class CourseFeedback(models.Model):
     AGREE = 4
     STRONGLY_AGREE = 5
     AGREEMENT_CHOICES = (
-        (STRONGLY_DISAGREE, 'Strongly Disagree'),
-        (DISAGREE, 'Disagree'),
-        (NEITHER, 'Neither'),
-        (AGREE, 'Agree'),
         (STRONGLY_AGREE, 'Strongly Agree'),
+        (AGREE, 'Agree'),
+        (NEITHER, 'Neither'),
+        (DISAGREE, 'Disagree'),
+        (STRONGLY_DISAGREE, 'Strongly Disagree'),
     )
+
 
     student = models.ForeignKey('StudentUser')
     course = models.ForeignKey('base.Course')
