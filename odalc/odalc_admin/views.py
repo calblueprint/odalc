@@ -1,3 +1,4 @@
+from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse_lazy
 from django.db.models import Avg
 from django.shortcuts import redirect
@@ -96,6 +97,15 @@ as well as aggregate data (averages) for the feedback"""
 class CourseFeedbackView(UserDataMixin, DetailView):
     template_name = 'odalc_admin/course_feedback.html'
     model = Course
+
+    def dispatch(self, *args, **kwargs):
+        user = self.request.user
+        self.object = self.get_object()
+        if not user.is_authenticated():
+            return redirect('/accounts/login?next=%s' % self.request.path)
+        if (user.has_perm('base.admin_permission') or (user.has_perm('base.teacher_permission') and self.object.teacher.id==user.id)):
+            return super(CourseFeedbackView, self).dispatch(*args, **kwargs)
+        raise PermissionDenied()
 
     def get_context_data(self, **kwargs):
         course = self.object
