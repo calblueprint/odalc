@@ -1,0 +1,69 @@
+{% extends "base/base.html" %}
+{% block body %}
+
+<div class="row"><div class="large-12 columns">
+<h1>Course Feedback</h1>
+    <p><b>Course:</b> {{ course.title }} </p>
+    <p><b>Teacher:</b> {{ course.teacher.first_name }} {{ course.teacher.last_name }}</p>
+    <p><b>Responses:</b> {{ num_forms }}
+
+    <table>
+        <tr>
+            <th> Question </th>
+            {% for form in feedback_forms %}
+            <th> Response {{ forloop.counter }} </th>
+            {% endfor %}
+            <th> Average </th>
+        </tr>
+        <tr>
+            <td>  The instructor was knowledgeable of the subject matter. </td>
+            {% for form in feedback_forms %}
+            <td> {{ form.knowledgeable_of_subject }} </td>
+            {% endfor %}
+            <td> {{ q1_avg }} </td>
+        </tr>
+        <tr>
+            <td>  The instructor encouraged questions and/or discussion. </td>
+            {% for form in feedback_forms %}
+            <td> {{ form.encourages_questions }} </td>
+            {% endfor %}
+            <td> {{ q2_avg }} </td>
+        </tr>
+        <tr>
+            <td>  The instructor was effective in teaching the material. </td>
+            {% for form in feedback_forms %}
+            <td> {{ form.teaching_effectiveness }} </td>
+            {% endfor %}
+            <td> {{ q3_avg }} </td>
+        </tr>
+        <tr>
+            <td>  The course was applicable to my needs. </td>
+            {% for form in feedback_forms %}
+            <td> {{ form.applicable_to_needs }} </td>
+            {% endfor %}
+            <td> {{ q4_avg }} </td>
+        </tr>
+        <tr>
+            <td>  I would recommend this course to a friend. </td>
+            {% for form in feedback_forms %}
+            <td> {{ form.would_recommend }} </td>
+            {% endfor %}
+            <td> {{ q5_avg }} </td>
+        </tr>
+        <tr>
+            <td>  The course session was inspiring. </td>
+            {% for form in feedback_forms %}
+            <td> {{ form.course_inspiring }} </td>
+            {% endfor %}
+            <td> {{ q6_avg }} </td>
+        </tr>
+    </table>
+
+    <p> Please provide any additional comments or suggestions about the course and/or the instructor. </p>
+    {% for form in feedback_forms %}
+    <p> Response {{ forloop.counter }} </p>
+    <p> {{ form.other_topics }} </p>
+    {% endfor %}
+
+</div></div>
+{% endblock %}

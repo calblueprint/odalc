@@ -98,6 +98,10 @@ EMAIL_TEMPLATES_PATH = os.path.join(SETTINGS_PATH, 'templates', 'emails', 'email
 
 DEFAULT_EMAIL = 'odalc@odalc.org'
 
+# Stripe API Keys
+STRIPE_SECRET_KEY = 'sk_test_jQUK6ubDrTtpW1i2ar4QFuMl'
+STRIPE_PUBLIC_KEY = 'pk_test_2IbsMYbzDjE6RKtGbVgPt7pK'
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
@@ -133,15 +137,23 @@ ALLOWED_HOSTS = ['*']
 
 # Static asset configuration
 STATIC_ROOT = 'staticfiles'
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 STATIC_URL = '/static/'
-MEDIA_URL = '/uploads/'
-
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
-    os.path.join(BASE_DIR, 'uploads'),
 )
+
+# User uploaded files
+if IS_PROD:
+    # TODO: Set up user uploaded files for production
+    MEDIA_URL = '/uploads/'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
+else:
+    MEDIA_URL = '/uploads/'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
+
 
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
@@ -149,4 +161,3 @@ STATICFILES_FINDERS = (
     'djangobower.finders.BowerFinder',
 )
 
-MEDIA_ROOT = os.path.join(BASE_DIR,"uploads")

@@ -1,14 +1,15 @@
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth import login, authenticate
 from django.shortcuts import redirect
-from django.views.generic import CreateView
+from django.views.generic import CreateView, TemplateView
 
 from odalc.base.models import Course
+from odalc.base.views import UserDataMixin
 from odalc.students.forms import StudentRegisterForm, FeedbackForm
 from odalc.students.models import CourseFeedback, StudentUser
 
 # Create your views here.
-class StudentRegisterView(CreateView):
+class StudentRegisterView(UserDataMixin, CreateView):
     model = StudentUser
     template_name = "students/register.html"
     form_class = StudentRegisterForm
@@ -24,15 +25,10 @@ class StudentRegisterView(CreateView):
         return resp
 
 
-class SubmitCourseFeedbackView(CreateView):
+class SubmitCourseFeedbackView(UserDataMixin, CreateView):
     model = CourseFeedback
     template_name = 'students/course_feedback_form.html'
     form_class = FeedbackForm
-
-    def dispatch(self, request, *args, **kwargs):
-        self.user = request.user
-        # TODO: Error checking to make sure that user is a StudentUser
-        return super(SubmitCourseFeedbackView, self).dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         course_feedback = form.save(commit=False)
@@ -45,4 +41,15 @@ class SubmitCourseFeedbackView(CreateView):
     def get_context_data(self, **kwargs):
         context = super(SubmitCourseFeedbackView, self).get_context_data(**kwargs)
         context['pk'] = self.kwargs.get('pk', None)
+        return context
+
+"""StudentDashboardView shows the student his/her basic information and courses taken."""
+class StudentDashboardView(UserDataMixin, TemplateView):
+    template_name = "students/student_dashboard.html"
+
+    def get_context_data(self, **kwargs):
+        student_user=self.user
+        context = super(StudentDashboardView, self).get_context_data(**kwargs)
+        context['user'] = student_user
+        context["courses_taken"] = student_user.course_set.all()
         return context

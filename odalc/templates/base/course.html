@@ -1,9 +1,11 @@
 {% extends "base/base.html" %}
+{% block title %}
+	{{ course.title }}
+{% endblock %}
 
 {% block body %}
-
 	<h1><b>Course:</b> {{ course.title }}</h1>
-	<img src="{{ course.image }}"> </img>
+	<img src="{{ course.image.url }}"> </img>
 	<p><b>Description:</b> {{ course.description }}</p>
 	<p><b>Teacher:</b> {{ course.teacher.first_name }} {{ course.teacher.last_name }}</p>
 	<p> <b>Date:</b> {{ course.start_datetime }} to {{ course.end_datetime }}</p>
@@ -11,7 +13,56 @@
 	<p> <b>Difficulty:</b> {{ course.get_skill_level_display }}</p>
 	<p> <b>Prerequisites:</b> {{ course.prereqs }}</p>
 	<p> <b>Cost:</b> ${{ course.cost }}</p>
+	{% if user.is_authenticated %}
+		{% if course_full %}
+		<button class="enroll-btn large success disabled">Course Full</button>
+		{% elif in_class %}
+		<button class="enroll-btn large success disabled">Already Enrolled</button>
+		{% elif is_teacher_user %}
+		<button class="enroll-btn large success disabled">Cannot Enroll</button>
+		{% else %}
+		<form method='POST'>
+			{% csrf_token %}
+			<button id="enroll-btn" class="enroll-btn large success">Enroll Now</button>
+		</form>
+		{% endif %}
+	{% else %}
+	<form action='{% url "login" %}'>
+		<button class="enroll-btn large success">Enroll now</button>
+	</form>
+	{% endif %}
 	<p> <b>Additional Information:</b> {{ course.additional_info }}</p>
-	<p> <b>Course Material:</b> {{ course.course_material }}</p>
+    <p> <b>Course Material:</b> <a href="{{ course.course_material.url }}">Materials</a></p>
+{% endblock %}
 
+{% block javascripts %}
+
+{% if user.is_authenticated and not course_full and not in_class and not is_teacher_user %}
+	<script src="https://checkout.stripe.com/v2/checkout.js"></script>
+	<script>
+		$(document).ready(function() {
+		  $("#enroll-btn").click(function(){
+		  	  console.log('click!')
+		      var token = function(res){
+		        var $input = $('<input type=hidden name=stripeToken />').val(res.id);
+		        $('form').append($input).submit();
+		      };
+
+		      StripeCheckout.open({
+		        key:         '{{ stripe_public_key }}',
+		        amount: {{ cost_in_cents }},
+		        currency:    'usd',
+		        name: '{{ course.title }}',
+		        email: '{{ email }}',
+		        description: 'Cost (${{ cost }})',
+		        panelLabel:  'Checkout',
+		        allowRememberMe: false,
+		        token:       token
+		      });
+
+		      return false;
+		    });
+		});
+	</script>
+{% endif %}
 {% endblock %}
