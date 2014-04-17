@@ -2,8 +2,8 @@ from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from django.conf import settings
-from django.core.urlresolvers import reverse_lazy
 from django.core.exceptions import PermissionDenied
+from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import redirect
 from django.utils.decorators import method_decorator
 from django.views.decorators.debug import sensitive_post_parameters
@@ -15,7 +15,7 @@ from odalc.students.models import StudentUser
 from odalc.teachers.models import TeacherUser
 from odalc.teachers.forms import EditCourseForm
 
-import stripe, json
+import stripe
 
 # Create your views here.
 
@@ -72,8 +72,6 @@ class CourseDetailView(UserDataMixin, DetailView):
 
     def dispatch(self, *args, **kwargs):
         self.user = self.request.user
-        if not self.user.is_authenticated():
-            return redirect('/accounts/login?next=%s' % self.request.path)
         course = self.get_object()
         if (course.status == Course.STATUS_ACCEPTED or
             (self.user.has_perm('base.teacher_permission') and course.teacher.email == self.user.email) or

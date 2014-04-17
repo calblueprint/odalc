@@ -1,3 +1,4 @@
+from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse_lazy
 from django.db.models import Avg
 from django.shortcuts import redirect
