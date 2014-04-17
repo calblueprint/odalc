@@ -5,7 +5,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = patterns('',
-	url(r'^admins/', include('odalc.odalc_admin.urls', namespace='admins')),
+    url(r'^admins/', include('odalc.odalc_admin.urls', namespace='admins')),
     url(r'^teachers/', include('odalc.teachers.urls', namespace='teachers')),
     url(r'^courses/', include('odalc.base.urls', app_name='base', namespace='courses')),
     url(r'^students/', include('odalc.students.urls', namespace='students')),

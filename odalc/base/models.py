@@ -49,16 +49,12 @@ class User(AbstractBaseUser, PermissionsMixin):
             except ObjectDoesNotExist:
                 pass
 
-class UserPerm(models.Model):
-    user = models.OneToOneField('base.User')
-
     class Meta:
         permissions = (
             ("admin_permission", "Admin Permission"),
             ("teacher_permission", "Teacher Permission"),
             ("student_permission", "Student Permission")
         )
-
 
 class Course(models.Model):
     SKILL_BEGINNER = 'BEG'
