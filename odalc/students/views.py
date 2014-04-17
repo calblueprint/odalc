@@ -42,6 +42,7 @@ class SubmitCourseFeedbackView(UserDataMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super(SubmitCourseFeedbackView, self).get_context_data(**kwargs)
         context['pk'] = self.kwargs.get('pk', None)
+        context['title'] = Course.objects.get(pk=context['pk']).title
         return context
 
     def dispatch(self, *args, **kwargs):

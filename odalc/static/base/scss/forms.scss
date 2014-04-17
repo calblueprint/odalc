@@ -1,0 +1,12 @@
+@import "app";
+
+.form-list{
+	list-style: none;
+	> li > label {
+		font-size: 120%;
+	}
+	ul{
+		list-style: none;
+
+	}
+}
