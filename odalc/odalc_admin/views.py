@@ -60,11 +60,20 @@ class ApplicationReviewView(UserDataMixin, UpdateView):
             course.save()
         return redirect(ApplicationReviewView.success_url)
 
+    def dispatch(self, *args, **kwargs):
+        user = self.request.user
+        if not user.is_authenticated():
+            return redirect('/accounts/login?next=%s' % self.request.path)
+        if user.has_perm('base.admin_permission'):
+            return super(ApplicationReviewView, self).dispatch(*args, **kwargs)
+        raise PermissionDenied()
+
 """AdminDashboardView shows the admin all pending course applications, current (live) courses,
 as well as finished courses and links to feedback for those finished courses"""
 #TODO: show some teacher and student info as well
 class AdminDashboardView(UserDataMixin, TemplateView):
     template_name = 'odalc_admin/admin_dashboard.html'
+
     def get_context_data(self, **kwargs):
         context = super(AdminDashboardView, self).get_context_data(**kwargs)
         context['pending_courses'] = Course.objects.filter(status = Course.STATUS_PENDING)
@@ -73,6 +82,14 @@ class AdminDashboardView(UserDataMixin, TemplateView):
         context['teachers'] = TeacherUser.objects.all()
         context['students'] = StudentUser.objects.all()
         return context
+
+    def dispatch(self, *args, **kwargs):
+        user = self.request.user
+        if not user.is_authenticated():
+            return redirect('/accounts/login?next=%s' % self.request.path)
+        if user.has_perm('base.admin_permission'):
+            return super(AdminDashboardView, self).dispatch(*args, **kwargs)
+        raise PermissionDenied()
 
 """CourseFeedbackView shows all the student feedback responses for a particular course,
 as well as aggregate data (averages) for the feedback"""

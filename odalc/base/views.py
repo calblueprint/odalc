@@ -72,10 +72,12 @@ class CourseDetailView(UserDataMixin, DetailView):
 
     def dispatch(self, *args, **kwargs):
         self.user = self.request.user
+        if not self.user.is_authenticated():
+            return redirect('/accounts/login?next=%s' % self.request.path)
         course = self.get_object()
         if (course.status == Course.STATUS_ACCEPTED or
-            (user.has_perm('base.teacher_permission') and course.teacher.email == user.email) or
-            user.has_perm('base.admin_permission')):
+            (self.user.has_perm('base.teacher_permission') and course.teacher.email == self.user.email) or
+            self.user.has_perm('base.admin_permission')):
             return super(CourseDetailView, self).dispatch(*args, **kwargs)
         raise PermissionDenied()
 
@@ -136,6 +138,8 @@ class CourseEditView(UserDataMixin, UpdateView):
 
     def dispatch(self, *args, **kwargs):
         user = self.request.user
+        if not user.is_authenticated():
+            return redirect('/accounts/login?next=%s' % self.request.path)
         course = self.get_object()
         if ((user.has_perm('base.teacher_permission') and course.teacher.email == user.email) or
             user.has_perm('base.admin_permission')):
@@ -163,7 +167,6 @@ class LoginView(UserDataMixin, FormView):
         auth_login(self.request, form.get_user())
         if self.request.session.test_cookie_worked():
             self.request.session.delete_test_cookie()
-        print self.next_url
         return redirect(self.next_url)
 
     def form_invalid(self, form):
