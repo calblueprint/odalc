@@ -1,6 +1,7 @@
 import os
 import decimal
 
+from django.contrib.auth.models import Group, Permission
 from django.core.management.base import BaseCommand
 from django.core.files import File
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -34,6 +35,12 @@ class Command(BaseCommand):
     md = ModelDataHelper()
 
     def generate_teachers(self, instances):
+        try:
+            group = Group.objects.get(name='teachers')
+        except Group.DoesNotExist:
+            group = Group(name="teachers")
+            group.save()
+            group.permissions.add(Permission.objects.get(codename="teacher_permission"))
         for x in range(instances):
             teacher = TeacherUser.objects.create(
                 email=self.sd.email(),
@@ -50,6 +57,7 @@ class Command(BaseCommand):
             )
             teacher.set_password(TEST_PASSWORD)
             teacher.save()
+            group.user_set.add(teacher)
         if not TeacherUser.objects.filter(email=TEST_TEACHER_EMAIL).exists():
             teacher = TeacherUser.objects.create(
                 email=TEST_TEACHER_EMAIL,
@@ -66,9 +74,16 @@ class Command(BaseCommand):
             )
             teacher.set_password(TEST_PASSWORD)
             teacher.save()
+            group.user_set.add(teacher)
         return
 
     def generate_students(self, instances):
+        try:
+            group = Group.objects.get(name='students')
+        except Group.DoesNotExist:
+            group = Group(name="students")
+            group.save()
+            group.permissions.add(Permission.objects.get(codename="student_permission"))
         for x in range(instances):
             student = StudentUser.objects.create(
                 email=self.sd.email(),
@@ -77,6 +92,7 @@ class Command(BaseCommand):
             )
             student.set_password(TEST_PASSWORD)
             student.save()
+            group.user_set.add(student)
         if not StudentUser.objects.filter(email=TEST_STUDENT_EMAIL).exists():
             student = StudentUser.objects.create(
                 email=TEST_STUDENT_EMAIL,
@@ -85,9 +101,16 @@ class Command(BaseCommand):
             )
             student.set_password(TEST_PASSWORD)
             student.save()
+            group.user_set.add(student)
         return
 
     def generate_admin(self):
+        try:
+            group = Group.objects.get(name='admins')
+        except Group.DoesNotExist:
+            group = Group(name='admins')
+            group.save()
+            group.permissions.add(Permission.objects.get(codename='admin_permission'))
         if not AdminUser.objects.filter(email=TEST_ADMIN_EMAIL).exists():
             admin = AdminUser.objects.create(
                 email=TEST_ADMIN_EMAIL,
@@ -96,6 +119,7 @@ class Command(BaseCommand):
             )
             admin.set_password(TEST_PASSWORD)
             admin.save()
+            group.user_set.add(admin)
         return
 
     def generate_courses(self, instances):
