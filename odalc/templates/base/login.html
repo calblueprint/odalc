@@ -6,7 +6,7 @@
 <div class="row white-section">
     <div class="large-8 columns">
         <h2>Log In</h2>
-        <form action="/login/" method="POST">
+        <form method="POST">
           {% csrf_token %}
           {% for error in form.non_field_errors %}
           <div data-alert class="alert-box alert">
