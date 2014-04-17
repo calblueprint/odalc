@@ -14,3 +14,4 @@ django-sampledatahelper
 django-bower
 pyyaml
 stripe
+django-widget-tweaks

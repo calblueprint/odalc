@@ -44,6 +44,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'localflavor',
     'djangobower',
+    'widget_tweaks',
     'odalc.base',
     'odalc.odalc_admin',
     'odalc.students',
