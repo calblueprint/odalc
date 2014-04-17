@@ -163,6 +163,7 @@ class LoginView(UserDataMixin, FormView):
         auth_login(self.request, form.get_user())
         if self.request.session.test_cookie_worked():
             self.request.session.delete_test_cookie()
+        print self.next_url
         return redirect(self.next_url)
 
     def form_invalid(self, form):
