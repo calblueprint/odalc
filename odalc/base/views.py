@@ -16,6 +16,7 @@ from odalc.teachers.models import TeacherUser
 from odalc.teachers.forms import EditCourseForm
 
 import stripe
+import datetime
 
 # Create your views here.
 
@@ -144,6 +145,20 @@ class CourseEditView(UserDataMixin, UpdateView):
             user.has_perm('base.admin_permission')):
             return super(CourseEditView, self).dispatch(request, *args, **kwargs)
         raise PermissionDenied()
+
+"""Main view for displaying the courses offered. There are three categories of courses: 
+all courses, past courses, and upcoming courses (courses coming up in the next month)"""
+class CourseListingView(UserDataMixin, TemplateView):
+    template_name = 'base/course_listing.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(CourseListingView, self).get_context_data(**kwargs)
+        now = datetime.datetime.now()
+        month_from_now = now + datetime.timedelta(days=30)
+        context['all_courses'] = Course.objects.all()
+        context['past_courses'] = Course.objects.filter(status = Course.STATUS_FINISHED)
+        context['upcoming_courses'] = Course.objects.filter(start_datetime__range = [now, month_from_now])
+        return context
 
 class HomePageView(UserDataMixin, TemplateView):
     template_name = 'base/home.html'
