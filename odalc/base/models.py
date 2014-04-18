@@ -1,8 +1,9 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.conf import settings
 from django.core.validators import MinValueValidator
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.models import Group, Permission
 
 # Create your models here.
 class UserManager(BaseUserManager):
@@ -29,7 +30,8 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-class User(AbstractBaseUser):
+
+class User(PermissionsMixin, AbstractBaseUser):
     email = models.EmailField("Email", max_length=255, unique=True)
     first_name = models.CharField("First Name", max_length=255)
     last_name = models.CharField("Last Name", max_length=255)
@@ -47,6 +49,14 @@ class User(AbstractBaseUser):
                 return getattr(self, related_object.get_accessor_name())
             except ObjectDoesNotExist:
                 pass
+
+    class Meta:
+        permissions = (
+            ("admin_permission", "Admin Permission"),
+            ("teacher_permission", "Teacher Permission"),
+            ("student_permission", "Student Permission")
+        )
+
 
 class Course(models.Model):
     SKILL_BEGINNER = 'BEG'
@@ -90,6 +100,7 @@ class Course(models.Model):
     course_material = models.FileField(upload_to='course_material')
     additional_info = models.TextField(blank=True)
     status = models.CharField(max_length=3, choices=STATUS_CHOICES, default=STATUS_PENDING)
+
 
 class CourseAvailability(models.Model):
     course = models.OneToOneField('Course')

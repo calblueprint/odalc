@@ -1,5 +1,10 @@
 from django.utils.translation import ugettext as _
 from django import forms
+from odalc.teachers.models import TeacherUser
+from odalc.students.models import StudentUser
+from odalc.odalc_admin.models import AdminUser
+from django.contrib.auth.models import Group, Permission
+from django.contrib.contenttypes.models import ContentType
 
 class UserRegisterForm(forms.ModelForm):
     error_messages = {
@@ -39,5 +44,29 @@ class UserRegisterForm(forms.ModelForm):
         user = super(UserRegisterForm, self).save(commit=False)
         user.set_password(self.cleaned_data["password1"])
         if commit:
+            if type(user) == TeacherUser:
+                try:
+                    group = Group.objects.get(name='teachers')
+                except Group.DoesNotExist:
+                    group = Group(name="teachers")
+                    group.save()
+                    group.permissions.add(Permission.objects.get(codename="teacher_permission"))
+            elif type(user) == StudentUser:
+                try:
+                    group = Group.objects.get(name='students')
+                except Group.DoesNotExist:
+                    group = Group(name="students")
+                    group.save()
+                    group.permissions.add(Permission.objects.get(codename="student_permission"))
+            elif type(user) == AdminUser:
+                try:
+                    group = Group.objects.get(name='admins')
+                except Group.DoesNotExist:
+                    group = Group(name="admins")
+                    group.save()
+                    group.permissions.add(Permission.objects.get(codename="admin_permission"))
+            else:
+                raise Exception()
             user.save()
+            group.user_set.add(user)
         return user

@@ -1,6 +1,8 @@
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
+from django.conf import settings
+from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import redirect
 from django.utils.decorators import method_decorator
@@ -13,10 +15,7 @@ from odalc.students.models import StudentUser
 from odalc.teachers.models import TeacherUser
 from odalc.teachers.forms import EditCourseForm
 
-from django.core.urlresolvers import reverse_lazy
-from odalc.teachers.models import TeacherUser
-import stripe, json
-from django.conf import settings
+import stripe
 
 # Create your views here.
 
@@ -71,12 +70,14 @@ class CourseDetailView(UserDataMixin, DetailView):
             context['in_class'] = self.object.students.filter(id=self.user.id).exists()
         return context
 
-    def dispatch(self, request, *args, **kwargs):
-        # Try to dispatch to the right method; if a method doesn't exist,
-        # defer to the error handler. Also defer to the error handler if the
-        # request method isn't on the approved list.
-        self.user = request.user
-        return super(CourseDetailView, self).dispatch(request, *args, **kwargs)
+    def dispatch(self, *args, **kwargs):
+        self.user = self.request.user
+        course = self.get_object()
+        if (course.status == Course.STATUS_ACCEPTED or
+            (self.user.has_perm('base.teacher_permission') and course.teacher.email == self.user.email) or
+            self.user.has_perm('base.admin_permission')):
+            return super(CourseDetailView, self).dispatch(*args, **kwargs)
+        raise PermissionDenied()
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -133,6 +134,15 @@ class CourseEditView(UserDataMixin, UpdateView):
     template_name = 'base/course_edit.html'
     success_url = reverse_lazy('teachers:dashboard')
 
+    def dispatch(self, *args, **kwargs):
+        user = self.request.user
+        if not user.is_authenticated():
+            return redirect('/accounts/login?next=%s' % self.request.path)
+        course = self.get_object()
+        if ((user.has_perm('base.teacher_permission') and course.teacher.email == user.email) or
+            user.has_perm('base.admin_permission')):
+            return super(CourseEditView, self).dispatch(*args, **kwargs)
+        raise PermissionDenied()
 
 class HomePageView(UserDataMixin, TemplateView):
     template_name = 'base/home.html'

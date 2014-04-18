@@ -1,3 +1,4 @@
+from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth import login, authenticate
 from django.shortcuts import redirect
@@ -41,7 +42,19 @@ class SubmitCourseFeedbackView(UserDataMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super(SubmitCourseFeedbackView, self).get_context_data(**kwargs)
         context['pk'] = self.kwargs.get('pk', None)
+        context['title'] = Course.objects.get(pk=context['pk']).title
         return context
+
+    def dispatch(self, *args, **kwargs):
+        user = self.request.user
+        if not user.is_authenticated():
+            return redirect('/accounts/login?next=%s' % self.request.path)
+        course = Course.objects.get(pk=self.kwargs.get('pk', None))
+        students = [student.email for student in course.students.all()]
+        if ((user.has_perm('base.student_permission') and user.email in students) or
+            user.has_perm('base.admin_permission')):
+            return super(SubmitCourseFeedbackView, self).dispatch(*args, **kwargs)
+        raise PermissionDenied()
 
 """StudentDashboardView shows the student his/her basic information and courses taken."""
 class StudentDashboardView(UserDataMixin, TemplateView):
