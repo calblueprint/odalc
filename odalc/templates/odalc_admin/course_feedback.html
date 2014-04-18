@@ -3,10 +3,11 @@
 
 <div class="row"><div class="large-12 columns">
 <h1>Course Feedback</h1>
-    <p><b>Course:</b> {{ course.title }} </p>
-    <p><b>Teacher:</b> {{ course.teacher.first_name }} {{ course.teacher.last_name }}</p>
-    <p><b>Responses:</b> {{ num_forms }}
-
+    <p>
+        <b>Course:</b> {{ course.title }}</br>
+        <b>Teacher:</b> {{ course.teacher.first_name }} {{ course.teacher.last_name }}</br>
+        <b>Responses:</b> {{ num_forms }}</br>
+    </p>
     <table>
         <tr>
             <th> Question </th>
@@ -59,11 +60,45 @@
         </tr>
     </table>
 
-    <p> Please provide any additional comments or suggestions about the course and/or the instructor. </p>
+    <canvas id="myChart" width="400" height="400"></canvas>
+
+    <b> Additional comments or suggestions about the course and/or the instructor: </b>
     {% for form in feedback_forms %}
-    <p> Response {{ forloop.counter }} </p>
-    <p> {{ form.other_topics }} </p>
+    <h5> Response {{ forloop.counter }} </h5>
+    <p> &emsp;{{ form.other_topics }} </p>
     {% endfor %}
 
 </div></div>
+{% endblock %}
+{% block javascripts %}
+<script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/0.2.0/Chart.min.js"></script>
+<script>
+$(document).ready(function() {
+    //Get context with jQuery - using jQuery's .get() method.
+    var ctx = $("#myChart").get(0).getContext("2d");
+    //This will get the first returned node in the jQuery collection.
+    var myNewChart = new Chart(ctx);
+    var data = {
+        labels : ["January","February","March","April","May","June","July"],
+        datasets : [
+            {
+                fillColor : "rgba(220,220,220,0.5)",
+                strokeColor : "rgba(220,220,220,1)",
+                pointColor : "rgba(220,220,220,1)",
+                pointStrokeColor : "#fff",
+                data : [65,59,90,81,56,55,40]
+            },
+            {
+                fillColor : "rgba(151,187,205,0.5)",
+                strokeColor : "rgba(151,187,205,1)",
+                pointColor : "rgba(151,187,205,1)",
+                pointStrokeColor : "#fff",
+                data : [28,48,40,19,96,27,100]
+            }
+        ]
+    }
+
+    new Chart(ctx).Line(data); 
+});
+</script>
 {% endblock %}
