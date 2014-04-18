@@ -14,6 +14,8 @@ class TeacherRegisterForm(UserRegisterForm):
         fields = ('email',
                   'first_name',
                   'last_name',
+                  'organization',
+                  'position',
                   'street_address',
                   'city',
                   'zipcode',

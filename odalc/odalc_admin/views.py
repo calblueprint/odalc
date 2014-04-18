@@ -20,7 +20,8 @@ class ApplicationReviewView(UserDataMixin, UpdateView):
     model = Course
     fields = [
         'title',
-        'description',
+        'short_description',
+        'long_description',
         'size',
         'start_datetime',
         'end_datetime',

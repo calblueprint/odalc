@@ -61,22 +61,23 @@ class CourseDetailView(UserDataMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(CourseDetailView, self).get_context_data(**kwargs)
+        course = self.object
         context['stripe_public_key'] = settings.STRIPE_PUBLIC_KEY
         if self.user.is_authenticated():
             context['email'] = self.user.email
-            context['cost'] = self.object.cost
-            context['cost_in_cents'] = int(self.object.cost * 100)
-            context['course_full'] = self.object.students.count() >= self.object.size
-            context['in_class'] = self.object.students.filter(id=self.user.id).exists()
+            context['in_class'] = course.students.filter(id=self.user.id).exists()
+        context['cost_in_cents'] = int(course.cost * 100)
+        context['course_full'] = course.students.count() >= course.size
+        context['open_seats'] = course.size - course.students.count()
         return context
 
-    def dispatch(self, *args, **kwargs):
+    def dispatch(self, request, *args, **kwargs):
         self.user = self.request.user
         course = self.get_object()
         if (course.status == Course.STATUS_ACCEPTED or
             (self.user.has_perm('base.teacher_permission') and course.teacher.email == self.user.email) or
             self.user.has_perm('base.admin_permission')):
-            return super(CourseDetailView, self).dispatch(*args, **kwargs)
+            return super(CourseDetailView, self).dispatch(request, *args, **kwargs)
         raise PermissionDenied()
 
     def post(self, request, *args, **kwargs):
@@ -134,14 +135,14 @@ class CourseEditView(UserDataMixin, UpdateView):
     template_name = 'base/course_edit.html'
     success_url = reverse_lazy('teachers:dashboard')
 
-    def dispatch(self, *args, **kwargs):
+    def dispatch(self, request, *args, **kwargs):
         user = self.request.user
         if not user.is_authenticated():
             return redirect('/accounts/login?next=%s' % self.request.path)
         course = self.get_object()
         if ((user.has_perm('base.teacher_permission') and course.teacher.email == user.email) or
             user.has_perm('base.admin_permission')):
-            return super(CourseEditView, self).dispatch(*args, **kwargs)
+            return super(CourseEditView, self).dispatch(request, *args, **kwargs)
         raise PermissionDenied()
 
 class HomePageView(UserDataMixin, TemplateView):
@@ -173,6 +174,8 @@ class LoginView(UserDataMixin, FormView):
 
     @method_decorator(sensitive_post_parameters('password'))
     def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated():
+            return redirect('home')
         request.session.set_test_cookie()
         self.next_url = request.GET.get('next', 'home')
         return super(LoginView, self).dispatch(request, *args, **kwargs)
