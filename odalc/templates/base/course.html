@@ -30,8 +30,9 @@
             </form>
             {% endif %}
         {% else %}
-            <form action='{% url "login" %}'>
+            <form action="{% url "login" %}" method="GET">
                 <button class="enroll-btn large success">Enroll now</button>
+                <input type="hidden" name="next" value="{{ request.path }}" />
             </form>
         {% endif %}
         </div>
@@ -44,9 +45,16 @@
           <table class="course-logistic">
             <tbody>
               <tr>
-                  <td class="item">Course Session:</td> <td>{{ course.start_datetime|date:'D, N d Y' }} | {{ course.start_datetime|date:'P'}} - {{ course.end_datetime|date:'P' }}</td>
-                <td class="item">Enrollment:</td> <td>{{ course.size }} Seats</td>
-                <td class="item">Cost:</td> <td>${{ course.cost }}</td>
+                  <td class="item">Course Session:</td>
+                  <td>{{ course.start_datetime|date:'D, N d Y' }} | {{ course.start_datetime|date:'P'}} - {{ course.end_datetime|date:'P' }}</td>
+                  <td class="item">Enrollment:</td>
+                  {% if course_full %}
+                  <td>All seats full</td>
+                  {% else %}
+                  <td>{{ open_seats }} of {{ course.size }} seats open</td>
+                  {% endif %}
+                  <td class="item">Cost:</td>
+                  <td>${{ course.cost }}</td>
               </tr>
             </tbody>
           </table>
@@ -121,7 +129,7 @@
 		        currency:    'usd',
 		        name: '{{ course.title }}',
 		        email: '{{ email }}',
-		        description: 'Cost (${{ cost }})',
+		        description: 'Cost (${{ course.cost }})',
 		        panelLabel:  'Checkout',
 		        allowRememberMe: false,
 		        token:       token
