@@ -20,42 +20,42 @@
             {% for form in feedback_forms %}
             <td> {{ form.knowledgeable_of_subject }} </td>
             {% endfor %}
-            <td> {{ q1_avg }} </td>
+            <td> {{ q1_avg|floatformat:"-2" }} </td>
         </tr>
         <tr>
             <td>  The instructor encouraged questions and/or discussion. </td>
             {% for form in feedback_forms %}
             <td> {{ form.encourages_questions }} </td>
             {% endfor %}
-            <td> {{ q2_avg }} </td>
+            <td> {{ q2_avg|floatformat:"-2" }} </td>
         </tr>
         <tr>
             <td>  The instructor was effective in teaching the material. </td>
             {% for form in feedback_forms %}
             <td> {{ form.teaching_effectiveness }} </td>
             {% endfor %}
-            <td> {{ q3_avg }} </td>
+            <td> {{ q3_avg|floatformat:"-2" }} </td>
         </tr>
         <tr>
             <td>  The course was applicable to my needs. </td>
             {% for form in feedback_forms %}
             <td> {{ form.applicable_to_needs }} </td>
             {% endfor %}
-            <td> {{ q4_avg }} </td>
+            <td> {{ q4_avg|floatformat:"-2" }} </td>
         </tr>
         <tr>
             <td>  I would recommend this course to a friend. </td>
             {% for form in feedback_forms %}
             <td> {{ form.would_recommend }} </td>
             {% endfor %}
-            <td> {{ q5_avg }} </td>
+            <td> {{ q5_avg|floatformat:"-2" }} </td>
         </tr>
         <tr>
             <td>  The course session was inspiring. </td>
             {% for form in feedback_forms %}
             <td> {{ form.course_inspiring }} </td>
             {% endfor %}
-            <td> {{ q6_avg }} </td>
+            <td> {{ q6_avg|floatformat:"-2" }} </td>
         </tr>
     </table>
 

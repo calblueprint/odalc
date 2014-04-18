@@ -100,6 +100,7 @@ class CourseFeedbackView(UserDataMixin, DetailView):
             return super(CourseFeedbackView, self).dispatch(*args, **kwargs)
         raise PermissionDenied()
 
+
     def get_context_data(self, **kwargs):
         course = self.object
         forms = course.coursefeedback_set.all()
