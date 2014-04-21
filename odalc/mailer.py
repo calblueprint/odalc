@@ -1,4 +1,4 @@
-from django.core.mail import send_mail, EmailMessage
+from django.core.mail import  EmailMessage
 from django.conf import settings
 from django.template import Template, Context
 
@@ -6,7 +6,7 @@ from odalc.odalc_admin.models import AdminUser
 
 import yaml
 
-def send_odalc_email(template_name, context_dict, recipient_list, from_email=settings.DEFAULT_EMAIL, cc_admins=False):
+def send_odalc_email(template_name, context_dict, recipient_list, from_email=settings.EMAIL_HOST_USER, cc_admins=False):
     """ Templates for emails should be yaml files, with 'subject' and 'body' sections, so
     'template_name' should be something like 'foo'.
 

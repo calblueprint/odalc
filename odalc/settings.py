@@ -105,15 +105,14 @@ if "IS_STAGE" in os.environ or "IS_PROD" in os.environ:
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 else:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 EMAIL_HOST = os.environ.get('EMAIL_HOST', 'localhost')
 EMAIL_PORT = os.environ.get('EMAIL_PORT', 587)
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'dev-odalc@odalc.org')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 EMAIL_USE_TLS = 'EMAIL_USE_TLS' in os.environ
-
 EMAIL_TEMPLATES_PATH = os.path.join(SETTINGS_PATH, 'templates', 'emails', 'emails.yml')
 
-DEFAULT_EMAIL = 'odalc@odalc.org'
 
 # Stripe API Keys
 STRIPE_SECRET_KEY = 'sk_test_jQUK6ubDrTtpW1i2ar4QFuMl'
