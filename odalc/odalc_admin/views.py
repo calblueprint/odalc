@@ -1,12 +1,12 @@
 from django.core.exceptions import PermissionDenied
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.db.models import Avg
 from django.shortcuts import redirect
 from django.views.generic import UpdateView,TemplateView,DetailView
 
 from odalc.base.models import Course
 from odalc.base.views import UserDataMixin
-from odalc.mailer import send_odalc_emails
+from odalc.mailer import send_odalc_email
 from odalc.students.models import StudentUser
 from odalc.teachers.models import TeacherUser
 
@@ -44,22 +44,22 @@ class ApplicationReviewView(UserDataMixin, UpdateView):
         course = self.object
         teacher = self.object.teacher
         context = {
-            'course':course,
-            'teacher':teacher
+            'course': course,
+            'course_url': 'http://' + self.request.get_host() + reverse('courses:detail', args=(course.id,))
         }
         if '_approve' in self.request.POST:
-            #1. notify teacher of approval
-            send_odalc_emails('approve',context,[teacher.email])
-            #2. change status of course to "approved"
+            #1. change status of course to "approved"
             course.status = course.STATUS_ACCEPTED
             course.save()
+            #2. notify teacher of approval
+            send_odalc_email('notify_teacher_course_approved', context, [teacher.email], cc_admins=True)
             #3. make course visible to all (permissions - John)
         elif '_deny' in self.request.POST:
-            #1. notify teacher of denial
-            send_odalc_emails('deny',context,[teacher.email])
-            #2. change status of course to "denied"
+            #1. change status of course to "denied"
             course.status = course.STATUS_DENIED
             course.save()
+            #2. notify teacher of denial
+            send_odalc_email('notify_teacher_course_denied', context, [teacher.email], cc_admins=True)
         return redirect(ApplicationReviewView.success_url)
 
     def dispatch(self, *args, **kwargs):
@@ -78,9 +78,9 @@ class AdminDashboardView(UserDataMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(AdminDashboardView, self).get_context_data(**kwargs)
-        context['pending_courses'] = Course.objects.filter(status = Course.STATUS_PENDING)
-        context['live_courses'] = Course.objects.exclude(status = Course.STATUS_FINISHED)
-        context['finished_courses'] = Course.objects.filter(status = Course.STATUS_FINISHED)
+        context['pending_courses'] = Course.objects.filter(status=Course.STATUS_PENDING)
+        context['live_courses'] = Course.objects.filter(status=Course.STATUS_ACCEPTED)
+        context['finished_courses'] = Course.objects.filter(status=Course.STATUS_FINISHED)
         context['teachers'] = TeacherUser.objects.all()
         context['students'] = StudentUser.objects.all()
         return context

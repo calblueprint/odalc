@@ -1,9 +1,10 @@
 from django.contrib.auth import login, authenticate
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.views.generic import CreateView, FormView, TemplateView
 
 from odalc.base.models import Course, CourseAvailability
 from odalc.base.views import UserDataMixin
+from odalc.mailer import send_odalc_email
 from odalc.teachers.forms import CreateCourseForm, TeacherRegisterForm
 from odalc.teachers.models import TeacherUser
 
@@ -48,7 +49,15 @@ class CreateCourse(UserDataMixin, FormView):
         )
 
         new_course_availability.save()
-
+        url_teacher_dashboard = 'http://' + self.request.get_host() + reverse('teachers:dashboard')
+        url_admin_course_review = 'http://' + self.request.get_host() + reverse('admins:course_review', args=(new_course.id,))
+        context = {
+            'course': new_course,
+            'url_teacher_dashboard': url_teacher_dashboard,
+            'url_admin_course_review': url_admin_course_review,
+        }
+        send_odalc_email('notify_teacher_course_submitted', context, [new_course.teacher.email])
+        send_odalc_email('notify_admins_course_submitted', context, [], cc_admins=True)
         return super(CreateCourse, self).form_valid(form)
 
 class TeacherDashboardView(UserDataMixin, TemplateView):
