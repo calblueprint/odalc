@@ -1,6 +1,5 @@
 from django.contrib.auth import login, authenticate
 from django.core.urlresolvers import reverse, reverse_lazy
-from django.conf import settings
 from django.views.generic import CreateView, FormView, TemplateView
 
 from odalc.base.models import Course, CourseAvailability

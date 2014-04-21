@@ -1,11 +1,12 @@
-basic:
-    subject: what is the best team in blueprint????
+test:
+    subject: "what is the best team in blueprint????"
     body:
         "
         @odalc++ @atsu++ @anthonyy++ @jdu++ @pimplord++ @vivekbloop++
         "
+
 notify_teacher_course_approved:
-    subject: ODALC Course Application Status Update
+    subject: "ODALC Course Application Status Update"
     body:
         "
         Hello {{ course.teacher.first_name }}, \n\n
@@ -16,8 +17,9 @@ notify_teacher_course_approved:
         Best,\n
         ODALC Team
         "
+
 notify_teacher_course_denied:
-    subject: ODALC Course Application Status Update
+    subject: "ODALC Course Application Status Update"
     body:
         "
         Hello {{ course.teacher.first_name }},\n\n
@@ -27,8 +29,9 @@ notify_teacher_course_denied:
         Best,\n
         ODALC Team
         "
+
 notify_teacher_course_submitted:
-    subject: ODALC Course Successfully Submitted
+    subject: "ODALC Course Successfully Submitted"
     body:
         "
         Hello {{ course.teacher.first_name}},\n\n
@@ -40,12 +43,33 @@ notify_teacher_course_submitted:
         "
 
 notify_admins_course_submitted:
-    subject: Submission for Course by {{ course.teacher.first_name}} {{ course.teacher.last_name }} - {{ course.title }}
+    subject: "Submission for Course by {{ course.teacher.first_name}} {{ course.teacher.last_name }} - {{ course.title }}"
     body:
         "
         Hello Oakland Digital team,\n\n
         {{ course.teacher.first_name }} {{ course.teacher.last_name }} has submitted an application to teach the course {{ course.title }}
         To view this application, go to {{ url_admin_course_review }}.\n\n
+        Best,\n
+        ODALC Team
+        "
+
+remind_teacher:
+    subject: "Reminder: Your Course {{ course.title }} at ODALC is Tomorrow!"
+    body:
+        "
+        Hello {{ course.teacher.first_name }},\n\n
+        This is a friendly reminder that your course {{ course.title }} is tomorrow, {{ course_date }} from {{ course_start_time }} - {{ course_end_time }}. You can view your course page at {{ course_url }}. See you tomorrow!\n\n
+        Best,\n
+        ODALC Team
+        "
+
+remind_students:
+    subject: "Reminder: Your Course {{ course.title }} at ODALC is Tomorrow!"
+    body:
+        "
+        Hello,\n\n
+        This is a friendly reminder that the course {{ course.title }} that you've signed up for is tomorrow, {{ course_date }} from {{ course_start_time }} - {{ course_end_time }}.
+        You can see more information about this course at {{ course_url }}. See you tomorrow!\n\n
         Best,\n
         ODALC Team
         "
