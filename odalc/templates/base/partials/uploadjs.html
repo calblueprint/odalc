@@ -1,5 +1,5 @@
 <script>
-function s3_upload_{{ field.label }}(){
+function s3_upload_{{ field.id_for_label }}(){
     var s3upload = new S3Upload({
         file_dom_selector: 'file_{{ field.id_for_label }}',
         s3_sign_put_url: '/sign_s3/',

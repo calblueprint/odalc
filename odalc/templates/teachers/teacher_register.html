@@ -5,7 +5,7 @@
 {% block body %}
 
 <div class="row white-section">
-    <div class="large-8 columns">
+    <div class="large-12 columns">
         <form method="POST" enctype="multipart/form-data">
           {% csrf_token %}
 
@@ -47,10 +47,10 @@
 {% include "base/partials/uploadjs.html" with field=form.resume %}
 <script>
 $().ready(function() {
-    $('#file_{{ form.picture.id_for_label }}').on("change", s3_upload_Picture);
+    $('#file_{{ form.picture.id_for_label }}').on("change", s3_upload_{{ form.picture.id_for_label }});
 });
 $().ready(function() {
-    $('#file_{{ form.resume.id_for_label }}').on("change", s3_upload_Resume);
+    $('#file_{{ form.resume.id_for_label }}').on("change", s3_upload_{{ form.resume.id_for_label }});
 });
 </script>
 {% endblock %}
