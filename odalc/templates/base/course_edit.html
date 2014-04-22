@@ -37,13 +37,12 @@
           {% if is_admin_user %}
               {% include "base/partials/formfield.html" with field=form.status %}
           {% else %}
-              {% include "base/partials/hidden_formfield.html" with field=form.status %}
+              <input id="{{ form.status.id_for_label }}" type="hidden" name="{{ form.status.html_name }}" value="{{ form.status.value }}"/>
           {% endif %}
-          <input id="save_edit" type="submit" value="Save" />
+          <input id="save_edit" type="submit" value="Save Changes" />
         </form>
     </div>
 </div>
-
 {% endblock %}
 
 {% block javascripts %}

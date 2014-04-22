@@ -13,11 +13,11 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.debug import sensitive_post_parameters
 from django.views.generic import DetailView, UpdateView, TemplateView, FormView, View
 
+from odalc.base.forms import EditCourseForm
 from odalc.base.models import Course, User
 from odalc.odalc_admin.models import AdminUser
 from odalc.students.models import StudentUser
 from odalc.teachers.models import TeacherUser
-from odalc.teachers.forms import EditCourseForm
 
 import stripe
 
@@ -133,6 +133,7 @@ class CourseDetailView(UserDataMixin, DetailView):
         course.save()
         return redirect('courses:detail',course.pk)
 
+
 class CourseEditView(UserDataMixin, UpdateView):
     model = Course
     form_class = EditCourseForm
@@ -149,6 +150,7 @@ class CourseEditView(UserDataMixin, UpdateView):
             user.has_perm('base.admin_permission')):
             return super(CourseEditView, self).dispatch(request, *args, **kwargs)
         raise PermissionDenied()
+
 
 class HomePageView(UserDataMixin, TemplateView):
     template_name = 'base/home.html'
