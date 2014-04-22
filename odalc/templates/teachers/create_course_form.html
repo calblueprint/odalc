@@ -1,14 +1,57 @@
 {% extends "base/base.html" %}
 
+{% load staticfiles %}
 
 {% block body %}
 
-<form action="{% url "teachers:create-course" %}" method="POST" enctype="multipart/form-data">
-  {% csrf_token %}
-  <ul>
-    {{ form.as_ul }}
-  </ul>
-  <input id="save_course" type="submit" value="Save" />
-</form>
+<div class="row white-section">
+    <div class="large-12 columns">
+        <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
 
+          {% for error in form.non_field_errors %}
+          <div data-alert class="alert-box alert">
+            {{ error }}
+            <a href="#" class="close">&times;</a>
+          </div>
+          {% endfor %}
+
+          {% include "base/partials/formfield.html" with field=form.title %}
+          {% include "base/partials/formfield.html" with field=form.short_description %}
+          {% include "base/partials/formfield.html" with field=form.long_description %}
+          {% include "base/partials/formfield.html" with field=form.size %}
+          {% include "base/partials/formfield.html" with field=form.prereqs %}
+          {% include "base/partials/formfield.html" with field=form.skill_level %}
+          {% include "base/partials/formfield.html" with field=form.cost %}
+          {% include "base/partials/formfield.html" with field=form.odalc_cost_split %}
+          {% include "base/partials/hidden_img_uploadfield.html" with field=form.image %}
+          {% include "base/partials/hidden_file_uploadfield.html" with field=form.course_material %}
+          {% include "base/partials/formfield.html" with field=form.additional_info %}
+
+          {% include "base/partials/formfield.html" with field=form.start_datetime1 %}
+          {% include "base/partials/formfield.html" with field=form.end_datetime1 %}
+          {% include "base/partials/formfield.html" with field=form.start_datetime2 %}
+          {% include "base/partials/formfield.html" with field=form.end_datetime2 %}
+          {% include "base/partials/formfield.html" with field=form.start_datetime3 %}
+          {% include "base/partials/formfield.html" with field=form.end_datetime3 %}
+
+          <input id="save_course" type="submit" value="Submit Course" />
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+<script src="{% static "base/js/s3upload.js" %}"></script>
+{% include "base/partials/img_uploadjs.html" with field=form.image %}
+{% include "base/partials/file_uploadjs.html" with field=form.course_material %}
+<script>
+$().ready(function() {
+    $('#file_{{ form.image.id_for_label }}').on("change", s3_upload_{{ form.image.id_for_label }});
+});
+$().ready(function() {
+    $('#file_{{ form.course_material.id_for_label }}').on("change", s3_upload_{{ form.course_material.id_for_label }});
+});
+</script>
 {% endblock %}

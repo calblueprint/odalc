@@ -2,53 +2,82 @@
 {% load staticfiles %}
 {% block body %}
 
-<h1>INSTRUCTOR INFORMATION</h1>
-	<p><b>Name: </b>{{ course.teacher.first_name }} {{ course.teacher.last_name }}</p>
-    <img src="{{course.teacher.picture.url }}"></img>
-	<p><b>About: </b>{{ course.teacher.about }}</p>
-	<p><b>Experience: </b>{{ course.teacher.experience }}</p>
-    <p><b>Resume: </b> <a href="{{ course.teacher.resume.url }}">Link</a></p>
-	<p><b>Address: </b>{{ course.teacher.street_address }}, {{ course.teacher.city }} {{ course.teacher.zipcode }}</p>
-	<p><b>Phone: </b>{{ course.teacher.phone }}</p>
-	<p><b>Heard about ODALC from: </b>{{ course.teacher.get_info_source_display }}</p>
+<div class="row white-section">
+    <div class="large-12 columns">
+        <h1>Instructor Information</h1>
+            <p><b>Name: </b>{{ course.teacher.first_name }} {{ course.teacher.last_name }}</p>
+            <img src="{{course.teacher.picture }}"></img>
+            <p><b>About: </b>{{ course.teacher.about }}</p>
+            <p><b>Experience: </b>{{ course.teacher.experience }}</p>
+            <p><b>Resume: </b> <a href="{{ course.teacher.resume }}">Link</a></p>
+            <p><b>Address: </b>{{ course.teacher.street_address }}, {{ course.teacher.city }} {{ course.teacher.zipcode }}</p>
+            <p><b>Phone: </b>{{ course.teacher.phone }}</p>
+            <p><b>Heard about ODALC from: </b>{{ course.teacher.get_info_source_display }}</p>
 
-<h2> COURSE INFORMATION </h2>
-	<form action="" method="POST">
-		{% csrf_token %}
-		<!--Display all editable Course information in a form-->
-		<ul>
-		{{ form.as_ul }}
-		</ul>
-		<!--Input Buttons (Approve and Deny)-->
-		<input id="approve_course" name="_approve" type="submit" value="Approve" />
-		<input id="deny_course" name="_deny" type="submit" value="Deny" />
-	</form>
+        <h2>Course Information</h2>
+            <form action="" method="POST">
+                {% csrf_token %}
 
-	<!--Course Materials and Availability-->
-    <p>Course Materials</b>
-    <a href="{{ course.course_material.url }}">Link</a></p>
-	<p>Course Availability:</p>
-		<table>
-			<tr>
-				<th> </th>
-				<th> Start </th>
-				<th> End </th>
-			</tr>
-			<tr>
-				<td> Option 1 </td>
-				<td> {{ course.courseavailability.start_datetime1 }}  </td>
-				<td> {{ course.courseavailability.end_datetime1 }}  </td>
-			</tr>
-			<tr>
-				<td> Option 2 </td>
-				<td> {{ course.courseavailability.start_datetime2 }}  </td>
-				<td> {{ course.courseavailability.end_datetime2 }}  </td>
-			</tr>
-			<tr>
-				<td> Option 3 </td>
-				<td> {{ course.courseavailability.start_datetime3 }}  </td>
-				<td> {{ course.courseavailability.end_datetime3 }}  </td>
-			</tr>
-		</table>
+                {% for error in form.non_field_errors %}
+                <div data-alert class="alert-box alert">
+                    {{ error }}
+                    <a href="#" class="close">&times;</a>
+                </div>
+                {% endfor %}
 
+                {% include "base/partials/formfield.html" with field=form.title %}
+                {% include "base/partials/formfield.html" with field=form.short_description %}
+                {% include "base/partials/formfield.html" with field=form.long_description %}
+                {% include "base/partials/formfield.html" with field=form.size %}
+                {% include "base/partials/formfield.html" with field=form.start_datetime %}
+                {% include "base/partials/formfield.html" with field=form.end_datetime %}
+                {% include "base/partials/formfield.html" with field=form.prereqs %}
+                {% include "base/partials/formfield.html" with field=form.skill_level %}
+                {% include "base/partials/formfield.html" with field=form.cost %}
+                {% include "base/partials/formfield.html" with field=form.odalc_cost_split %}
+                {% include "base/partials/hidden_img_uploadfield.html" with field=form.image %}
+                <p><a href="{{ course.course_material }}">View Course Materials</a></p>
+                {% include "base/partials/formfield.html" with field=form.additional_info %}
+
+                <!--Input Buttons (Approve and Deny)-->
+                <input id="approve_course" name="_approve" type="submit" value="Approve" />
+                <input id="deny_course" name="_deny" type="submit" value="Deny" />
+            </form>
+            <p>Course Availability:</p>
+            <table>
+                <tr>
+                    <th> </th>
+                    <th> Start </th>
+                    <th> End </th>
+                </tr>
+                <tr>
+                    <td> Option 1 </td>
+                    <td> {{ course.courseavailability.start_datetime1 }}  </td>
+                    <td> {{ course.courseavailability.end_datetime1 }}  </td>
+                </tr>
+                <tr>
+                    <td> Option 2 </td>
+                    <td> {{ course.courseavailability.start_datetime2 }}  </td>
+                    <td> {{ course.courseavailability.end_datetime2 }}  </td>
+                </tr>
+                <tr>
+                    <td> Option 3 </td>
+                    <td> {{ course.courseavailability.start_datetime3 }}  </td>
+                    <td> {{ course.courseavailability.end_datetime3 }}  </td>
+                </tr>
+            </table>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+<script src="{% static "base/js/s3upload.js" %}"></script>
+{% include "base/partials/img_uploadjs.html" with field=form.image %}
+<script>
+$().ready(function() {
+    $('#file_{{ form.image.id_for_label }}').on("change", s3_upload_{{ form.image.id_for_label }});
+});
+</script>
 {% endblock %}

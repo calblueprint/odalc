@@ -33,6 +33,7 @@ class CreateCourse(UserDataMixin, FormView):
         new_course = form.save(commit=False)
 
         new_course.teacher = self.request.user.child
+        new_course.status = Course.STATUS_PENDING
 
         new_course.save()
 

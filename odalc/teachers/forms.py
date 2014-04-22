@@ -39,10 +39,4 @@ class CreateCourseForm(forms.ModelForm):
 
     class Meta:
         model = Course
-        exclude = ['teacher', 'students', 'start_datetime', 'end_datetime']
-
-class EditCourseForm(forms.ModelForm):
-    class Meta:
-        model = Course
-        exclude = ['teacher', 'students', 'start_datetime', 'end_datetime']
-
+        exclude = ['teacher', 'students', 'start_datetime', 'end_datetime', 'status']
