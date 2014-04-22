@@ -5,9 +5,9 @@
 {{ field|attr:"type:hidden" }}
 <input type="file" id="file_{{ field.id_for_label }}" />
 </label>
-<div id="preview_{{ field.id_for_label }}"><a href="{{ field.value }}">Previously Uploaded File</a></div>
 <p id="status_{{ field.id_for_label }}"></p>
+<p id="preview_{{ field.id_for_label }}"><a href="{{ field.value }}">{% if field.value %}Previously Uploaded File{% endif %}</a></p>
 
 {% for error in field.errors %}
-  <small class="error">{{ error }}</small>
+<small class="error">{{ error }}</small>
 {% endfor %}

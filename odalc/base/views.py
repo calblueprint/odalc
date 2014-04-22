@@ -197,8 +197,6 @@ class SignS3View(View):
         AWS_ACCESS_KEY = settings.AWS_ACCESS_KEY_ID
         AWS_SECRET_KEY = settings.AWS_SECRET_ACCESS_KEY
         S3_BUCKET = settings.S3_BUCKET
-        print AWS_ACCESS_KEY
-        print S3_BUCKET
 
         # Collect information on the file from the GET parameters of the request:
         object_name = urllib.quote_plus(request.GET.get('s3_object_name'))
@@ -218,7 +216,6 @@ class SignS3View(View):
 
         # Build the URL of the file in anticipation of its imminent upload:
         url = 'https://%s.s3.amazonaws.com/%s' % (S3_BUCKET, object_name)
-        print url
 
         content = json.dumps({
             'signed_request': '%s?AWSAccessKeyId=%s&Expires=%d&Signature=%s' % (url, AWS_ACCESS_KEY, expires, signature),

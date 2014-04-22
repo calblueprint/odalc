@@ -4,9 +4,9 @@
 {{ field.label }}
 {{ field|attr:"type:hidden" }}
 <input type="file" id="file_{{ field.id_for_label }}" />
+</label>
 <p id="status_{{ field.id_for_label }}"></p>
 <div id="preview_{{ field.id_for_label }}"><img src="{{ field.value }}"/></div>
-</label>
 
 {% for error in field.errors %}
   <small class="error">{{ error }}</small>
