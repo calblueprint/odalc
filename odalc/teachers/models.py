@@ -22,8 +22,6 @@ class TeacherUser(User):
     phone = localflavor_models.PhoneNumberField()
     about = models.TextField()
     experience = models.TextField()
-    #picture = models.ImageField(upload_to="teacher_picture_uploads")
-    #resume = models.FileField(upload_to="teacher_resume_uploads")
     picture = models.URLField()
     resume = models.URLField()
     info_source = models.CharField(max_length=3, choices=INFO_SOURCE_CHOICES)

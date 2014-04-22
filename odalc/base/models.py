@@ -1,9 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
-from django.conf import settings
 from django.core.validators import MinValueValidator
 from django.core.exceptions import ObjectDoesNotExist
-from django.contrib.auth.models import Group, Permission
 
 # Create your models here.
 class UserManager(BaseUserManager):
@@ -97,8 +95,6 @@ class Course(models.Model):
         validators=[MinValueValidator(5.00)]
     )
     odalc_cost_split = models.DecimalField(max_digits=5, decimal_places=2)
-    #image = models.ImageField(upload_to='course_images')
-    #course_material = models.FileField(upload_to='course_material')
     image = models.URLField()
     course_material = models.URLField()
     additional_info = models.TextField(blank=True)
