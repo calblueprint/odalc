@@ -1,10 +1,10 @@
 from django.utils.translation import ugettext as _
 from django import forms
+from odalc.base.models import User
 from odalc.teachers.models import TeacherUser
 from odalc.students.models import StudentUser
 from odalc.odalc_admin.models import AdminUser
 from django.contrib.auth.models import Group, Permission
-from django.contrib.contenttypes.models import ContentType
 
 class UserRegisterForm(forms.ModelForm):
     error_messages = {

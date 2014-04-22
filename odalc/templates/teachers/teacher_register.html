@@ -30,8 +30,8 @@
           {% include "base/partials/formfield.html" with field=form.about %}
           {% include "base/partials/formfield.html" with field=form.experience %}
           {% include "base/partials/formfield.html" with field=form.info_source %}
-          {% include "base/partials/hiddenuploadfield.html" with field=form.picture %}
-          {% include "base/partials/hiddenuploadfield.html" with field=form.resume %}
+          {% include "base/partials/hidden_img_uploadfield.html" with field=form.picture %}
+          {% include "base/partials/hidden_file_uploadfield.html" with field=form.resume %}
 
           <input class="button success right" type="submit" value="Register" />
         </form>
@@ -43,8 +43,8 @@
 {% block javascripts %}
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
 <script src="{% static "base/js/s3upload.js" %}"></script>
-{% include "base/partials/uploadjs.html" with field=form.picture filename='thisIsAFile' %}
-{% include "base/partials/uploadjs.html" with field=form.resume %}
+{% include "base/partials/img_uploadjs.html" with field=form.picture %}
+{% include "base/partials/file_uploadjs.html" with field=form.resume %}
 <script>
 $().ready(function() {
     $('#file_{{ form.picture.id_for_label }}').on("change", s3_upload_{{ form.picture.id_for_label }});

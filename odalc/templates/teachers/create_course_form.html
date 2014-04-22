@@ -24,8 +24,8 @@
           {% include "base/partials/formfield.html" with field=form.skill_level %}
           {% include "base/partials/formfield.html" with field=form.cost %}
           {% include "base/partials/formfield.html" with field=form.odalc_cost_split %}
-          {% include "base/partials/hiddenuploadfield.html" with field=form.image %}
-          {% include "base/partials/hiddenuploadfield.html" with field=form.course_material %}
+          {% include "base/partials/hidden_img_uploadfield.html" with field=form.image %}
+          {% include "base/partials/hidden_file_uploadfield.html" with field=form.course_material %}
           {% include "base/partials/formfield.html" with field=form.additional_info %}
 
           {% include "base/partials/formfield.html" with field=form.start_datetime1 %}
@@ -44,8 +44,8 @@
 {% block javascripts %}
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
 <script src="{% static "base/js/s3upload.js" %}"></script>
-{% include "base/partials/uploadjs.html" with field=form.image %}
-{% include "base/partials/uploadjs.html" with field=form.course_material %}
+{% include "base/partials/img_uploadjs.html" with field=form.image %}
+{% include "base/partials/file_uploadjs.html" with field=form.course_material %}
 <script>
 $().ready(function() {
     $('#file_{{ form.image.id_for_label }}').on("change", s3_upload_{{ form.image.id_for_label }});
