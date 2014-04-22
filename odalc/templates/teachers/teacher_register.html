@@ -6,7 +6,7 @@
 
 <div class="row white-section">
     <div class="large-8 columns">
-        <form action="{% url "teachers:register" %}" method="POST" enctype="multipart/form-data">
+        <form method="POST" enctype="multipart/form-data">
           {% csrf_token %}
 
           {% for error in form.non_field_errors %}
@@ -43,7 +43,7 @@
 {% block javascripts %}
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
 <script src="{% static "base/js/s3upload.js" %}"></script>
-{% include "base/partials/uploadjs.html" with field=form.picture %}
+{% include "base/partials/uploadjs.html" with field=form.picture filename='thisIsAFile' %}
 {% include "base/partials/uploadjs.html" with field=form.resume %}
 <script>
 $().ready(function() {
