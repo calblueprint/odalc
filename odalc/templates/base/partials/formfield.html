@@ -1,0 +1,7 @@
+<label for="{{ field.id_for_label }}">
+{{ field.label }}
+{{ field }}
+</label>
+{% for error in field.errors %}
+  <small class="error">{{ error }}</small>
+{% endfor %}
