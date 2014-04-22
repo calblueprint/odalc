@@ -73,6 +73,7 @@ class CourseDetailView(UserDataMixin, DetailView):
         context['cost_in_cents'] = int(course.cost * 100)
         context['course_full'] = course.students.count() >= course.size
         context['open_seats'] = course.size - course.students.count()
+        context['is_owner'] = (self.user.has_perm('base.teacher_permission') and course.teacher.email == self.user.email)
         return context
 
     def dispatch(self, request, *args, **kwargs):

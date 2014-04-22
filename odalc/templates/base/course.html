@@ -71,8 +71,8 @@
           <p>{{ course.prereqs }}</p>
           <h3>Additional Information</h3>
           <p>{{ course.additional_info }}</p>
-          {% if course.course_material and in_class %}
-          <h3><a href="{{ course.course_material.url }}">View Course Materials</a></h3>
+          {% if course.course_material and in_class or is_owner or is_admin_user %}
+          <h3><a href="{{ course.course_material }}">View Course Materials</a></h3>
           {% endif %}
         </div>
         <!-- about the teacher -->
@@ -80,7 +80,7 @@
           <h3>About the Instructor</h3>
           <div class="row author">
             <div class="pic">
-                <img class="th" src="{{ course.teacher.picture.url }}" />
+                <img class="th" src="{{ course.teacher.picture }}" />
             </div>
             <div class="details">
                 <h4>{{ course.teacher.first_name }} {{ course.teacher.last_name }}</h4>
