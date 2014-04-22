@@ -97,8 +97,10 @@ class Course(models.Model):
         validators=[MinValueValidator(5.00)]
     )
     odalc_cost_split = models.DecimalField(max_digits=5, decimal_places=2)
-    image = models.ImageField(upload_to='course_images')
-    course_material = models.FileField(upload_to='course_material')
+    #image = models.ImageField(upload_to='course_images')
+    #course_material = models.FileField(upload_to='course_material')
+    image = models.URLField()
+    course_material = models.URLField()
     additional_info = models.TextField(blank=True)
     status = models.CharField(max_length=3, choices=STATUS_CHOICES, default=STATUS_PENDING)
 
