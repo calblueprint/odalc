@@ -1,0 +1,32 @@
+{% load widget_tweaks %}
+<div class="row">
+    <div class="small-4 columns">
+        <label for="{{ date.id_for_label }}">
+        {{ date.label }}
+        {{ date }}
+        </label>
+    {% for error in date.errors %}
+        <small class="error">{{ error }}</small>
+    {% endfor %}
+    </div>
+
+    <div class="small-4 columns">
+        <label for="{{ start_time.id_for_label }}">
+        {{ start_time.label }}
+        {{ start_time }}
+        </label>
+    {% for error in start_time.errors %}
+        <small class="error">{{ error }}</small>
+    {% endfor %}
+    </div>
+
+    <div class="small-4 columns">
+        <label for="{{ end_time.id_for_label }}">
+        {{ end_time.label }}
+        {{ end_time }}
+        </label>
+    {% for error in end_time.errors %}
+        <small class="error">{{ error }}</small>
+    {% endfor %}
+    </div>
+</div>
