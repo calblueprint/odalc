@@ -2,6 +2,10 @@
 
 {% load staticfiles %}
 
+{% block css %}
+<link rel="stylesheet" href="{% static "base/css/jquery.timepicker.css" %}" />
+{% endblock %}
+
 {% block body %}
 <div class="row white-section">
     <div class="large-12 columns">
@@ -20,11 +24,11 @@
           {% include "base/partials/formfield.html" with field=form.long_description %}
           {% include "base/partials/formfield.html" with field=form.size %}
           {% if is_admin_user %}
-              {% include "base/partials/formfield.html" with field=form.start_datetime %}
-              {% include "base/partials/formfield.html" with field=form.end_datetime %}
+              {% include "base/partials/course_datetimefield.html" with date=form.date start_time=form.start_time end_time=form.end_time %}
           {% else %}
-              {% include "base/partials/hidden_formfield.html" with field=form.start_datetime %}
-              {% include "base/partials/hidden_formfield.html" with field=form.end_datetime %}
+              {% include "base/partials/hidden_formfield.html" with field=form.date %}
+              {% include "base/partials/hidden_formfield.html" with field=form.start_time %}
+              {% include "base/partials/hidden_formfield.html" with field=form.end_time %}
           {% endif %}
           {% include "base/partials/formfield.html" with field=form.prereqs %}
           {% include "base/partials/formfield.html" with field=form.skill_level %}
@@ -75,6 +79,7 @@ properly upload files, we need these few lines in the following order:
 {% block javascripts %}
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
 <script src="{% static "base/js/s3upload.js" %}"></script>
+<script src="{% static "base/js/jquery.timepicker.min.js" %}"></script>
 {% include "base/partials/img_uploadjs.html" with field=form.image %}
 {% include "base/partials/file_uploadjs.html" with field=form.course_material %}
 <script>
@@ -83,6 +88,19 @@ $().ready(function() {
 });
 $().ready(function() {
     $('#file_{{ form.course_material.id_for_label }}').on("change", s3_upload_{{ form.course_material.id_for_label }});
+});
+$(function() {
+    var dateOptions = {
+
+    };
+    var timeOptions = {
+        'minTime': '9:00am',
+        'maxTime': '9:00pm',
+        'forceRoundTime': true,
+    };
+    $("#{{ form.date.id_for_label }}").datepicker(dateOptions);
+    $("#{{ form.start_time.id_for_label }}").timepicker(timeOptions);
+    $("#{{ form.end_time.id_for_label }}").timepicker(timeOptions);
 });
 </script>
 {% endblock %}

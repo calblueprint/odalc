@@ -1,7 +1,12 @@
 {% extends "base/base.html" %}
-{% load staticfiles %}
-{% block body %}
 
+{% load staticfiles %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static "base/css/jquery.timepicker.css" %}" />
+{% endblock %}
+
+{% block body %}
 <div class="row white-section">
     <div class="large-12 columns">
         <h1>Instructor Information</h1>
@@ -31,6 +36,7 @@
                 {% include "base/partials/formfield.html" with field=form.size %}
                 {% include "base/partials/formfield.html" with field=form.start_datetime %}
                 {% include "base/partials/formfield.html" with field=form.end_datetime %}
+                {% include "base/partials/course_datetimefield.html" with date=form.date start_time=form.start_time end_time=form.end_time %}
                 {% include "base/partials/formfield.html" with field=form.prereqs %}
                 {% include "base/partials/formfield.html" with field=form.skill_level %}
                 {% include "base/partials/formfield.html" with field=form.cost %}
@@ -38,6 +44,10 @@
                 {% include "base/partials/hidden_img_uploadfield.html" with field=form.image %}
                 <p><a href="{{ course.course_material }}">View Course Materials</a></p>
                 {% include "base/partials/formfield.html" with field=form.additional_info %}
+
+                {# Hidden form inputs so that we can reuse CourseEditForm for this View #}
+                <input id="{{ form.status.id_for_label }}" type="hidden" name="{{ form.status.html_name }}" value="{{ form.status.value }}"/>
+                {% include "base/partials/hidden_formfield.html" with field=form.course_material %}
 
                 <!--Input Buttons (Approve and Deny)-->
                 <input id="approve_course" name="_approve" type="submit" value="Approve" />
@@ -74,10 +84,24 @@
 {% block javascripts %}
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
 <script src="{% static "base/js/s3upload.js" %}"></script>
+<script src="{% static "base/js/jquery.timepicker.min.js" %}"></script>
 {% include "base/partials/img_uploadjs.html" with field=form.image %}
 <script>
 $().ready(function() {
     $('#file_{{ form.image.id_for_label }}').on("change", s3_upload_{{ form.image.id_for_label }});
+});
+$(function() {
+    var dateOptions = {
+
+    };
+    var timeOptions = {
+        'minTime': '9:00am',
+        'maxTime': '9:00pm',
+        'forceRoundTime': true,
+    };
+    $("#{{ form.date.id_for_label }}").datepicker(dateOptions);
+    $("#{{ form.start_time.id_for_label }}").timepicker(timeOptions);
+    $("#{{ form.end_time.id_for_label }}").timepicker(timeOptions);
 });
 </script>
 {% endblock %}

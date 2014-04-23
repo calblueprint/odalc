@@ -4,6 +4,7 @@ from django.db.models import Avg
 from django.shortcuts import redirect
 from django.views.generic import UpdateView,TemplateView,DetailView
 
+from odalc.base.forms import EditCourseForm
 from odalc.base.models import Course
 from odalc.base.views import UserDataMixin
 from odalc.mailer import send_odalc_email
@@ -18,6 +19,7 @@ cost, etc of the course. This ApplicationReviewView shows the admin that applica
 allows the admin to make final adjustments to these fields."""
 class ApplicationReviewView(UserDataMixin, UpdateView):
     model = Course
+    """
     fields = [
         'title',
         'short_description',
@@ -32,6 +34,8 @@ class ApplicationReviewView(UserDataMixin, UpdateView):
         'image',
         'additional_info',
     ]
+    """
+    form_class = EditCourseForm
     context_object_name = 'course'
     template_name = 'odalc_admin/course_application_review.html'
     success_url = reverse_lazy('admins:dashboard')
@@ -61,6 +65,10 @@ class ApplicationReviewView(UserDataMixin, UpdateView):
             #2. notify teacher of denial
             send_odalc_email('notify_teacher_course_denied', context, [teacher.email], cc_admins=True)
         return redirect(ApplicationReviewView.success_url)
+
+    def form_invalid(self, form):
+        print form.errors
+        return super(ApplicationReviewView, self).form_invalid(form)
 
     def dispatch(self, *args, **kwargs):
         user = self.request.user

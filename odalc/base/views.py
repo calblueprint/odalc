@@ -6,7 +6,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from django.conf import settings
 from django.core.exceptions import PermissionDenied
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.utils.decorators import method_decorator
@@ -139,7 +139,6 @@ class CourseEditView(UserDataMixin, UpdateView):
     form_class = EditCourseForm
     context_object_name = 'course'
     template_name = 'base/course_edit.html'
-    success_url = reverse_lazy('teachers:dashboard')
 
     def dispatch(self, request, *args, **kwargs):
         user = self.request.user
@@ -151,6 +150,14 @@ class CourseEditView(UserDataMixin, UpdateView):
             return super(CourseEditView, self).dispatch(request, *args, **kwargs)
         raise PermissionDenied()
 
+    def get_success_url(self):
+        if self.is_teacher_user:
+            return reverse('teachers:dashboard')
+        elif self.is_admin_user:
+            return reverse('admins:dashboard')
+        else:
+            # Should never happen
+            return reverse('home')
 
 class HomePageView(UserDataMixin, TemplateView):
     template_name = 'base/home.html'
@@ -186,6 +193,7 @@ class LoginView(UserDataMixin, FormView):
         request.session.set_test_cookie()
         self.next_url = request.GET.get('next', 'home')
         return super(LoginView, self).dispatch(request, *args, **kwargs)
+
 
 class LogoutView(UserDataMixin, View):
     def get(self, request, *args, **kwargs):

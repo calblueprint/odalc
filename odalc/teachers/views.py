@@ -70,6 +70,7 @@ class CreateCourse(UserDataMixin, FormView):
         send_odalc_email('notify_admins_course_submitted', context, [], cc_admins=True)
         return super(CreateCourse, self).form_valid(form)
 
+
 class TeacherDashboardView(UserDataMixin, TemplateView):
     template_name = "teachers/dashboard.html"
 
