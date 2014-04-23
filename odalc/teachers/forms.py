@@ -27,15 +27,17 @@ class TeacherRegisterForm(UserRegisterForm):
                   'info_source')
 
 class CreateCourseForm(forms.ModelForm):
+    date1 = forms.DateField(label='First Choice for Date to Teach Course')
+    start_time1 = forms.TimeField(label='Starting Time for Course Session')
+    end_time1 = forms.TimeField(label='Ending Time for Course Session')
 
-    start_datetime1 = forms.DateTimeField()
-    end_datetime1 = forms.DateTimeField()
+    date2 = forms.DateField(label='Second Choice for Date to Teach Course')
+    start_time2 = forms.TimeField(label='Starting Time for Course Session')
+    end_time2 = forms.TimeField(label='Ending Time for Course Session')
 
-    start_datetime2 = forms.DateTimeField()
-    end_datetime2 = forms.DateTimeField()
-
-    start_datetime3 = forms.DateTimeField()
-    end_datetime3 = forms.DateTimeField()
+    date3 = forms.DateField(label='Third Choice for Date to Teach Course')
+    start_time3 = forms.TimeField(label='Starting Time for Course Session')
+    end_time3 = forms.TimeField(label='Ending Time for Course Session')
 
     class Meta:
         model = Course
