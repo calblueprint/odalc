@@ -196,9 +196,9 @@ class LogoutView(UserDataMixin, View):
 class SignS3View(View):
     def get(self, request, *args, **kwargs):
         # Load necessary information into the application:
-        AWS_ACCESS_KEY = settings.AWS_ACCESS_KEY_ID
-        AWS_SECRET_KEY = settings.AWS_SECRET_ACCESS_KEY
-        S3_BUCKET = settings.S3_BUCKET
+        AWS_ACCESS_KEY = settings.AWS_ACCESS_KEY_ID.strip()
+        AWS_SECRET_KEY = settings.AWS_SECRET_ACCESS_KEY.strip()
+        S3_BUCKET = settings.S3_BUCKET.strip()
 
         # Collect information on the file from the GET parameters of the request:
         object_name = urllib.quote_plus(request.GET.get('s3_object_name'))
@@ -219,8 +219,13 @@ class SignS3View(View):
         # Build the URL of the file in anticipation of its imminent upload:
         url = 'https://%s.s3.amazonaws.com/%s' % (S3_BUCKET, object_name)
 
+        get_params = urllib.urlencode({
+            'AWSAccessKeyId': AWS_ACCESS_KEY,
+            'Expires': expires,
+            'Signature': signature
+        })
         content = json.dumps({
-            'signed_request': '%s?AWSAccessKeyId=%s&Expires=%d&Signature=%s' % (url, AWS_ACCESS_KEY, expires, signature),
+            'signed_request': '%s?%s' % (url, get_params),
             'url': url
         })
 
