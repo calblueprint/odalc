@@ -26,6 +26,7 @@
           {% if is_admin_user %}
               {% include "base/partials/course_datetimefield.html" with date=form.date start_time=form.start_time end_time=form.end_time %}
           {% else %}
+              {# Hide the date/time fields if the teacher is editing the course #}
               {% include "base/partials/hidden_formfield.html" with field=form.date %}
               {% include "base/partials/hidden_formfield.html" with field=form.start_time %}
               {% include "base/partials/hidden_formfield.html" with field=form.end_time %}
@@ -40,6 +41,7 @@
           {% if is_admin_user %}
               {% include "base/partials/formfield.html" with field=form.status %}
           {% else %}
+              {# Hide the course status field if the teacher is editing the course #}
               <input id="{{ form.status.id_for_label }}" type="hidden" name="{{ form.status.html_name }}" value="{{ form.status.value }}"/>
           {% endif %}
           <input id="save_edit" type="submit" value="Save Changes" />

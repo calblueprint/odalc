@@ -11,30 +11,14 @@ from odalc.mailer import send_odalc_email
 from odalc.students.models import StudentUser
 from odalc.teachers.models import TeacherUser
 
-# Create your views here.
 
-"""A teacher must submit an application if he/she wants to teach a course, which will be
-reviewed by an admin. This application includes the proposed name, size, length, prereqs,
-cost, etc of the course. This ApplicationReviewView shows the admin that application and
-allows the admin to make final adjustments to these fields."""
 class ApplicationReviewView(UserDataMixin, UpdateView):
+    """A teacher must submit an application if he/she wants to teach a course, which will be
+    reviewed by an admin. This application includes the proposed name, size, length, prereqs,
+    cost, etc of the course. This ApplicationReviewView shows the admin that application and
+    allows the admin to make final adjustments to these fields.
+    """
     model = Course
-    """
-    fields = [
-        'title',
-        'short_description',
-        'long_description',
-        'size',
-        'start_datetime',
-        'end_datetime',
-        'prereqs',
-        'skill_level',
-        'cost',
-        'odalc_cost_split',
-        'image',
-        'additional_info',
-    ]
-    """
     form_class = EditCourseForm
     context_object_name = 'course'
     template_name = 'odalc_admin/course_application_review.html'
@@ -66,10 +50,6 @@ class ApplicationReviewView(UserDataMixin, UpdateView):
             send_odalc_email('notify_teacher_course_denied', context, [teacher.email], cc_admins=True)
         return redirect(ApplicationReviewView.success_url)
 
-    def form_invalid(self, form):
-        print form.errors
-        return super(ApplicationReviewView, self).form_invalid(form)
-
     def dispatch(self, *args, **kwargs):
         user = self.request.user
         if not user.is_authenticated():
@@ -78,10 +58,12 @@ class ApplicationReviewView(UserDataMixin, UpdateView):
             return super(ApplicationReviewView, self).dispatch(*args, **kwargs)
         raise PermissionDenied()
 
-"""AdminDashboardView shows the admin all pending course applications, current (live) courses,
-as well as finished courses and links to feedback for those finished courses"""
+
 #TODO: show some teacher and student info as well
 class AdminDashboardView(UserDataMixin, TemplateView):
+    """AdminDashboardView shows the admin all pending course applications, current (live) courses,
+    as well as finished courses and links to feedback for those finished courses
+    """
     template_name = 'odalc_admin/admin_dashboard.html'
 
     def get_context_data(self, **kwargs):
@@ -101,9 +83,11 @@ class AdminDashboardView(UserDataMixin, TemplateView):
             return super(AdminDashboardView, self).dispatch(*args, **kwargs)
         raise PermissionDenied()
 
-"""CourseFeedbackView shows all the student feedback responses for a particular course,
-as well as aggregate data (averages) for the feedback"""
+
 class CourseFeedbackView(UserDataMixin, DetailView):
+    """CourseFeedbackView shows all the student feedback responses for a particular course,
+    as well as aggregate data (averages) for the feedback
+    """
     template_name = 'odalc_admin/course_feedback.html'
     model = Course
 

@@ -21,7 +21,6 @@ from odalc.teachers.models import TeacherUser
 
 import stripe
 
-# Create your views here.
 
 class UserDataMixin(object):
     def dispatch(self, request, *args, **kwargs):
@@ -158,6 +157,7 @@ class CourseEditView(UserDataMixin, UpdateView):
         else:
             # Should never happen
             return reverse('home')
+
 
 class HomePageView(UserDataMixin, TemplateView):
     template_name = 'base/home.html'

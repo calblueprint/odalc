@@ -1,4 +1,3 @@
-from django.utils.translation import ugettext as _
 from localflavor.us import forms as localflavor_forms
 from odalc.base.forms import UserRegisterForm
 from odalc.teachers.models import TeacherUser

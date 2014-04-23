@@ -129,7 +129,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 TIME_INPUT_FORMATS = (
     '%H:%M:%S',     # '14:30:59'

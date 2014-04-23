@@ -9,6 +9,7 @@ from odalc.odalc_admin.models import AdminUser
 from odalc.students.models import StudentUser
 from odalc.teachers.models import TeacherUser
 
+
 class UserRegisterForm(forms.ModelForm):
     error_messages = {
         'duplicate_username': _("A user with that username already exists."),
