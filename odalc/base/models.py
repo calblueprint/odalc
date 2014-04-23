@@ -103,12 +103,9 @@ class Course(models.Model):
 
 class CourseAvailability(models.Model):
     course = models.OneToOneField('Course')
-
-    start_datetime1 = models.DateTimeField(blank=True,null=True)
-    end_datetime1 = models.DateTimeField(blank=True,null=True)
-
-    start_datetime2 = models.DateTimeField(blank=True,null=True)
-    end_datetime2 = models.DateTimeField(blank=True,null=True)
-
-    start_datetime3 = models.DateTimeField(blank=True,null=True)
-    end_datetime3 = models.DateTimeField(blank=True,null=True)
+    start_datetime1 = models.DateTimeField()
+    end_datetime1 = models.DateTimeField()
+    start_datetime2 = models.DateTimeField()
+    end_datetime2 = models.DateTimeField()
+    start_datetime3 = models.DateTimeField()
+    end_datetime3 = models.DateTimeField()
