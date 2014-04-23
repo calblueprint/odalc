@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}{% endblock %} | ODALC</title>
 
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
     <link rel="stylesheet" href="{% static "base/css/app.css" %}" />
     <link rel="stylesheet" href="{% static "base/css/forms.css" %}" />
     {% block css %}{% endblock %}
@@ -17,6 +18,7 @@
     {% block body %}
     {% endblock %}
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
     <script src="{% static "bower_components/foundation/js/foundation.min.js" %}"></script>
     <script src="{% static "bower_components/foundation/js/foundation.alerts.js" %}"></script>
     <script src="{% static "base/js/app.js" %}"></script>

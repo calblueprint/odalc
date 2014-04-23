@@ -2,8 +2,11 @@
 
 {% load staticfiles %}
 
-{% block body %}
+{% block css %}
+<link rel="stylesheet" href="{% static "base/css/jquery.timepicker.css" %}" />
+{% endblock %}
 
+{% block body %}
 <div class="row white-section">
     <div class="large-12 columns">
         <form method="POST" enctype="multipart/form-data">
@@ -28,12 +31,12 @@
           {% include "base/partials/hidden_file_uploadfield.html" with field=form.course_material %}
           {% include "base/partials/formfield.html" with field=form.additional_info %}
 
-          {% include "base/partials/formfield.html" with field=form.start_datetime1 %}
-          {% include "base/partials/formfield.html" with field=form.end_datetime1 %}
-          {% include "base/partials/formfield.html" with field=form.start_datetime2 %}
-          {% include "base/partials/formfield.html" with field=form.end_datetime2 %}
-          {% include "base/partials/formfield.html" with field=form.start_datetime3 %}
-          {% include "base/partials/formfield.html" with field=form.end_datetime3 %}
+          <fieldset>
+          <legend>Availabile Dates and Times for Teaching Course</legend>
+          {% include "base/partials/course_datetimefield.html" with date=form.date1 start_time=form.start_time1 end_time=form.end_time1 %}
+          {% include "base/partials/course_datetimefield.html" with date=form.date2 start_time=form.start_time2 end_time=form.end_time2 %}
+          {% include "base/partials/course_datetimefield.html" with date=form.date3 start_time=form.start_time3 end_time=form.end_time3 %}
+          </fieldset>
 
           <input id="save_course" type="submit" value="Submit Course" />
         </form>
@@ -44,6 +47,7 @@
 {% block javascripts %}
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
 <script src="{% static "base/js/s3upload.js" %}"></script>
+<script src="{% static "base/js/jquery.timepicker.min.js" %}"></script>
 {% include "base/partials/img_uploadjs.html" with field=form.image %}
 {% include "base/partials/file_uploadjs.html" with field=form.course_material %}
 <script>
@@ -52,6 +56,26 @@ $().ready(function() {
 });
 $().ready(function() {
     $('#file_{{ form.course_material.id_for_label }}').on("change", s3_upload_{{ form.course_material.id_for_label }});
+});
+$(function() {
+    var dateOptions = {
+        beforeShowDay: $.datepicker.noWeekends,
+        minDate: 0
+    };
+    var timeOptions = {
+        'minTime': '9:00am',
+        'maxTime': '9:00pm',
+        'forceRoundTime': true,
+    };
+    $("#{{ form.date1.id_for_label }}").datepicker(dateOptions);
+    $("#{{ form.start_time1.id_for_label }}").timepicker(timeOptions);
+    $("#{{ form.end_time1.id_for_label }}").timepicker(timeOptions);
+    $("#{{ form.date2.id_for_label }}").datepicker(dateOptions);
+    $("#{{ form.start_time2.id_for_label }}").timepicker(timeOptions);
+    $("#{{ form.end_time2.id_for_label }}").timepicker(timeOptions);
+    $("#{{ form.date3.id_for_label }}").datepicker(dateOptions);
+    $("#{{ form.start_time3.id_for_label }}").timepicker(timeOptions);
+    $("#{{ form.end_time3.id_for_label }}").timepicker(timeOptions);
 });
 </script>
 {% endblock %}

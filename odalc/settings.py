@@ -129,8 +129,14 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
+TIME_INPUT_FORMATS = (
+    '%H:%M:%S',     # '14:30:59'
+    '%H:%M:%S.%f',  # '14:30:59.000200'
+    '%H:%M',        # '14:30'
+    '%I:%M%p',      # '2:30pm'
+)
 
 # djangobower settings
 BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, 'static')

@@ -1,3 +1,5 @@
+from datetime import datetime as dt
+
 from django import forms
 from django.contrib.auth.models import Group, Permission
 from django.utils.translation import ugettext as _
@@ -6,6 +8,7 @@ from odalc.base.models import Course, User
 from odalc.odalc_admin.models import AdminUser
 from odalc.students.models import StudentUser
 from odalc.teachers.models import TeacherUser
+
 
 class UserRegisterForm(forms.ModelForm):
     error_messages = {
@@ -72,8 +75,31 @@ class UserRegisterForm(forms.ModelForm):
             group.user_set.add(user)
         return user
 
+
 class EditCourseForm(forms.ModelForm):
+    date = forms.DateField(label='Date to Teach Course', required=False)
+    start_time = forms.TimeField(label='Starting Time for Course Session', required=False)
+    end_time = forms.TimeField(label='Ending Time for Course Session', required=False)
+
+    def save(self, *args, **kwargs):
+        date = self.cleaned_data.get('date')
+        start_time = self.cleaned_data.get('start_time')
+        end_time = self.cleaned_data.get('end_time')
+        if date and start_time:
+            self.instance.start_datetime = dt.combine(date, start_time)
+        if date and end_time:
+            self.instance.end_datetime = dt.combine(date, end_time)
+        return super(EditCourseForm, self).save(*args, **kwargs)
+
+    def __init__(self, *args, **kwargs):
+        super(EditCourseForm, self).__init__(*args, **kwargs)
+        # TODO: Fix the timezones on these initial values
+        if self.instance.start_datetime:
+            self.fields['date'].initial = self.instance.start_datetime.date
+            self.fields['start_time'].initial = self.instance.start_datetime.time
+        if self.instance.end_datetime:
+            self.fields['end_time'].initial = self.instance.end_datetime.time
+
     class Meta:
         model = Course
-        exclude = ['teacher', 'students']
-
+        exclude = ['teacher', 'students', 'start_datetime', 'end_datetime',]

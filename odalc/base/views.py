@@ -6,7 +6,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from django.conf import settings
 from django.core.exceptions import PermissionDenied
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.utils.decorators import method_decorator
@@ -21,7 +21,6 @@ from odalc.teachers.models import TeacherUser
 
 import stripe
 
-# Create your views here.
 
 class UserDataMixin(object):
     def dispatch(self, request, *args, **kwargs):
@@ -139,7 +138,6 @@ class CourseEditView(UserDataMixin, UpdateView):
     form_class = EditCourseForm
     context_object_name = 'course'
     template_name = 'base/course_edit.html'
-    success_url = reverse_lazy('teachers:dashboard')
 
     def dispatch(self, request, *args, **kwargs):
         user = self.request.user
@@ -150,6 +148,15 @@ class CourseEditView(UserDataMixin, UpdateView):
             user.has_perm('base.admin_permission')):
             return super(CourseEditView, self).dispatch(request, *args, **kwargs)
         raise PermissionDenied()
+
+    def get_success_url(self):
+        if self.is_teacher_user:
+            return reverse('teachers:dashboard')
+        elif self.is_admin_user:
+            return reverse('admins:dashboard')
+        else:
+            # Should never happen
+            return reverse('home')
 
 
 class HomePageView(UserDataMixin, TemplateView):
@@ -187,6 +194,7 @@ class LoginView(UserDataMixin, FormView):
         self.next_url = request.GET.get('next', 'home')
         return super(LoginView, self).dispatch(request, *args, **kwargs)
 
+
 class LogoutView(UserDataMixin, View):
     def get(self, request, *args, **kwargs):
         auth_logout(request)
@@ -196,9 +204,9 @@ class LogoutView(UserDataMixin, View):
 class SignS3View(View):
     def get(self, request, *args, **kwargs):
         # Load necessary information into the application:
-        AWS_ACCESS_KEY = settings.AWS_ACCESS_KEY_ID
-        AWS_SECRET_KEY = settings.AWS_SECRET_ACCESS_KEY
-        S3_BUCKET = settings.S3_BUCKET
+        AWS_ACCESS_KEY = settings.AWS_ACCESS_KEY_ID.strip()
+        AWS_SECRET_KEY = settings.AWS_SECRET_ACCESS_KEY.strip()
+        S3_BUCKET = settings.S3_BUCKET.strip()
 
         # Collect information on the file from the GET parameters of the request:
         object_name = urllib.quote_plus(request.GET.get('s3_object_name'))
@@ -219,8 +227,13 @@ class SignS3View(View):
         # Build the URL of the file in anticipation of its imminent upload:
         url = 'https://%s.s3.amazonaws.com/%s' % (S3_BUCKET, object_name)
 
+        get_params = urllib.urlencode({
+            'AWSAccessKeyId': AWS_ACCESS_KEY,
+            'Expires': expires,
+            'Signature': signature
+        })
         content = json.dumps({
-            'signed_request': '%s?AWSAccessKeyId=%s&Expires=%d&Signature=%s' % (url, AWS_ACCESS_KEY, expires, signature),
+            'signed_request': '%s?%s' % (url, get_params),
             'url': url
         })
 
