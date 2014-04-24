@@ -1,4 +1,5 @@
 import time, json, base64, hmac, urllib
+import hashlib
 from hashlib import sha1
 
 from django.contrib.auth import login as auth_login, logout as auth_logout
@@ -209,7 +210,7 @@ class SignS3View(View):
         S3_BUCKET = settings.S3_BUCKET.strip()
 
         # Collect information on the file from the GET parameters of the request:
-        object_name = urllib.quote_plus(request.GET.get('s3_object_name'))
+        object_name = urllib.quote(request.GET.get('s3_object_name'))
         mime_type = request.GET.get('s3_object_type')
 
         # Set the expiry time of the signature (in seconds) and declare the permissions of the file to be uploaded
@@ -222,7 +223,7 @@ class SignS3View(View):
         # Generate the signature with which the request can be signed:
         signature = base64.encodestring(hmac.new(AWS_SECRET_KEY, put_request, sha1).digest())
         # Remove surrounding whitespace and quote special characters:
-        signature = urllib.quote_plus(signature.strip())
+        signature = urllib.quote(signature.strip())
 
         # Build the URL of the file in anticipation of its imminent upload:
         url = 'https://%s.s3.amazonaws.com/%s' % (S3_BUCKET, object_name)
@@ -239,3 +240,13 @@ class SignS3View(View):
 
         # Return the signed request and the anticipated URL back to the browser in JSON format:
         return HttpResponse(content, content_type='text/plain; charset=x-user-defined')
+
+    def sign(key, msg):
+        return hmac.new(key, msg.encode("utf-8"), hashlib.sha256).digest()
+
+    def getSignatureKey(key, dateStamp, regionName, serviceName):
+        kDate = SignS3View.sign(("AWS4" + key).encode("utf-8"), dateStamp)
+        kRegion = SignS3View.sign(kDate, regionName)
+        kService = SignS3View.sign(kRegion, serviceName)
+        kSigning = SignS3View.sign(kService, "aws4_request")
+        return kSigning
