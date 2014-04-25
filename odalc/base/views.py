@@ -224,10 +224,12 @@ class SignS3View(View):
         # Generate the PUT request that JavaScript will use:
         put_request = "PUT\n\n%s\n%d\n%s\n/%s/%s" % (mime_type, expires, amz_headers, S3_BUCKET, object_name)
 
-        print put_request
-        connection = connect_s3(AWS_ACCESS_KEY, AWS_SECRET_KEY)
-        signed_request = connection.generate_url(expires_in=10, method='PUT', bucket=S3_BUCKET, key=object_name, response_headers=amz_header_dict)
-        print signed_request
+        # Boto-generated request
+        #print put_request
+        #connection = connect_s3(AWS_ACCESS_KEY, AWS_SECRET_KEY)
+        #signed_request = connection.generate_url(expires_in=10, method='PUT', bucket=S3_BUCKET, key=object_name, response_headers=amz_header_dict)
+        #print signed_request
+
         # Generate the signature with which the request can be signed:
         signature = base64.encodestring(hmac.new(AWS_SECRET_KEY, put_request, sha1).digest())
         # Remove surrounding whitespace and quote special characters:
@@ -239,12 +241,12 @@ class SignS3View(View):
             'Expires': expires,
             'Signature': signature
         })
-        print get_params
+        #print get_params
 
         url = 'https://%s.s3.amazonaws.com/%s' % (S3_BUCKET, object_name)
         content = json.dumps({
             #'signed_request': signed_request,
-            'signed_request': '%s?AWSAccessKeyId=%s&Expires=%d&Signature=%s' % (url, AWS_ACCESS_KEY, expires, signature),
+            'signed_request': '%s?AWSAccessKeyId=%s&Expires=%d&Signature=%s' % (url, get_params),
             'url': url
         })
 
