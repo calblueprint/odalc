@@ -1,6 +1,7 @@
 @import "settings";
 @import "foundation";
 
+//color inspiration: http://www.colourlovers.com/palette/151113/blue_jay_feather
 
 .bp-black-container {
     background-color: $dark-primary-color;
@@ -59,7 +60,7 @@
             left: 0;
             background-color: rgba(0,0,0,0.7);
             width: 100%;
-            padding: 0.65em 1em 0.5em;
+            padding: 0.75em 1em 0.5em;
             z-index: 2;
 
             transition: all 0.25s ease;
@@ -107,11 +108,33 @@
         color: #ccc;
         font-size: 1.3em;
     }
+    small {
+        color: #DCE0E6;
+    }
+}
+
+.blue-section {
+    @include section-padding();
+    background-color: #606D80;
+    border-top: 5px solid #DCE0E6;
+
+    h1 {
+        color: #1F1F20;
+    }
+
+    p {
+        color: #DCE0E6;
+        font-size: 1.25em;
+    }
+}
+.blue-section-no-pad {
+    background-color: #606D80;
 }
 
 .white-section {
-    padding: 4em 0;
+    padding-top: 4em;
 }
+
 
 .mid-dark-section {
     @include section-padding();
@@ -127,15 +150,21 @@
     }
 }
 
-.blue-section {
-    background-color: $light-primary-color;
-}
-
 .course-listing-container {
 }
 
 .red {
     background-color: red;
+}
+
+.gray-section {
+    @include section-padding();
+    background-color: #DCE0E6; 
+
+    p {
+        color: #777;
+        font-size: 1.25em;
+    }
 }
 
 .blue {

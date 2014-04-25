@@ -3,9 +3,9 @@
 {% block title %}Log In{% endblock %}
 
 {% block body %}
-<div class="row white-section">
-    <div class="large-8 columns">
-        <h2>Log In</h2>
+<div class="row">
+    <div class="large-5 columns white-section">
+        <h3>Log in</h3>
         <form method="POST">
           {% csrf_token %}
           {% for error in form.non_field_errors %}
@@ -37,8 +37,8 @@
           <input class="button success right" type="submit" value="Log In" />
         </form>
     </div>
-    <div class="large-4 columns">
-        <h2>No Account Yet?</h2>
+    <div class="offset-2 large-5 columns white-section">
+        <h3>No Account Yet?</h3>
         <div class="row">
             <div class="large-12 medium-6 small-12 columns">
                 <p>Interested in taking courses?</p>
