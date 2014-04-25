@@ -2,12 +2,12 @@ from datetime import datetime as dt
 
 from django.contrib.auth import login, authenticate
 from django.core.urlresolvers import reverse, reverse_lazy
-from django.views.generic import CreateView, FormView, TemplateView
+from django.views.generic import CreateView, FormView, TemplateView, UpdateView
 
 from odalc.base.models import Course, CourseAvailability
 from odalc.base.views import UserDataMixin
 from odalc.mailer import send_odalc_email
-from odalc.teachers.forms import CreateCourseForm, TeacherRegisterForm
+from odalc.teachers.forms import CreateCourseForm, TeacherRegisterForm, TeacherEditForm
 from odalc.teachers.models import TeacherUser
 
 
@@ -24,6 +24,14 @@ class TeacherRegisteration(UserDataMixin, CreateView):
         login(self.request, user)
         return a
 
+class TeacherEditView(UserDataMixin, UpdateView):
+    model = TeacherUser
+    template_name = "teachers/teacher_edit.html"
+    form_class = TeacherEditForm
+    success_url = reverse_lazy('teachers:dashboard')
+
+    def get_object(self):
+        return self.user
 
 class CreateCourse(UserDataMixin, FormView):
     model = Course
