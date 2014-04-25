@@ -1,25 +1,75 @@
-basic:
-    subject: what is the best team in blueprint????
+test:
+    subject: "what is the best team in blueprint????"
     body:
         "
         @odalc++ @atsu++ @anthonyy++ @jdu++ @pimplord++ @vivekbloop++
         "
-approve:
-    subject: Congratulations! Your ODALC course has been approved.
+
+notify_teacher_course_approved:
+    subject: "ODALC Course Application Status Update"
     body:
         "
-        Hello {{ course.teacher.first_name }}, \n
-        Your course {{ course.title }} has been successfully reviewed and approved by the ODALC team.
-        The page is now open for student registration.\n
-        You can go to your dashboard to view details, signup info, and make edits.\n
-        Good luck!
+        Hello {{ course.teacher.first_name }}, \n\n
+        Your course {{ course.title }} has been successfully reviewed and approved by the ODALC team!
+        The course page is now open for students to sign up at {{ course_url }}.\n
+        You can go to your dashboard to view and edit course information if necessary.\n
+        Good luck!\n\n
+        Best,\n
+        ODALC Team
         "
-deny:
-    subject: Your ODALC course has not been approved.
+
+notify_teacher_course_denied:
+    subject: "ODALC Course Application Status Update"
     body:
         "
-        Hello {{ course.teacher.first_name }},\n
-        Your course {{ course.title }} has been successfully reviewed by the ODALC team,
-        but it has not been approved just yet.\n
-        If you'd like, please send a follow-up e-mail for more details.
+        Hello {{ course.teacher.first_name }},\n\n
+        Thank you for applying to teach your course {{ course.title }} at ODALC.
+        Unfortunately, we aren't able to approve your application at this time.\n
+        If you would like feedback on your course, please feel free to send a follow-up email for more details.\n\n
+        Best,\n
+        ODALC Team
+        "
+
+notify_teacher_course_submitted:
+    subject: "ODALC Course Successfully Submitted"
+    body:
+        "
+        Hello {{ course.teacher.first_name}},\n\n
+        Your course {{ course.title }} has successfully been submitted to the ODALC team.
+        We will contact you when the status of your application has been updated, but you can
+        see your status at {{ url_teacher_dashboard }}.\n\n
+        Best,\n
+        ODALC Team
+        "
+
+notify_admins_course_submitted:
+    subject: "Submission for Course by {{ course.teacher.first_name}} {{ course.teacher.last_name }} - {{ course.title }}"
+    body:
+        "
+        Hello Oakland Digital team,\n\n
+        {{ course.teacher.first_name }} {{ course.teacher.last_name }} has submitted an application to teach the course {{ course.title }}
+        To view this application, go to {{ url_admin_course_review }}.\n\n
+        Best,\n
+        ODALC Team
+        "
+
+remind_teacher:
+    subject: "Reminder: Your Course {{ course.title }} at ODALC is Tomorrow!"
+    body:
+        "
+        Hello {{ course.teacher.first_name }},\n\n
+        This is a friendly reminder that your course {{ course.title }} is tomorrow, {{ course_date }} from {{ course_start_time }} - {{ course_end_time }}. You can view your course page at {{ course_url }}. See you tomorrow!\n\n
+        Best,\n
+        ODALC Team
+        "
+
+remind_students:
+    subject: "Reminder: Your Course {{ course.title }} at ODALC is Tomorrow!"
+    body:
+        "
+        Hello,\n\n
+        This is a friendly reminder that the course {{ course.title }} that you've signed up for is tomorrow, {{ course_date }} from {{ course_start_time }} - {{ course_end_time }}.
+        You can see more information about this course at {{ course_url }}. See you tomorrow!\n\n
+        Best,\n
+        ODALC Team
         "

@@ -1,5 +1,4 @@
 from django.conf.urls import patterns, url
-from django.contrib.auth.decorators import permission_required
 from odalc.odalc_admin.views import ApplicationReviewView, AdminDashboardView
 
 urlpatterns = patterns('',

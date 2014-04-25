@@ -16,12 +16,10 @@ from sampledatahelper.model_helper import ModelDataHelper
 
 US='us'
 DIR = os.path.dirname(os.path.abspath(__file__))
-TEST_FILE_PATH = os.path.join(DIR,'blank.pdf')
-TEST_IMAGE_PATH = os.path.join(DIR,'test.jpeg')
-IMAGE_FILE = File(open(TEST_IMAGE_PATH))
-TEST_FILE = File(open(TEST_FILE_PATH))
-TEST_IMAGE_FILE = SimpleUploadedFile(IMAGE_FILE.name, IMAGE_FILE.file.read())
-TEST_UPLOADED_FILE = SimpleUploadedFile(TEST_FILE.name, TEST_FILE.file.read())
+
+TEST_COURSE_IMAGE_URL = 'https://s3-us-west-1.amazonaws.com/odalc-stage-media/sample/sample_course_pic.jpg'
+TEST_TEACHER_IMAGE_URL = 'https://s3-us-west-1.amazonaws.com/odalc-stage-media/sample/sample_headshot.jpg'
+TEST_PDF_URL = 'https://s3-us-west-1.amazonaws.com/odalc-stage-media/sample/sample_pdf.pdf'
 TEST_TEACHER_EMAIL = 'teacher@teacher.com'
 TEST_STUDENT_EMAIL = 'student@student.com'
 TEST_ADMIN_EMAIL = 'admin@admin.com'
@@ -53,8 +51,8 @@ class Command(BaseCommand):
                 zipcode='94709',
                 phone=self.sd.phone('es', 1),
                 about=self.sd.paragraph(),
-                picture=self.sd.image(100,100),
-                resume=TEST_UPLOADED_FILE,
+                picture=TEST_TEACHER_IMAGE_URL,
+                resume=TEST_PDF_URL,
                 experience='Here is my experience',
                 info_source='WEB'
             )
@@ -73,8 +71,8 @@ class Command(BaseCommand):
                 zipcode='94709',
                 phone=self.sd.phone('es', 1),
                 about=self.sd.paragraph(),
-                picture=self.sd.image(100,100),
-                resume=TEST_UPLOADED_FILE,
+                picture=TEST_TEACHER_IMAGE_URL,
+                resume=TEST_PDF_URL,
                 experience='Here is my experience',
                 info_source='WEB'
             )
@@ -148,8 +146,8 @@ class Command(BaseCommand):
                 skill_level=Course.SKILL_BEGINNER,
                 cost=decimal.Decimal('6.00'),
                 odalc_cost_split=decimal.Decimal('2.50'),
-                image=self.sd.image(100,100),
-                course_material=TEST_UPLOADED_FILE,
+                image=TEST_COURSE_IMAGE_URL,
+                course_material=TEST_PDF_URL,
                 additional_info=self.sd.paragraph(),
                 status=self.sd.choice(COURSE_STATUS_CHOICES)
             )

@@ -41,9 +41,25 @@ To add a new SASS file, add the source-destination mapping in ``Gruntfile.js`` u
 
 Deployment (Heroku)
 ==========
-To ensure that Heroku correctly detects this as a Django app, specify the buildpack to be a Python project:
-```bash
-heroku config:set BUILDPACK_URL=https://github.com/heroku/heroku-buildpack-python
+There are environment variables we need to set up on Heroku.
+```
+BUILDPACK_URL           https://github.com/heroku/heroku-buildpack-python
+# Using Gmail to send emails
+EMAIL_HOST              smtp.gmail.com
+EMAIL_HOST_PASSWORD     <gmail_password>
+EMAIL_HOST_USER         <gmail_account>
+EMAIL_PORT              587
+EMAIL_USE_TLS           1
+SECRET_KEY              <django secret key>
+SITE_URL                <domain of site>
+STRIPE_PUBLIC_KEY       <stripe public key>
+STRIPE_SECRET_KEY       <stripe secret key>
+# If on staging server, set IS_STAGE instead
+IS_PROD                 1
+# Amazon S3 Settings
+S3_BUCKET               <s3 bucket name>
+AWS_ACCESS_KEY_ID       <aws access key id>
+AWS_SECRET_ACCESS_KEY   <aws secret access key>
 ```
 
 Installation of Node, npm, and Bower and configuration of static files happens in the build scripts in ``bin/``.

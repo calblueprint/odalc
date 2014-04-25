@@ -1,0 +1,13 @@
+{% load widget_tweaks %}
+
+<label for="{{ field.id_for_label }}">
+{{ field.label }}
+{{ field|attr:"type:hidden" }}
+<input type="file" id="file_{{ field.id_for_label }}" />
+</label>
+<p id="status_{{ field.id_for_label }}"></p>
+<p id="preview_{{ field.id_for_label }}"><a href="{{ field.value }}">{% if field.value %}Previously Uploaded File{% endif %}</a></p>
+
+{% for error in field.errors %}
+<small class="error">{{ error }}</small>
+{% endfor %}

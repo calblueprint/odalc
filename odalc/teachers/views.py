@@ -1,13 +1,16 @@
+from datetime import datetime as dt
+
 from django.contrib.auth import login, authenticate
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.views.generic import CreateView, FormView, TemplateView
 
 from odalc.base.models import Course, CourseAvailability
 from odalc.base.views import UserDataMixin
+from odalc.mailer import send_odalc_email
 from odalc.teachers.forms import CreateCourseForm, TeacherRegisterForm
 from odalc.teachers.models import TeacherUser
 
-# Create your views here.
+
 class TeacherRegisteration(UserDataMixin, CreateView):
     model = TeacherUser
     template_name = "teachers/teacher_register.html"
@@ -29,27 +32,44 @@ class CreateCourse(UserDataMixin, FormView):
     success_url = reverse_lazy('teachers:dashboard')
 
     def form_valid(self, form):
+        # Create a new Course Instance
         new_course = form.save(commit=False)
-
         new_course.teacher = self.request.user.child
-
+        new_course.status = Course.STATUS_PENDING
         new_course.save()
 
+        # Combine the separate date and time fields to create datetime instances
+        start_datetime1 = dt.combine(form.cleaned_data.get('date1'), form.cleaned_data.get('start_time1'))
+        start_datetime2 = dt.combine(form.cleaned_data.get('date2'), form.cleaned_data.get('start_time2'))
+        start_datetime3 = dt.combine(form.cleaned_data.get('date3'), form.cleaned_data.get('start_time3'))
+        end_datetime1 = dt.combine(form.cleaned_data.get('date1'), form.cleaned_data.get('end_time1'))
+        end_datetime2 = dt.combine(form.cleaned_data.get('date2'), form.cleaned_data.get('end_time2'))
+        end_datetime3 = dt.combine(form.cleaned_data.get('date3'), form.cleaned_data.get('end_time3'))
+
+        # Create a CourseAvailability instance tied to the new Course
         new_course_availability = CourseAvailability(
-            start_datetime1 = form.cleaned_data.get('start_datetime1'),
-            start_datetime2 = form.cleaned_data.get('start_datetime2'),
-            start_datetime3 = form.cleaned_data.get('start_datetime3'),
-
-            end_datetime1 = form.cleaned_data.get('end_datetime1'),
-            end_datetime2 = form.cleaned_data.get('end_datetime2'),
-            end_datetime3 = form.cleaned_data.get('end_datetime3'),
-
+            start_datetime1 = start_datetime1,
+            start_datetime2 = start_datetime2,
+            start_datetime3 = start_datetime3,
+            end_datetime1 = end_datetime1,
+            end_datetime2 = end_datetime2,
+            end_datetime3 = end_datetime3,
             course = new_course
         )
-
         new_course_availability.save()
 
+        # Notify admins and teachers about the course submission
+        url_teacher_dashboard = 'http://' + self.request.get_host() + reverse('teachers:dashboard')
+        url_admin_course_review = 'http://' + self.request.get_host() + reverse('admins:course_review', args=(new_course.id,))
+        context = {
+            'course': new_course,
+            'url_teacher_dashboard': url_teacher_dashboard,
+            'url_admin_course_review': url_admin_course_review,
+        }
+        send_odalc_email('notify_teacher_course_submitted', context, [new_course.teacher.email])
+        send_odalc_email('notify_admins_course_submitted', context, [], cc_admins=True)
         return super(CreateCourse, self).form_valid(form)
+
 
 class TeacherDashboardView(UserDataMixin, TemplateView):
     template_name = "teachers/dashboard.html"

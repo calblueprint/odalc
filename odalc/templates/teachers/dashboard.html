@@ -1,8 +1,7 @@
 {% extends "base/base.html" %}
 
-
 {% block body %}
-
+<div class="row"><div class="large-12 columns">
 <h1>Teacher Dashboard</h1>
 
 <h3>Profile</h3>
@@ -17,5 +16,5 @@
 {% endfor %}
 </ul>
 <a href="{% url "teachers:create-course" %}">Create A New Course</a>
-
+</div></div>
 {% endblock %}
