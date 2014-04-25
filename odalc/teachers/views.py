@@ -24,7 +24,7 @@ class TeacherRegisteration(UserDataMixin, CreateView):
         login(self.request, user)
         return a
 
-class TeacherEdit(UserDataMixin, UpdateView):
+class TeacherEditView(UserDataMixin, UpdateView):
     model = TeacherUser
     template_name = "teachers/teacher_edit.html"
     form_class = TeacherEditForm

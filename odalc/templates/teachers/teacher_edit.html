@@ -1,0 +1,17 @@
+{% extends "base/base.html" %}
+
+{% load staticfiles %}
+
+{% block body %}
+<div class='row'>
+  <h1>Update for {{ user.email }}</h1>
+  <form action="{% url "teachers:edit" pk %}" method="POST">
+    {% csrf_token %}
+    <ul class='form-list'>
+      {{ form.as_ul }}
+    </ul>
+    <button id="save_feedback" class='large success' type="submit">Submit</button>
+  </form>
+</div>
+
+{% endblock %}
