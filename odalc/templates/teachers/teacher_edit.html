@@ -3,15 +3,50 @@
 {% load staticfiles %}
 
 {% block body %}
-<div class='row'>
-  <h1>Update for {{ user.email }}</h1>
-  <form method="POST">
-    {% csrf_token %}
-    <ul class='form-list'>
-      {{ form.as_ul }}
-    </ul>
-    <button id="save_feedback" class='large success' type="submit">Submit</button>
-  </form>
+
+<div class="row white-section">
+    <div class="large-12 columns">
+        <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+
+          {% for error in form.non_field_errors %}
+          <div data-alert class="alert-box alert">
+            {{ error }}
+            <a href="#" class="close">&times;</a>
+          </div>
+          {% endfor %}
+
+          {% include "base/partials/formfield.html" with field=form.first_name %}
+          {% include "base/partials/formfield.html" with field=form.last_name %}
+          {% include "base/partials/formfield.html" with field=form.organization %}
+          {% include "base/partials/formfield.html" with field=form.position %}
+          {% include "base/partials/formfield.html" with field=form.street_address %}
+          {% include "base/partials/formfield.html" with field=form.city %}
+          {% include "base/partials/formfield.html" with field=form.zipcode %}
+          {% include "base/partials/formfield.html" with field=form.phone %}
+          {% include "base/partials/formfield.html" with field=form.about %}
+          {% include "base/partials/formfield.html" with field=form.experience %}
+          {% include "base/partials/hidden_img_uploadfield.html" with field=form.picture %}
+          {% include "base/partials/hidden_file_uploadfield.html" with field=form.resume %}
+
+          <input class="button success right" type="submit" value="Save" />
+        </form>
+    </div>
 </div>
 
+{% endblock %}
+
+{% block javascripts %}
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+<script src="{% static "base/js/s3upload.js" %}"></script>
+{% include "base/partials/img_uploadjs.html" with field=form.picture %}
+{% include "base/partials/file_uploadjs.html" with field=form.resume %}
+<script>
+$().ready(function() {
+    $('#file_{{ form.picture.id_for_label }}').on("change", s3_upload_{{ form.picture.id_for_label }});
+});
+$().ready(function() {
+    $('#file_{{ form.resume.id_for_label }}').on("change", s3_upload_{{ form.resume.id_for_label }});
+});
+</script>
 {% endblock %}
