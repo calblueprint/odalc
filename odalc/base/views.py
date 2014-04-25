@@ -246,7 +246,7 @@ class SignS3View(View):
         url = 'https://%s.s3.amazonaws.com/%s' % (S3_BUCKET, object_name)
         content = json.dumps({
             #'signed_request': signed_request,
-            'signed_request': '%s?AWSAccessKeyId=%s&Expires=%d&Signature=%s' % (url, get_params),
+            'signed_request': '%s?%s' % (url, get_params),
             'url': url
         })
 
