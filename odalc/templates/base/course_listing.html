@@ -1,0 +1,102 @@
+{% extends "base/base.html" %}
+{% block body %}
+
+<div class="row white-section"><div class="large-12 columns">
+
+<dl class="tabs" data-tab>
+    <dd class="active"><a href="#panel2-1">Upcoming</a></dd>
+    <dd><a href="#panel2-2">Past</a></dd>
+    <dd><a href="#panel2-3">All</a></dd>
+</dl>
+
+<div class="tabs-content">
+    <div class="content active" id="panel2-1">
+        {% for course in upcoming_courses %}
+            <div class="row">
+                <div class="small-9 columns"> 
+                    <div class="row">
+                        <div class="small-12 columns">
+                        <a href="{% url "courses:detail" course.pk %}"> {{ course.title }}</a> 
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="small-12 columns">
+                            <p> {{ course.short_description }} </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="small-6 columns">Teacher: {{ course.teacher.first_name }} {{ course.teacher.last_name }}</div>
+                        <div class="small-3 columns">{{ course.skill_level }}</div>
+                        <div class="small-3 columns">{{ course.start_datetime|date:'D, N d Y' }}</div>
+                    </div>
+                </div>
+                <div class="small-3 columns"> <img src="{{ course.image }}"> </img></div>
+            </div>
+            <hr/>
+            <br/>
+        {% empty %}
+            <p> There are no upcoming courses right now. Check again later! </p>
+        {% endfor %}
+  </div>
+  <div class="content" id="panel2-2">
+        <div class="content" id="panel2-1">
+        {% for course in past_courses %}
+            <div class="row">
+                <div class="small-9 columns"> 
+                    <div class="row">
+                        <div class="small-12 columns">
+                        <a href="{% url "courses:detail" course.pk %}"> {{ course.title }}</a> 
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="small-12 columns">
+                            <p> {{ course.short_description }} </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="small-6 columns">Teacher: {{ course.teacher.first_name }} {{ course.teacher.last_name }}</div>
+                        <div class="small-3 columns">{{ course.skill_level }}</div>
+                        <div class="small-3 columns">{{ course.start_datetime|date:'D, N d Y' }}</div>
+                    </div>
+                </div>
+                <div class="small-3 columns"> <img src="{{ course.image }}"> </img></div>
+            </div>
+            <hr/>
+            <br/>
+        {% empty %}
+            <p> There are no past courses right now. Check again later! </p>
+        {% endfor %}
+        </div>
+    </div>
+    <div class="content" id="panel2-3">
+        {% for course in all_courses %}
+            <div class="row">
+                <div class="small-9 columns"> 
+                    <div class="row">
+                        <div class="small-12 columns">
+                        <a href="{% url "courses:detail" course.pk %}"> {{ course.title }}</a> 
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="small-12 columns">
+                            <p> {{ course.short_description }} </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="small-6 columns">Teacher: {{ course.teacher.first_name }} {{ course.teacher.last_name }}</div>
+                        <div class="small-3 columns">{{ course.skill_level }}</div>
+                        <div class="small-3 columns">{{ course.start_datetime|date:'D, N d Y' }}</div>
+                    </div>
+                </div>
+                <div class="small-3 columns"> <img src="{{ course.image }}"> </img></div>
+            </div>
+            <hr/>
+            <br/>
+        {% empty %}
+            <p> There are no courses right now. Check again later! </p>
+        {% endfor %}
+    </div>
+</div>
+
+</div></div> 
+{% endblock %}

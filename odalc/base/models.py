@@ -57,14 +57,14 @@ class User(PermissionsMixin, AbstractBaseUser):
 
 
 class Course(models.Model):
-    SKILL_BEGINNER = 'BEG'
-    SKILL_INTERMEDIATE = 'INT'
-    SKILL_ADVANCED = 'ADV'
+    SKILL_BEGINNER = 'Beginner'
+    SKILL_INTERMEDIATE = 'Intermediate'
+    SKILL_ADVANCED = 'Advanced'
 
     SKILL_CHOICES = (
-        (SKILL_BEGINNER,'Beginner'),
-        (SKILL_INTERMEDIATE,'Intermediate'),
-        (SKILL_ADVANCED,'Advanced')
+        (SKILL_BEGINNER, SKILL_BEGINNER),
+        (SKILL_INTERMEDIATE, SKILL_INTERMEDIATE),
+        (SKILL_ADVANCED, SKILL_ADVANCED)
     )
 
     STATUS_PENDING = 'PEN'
@@ -88,7 +88,7 @@ class Course(models.Model):
     start_datetime = models.DateTimeField(blank=True, null=True)
     end_datetime = models.DateTimeField(blank=True, null=True)
     prereqs = models.TextField()
-    skill_level = models.CharField(max_length=3, choices=SKILL_CHOICES)
+    skill_level = models.CharField(max_length=12, choices=SKILL_CHOICES)
     cost = models.DecimalField(
         max_digits=5,
         decimal_places=2,
