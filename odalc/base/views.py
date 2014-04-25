@@ -12,6 +12,7 @@ from django.shortcuts import redirect
 from django.utils.decorators import method_decorator
 from django.views.decorators.debug import sensitive_post_parameters
 from django.views.generic import DetailView, UpdateView, TemplateView, FormView, View
+from django.db.models import Q
 
 from odalc.base.forms import EditCourseForm
 from odalc.base.models import Course, User
@@ -168,9 +169,9 @@ class CourseListingView(UserDataMixin, TemplateView):
         context = super(CourseListingView, self).get_context_data(**kwargs)
         now = datetime.datetime.now()
         month_from_now = now + datetime.timedelta(days=30)
-        context['all_courses'] = Course.objects.all()
+        context['all_courses'] = Course.objects.filter(Q(status = Course.STATUS_ACCEPTED) | Q(status = Course.STATUS_FINISHED))
         context['past_courses'] = Course.objects.filter(status = Course.STATUS_FINISHED)
-        context['upcoming_courses'] = Course.objects.filter(start_datetime__range = [now, month_from_now])
+        context['upcoming_courses'] = Course.objects.filter(start_datetime__range = [now, month_from_now], status = Course.STATUS_ACCEPTED)
         return context
 
 class HomePageView(UserDataMixin, TemplateView):

@@ -30,7 +30,7 @@
                         <div class="small-3 columns">{{ course.start_datetime|date:'D, N d Y' }}</div>
                     </div>
                 </div>
-                <div class="small-3 columns"> <img src="{{ course.image.url }}"> </img></div>
+                <div class="small-3 columns"> <img src="{{ course.image }}"> </img></div>
             </div>
             <hr/>
             <br/>
@@ -39,7 +39,7 @@
         {% endfor %}
   </div>
   <div class="content" id="panel2-2">
-        <div class="content active" id="panel2-1">
+        <div class="content" id="panel2-1">
         {% for course in past_courses %}
             <div class="row">
                 <div class="small-9 columns"> 
@@ -59,7 +59,7 @@
                         <div class="small-3 columns">{{ course.start_datetime|date:'D, N d Y' }}</div>
                     </div>
                 </div>
-                <div class="small-3 columns"> <img src="{{ course.image.url }}"> </img></div>
+                <div class="small-3 columns"> <img src="{{ course.image }}"> </img></div>
             </div>
             <hr/>
             <br/>
@@ -68,7 +68,7 @@
         {% endfor %}
         </div>
     </div>
-    <div class="content active" id="panel2-3">
+    <div class="content" id="panel2-3">
         {% for course in all_courses %}
             <div class="row">
                 <div class="small-9 columns"> 
@@ -88,7 +88,7 @@
                         <div class="small-3 columns">{{ course.start_datetime|date:'D, N d Y' }}</div>
                     </div>
                 </div>
-                <div class="small-3 columns"> <img src="{{ course.image.url }}"> </img></div>
+                <div class="small-3 columns"> <img src="{{ course.image }}"> </img></div>
             </div>
             <hr/>
             <br/>
