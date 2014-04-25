@@ -60,9 +60,10 @@
         </tr>
     </table>
 
-    <canvas id="myChart" width="400" height="400"></canvas>
+    <canvas id="myChart" width="400" height="200"></canvas>
+    <br><br>
 
-    <b> Additional comments or suggestions about the course and/or the instructor: </b>
+    <h5><b> Additional comments or suggestions about the course and/or the instructor: </b></h5>
     {% for form in feedback_forms %}
     <h5> Response {{ forloop.counter }} </h5>
     <p> &emsp;{{ form.other_topics }} </p>
@@ -81,9 +82,9 @@ $(document).ready(function() {
         datasets : [
             {% for question in visualization %}
                 {
-                    fillColor : "rgba(220,220,220,0.2)",
-                    strokeColor : "rgba(220,220,220,1)",
-                    pointColor : "rgba(220,220,220,1)",
+                    fillColor : "rgba(200,200,200,0.0)",
+                    strokeColor : "rgba(200,200,200,0.7)",
+                    pointColor : "rgba(200,200,200,1)",
                     pointStrokeColor : "#fff",
                     data : {{ question }}
                 },
