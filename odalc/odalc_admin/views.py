@@ -115,8 +115,6 @@ class CourseFeedbackView(UserDataMixin, DetailView):
         context['q6_avg'] = forms.aggregate(Avg('course_inspiring'))['course_inspiring__avg']
 
         visualization = []
-        for i in range(6):
-            visualization.append([])
         scores = forms.values_list(
             'knowledgeable_of_subject',
             'encourages_questions',
@@ -125,9 +123,8 @@ class CourseFeedbackView(UserDataMixin, DetailView):
             'would_recommend',
             'course_inspiring'
             )
-        for student in scores:
-            for index, score in enumerate(student):
-                visualization[index].append(score)
+        for index, item in enumerate(scores):
+            visualization.append(list(item))
         context['visualization'] = visualization 
 
         return context
