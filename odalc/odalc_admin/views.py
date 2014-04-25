@@ -106,23 +106,20 @@ class CourseFeedbackView(UserDataMixin, DetailView):
         forms = course.coursefeedback_set.all()
         context = super(CourseFeedbackView, self).get_context_data(**kwargs)
         context['feedback_forms'] = forms
-        context['num_forms'] = course.coursefeedback_set.count()
-        context['q1_avg'] = forms.aggregate(Avg('knowledgeable_of_subject'))['knowledgeable_of_subject__avg']
-        context['q2_avg'] = forms.aggregate(Avg('encourages_questions'))['encourages_questions__avg']
-        context['q3_avg'] = forms.aggregate(Avg('teaching_effectiveness'))['teaching_effectiveness__avg']
-        context['q4_avg'] = forms.aggregate(Avg('applicable_to_needs'))['applicable_to_needs__avg']
-        context['q5_avg'] = forms.aggregate(Avg('would_recommend'))['would_recommend__avg']
-        context['q6_avg'] = forms.aggregate(Avg('course_inspiring'))['course_inspiring__avg']
-
-        visualization = []
-        scores = forms.values_list(
+        questions = [
             'knowledgeable_of_subject',
             'encourages_questions',
             'teaching_effectiveness',
             'applicable_to_needs',
             'would_recommend',
             'course_inspiring'
-            )
+        ]
+        context['num_forms'] = course.coursefeedback_set.count()
+        for index, question in enumerate(questions):
+            context['q'+ str(index+1) +'_avg'] = forms.aggregate(Avg(question))[question + '__avg']
+
+        visualization = []
+        scores = forms.values_list(*questions)
         for index, item in enumerate(scores):
             visualization.append(list(item))
         context['visualization'] = visualization 
