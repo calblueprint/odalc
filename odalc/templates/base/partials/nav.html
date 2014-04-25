@@ -23,8 +23,7 @@
               {% endif %}
               <li><a href="{% url "logout" %}">Logout</a></li>
           {% else %}
-              <li><a href="{% url "login" %}?next={{ request.path }}">Teacher Login</a></li>
-              <li class="active"><a href="{% url "login" %}?next={{ request.path }}">Student Login</a></li>
+              <li class="active"><a href="{% url "login" %}?next={{ request.path }}">Login</a></li>
           {% endif %}
           </ul>
 

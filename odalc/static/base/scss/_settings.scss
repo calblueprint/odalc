@@ -13,10 +13,10 @@
 @import "foundation/functions";
 
 // COLORS
-$light-primary-color: #008cba;
-$light-secondary-color: #dddddd;
+$light-primary-color: #567EBB;
+$light-secondary-color: #DCE0E6;
 
-$dark-primary-color: #333333;
+$dark-primary-color: #1F1F20;
 $dark-secondary-color: #888888;
 
 // $experimental: true;
@@ -62,8 +62,8 @@ $dark-secondary-color: #888888;
 // $default-float: left;
 
 // We use these as default colors throughout
-// $primary-color: #008CBA;
-// $secondary-color: #e7e7e7;
+$primary-color: #567EBB;
+$secondary-color: #606D80;
 // $alert-color: #f04124;
 // $success-color: #43AC6A;
 // $warning-color: #f08a24;
@@ -1138,7 +1138,7 @@ $topbar-bg-color: $dark-primary-color;
 // $topbar-bg: $topbar-bg-color;
 
 // Height and margin
-// $topbar-height: 45px;
+ $topbar-height: 65px;
 // $topbar-margin-bottom: 0;
 
 // Controlling the styles for the title in the top bar
@@ -1164,7 +1164,7 @@ $topbar-bg-color: $dark-primary-color;
 // $topbar-link-hover-lightness: -10%; // Darken by 10%
 // $topbar-link-bg-hover: #272727;
 $topbar-link-bg-active: $light-primary-color;
-// $topbar-link-bg-active-hover: scale-color($primary-color, $lightness: -14%);
+$topbar-link-bg-active-hover: scale-color($light-primary-color, $lightness: -14%);
 // $topbar-link-font-family: $body-font-family;
 // $topbar-link-text-transform: none;
 // $topbar-link-padding: $topbar-height / 3;
