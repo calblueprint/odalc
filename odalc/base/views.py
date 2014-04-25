@@ -1,5 +1,6 @@
 import time, json, base64, hmac, urllib
 from hashlib import sha1
+from itertools import chain
 
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth.forms import AuthenticationForm
@@ -174,9 +175,21 @@ class CourseListingView(UserDataMixin, TemplateView):
         context['upcoming_courses'] = Course.objects.filter(start_datetime__range = [now, month_from_now], status = Course.STATUS_ACCEPTED)
         return context
 
+"""Landing page for the website. Also displays the next three upcoming courses
+as "featured courses". If there are not enough, it will display past courses as well."""
 class HomePageView(UserDataMixin, TemplateView):
     template_name = 'base/home.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(HomePageView, self).get_context_data(**kwargs)
+        num_available = Course.objects.filter(status = Course.STATUS_ACCEPTED).count() 
+        if num_available >= 3:
+            context['featured_courses'] = Course.objects.filter(status = Course.STATUS_ACCEPTED).order_by('start_datetime')[:3]
+        else:
+            upcoming_courses = Course.objects.filter(status = Course.STATUS_ACCEPTED).order_by('start_datetime')[:num_available] 
+            past_courses = Course.objects.filter(status = Course.STATUS_FINISHED).order_by('-start_datetime')[:3-num_available] 
+            context['featured_courses'] = list(chain(upcoming_courses, past_courses))
+        return context
 
 class AboutPageView(UserDataMixin, TemplateView):
     template_name = 'base/about.html'

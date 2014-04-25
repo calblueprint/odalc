@@ -25,49 +25,28 @@
   <!-- Upcoming courses title/description -->
   <div class="row course-items-description">
     <div class="large-12 columns">
-      <h3>Upcoming courses</h3>
+      <h3>Featured courses</h3>
     </div>
   </div>
 
   <!-- Upcoming courses items -->
-  <div class="row">
-    <div class="course-box" onclick="window.location='http://google.com'">
-      <div class="top-shelf">
-        <div class="title-wrap">
-          <h4>Introduction to Yelp</h4>
-        </div>
-        <img src="{% static "base/img/yelp_class.png"%}" alt="Yelp people having fun"/>
-      </div>
-      <div class="bottom-shelf">
-        <h4>By John Du <span class="date">| Starting January 24, 2014</span></h4>
-      </div>
-    </div>
 
+  <div class="row">
+    {% for course in featured_courses %}
     <div class="course-box">
-      <a href="{% url "course_mock" %}">
+      <a href="{% url "courses:detail" course.pk %}">
       <div class="top-shelf">
         <div class="title-wrap">
-          <h4>Web development 101</h4>
+          <h4>{{ course.title }}</h4>
         </div>
-        <img src="{% static "base/img/coding.jpg"%}" alt="Yelp people having fun"/>
+        <img src="{{ course.image }}"></img>
       </div>
       <div class="bottom-shelf">
-        <h4>By Sunny Dee <span class="date">| Starting March 11, 2014</span></h4>
+        <h4>With {{ course.teacher.first_name }} {{ course.teacher.last_name }}<span class="date"> | {{ course.start_datetime|date:'N d Y' }}</span></h4>
       </div>
       </a>
     </div>
-
-    <div class="course-box">
-      <div class="top-shelf">
-        <div class="title-wrap">
-          <h4>Public Speaking Seminar</h4>
-        </div>
-        <img src="{% static "base/img/classroom_boy_small.jpg"%}" alt="Yelp people having fun"/>
-      </div>
-      <div class="bottom-shelf">
-        <h4>By Mr. Atsu <span class="date">| Starting April 18, 2014</span></h4>
-      </div>
-    </div>
+    {% endfor %}
   </div>
 
   <!-- Footer -->
