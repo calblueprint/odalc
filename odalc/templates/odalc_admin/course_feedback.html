@@ -89,7 +89,7 @@ $(document).ready(function() {
                 },
             {% endfor %}
             {
-                fillColor : "rgba(151,187,205,0.5)",
+                fillColor : "rgba(151,187,205,0.3)",
                 strokeColor : "rgba(151,187,205,1)",
                 pointColor : "rgba(151,187,205,1)",
                 pointStrokeColor : "#fff",
@@ -98,7 +98,11 @@ $(document).ready(function() {
         ]
     }
     var options ={
-        bezierCurve: false
+        bezierCurve: false,
+        scaleOverride : true,
+        scaleSteps : 6,
+        scaleStepWidth : 1,
+        scaleStartValue : 0
     }
     new Chart(ctx).Line(data, options); 
 });
