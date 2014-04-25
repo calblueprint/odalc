@@ -28,7 +28,18 @@ class TeacherRegisterForm(UserRegisterForm):
 class TeacherEditForm(forms.ModelForm):
     class Meta:
         model = TeacherUser
-        exclude = ('email', 'info_source')
+        fields = ('first_name',
+                  'last_name',
+                  'organization',
+                  'position',
+                  'street_address',
+                  'city',
+                  'zipcode',
+                  'phone',
+                  'about',
+                  'picture',
+                  'resume',
+                  'experience')
 
 class CreateCourseForm(forms.ModelForm):
     date1 = forms.DateField(label='First Choice for Date to Teach Course')

@@ -13,7 +13,6 @@ class TeacherUser(User):
             (INFO_SOURCE_OTHER, 'Other')
         )
 
-
     organization = models.CharField(max_length=255, blank=True)
     position = models.CharField(max_length=255, blank=True)
     street_address = models.CharField(max_length=255, blank=True)
