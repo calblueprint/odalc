@@ -25,18 +25,3 @@
 </div>
 
 {% endblock %}
-
-{% block javascripts %}
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
-<script src="{% static "base/js/s3upload.js" %}"></script>
-{% include "base/partials/img_uploadjs.html" with field=form.picture %}
-{% include "base/partials/file_uploadjs.html" with field=form.resume %}
-<script>
-$().ready(function() {
-    $('#file_{{ form.picture.id_for_label }}').on("change", s3_upload_{{ form.picture.id_for_label }});
-});
-$().ready(function() {
-    $('#file_{{ form.resume.id_for_label }}').on("change", s3_upload_{{ form.resume.id_for_label }});
-});
-</script>
-{% endblock %}
