@@ -5,7 +5,7 @@ from django.contrib.auth.views import password_change
 urlpatterns = patterns('',
     url(r'^register/$', StudentRegisterView.as_view(), name='register'),
     url(r'^edit/$', StudentEditView.as_view(), name='edit'),
-    url(r'^password_change/$', password_change, {'template_name': 'teachers/password_change.html',
-                                                 'post_change_redirect': 'teachers:dashboard'})
+    url(r'^password_change/$', password_change, {'template_name': 'students/password_change.html',
+                                                 'post_change_redirect': 'students:dashboard'})
     url(r'^$', StudentDashboardView.as_view(), name='dashboard'),
 )
