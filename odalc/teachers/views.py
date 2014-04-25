@@ -7,7 +7,7 @@ from django.views.generic import CreateView, FormView, TemplateView
 from odalc.base.models import Course, CourseAvailability
 from odalc.base.views import UserDataMixin
 from odalc.mailer import send_odalc_email
-from odalc.teachers.forms import CreateCourseForm, TeacherRegisterForm
+from odalc.teachers.forms import CreateCourseForm, TeacherRegisterForm, TeacherEditForm
 from odalc.teachers.models import TeacherUser
 
 
@@ -24,6 +24,11 @@ class TeacherRegisteration(UserDataMixin, CreateView):
         login(self.request, user)
         return a
 
+class TeacherEdit(UserDataMixin, UpdateView):
+    model = TeacherUser
+    template_name = "teachers/teacher_edit.html"
+    form_class = TeacherEditForm
+    success_url = reverse_lazy('teachers:dashboard')
 
 class CreateCourse(UserDataMixin, FormView):
     model = Course
