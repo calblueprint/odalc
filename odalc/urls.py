@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.conf.urls import patterns, include, url
 from django.conf.urls.static import static
+from django.contrib.auth.views import password_change
 from django.views.generic import TemplateView
 
 from odalc.base.views import (
@@ -19,6 +20,8 @@ urlpatterns = patterns('',
     url(r'^students/', include('odalc.students.urls', namespace='students')),
     url(r'^accounts/login/', LoginView.as_view(), name='login'),
     url(r'^accounts/logout/', LogoutView.as_view(), name='logout'),
+    url(r'^accounts/password_change/', password_change, {'template_name': 'base/password_change.html',
+                                                         'post_change_redirect': 'teachers:dashboard'}),
     url(r'^about/', AboutPageView.as_view(), name='about'),
     url(r'^donate/', DonatePageView.as_view(), name='donate'),
     url(r'^coursepage/', TemplateView.as_view(template_name='mockups/course_page.html'), name='course_mock'),
