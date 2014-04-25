@@ -71,8 +71,12 @@ class CourseDetailView(UserDataMixin, DetailView):
         if self.user.is_authenticated():
             context['email'] = self.user.email
             context['in_class'] = course.students.filter(id=self.user.id).exists()
+            if self.is_student_user:
+                context['submitted_feedback'] = course.coursefeedback_set.filter(student=self.user.id).exists()
+                context['is_past_start_date'] = datetime.datetime.now().date() >= course.start_datetime.date()
         context['cost_in_cents'] = int(course.cost * 100)
         context['course_full'] = course.students.count() >= course.size
+        context['course_finished'] = course.status == Course.STATUS_FINISHED
         context['open_seats'] = course.size - course.students.count()
         context['is_owner'] = (self.user.has_perm('base.teacher_permission') and course.teacher.email == self.user.email)
         return context
@@ -80,7 +84,7 @@ class CourseDetailView(UserDataMixin, DetailView):
     def dispatch(self, request, *args, **kwargs):
         self.user = self.request.user
         course = self.get_object()
-        if (course.status == Course.STATUS_ACCEPTED or
+        if (course.status == Course.STATUS_ACCEPTED or course.status == Course.STATUS_FINISHED or
             (self.user.has_perm('base.teacher_permission') and course.teacher.email == self.user.email) or
             self.user.has_perm('base.admin_permission')):
             return super(CourseDetailView, self).dispatch(request, *args, **kwargs)

@@ -16,24 +16,41 @@
           <p>{{ course.short_description }}</p>
         </div>
         <div class="large-4 large-offset-1 columns center">
+
         {% if user.is_authenticated %}
-            {% if course_full %}
-            <button class="enroll-btn large success disabled">Course Full</button>
-            {% elif in_class %}
-            <button class="enroll-btn large success disabled">Already Enrolled</button>
-            {% elif is_teacher_user %}
-            <button class="enroll-btn large success disabled">Cannot Enroll</button>
+            {% if is_student_user %}
+                {% if in_class %}
+                    {% if is_past_start_date %}
+                        {% if not submitted_feedback %}
+                        <form action="{% url "courses:feedback" course.id %}" method="GET">
+                            <button class="enroll-btn large success">Submit Feedback</button>
+                        </form>
+                        {% else %}
+                        <button class="enroll-btn large success disabled">Thanks for participating!</button>
+                        {% endif %}         
+                    {% else %}           
+                    <button class="enroll-btn large success disabled">Already Enrolled</button>
+                    {% endif %}
+                {% elif course_full %}
+                <button class="enroll-btn large success disabled">Course Full</button>
+                {% else %}
+                <form method='POST'>
+                    {% csrf_token %}
+                    <button id="enroll-btn" class="enroll-btn large success">Enroll Now</button>
+                </form>                
+                {% endif %}
             {% else %}
-            <form method='POST'>
-                {% csrf_token %}
-                <button id="enroll-btn" class="enroll-btn large success">Enroll Now</button>
-            </form>
+            <button class="enroll-btn large success disabled">Cannot Enroll</button>
             {% endif %}
         {% else %}
+            {% if course_finished %}
+            <button class="enroll-btn large success disabled">This course has finished.</button>
+            {% else %}
             <form action="{% url "login" %}" method="GET">
                 <button class="enroll-btn large success">Enroll now</button>
                 <input type="hidden" name="next" value="{{ request.path }}" />
             </form>
+            {% endif %}
         {% endif %}
         </div>
       </div>
