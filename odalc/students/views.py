@@ -2,7 +2,7 @@ from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth import login, authenticate
 from django.shortcuts import redirect
-from django.views.generic import CreateView, TemplateView
+from django.views.generic import CreateView, TemplateView, UpdateView
 
 from odalc.base.models import Course
 from odalc.base.views import UserDataMixin
@@ -25,7 +25,7 @@ class StudentRegisterView(UserDataMixin, CreateView):
         login(self.request, user)
         return resp
 
-class StudentEditView(UserDataMixin, CreateView):
+class StudentEditView(UserDataMixin, UpdateView):
     model = StudentUser
     template_name = "students/student_edit.html"
     form_class = StudentEditForm
