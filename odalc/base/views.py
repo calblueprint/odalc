@@ -12,6 +12,7 @@ from django.shortcuts import redirect
 from django.utils.decorators import method_decorator
 from django.views.decorators.debug import sensitive_post_parameters
 from django.views.generic import DetailView, UpdateView, TemplateView, FormView, View
+from django.db.models import Q
 
 from odalc.base.forms import EditCourseForm
 from odalc.base.models import Course, User
@@ -20,6 +21,7 @@ from odalc.students.models import StudentUser
 from odalc.teachers.models import TeacherUser
 
 import stripe
+import datetime
 
 
 class UserDataMixin(object):
@@ -158,6 +160,19 @@ class CourseEditView(UserDataMixin, UpdateView):
             # Should never happen
             return reverse('home')
 
+"""Main view for displaying the courses offered. There are three categories of courses: 
+all courses, past courses, and upcoming courses (courses coming up in the next month)"""
+class CourseListingView(UserDataMixin, TemplateView):
+    template_name = 'base/course_listing.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(CourseListingView, self).get_context_data(**kwargs)
+        now = datetime.datetime.now()
+        month_from_now = now + datetime.timedelta(days=30)
+        context['all_courses'] = Course.objects.filter(Q(status = Course.STATUS_ACCEPTED) | Q(status = Course.STATUS_FINISHED))
+        context['past_courses'] = Course.objects.filter(status = Course.STATUS_FINISHED)
+        context['upcoming_courses'] = Course.objects.filter(start_datetime__range = [now, month_from_now], status = Course.STATUS_ACCEPTED)
+        return context
 
 class HomePageView(UserDataMixin, TemplateView):
     template_name = 'base/home.html'

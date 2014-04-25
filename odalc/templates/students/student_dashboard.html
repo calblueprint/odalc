@@ -12,16 +12,14 @@
         <tr> 
             <th> Course </th>
             <th> Teacher </th>
-            <th> Start </th>
-            <th> End </th>
+            <th> Date </th>
             <th> Skill Level </th>
         </tr>
     {% for course in courses_taken %}
         <tr>
             <td> <a href="{% url "courses:detail" course.pk %}"> {{ course.title }}</a> </td>
             <td> {{ course.teacher.first_name }} {{ course.teacher.last_name }} </td>
-            <td> {{ course.start_datetime }} </td>
-            <td> {{ course.end_datetime }} </td>
+            <td> {{ course.start_datetime|date:'D, N d Y' }} </td>
             <td> {{ course.skill_level }} </td>
         </tr>
     {% empty %}

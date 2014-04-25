@@ -3,10 +3,11 @@
 
 <div class="row"><div class="large-12 columns">
 <h1>Course Feedback</h1>
-    <p><b>Course:</b> {{ course.title }} </p>
-    <p><b>Teacher:</b> {{ course.teacher.first_name }} {{ course.teacher.last_name }}</p>
-    <p><b>Responses:</b> {{ num_forms }}
-
+    <p>
+        <b>Course:</b> {{ course.title }}</br>
+        <b>Teacher:</b> {{ course.teacher.first_name }} {{ course.teacher.last_name }}</br>
+        <b>Responses:</b> {{ num_forms }}</br>
+    </p>
     <table>
         <tr>
             <th> Question </th>
@@ -20,50 +21,91 @@
             {% for form in feedback_forms %}
             <td> {{ form.knowledgeable_of_subject }} </td>
             {% endfor %}
-            <td> {{ q1_avg }} </td>
+            <td> {{ q1_avg|floatformat:"-2" }} </td>
         </tr>
         <tr>
             <td>  The instructor encouraged questions and/or discussion. </td>
             {% for form in feedback_forms %}
             <td> {{ form.encourages_questions }} </td>
             {% endfor %}
-            <td> {{ q2_avg }} </td>
+            <td> {{ q2_avg|floatformat:"-2" }} </td>
         </tr>
         <tr>
             <td>  The instructor was effective in teaching the material. </td>
             {% for form in feedback_forms %}
             <td> {{ form.teaching_effectiveness }} </td>
             {% endfor %}
-            <td> {{ q3_avg }} </td>
+            <td> {{ q3_avg|floatformat:"-2" }} </td>
         </tr>
         <tr>
             <td>  The course was applicable to my needs. </td>
             {% for form in feedback_forms %}
             <td> {{ form.applicable_to_needs }} </td>
             {% endfor %}
-            <td> {{ q4_avg }} </td>
+            <td> {{ q4_avg|floatformat:"-2" }} </td>
         </tr>
         <tr>
             <td>  I would recommend this course to a friend. </td>
             {% for form in feedback_forms %}
             <td> {{ form.would_recommend }} </td>
             {% endfor %}
-            <td> {{ q5_avg }} </td>
+            <td> {{ q5_avg|floatformat:"-2" }} </td>
         </tr>
         <tr>
             <td>  The course session was inspiring. </td>
             {% for form in feedback_forms %}
             <td> {{ form.course_inspiring }} </td>
             {% endfor %}
-            <td> {{ q6_avg }} </td>
+            <td> {{ q6_avg|floatformat:"-2" }} </td>
         </tr>
     </table>
 
-    <p> Please provide any additional comments or suggestions about the course and/or the instructor. </p>
+    <canvas id="myChart" width="400" height="200"></canvas>
+    <br><br>
+
+    <h5><b> Additional comments or suggestions about the course and/or the instructor: </b></h5>
     {% for form in feedback_forms %}
-    <p> Response {{ forloop.counter }} </p>
-    <p> {{ form.other_topics }} </p>
+    <h5> Response {{ forloop.counter }} </h5>
+    <p> &emsp;{{ form.other_topics }} </p>
     {% endfor %}
 
 </div></div>
+{% endblock %}
+{% block javascripts %}
+<script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/0.2.0/Chart.min.js"></script>
+<script>
+$(document).ready(function() {
+    var ctx = $("#myChart").get(0).getContext("2d");
+    var graph = new Chart(ctx);
+    var data = {
+        labels : ["Question 1","Question 2","Question 3","Question 4","Question 5","Question 6"],
+        datasets : [
+            {% for question in visualization %}
+                {
+                    fillColor : "rgba(200,200,200,0.0)",
+                    strokeColor : "rgba(200,200,200,0.7)",
+                    pointColor : "rgba(200,200,200,1)",
+                    pointStrokeColor : "#fff",
+                    data : {{ question }}
+                },
+            {% endfor %}
+            {
+                fillColor : "rgba(151,187,205,0.3)",
+                strokeColor : "rgba(151,187,205,1)",
+                pointColor : "rgba(151,187,205,1)",
+                pointStrokeColor : "#fff",
+                data : {{ avg_list }}
+            }
+        ]
+    }
+    var options ={
+        bezierCurve: false,
+        scaleOverride : true,
+        scaleSteps : 6,
+        scaleStepWidth : 1,
+        scaleStartValue : 0
+    }
+    new Chart(ctx).Line(data, options); 
+});
+</script>
 {% endblock %}
