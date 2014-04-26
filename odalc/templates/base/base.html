@@ -17,6 +17,16 @@
     {% include "base/partials/nav.html" %}
     {% block body %}
     {% endblock %}
+    {% block footer %}
+    <div class="dark-section">
+        <div class="row">
+            <div class="large-12 columns">
+            <small class="left">&copy; {% now "Y" %} <a href="http://odalc.org">Oakland Digital Arts and Literacy Center Inc.</a></small>
+            <small class="right">Developed by <a href="http://calblueprint.org">Blueprint</a></small>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/foundation/5.2.2/js/foundation.min.js"></script>
