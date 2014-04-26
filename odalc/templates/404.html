@@ -1,13 +1,22 @@
 {% extends "base/base.html" %}
+{% load staticfiles %}
 {% block body %}
 
 <div class="row"><div class="large-12 columns">
 
     <div class='center'>
-        <h1>Unfortunately</h1>
-        <h4>this page DOES NOT EXIST<h4>
-
-        <h2>But these pages do:</h2>
+        <img src="{% static "base/img/shredder.png"%}" alt="shredder"/>
+        <h1>404, Oops there goes your page!</h1>
+        <h3>Thankfully we saved a couple just for you:</h3>
+        <h4>
+            <a href="{% url "home" %}">Home</a>
+            &emsp;&emsp;
+            <a href={% url "about"%}>About</a>
+            &emsp;&emsp;
+            <a href={% url "courses:listing"%}>Courses</a>
+            &emsp;&emsp;
+            <a href={% url "donate"%}>Donate</a>
+        </h4>
     </div>
 
 </div></div>
