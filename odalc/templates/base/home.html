@@ -1,10 +1,9 @@
 {% extends "base/base.html" %}
 {% load staticfiles %}
 
-{% block title %}Welcome to ODALC Courses!{% endblock %}
+{% block title %}Home{% endblock %}
 
 {% block body %}
-  <!-- TODO: FILL THIS SHIT OUT EVENTUALLY -->
   {% if user.is_authenticated %}
   {% else %}
   {% endif %}
@@ -13,9 +12,9 @@
   <div class="main-splash">
     <div class="row">
       <div class="large-7 columns">
-        <h1><strong>Welcome to ODALC</strong></h1>
+        <h1><strong>Courses from Oakland Digital</strong></h1>
         <br>
-        <h2>Take <strong>courses</strong> from the Bay Area's leading <strong>professionals</strong>.</h2>
+        <h2>Taught by the Bay Area's leading <strong>tech & design professionals</strong></h2>
       </div>
       <div class="large-5 columns">
       </div>
@@ -25,7 +24,7 @@
   <!-- Upcoming courses title/description -->
   <div class="row course-items-description">
     <div class="large-12 columns">
-      <h3>Featured courses</h3>
+      <h3>Featured Courses</h3>
     </div>
   </div>
 
@@ -53,9 +52,16 @@
   <div class="gray-section">
     <div class="row">
       <div class="large-7 columns">
-      <h1><strong>Why ODALC | Courses?</strong></h1>
-      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p><p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p><p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?</p>
-      </div>
+        <h1><strong>What is Oakland Digital | Courses?</strong></h1>
+        <p>
+        Oakland Digital Courses are classes taught by the Bay Area's professionals from the tech and design industries.
+        These one-day courses held at the Oakland Digital Arts & Literacy Center are open for anyone to take.
+        Whether it's learning how to make your own website, manage your business' branding, or code your first program, there's something for everybody to take.
+        </p>
+        <p>
+        <a href="{% url "courses:listing" %}">Browse courses &raquo;</a>
+        </p>
+     </div>
     </div>
   </div>
 {% endblock %}
