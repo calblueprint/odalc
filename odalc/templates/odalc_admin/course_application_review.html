@@ -6,76 +6,125 @@
 <link rel="stylesheet" href="{% static "base/css/jquery.timepicker.css" %}" />
 {% endblock %}
 
+{% block title %}Reviewing {{ course.title }}{% endblock %}
+
 {% block body %}
 <div class="row white-section">
-    <div class="large-12 columns">
-        <h1>Instructor Information</h1>
-            <p><b>Name: </b>{{ course.teacher.first_name }} {{ course.teacher.last_name }}</p>
-            <img src="{{course.teacher.picture }}"></img>
-            <p><b>About: </b>{{ course.teacher.about }}</p>
-            <p><b>Experience: </b>{{ course.teacher.experience }}</p>
-            <p><b>Resume: </b> <a href="{{ course.teacher.resume }}">Link</a></p>
-            <p><b>Address: </b>{{ course.teacher.street_address }}, {{ course.teacher.city }} {{ course.teacher.zipcode }}</p>
-            <p><b>Phone: </b>{{ course.teacher.phone }}</p>
-            <p><b>Heard about ODALC from: </b>{{ course.teacher.get_info_source_display }}</p>
+    <div class="medium-12 columns">
+        <h1>Reviewing: {{ course.title }}</h1>
 
-        <h2>Course Information</h2>
-            <form method="POST">
-                {% csrf_token %}
+        <dl class="tabs center" data-tab>
+            <dd class="active"><a href="#panel-instructor-info">Instructor Information</a></dd>
+            <dd><a href="#panel-course-info">Course Information</a></dd>
+        </dl>
 
-                {% for error in form.non_field_errors %}
-                <div data-alert class="alert-box alert">
-                    {{ error }}
-                    <a href="#" class="close">&times;</a>
+        <div class="tabs-content">
+            <div class="content active" id="panel-instructor-info">
+                <div class="row">
+                    <div class="medium-3 columns">
+                        <div class="pic">
+                            <img class="th" src="{{ course.teacher.picture }}" />
+                        </div>
+                        <div class="details">
+                            <ul class="vcard">
+                                <li class="fn">{{ course.teacher.first_name }} {{ course.teacher.last_name }}</li>
+                                <li class="org">{{ course.teacher.organization }}</li>
+                                <li class="role"><i>{{ course.teacher.position }}</i></li>
+                                <li class="resume"><a href="{{ course.teacher.resume }}">View Resume</a></li>
+                                <li class="email"><a href="mailto:{{ course.teacher.email }}">{{ course.teacher.email }}</a></li>
+                                <li class="phone">{{ course.teacher.phone }}</li>
+                                <li class="street-address">{{ course.teacher.street_address }}</li>
+                                <li class="locality">{{ course.teacher.city }}, CA <span class="zip">{{ course.teacher.zipcode }}</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="medium-9 columns">
+                        <div>
+                            <h4>About</h4>
+                            <p>{{ course.teacher.about }}</p>
+                        </div>
+                        <div>
+                            <h4>Experience</h4>
+                            <p>{{ course.teacher.experience }}</p>
+                        </div>
+                        <div>
+                            <h4>Heard About This Program From:</h4>
+                            <p>{{ course.teacher.get_info_source_display }}</p>
+                        </div>
+                    </div>
+
+                    <!--
+                    <p><b>Name: </b>{{ course.teacher.first_name }} {{ course.teacher.last_name }}</p>
+                    <img src="{{course.teacher.picture }}"></img>
+                    <p><b>About: </b>{{ course.teacher.about }}</p>
+                    <p><b>Experience: </b>{{ course.teacher.experience }}</p>
+                    <p><b>Resume: </b> <a href="{{ course.teacher.resume }}">Link</a></p>
+                    <p><b>Address: </b>{{ course.teacher.street_address }}, {{ course.teacher.city }} {{ course.teacher.zipcode }}</p>
+                    <p><b>Phone: </b>{{ course.teacher.phone }}</p>
+                    <p><b>Heard about ODALC from: </b>{{ course.teacher.get_info_source_display }}</p>
+                    -->
                 </div>
-                {% endfor %}
+            </div>
 
-                {% include "base/partials/formfield.html" with field=form.title %}
-                {% include "base/partials/formfield.html" with field=form.short_description %}
-                {% include "base/partials/formfield.html" with field=form.long_description %}
-                {% include "base/partials/formfield.html" with field=form.size %}
-                {% include "base/partials/formfield.html" with field=form.start_datetime %}
-                {% include "base/partials/formfield.html" with field=form.end_datetime %}
-                {% include "base/partials/course_datetimefield.html" with date=form.date start_time=form.start_time end_time=form.end_time %}
-                {% include "base/partials/formfield.html" with field=form.prereqs %}
-                {% include "base/partials/formfield.html" with field=form.skill_level %}
-                {% include "base/partials/formfield.html" with field=form.cost %}
-                {% include "base/partials/formfield.html" with field=form.odalc_cost_split %}
-                {% include "base/partials/hidden_img_uploadfield.html" with field=form.image %}
-                <p><a href="{{ course.course_material }}">View Course Materials</a></p>
-                {% include "base/partials/formfield.html" with field=form.additional_info %}
+            <div class="content" id="panel-course-info">
+                    <form method="POST">
+                        {% csrf_token %}
 
-                {# Hidden form inputs so that we can reuse CourseEditForm for this View #}
-                <input id="{{ form.status.id_for_label }}" type="hidden" name="{{ form.status.html_name }}" value="{{ form.status.value }}"/>
-                {% include "base/partials/hidden_formfield.html" with field=form.course_material %}
+                        {% for error in form.non_field_errors %}
+                        <div data-alert class="alert-box alert">
+                            {{ error }}
+                            <a href="#" class="close">&times;</a>
+                        </div>
+                        {% endfor %}
 
-                <!--Input Buttons (Approve and Deny)-->
-                <input id="approve_course" name="_approve" type="submit" value="Approve" />
-                <input id="deny_course" name="_deny" type="submit" value="Deny" />
-            </form>
-            <p>Course Availability:</p>
-            <table>
-                <tr>
-                    <th> </th>
-                    <th> Start </th>
-                    <th> End </th>
-                </tr>
-                <tr>
-                    <td> Option 1 </td>
-                    <td> {{ course.courseavailability.start_datetime1 }}  </td>
-                    <td> {{ course.courseavailability.end_datetime1 }}  </td>
-                </tr>
-                <tr>
-                    <td> Option 2 </td>
-                    <td> {{ course.courseavailability.start_datetime2 }}  </td>
-                    <td> {{ course.courseavailability.end_datetime2 }}  </td>
-                </tr>
-                <tr>
-                    <td> Option 3 </td>
-                    <td> {{ course.courseavailability.start_datetime3 }}  </td>
-                    <td> {{ course.courseavailability.end_datetime3 }}  </td>
-                </tr>
-            </table>
+                        {% include "base/partials/formfield.html" with field=form.title %}
+                        {% include "base/partials/formfield.html" with field=form.short_description %}
+                        {% include "base/partials/formfield.html" with field=form.long_description %}
+                        {% include "base/partials/formfield.html" with field=form.size %}
+                        {% include "base/partials/formfield.html" with field=form.start_datetime %}
+                        {% include "base/partials/formfield.html" with field=form.end_datetime %}
+                        {% include "base/partials/course_datetimefield.html" with date=form.date start_time=form.start_time end_time=form.end_time %}
+                        {% include "base/partials/formfield.html" with field=form.prereqs %}
+                        {% include "base/partials/formfield.html" with field=form.skill_level %}
+                        {% include "base/partials/formfield.html" with field=form.cost %}
+                        {% include "base/partials/formfield.html" with field=form.odalc_cost_split %}
+                        {% include "base/partials/hidden_img_uploadfield.html" with field=form.image %}
+                        <p><a href="{{ course.course_material }}">View Course Materials</a></p>
+                        {% include "base/partials/formfield.html" with field=form.additional_info %}
+
+                        {# Hidden form inputs so that we can reuse CourseEditForm for this View #}
+                        <input id="{{ form.status.id_for_label }}" type="hidden" name="{{ form.status.html_name }}" value="{{ form.status.value }}"/>
+                        {% include "base/partials/hidden_formfield.html" with field=form.course_material %}
+
+                        <!--Input Buttons (Approve and Deny)-->
+                        <input id="approve_course" name="_approve" type="submit" value="Approve" />
+                        <input id="deny_course" name="_deny" type="submit" value="Deny" />
+                    </form>
+                    <p>Course Availability:</p>
+                    <table>
+                        <tr>
+                            <th> </th>
+                            <th> Start </th>
+                            <th> End </th>
+                        </tr>
+                        <tr>
+                            <td> Option 1 </td>
+                            <td> {{ course.courseavailability.start_datetime1 }}  </td>
+                            <td> {{ course.courseavailability.end_datetime1 }}  </td>
+                        </tr>
+                        <tr>
+                            <td> Option 2 </td>
+                            <td> {{ course.courseavailability.start_datetime2 }}  </td>
+                            <td> {{ course.courseavailability.end_datetime2 }}  </td>
+                        </tr>
+                        <tr>
+                            <td> Option 3 </td>
+                            <td> {{ course.courseavailability.start_datetime3 }}  </td>
+                            <td> {{ course.courseavailability.end_datetime3 }}  </td>
+                        </tr>
+                    </table>
+            </div>
+        </div>
     </div>
 </div>
 

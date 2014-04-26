@@ -1,6 +1,6 @@
 {% extends "base/base.html" %}
-{% block body %}
 
+{% block body %}
 <div class="row white-section"><div class="large-12 columns">
 
 <dl class="tabs" data-tab>
@@ -13,10 +13,10 @@
     <div class="content active" id="panel2-1">
         {% for course in upcoming_courses %}
             <div class="row">
-                <div class="small-9 columns"> 
+                <div class="small-9 columns">
                     <div class="row">
                         <div class="small-12 columns">
-                        <a href="{% url "courses:detail" course.pk %}"> {{ course.title }}</a> 
+                        <a href="{% url "courses:detail" course.pk %}"> {{ course.title }}</a>
                         </div>
                     </div>
                     <div class="row">
@@ -42,10 +42,10 @@
         <div class="content" id="panel2-1">
         {% for course in past_courses %}
             <div class="row">
-                <div class="small-9 columns"> 
+                <div class="small-9 columns">
                     <div class="row">
                         <div class="small-12 columns">
-                        <a href="{% url "courses:detail" course.pk %}"> {{ course.title }}</a> 
+                        <a href="{% url "courses:detail" course.pk %}"> {{ course.title }}</a>
                         </div>
                     </div>
                     <div class="row">
@@ -71,10 +71,10 @@
     <div class="content" id="panel2-3">
         {% for course in all_courses %}
             <div class="row">
-                <div class="small-9 columns"> 
+                <div class="small-9 columns">
                     <div class="row">
                         <div class="small-12 columns">
-                        <a href="{% url "courses:detail" course.pk %}"> {{ course.title }}</a> 
+                        <a href="{% url "courses:detail" course.pk %}"> {{ course.title }}</a>
                         </div>
                     </div>
                     <div class="row">
@@ -98,5 +98,5 @@
     </div>
 </div>
 
-</div></div> 
+</div></div>
 {% endblock %}
