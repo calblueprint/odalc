@@ -22,7 +22,7 @@ SITE_URL = os.environ.get('SITE_URL', 'http://localhost:8000')
 SECRET_KEY = '%=4^u&zuw7teu$lka26@*rox*g=4tdw)nikp$w7!$n61lkw#vn'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False#not IS_PROD
+DEBUG = not IS_PROD
 
 TEMPLATE_DEBUG = not IS_PROD
 
