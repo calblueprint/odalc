@@ -71,43 +71,28 @@
           <ul class="inline-list">
             <!-- Twitter (Customized) --> 
             <li>
+              <div>
               {% if user.is_authenticated %}
                   {% if is_student_user %}
                       {% if in_class %} 
-                      <div>   
                         <a href="https://twitter.com/share" class="twitter-share-button" data-text="Check out this class I'm taking at Oakland Digital!" data-via="ODALC" data-size="large" data-hashtags="OaklandDigitalCourses">Tweet</a>
-                        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                      </div>
                       {% else %}
-                      <div>
                         <a href="https://twitter.com/share" class="twitter-share-button" data-text="Check out this class at Oakland Digital!" data-via="ODALC" data-size="large" data-hashtags="OaklandDigitalCourses">Tweet</a>
-                        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                      </div>
                       {% endif %}
                   {% elif is_teacher_user %}
                       {% if is_owner %}
-                      <div>
                         <a href="https://twitter.com/share" class="twitter-share-button" data-text="Check out this class I'm teaching at Oakland Digital!" data-via="ODALC" data-size="large" data-hashtags="OaklandDigitalCourses">Tweet</a>
-                        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                      </div>
                       {% else %}
-                      <div>
                         <a href="https://twitter.com/share" class="twitter-share-button" data-text="Check out this class at Oakland Digital!" data-via="ODALC" data-size="large" data-hashtags="OaklandDigitalCourses">Tweet</a>
-                        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                      </div>
                       {% endif %}
                   {% elif is_admin_user %}
-                  <div>
                     <a href="https://twitter.com/share" class="twitter-share-button" data-text="Check out this cool class we're offering at Oakland Digital!" data-via="ODALC" data-size="large" data-hashtags="OaklandDigitalCourses">Tweet</a>
-                    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                  </div>
                   {% endif %}
               {% else %}
-              <div>
                 <a href="https://twitter.com/share" class="twitter-share-button" data-text="Check out this class at Oakland Digital!" data-via="ODALC" data-size="large" data-hashtags="OaklandDigitalCourses">Tweet</a>
-                <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-              </div>
               {% endif %}
+              <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+              </div>
             </li>
             <!-- Facebook -->
             <li>
