@@ -25,5 +25,4 @@ urlpatterns = patterns('',
     url(r'^coursepage/', TemplateView.as_view(template_name='mockups/course_page.html'), name='course_mock'),
     url(r'^sign_s3/', SignS3View.as_view(), name='sign_s3'),
     url(r'^$', HomePageView.as_view(), name='home'),
-) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
+)

@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import patterns, url
 from django.contrib.auth.views import password_change
 
 from odalc.students.views import StudentRegisterView, StudentDashboardView, StudentEditView
