@@ -6,109 +6,111 @@
 
 <div class="row white-section">
     <div class="large-12 columns">
-    <h1>Admin Dashboard</h1>
+        <h1>Admin Dashboard</h1>
 
-    <dl class="tabs center" data-tab>
-        <dd class="active"><a href="#panel-courses-pending">Courses Pending Review</a></dd>
-        <dd><a href="#panel-courses-active">Active Courses</a></dd>
-        <dd><a href="#panel-courses-finished">Finished Courses</a></dd>
-    </dl>
+        <dl class="tabs center" data-tab>
+            <dd class="active"><a href="#panel-courses-pending">Courses Pending Review</a></dd>
+            <dd><a href="#panel-courses-active">Active Courses</a></dd>
+            <dd><a href="#panel-courses-finished">Finished Courses</a></dd>
+        </dl>
 
-    <div class="tabs-content">
-        <div class="content active" id="panel-courses-pending">
-            {% for course in pending_courses %}
-            <div class="row">
-                <div class="small-9 columns">
-                    <div class="row">
-                        <div class="small-12 columns">
-                            <h4>{{ course.title }}</h4>
+        <div class="tabs-content">
+            <div class="content active" id="panel-courses-pending">
+                {% for course in pending_courses %}
+                <div class="row">
+                    <div class="small-9 columns">
+                        <div class="row">
+                            <div class="small-12 columns">
+                                <h4>{{ course.title }}</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="small-12 columns">
+                                <p>{{ course.short_description }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="small-6 columns"><strong>Teacher:</strong> {{ course.teacher.first_name }} {{ course.teacher.last_name }}</div>
+                            <div class="small-6 columns">{{ course.start_datetime|date:'D, N d Y' }} | {{ course.start_datetime|date:'P'}} - {{ course.end_datetime|date:'P' }}</div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="small-12 columns">
-                            <p>{{ course.short_description }}</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="small-6 columns"><strong>Teacher:</strong> {{ course.teacher.first_name }} {{ course.teacher.last_name }}</div>
-                        <div class="small-6 columns">{{ course.start_datetime|date:'D, N d Y' }} | {{ course.start_datetime|date:'P'}} - {{ course.end_datetime|date:'P' }}</div>
+                    <div class="small-3 columns">
+                        <img src="{{ course.image }}"></img>
+                        <h5 class="right"><a href="{% url "admins:course_review" course.pk %}">Review Course &raquo;</a></h5>
+                        <h5 class="right"><a href="{% url "courses:detail" course.pk %}">View Course Page &raquo;</a></h5>
                     </div>
                 </div>
-                <div class="small-3 columns">
-                    <img src="{{ course.image }}"></img>
-                    <h5 class="right"><a href="{% url "admins:course_review" course.pk %}">Review Course &raquo;</a></h5>
-                    <h5 class="right"><a href="{% url "courses:detail" course.pk %}">View Course Page &raquo;</a></h5>
-                </div>
+                <hr/>
+                <br/>
+                {% empty %}
+                <p>There are currently no courses pending review.</p>
+                {% endfor %}
             </div>
-            <hr/>
-            <br/>
-            {% empty %}
-            <p>There are currently no courses pending review.</p>
-            {% endfor %}
-        </div>
 
-        <div class="content" id="panel-courses-active">
-            {% for course in active_courses %}
-            <div class="row">
-                <div class="small-9 columns">
-                    <div class="row">
-                        <div class="small-12 columns">
-                            <h4>{{ course.title }}</h4>
+            <div class="content" id="panel-courses-active">
+                {% for course in active_courses %}
+                <div class="row">
+                    <div class="small-9 columns">
+                        <div class="row">
+                            <div class="small-12 columns">
+                                <h4>{{ course.title }}</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="small-12 columns">
+                                <p>{{ course.short_description }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="small-6 columns"><strong>Teacher:</strong> {{ course.teacher.first_name }} {{ course.teacher.last_name }}</div>
+                            <div class="small-6 columns">{{ course.start_datetime|date:'D, N d Y' }} | {{ course.start_datetime|date:'P'}} - {{ course.end_datetime|date:'P' }}</div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="small-12 columns">
-                            <p>{{ course.short_description }}</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="small-6 columns"><strong>Teacher:</strong> {{ course.teacher.first_name }} {{ course.teacher.last_name }}</div>
-                        <div class="small-6 columns">{{ course.start_datetime|date:'D, N d Y' }} | {{ course.start_datetime|date:'P'}} - {{ course.end_datetime|date:'P' }}</div>
+                    <div class="small-3 columns">
+                        <img src="{{ course.image }}"></img>
+                        <h5 class="right"><a href="{% url "courses:edit" course.pk %}">Edit Course Information &raquo;</a></h5>
+                        <h5 class="right"><a href="{% url "courses:detail" course.pk %}">View Course Page &raquo;</a></h5>
                     </div>
                 </div>
-                <div class="small-3 columns">
-                    <img src="{{ course.image }}"></img>
-                    <h5 class="right"><a href="{% url "courses:edit" course.pk %}">Edit Course Information &raquo;</a></h5>
-                    <h5 class="right"><a href="{% url "courses:detail" course.pk %}">View Course Page &raquo;</a></h5>
-                </div>
+                <hr/>
+                <br/>
+                {% empty %}
+                <p>There are currently no active courses.</p>
+                {% endfor %}
             </div>
-            <hr/>
-            <br/>
-            {% empty %}
-            <p>There are currently no active courses.</p>
-            {% endfor %}
-        </div>
 
-        <div class="content" id="panel-courses-finished">
-            {% for course in finished_courses %}
-            <div class="row">
-                <div class="small-9 columns">
-                    <div class="row">
-                        <div class="small-12 columns">
-                            <h4>{{ course.title }}</h4>
+            <div class="content" id="panel-courses-finished">
+                {% for course in finished_courses %}
+                <div class="row">
+                    <div class="small-9 columns">
+                        <div class="row">
+                            <div class="small-12 columns">
+                                <h4>{{ course.title }}</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="small-12 columns">
+                                <p>{{ course.short_description }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="small-6 columns"><strong>Teacher:</strong> {{ course.teacher.first_name }} {{ course.teacher.last_name }}</div>
+                            <div class="small-6 columns">{{ course.start_datetime|date:'D, N d Y' }} | {{ course.start_datetime|date:'P'}} - {{ course.end_datetime|date:'P' }}</div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="small-12 columns">
-                            <p>{{ course.short_description }}</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="small-6 columns"><strong>Teacher:</strong> {{ course.teacher.first_name }} {{ course.teacher.last_name }}</div>
-                        <div class="small-6 columns">{{ course.start_datetime|date:'D, N d Y' }} | {{ course.start_datetime|date:'P'}} - {{ course.end_datetime|date:'P' }}</div>
+                    <div class="small-3 columns">
+                        <img src="{{ course.image }}"></img>
+                        <h5 class="right"><a href="{% url "courses:edit" course.pk %}">Edit Course Information &raquo;</a></h5>
+                        <h5 class="right"><a href="{% url "courses:detail" course.pk %}">View Course Page &raquo;</a></h5>
                     </div>
                 </div>
-                <div class="small-3 columns">
-                    <img src="{{ course.image }}"></img>
-                    <h5 class="right"><a href="{% url "courses:edit" course.pk %}">Edit Course Information &raquo;</a></h5>
-                    <h5 class="right"><a href="{% url "courses:detail" course.pk %}">View Course Page &raquo;</a></h5>
-                </div>
+                <hr/>
+                <br/>
+                {% empty %}
+                <p>There are currently no active courses.</p>
+                {% endfor %}
             </div>
-            <hr/>
-            <br/>
-            {% empty %}
-            <p>There are currently no active courses.</p>
-            {% endfor %}
         </div>
     </div>
+</div>
 {% endblock %}
