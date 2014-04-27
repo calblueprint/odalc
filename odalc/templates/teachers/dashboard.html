@@ -1,20 +1,25 @@
 {% extends "base/base.html" %}
 
 {% block body %}
-<div class="row"><div class="large-12 columns">
-<h1>Teacher Dashboard</h1>
+<div class="row">
+    <div class="large-12 columns">
+        <h1>Teacher Dashboard</h1>
 
-<h3>Profile</h3>
-<p>{{ user.email }}</p>
 
-<h3>Courses</h3>
-<ul>
-{% for course in courses %}
-<li><a href="{% url "courses:edit" course.pk %}">{{ course.title }}</a></li>
-{% empty %}
-  <li>No courses yet.</li>
-{% endfor %}
-</ul>
-<a href="{% url "teachers:create-course" %}">Create A New Course</a>
-</div></div>
+        <h3>Courses</h3>
+        <ul>
+        {% for course in courses %}
+        <li>
+            <a href="{% url "courses:detail" course.pk %}">{{ course.title }}</a> |
+            <a href="{% url "courses:edit" course.pk %}">Edit course page &raquo;</a>
+        </li>
+        {% empty %}
+          <li>No courses yet.</li>
+        {% endfor %}
+        </ul>
+        <h4><a href="{% url "teachers:create-course" %}">Create a new course &raquo;</a></h4>
+        <h4><a href="{% url "teachers:edit" %}">Edit profile information &raquo;</a></h4>
+        <h4><a href="{% url "teachers:password_change" %}">Change password &raquo;</a></h4>
+    </div>
+</div>
 {% endblock %}
