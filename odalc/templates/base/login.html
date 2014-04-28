@@ -5,7 +5,7 @@
 {% block body %}
 <div class="row">
     <div class="large-5 columns white-section">
-        <h3>Log in</h3>
+        <h3>Log into an existing account</h3>
         <form method="POST">
           {% csrf_token %}
           {% for error in form.non_field_errors %}
@@ -38,7 +38,7 @@
         </form>
     </div>
     <div class="offset-2 large-5 columns white-section">
-        <h3>No Account Yet?</h3>
+        <h3>I don't have an account</h3>
         <div class="row">
             <div class="large-12 medium-6 small-12 columns">
                 <p>Interested in taking courses?</p>
