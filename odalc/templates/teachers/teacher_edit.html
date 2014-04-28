@@ -4,8 +4,15 @@
 
 {% block body %}
 
-<div class="row white-section">
-    <div class="large-12 columns">
+<div class="white-section">
+<div class="row">
+    <div class="large-7 columns">
+        <h2>Editing your profile information</h2>
+        <p class="larger">Fix up your profile just the way you like it!</p>
+    </div>
+</div>
+<div class="row">
+    <div class="large-5 columns">
         <form method="POST" enctype="multipart/form-data">
           {% csrf_token %}
 
@@ -24,14 +31,18 @@
           {% include "base/partials/formfield.html" with field=form.city %}
           {% include "base/partials/formfield.html" with field=form.zipcode %}
           {% include "base/partials/formfield.html" with field=form.phone %}
-          {% include "base/partials/formfield.html" with field=form.about %}
+ 
+    </div>
+    <div class="large-6 offset-1 columns">
+         {% include "base/partials/formfield.html" with field=form.about %}
           {% include "base/partials/formfield.html" with field=form.experience %}
           {% include "base/partials/hidden_img_uploadfield.html" with field=form.picture %}
           {% include "base/partials/hidden_file_uploadfield.html" with field=form.resume %}
 
-          <input class="button success right" type="submit" value="Save" />
+          <input class="button success left" type="submit" value="Save" />
         </form>
     </div>
+</div>
 </div>
 
 {% endblock %}
