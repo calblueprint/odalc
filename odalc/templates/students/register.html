@@ -1,14 +1,26 @@
 {% extends "base/base.html" %}
+{% load staticfiles %}
+{% block css %}
+<link rel="stylesheet" href="{% static "base/css/forms.css" %}" />
+{% endblock %}
 
 {% block body %}
-
-<form action="{% url "students:register" %}" method="POST">
-  {% csrf_token %}
-  <ul>
-    {{ form.as_ul }}
-  </ul>
-  <input id="save_feedback" type="submit" value="Save" />
-</form>
-
-
+<div class="white-section">
+    <div class="row">
+        <div class="large-5 columns">
+            <h1>Hello there!</h1>
+            <p class="larger">Interested in taking classes? Excellent!</p>
+            <p class="larger">We'll just need a few details about yourself so we can create an account for you.</p>
+        </div>
+        <div class="large-5 offset-2 columns">
+            <form action="{% url "students:register" %}" method="POST">
+              {% csrf_token %}
+              <ul>
+                {{ form.as_ul }}
+              </ul>
+              <button id="save_feedback" type="submit" value="Save" style="float:right;">Register</button>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}
