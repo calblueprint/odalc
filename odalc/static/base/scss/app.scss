@@ -7,6 +7,10 @@
     background-color: $dark-primary-color;
 }
 
+.main-wrap {
+    min-height: 680px;
+}
+
 .main-splash {
     background-color: #eee;
     background: url('../img/computer_class.jpg');
@@ -24,6 +28,16 @@
         background-color: rgba(0,0,0,0.7);
         display:inline;
     }
+}
+
+.about-splash {
+    background-color: #eee;
+    background: url('../img/hipster_stuff.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: fixed;
+    height: 480px;
+
 }
 
 .course-items-description {
@@ -49,7 +63,7 @@
 
 
         img {
-            width: 100%;
+            height: 100%;
             border-top-left-radius: 5px;
             border-top-right-radius: 5px;
         }
@@ -131,8 +145,17 @@
     background-color: #606D80;
 }
 
+.blue-narrow-section {
+    padding: 2em 0;
+    background-color: #2B4C7E;
+    h1 {
+        color: #fff;
+        font-size: 2em;
+    }
+}
+
 .white-section {
-    padding-top: 4em;
+    @include section-padding();
 }
 
 
@@ -177,4 +200,9 @@
 
 .light {
     color: black;
+}
+
+p.larger {
+    font-size: 1.3em;
+    color: #888;
 }
