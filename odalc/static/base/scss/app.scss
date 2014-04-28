@@ -145,6 +145,15 @@
     background-color: #606D80;
 }
 
+.blue-narrow-section {
+    padding: 2em 0;
+    background-color: #2B4C7E;
+    h1 {
+        color: #fff;
+        font-size: 2em;
+    }
+}
+
 .white-section {
     @include section-padding();
 }
