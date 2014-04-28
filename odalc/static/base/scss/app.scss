@@ -7,6 +7,10 @@
     background-color: $dark-primary-color;
 }
 
+.main-wrap {
+    min-height: 680px;
+}
+
 .main-splash {
     background-color: #eee;
     background: url('../img/computer_class.jpg');
@@ -49,7 +53,7 @@
 
 
         img {
-            width: 100%;
+            height: 100%;
             border-top-left-radius: 5px;
             border-top-right-radius: 5px;
         }
