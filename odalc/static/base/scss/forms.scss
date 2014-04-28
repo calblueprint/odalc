@@ -10,3 +10,13 @@ form, .form-list{
 
 	}
 }
+
+ul.errorlist {
+    margin: 0;
+    background-color: #ff8888;
+    padding: 0.3em 0.5em;
+    li {
+        color: #fff;
+        font-weight: bold;
+    }
+}
