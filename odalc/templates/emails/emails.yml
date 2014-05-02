@@ -13,6 +13,10 @@ notify_teacher_course_approved:
         Your course {{ course.title }} has been successfully reviewed and approved by the ODALC team!
         The course page is now open for students to sign up at {{ course_url }}.\n
         You can go to your dashboard to view and edit course information if necessary.\n
+        Share the good news: \n
+        {{ facebook_share }} \n
+        {{ twitter_share }} \n
+        {{ google_share }} \n
         Good luck!\n\n
         Best,\n
         ODALC Team
