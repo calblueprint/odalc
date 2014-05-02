@@ -228,7 +228,7 @@ class DonatePageView(UserDataMixin, TemplateView):
             messages.error(request, "Your information was invalid or your card has been declined")
             return self.render_to_response(self.get_context_data())
 
-        messages.success(request, "Super success yeeeeeeeee")
+        messages.success(request, "Thank you! Your donation has been processed.")
         return redirect('donate')
 
 
