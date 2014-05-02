@@ -1,6 +1,6 @@
 {% extends "base/base.html" %}
-
 {% load staticfiles %}
+{% block title %}Edit course{% endblock %}
 
 {% block css %}
 <link rel="stylesheet" href="{% static "base/css/jquery.timepicker.css" %}" />
@@ -9,6 +9,7 @@
 {% block body %}
 <div class="row white-section">
     <div class="large-12 columns">
+        <h1>Editing course content</h1>
         <form method="POST">
           {% csrf_token %}
 
@@ -19,32 +20,68 @@
           </div>
           {% endfor %}
 
+        <fieldset>
+            <legend>Course Content</legend>
+                <div class="row">
+                    <div class="medium-12 columns">
           {% include "base/partials/formfield.html" with field=form.title %}
           {% include "base/partials/formfield.html" with field=form.short_description %}
           {% include "base/partials/formfield.html" with field=form.long_description %}
-          {% include "base/partials/formfield.html" with field=form.size %}
+                    </div>
+               </div>
+                <div class="row">
+                    <div class="medium-6 columns">
+                        {% include "base/partials/formfield.html" with field=form.prereqs %}
+                    </div>
+                    <div class="medium-6 columns">
+                        {% include "base/partials/formfield.html" with field=form.additional_info %}
+                    </div>
+                </div>
+
+        </fieldset>
           {% if is_admin_user %}
+        <fieldset>
+            <legend>Course date and times</legend>
               {% include "base/partials/course_datetimefield.html" with date=form.date start_time=form.start_time end_time=form.end_time %}
+        </fieldset>
           {% else %}
               {# Hide the date/time fields if the teacher is editing the course #}
               {% include "base/partials/hidden_formfield.html" with field=form.date %}
               {% include "base/partials/hidden_formfield.html" with field=form.start_time %}
               {% include "base/partials/hidden_formfield.html" with field=form.end_time %}
           {% endif %}
-          {% include "base/partials/formfield.html" with field=form.prereqs %}
-          {% include "base/partials/formfield.html" with field=form.skill_level %}
-          {% include "base/partials/formfield.html" with field=form.cost %}
-          {% include "base/partials/formfield.html" with field=form.odalc_cost_split %}
+        <fieldset>
+            <legend>Course Logistics</legend>
+            <div class="row">
+                <div class="medium-3 columns">
+                    {% include "base/partials/formfield.html" with field=form.size %}
+                </div>
+                <div class="medium-3 columns">
+                    {% include "base/partials/formfield.html" with field=form.skill_level %}
+                </div>
+                <div class="medium-3 columns">
+                    {% include "base/partials/formfield.html" with field=form.cost %}
+                </div>
+                <div class="medium-3 columns">
+                    {% include "base/partials/formfield.html" with field=form.odalc_cost_split %}
+                </div>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Course image</legend>
           {% include "base/partials/hidden_img_uploadfield.html" with field=form.image %}
+        </fieldset>
+        <fieldset>
+            <legend>Course material</legend>
           {% include "base/partials/hidden_file_uploadfield.html" with field=form.course_material %}
-          {% include "base/partials/formfield.html" with field=form.additional_info %}
+        </fieldset>
           {% if is_admin_user %}
               {% include "base/partials/formfield.html" with field=form.status %}
           {% else %}
               {# Hide the course status field if the teacher is editing the course #}
               <input id="{{ form.status.id_for_label }}" type="hidden" name="{{ form.status.html_name }}" value="{{ form.status.value }}"/>
           {% endif %}
-          <input id="save_edit" type="submit" value="Save Changes" />
+          <button id="save_edit" type="submit">Save changes</button>
         </form>
     </div>
 </div>
