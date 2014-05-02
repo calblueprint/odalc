@@ -249,18 +249,9 @@ class SignS3View(View):
         # Set the expiry time of the signature (in seconds) and declare the permissions of the file to be uploaded
         expires = int(time.time()+10)
         amz_headers = "x-amz-acl:public-read"
-        amz_header_dict = {
-            'x-amz-acl': 'public-read'
-        }
 
         # Generate the PUT request that JavaScript will use:
         put_request = "PUT\n\n%s\n%d\n%s\n/%s/%s" % (mime_type, expires, amz_headers, S3_BUCKET, object_name)
-
-        # Boto-generated request
-        #print put_request
-        #connection = connect_s3(AWS_ACCESS_KEY, AWS_SECRET_KEY)
-        #signed_request = connection.generate_url(expires_in=10, method='PUT', bucket=S3_BUCKET, key=object_name, response_headers=amz_header_dict)
-        #print signed_request
 
         # Generate the signature with which the request can be signed:
         signature = base64.encodestring(hmac.new(AWS_SECRET_KEY, put_request, sha1).digest())
@@ -273,24 +264,12 @@ class SignS3View(View):
             'Expires': expires,
             'Signature': signature
         })
-        #print get_params
 
         url = 'https://%s.s3.amazonaws.com/%s' % (S3_BUCKET, object_name)
         content = json.dumps({
-            #'signed_request': signed_request,
             'signed_request': '%s?%s' % (url, get_params),
             'url': url
         })
 
         # Return the signed request and the anticipated URL back to the browser in JSON format:
         return HttpResponse(content, content_type='text/plain; charset=x-user-defined')
-
-    def sign(key, msg):
-        return hmac.new(key, msg.encode("utf-8"), hashlib.sha256).digest()
-
-    def getSignatureKey(key, dateStamp, regionName, serviceName):
-        kDate = SignS3View.sign(("AWS4" + key).encode("utf-8"), dateStamp)
-        kRegion = SignS3View.sign(kDate, regionName)
-        kService = SignS3View.sign(kRegion, serviceName)
-        kSigning = SignS3View.sign(kService, "aws4_request")
-        return kSigning
