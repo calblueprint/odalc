@@ -22,6 +22,8 @@ notify_teacher_course_approved:
         ODALC Team
         "
 
+notify_admins_course_approved:
+
 notify_teacher_course_denied:
     subject: "ODALC Course Application Status Update"
     body:
