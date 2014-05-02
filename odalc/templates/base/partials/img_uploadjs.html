@@ -3,15 +3,15 @@ function s3_upload_{{ field.id_for_label }}(){
     var s3upload = new S3Upload({
         file_dom_selector: 'file_{{ field.id_for_label }}',
         s3_sign_put_url: '/sign_s3/',
-        s3_object_name: $.now() + $('#file_{{ field.id_for_label }}').val(),
+        s3_object_name: $.now() + $('#file_{{ field.id_for_label }}').val().replace(/^.*\\/, ''),
 
         onProgress: function(percent, message) {
             $('#status_{{ field.id_for_label }}').html('Upload progress: ' + percent + '%' + message);
         },
         onFinishS3Put: function(url) {
             $('#status_{{ field.id_for_label }}').html('Upload completed. Uploaded to: '+ url);
-            $("#{{ field.id_for_label }}").val(url);
-            $("#preview_{{ field.id_for_label }}").html('<img src="'+url+'" style="width:300px;" />');
+            $('#{{ field.id_for_label }}').val(url);
+            $('#preview_{{ field.id_for_label }}').html('<img src="'+url+'" style="width:300px;" />');
         },
         onError: function(status) {
             $('#status_{{ field.id_for_label }}').html('Upload error: ' + status);

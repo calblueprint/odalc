@@ -1,4 +1,5 @@
 import time, json, base64, hmac, urllib
+import hashlib
 from hashlib import sha1
 from itertools import chain
 
@@ -21,6 +22,7 @@ from odalc.odalc_admin.models import AdminUser
 from odalc.students.models import StudentUser
 from odalc.teachers.models import TeacherUser
 
+from boto import connect_s3
 import stripe
 import datetime
 
@@ -164,7 +166,7 @@ class CourseEditView(UserDataMixin, UpdateView):
             # Should never happen
             return reverse('home')
 
-"""Main view for displaying the courses offered. There are three categories of courses: 
+"""Main view for displaying the courses offered. There are three categories of courses:
 all courses, past courses, and upcoming courses (courses coming up in the next month)"""
 class CourseListingView(UserDataMixin, TemplateView):
     template_name = 'base/course_listing.html'
@@ -185,12 +187,12 @@ class HomePageView(UserDataMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(HomePageView, self).get_context_data(**kwargs)
-        num_available = Course.objects.filter(status = Course.STATUS_ACCEPTED).count() 
+        num_available = Course.objects.filter(status = Course.STATUS_ACCEPTED).count()
         if num_available >= 3:
             context['featured_courses'] = Course.objects.filter(status = Course.STATUS_ACCEPTED).order_by('start_datetime')[:3]
         else:
-            upcoming_courses = Course.objects.filter(status = Course.STATUS_ACCEPTED).order_by('start_datetime')[:num_available] 
-            past_courses = Course.objects.filter(status = Course.STATUS_FINISHED).order_by('-start_datetime')[:3-num_available] 
+            upcoming_courses = Course.objects.filter(status = Course.STATUS_ACCEPTED).order_by('start_datetime')[:num_available]
+            past_courses = Course.objects.filter(status = Course.STATUS_FINISHED).order_by('-start_datetime')[:3-num_available]
             context['featured_courses'] = list(chain(upcoming_courses, past_courses))
         return context
 
@@ -268,11 +270,11 @@ class SignS3View(View):
     def get(self, request, *args, **kwargs):
         # Load necessary information into the application:
         AWS_ACCESS_KEY = settings.AWS_ACCESS_KEY_ID.strip()
-        AWS_SECRET_KEY = settings.AWS_SECRET_ACCESS_KEY.strip()
+        AWS_SECRET_KEY = settings.AWS_SECRET_ACCESS_KEY.strip().encode('UTF-8')
         S3_BUCKET = settings.S3_BUCKET.strip()
 
         # Collect information on the file from the GET parameters of the request:
-        object_name = urllib.quote_plus(request.GET.get('s3_object_name'))
+        object_name = urllib.quote(request.GET.get('s3_object_name'))
         mime_type = request.GET.get('s3_object_type')
 
         # Set the expiry time of the signature (in seconds) and declare the permissions of the file to be uploaded
@@ -285,16 +287,16 @@ class SignS3View(View):
         # Generate the signature with which the request can be signed:
         signature = base64.encodestring(hmac.new(AWS_SECRET_KEY, put_request, sha1).digest())
         # Remove surrounding whitespace and quote special characters:
-        signature = urllib.quote_plus(signature.strip())
-
+        signature = urllib.quote(signature.strip())
         # Build the URL of the file in anticipation of its imminent upload:
-        url = 'https://%s.s3.amazonaws.com/%s' % (S3_BUCKET, object_name)
 
         get_params = urllib.urlencode({
             'AWSAccessKeyId': AWS_ACCESS_KEY,
             'Expires': expires,
             'Signature': signature
         })
+
+        url = 'https://%s.s3.amazonaws.com/%s' % (S3_BUCKET, object_name)
         content = json.dumps({
             'signed_request': '%s?%s' % (url, get_params),
             'url': url
