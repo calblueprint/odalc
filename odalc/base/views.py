@@ -96,8 +96,6 @@ class CourseDetailView(UserDataMixin, DetailView):
         course = self.object
         context = self.get_context_data(object=course)
 
-        # Set your secret key: remember to change this to your live secret key in production
-        # See your keys here https://manage.stripe.com/account
         stripe.api_key = settings.STRIPE_SECRET_KEY
 
         # Get the credit card details submitted by the form
@@ -132,6 +130,7 @@ class CourseDetailView(UserDataMixin, DetailView):
           )
         except stripe.CardError, e:
           # The card has been declined
+            messages.error(request, "Your information was invalid or your card has been declined")
             return self.render_to_response(self.get_context_data())
 
         #add student to course
@@ -229,6 +228,7 @@ class DonatePageView(UserDataMixin, TemplateView):
           )
         except stripe.CardError, e:
           # The card has been declined
+            messages.error(request, "Your information was invalid or your card has been declined")
             return self.render_to_response(self.get_context_data())
 
         return redirect('donate')
