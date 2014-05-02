@@ -138,6 +138,7 @@ class CourseDetailView(UserDataMixin, DetailView):
         #add student to course
         course.students.add(self.user)
         course.save()
+        messages.success(request, "You have successfully registered for this course!")
         return redirect('courses:detail',course.pk)
 
 
