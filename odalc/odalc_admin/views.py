@@ -69,8 +69,9 @@ class AdminDashboardView(UserDataMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super(AdminDashboardView, self).get_context_data(**kwargs)
         context['pending_courses'] = Course.objects.filter(status=Course.STATUS_PENDING)
-        context['live_courses'] = Course.objects.filter(status=Course.STATUS_ACCEPTED)
+        context['active_courses'] = Course.objects.filter(status=Course.STATUS_ACCEPTED)
         context['finished_courses'] = Course.objects.filter(status=Course.STATUS_FINISHED)
+        context['denied_courses'] = Course.objects.filter(status=Course.STATUS_DENIED)
         context['teachers'] = TeacherUser.objects.all()
         context['students'] = StudentUser.objects.all()
         return context
@@ -100,16 +101,28 @@ class CourseFeedbackView(UserDataMixin, DetailView):
             return super(CourseFeedbackView, self).dispatch(*args, **kwargs)
         raise PermissionDenied()
 
+
     def get_context_data(self, **kwargs):
         course = self.object
         forms = course.coursefeedback_set.all()
         context = super(CourseFeedbackView, self).get_context_data(**kwargs)
         context['feedback_forms'] = forms
+        questions = [
+            'knowledgeable_of_subject',
+            'encourages_questions',
+            'teaching_effectiveness',
+            'applicable_to_needs',
+            'would_recommend',
+            'course_inspiring'
+        ]
         context['num_forms'] = course.coursefeedback_set.count()
-        context['q1_avg'] = forms.aggregate(Avg('knowledgeable_of_subject'))['knowledgeable_of_subject__avg']
-        context['q2_avg'] = forms.aggregate(Avg('encourages_questions'))['encourages_questions__avg']
-        context['q3_avg'] = forms.aggregate(Avg('teaching_effectiveness'))['teaching_effectiveness__avg']
-        context['q4_avg'] = forms.aggregate(Avg('applicable_to_needs'))['applicable_to_needs__avg']
-        context['q5_avg'] = forms.aggregate(Avg('would_recommend'))['would_recommend__avg']
-        context['q6_avg'] = forms.aggregate(Avg('course_inspiring'))['course_inspiring__avg']
+        context['avg_list'] = []
+        for index, question in enumerate(questions):
+            context['q'+ str(index + 1) +'_avg'] = forms.aggregate(Avg(question))[question + '__avg']
+            context['avg_list'].append(context['q'+ str(index + 1) +'_avg'])
+        context['visualization'] = []
+        scores = forms.values_list(*questions)
+        for index, item in enumerate(scores):
+            context['visualization'].append(list(item))
+
         return context

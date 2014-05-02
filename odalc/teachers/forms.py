@@ -25,6 +25,22 @@ class TeacherRegisterForm(UserRegisterForm):
                   'experience',
                   'info_source')
 
+class TeacherEditForm(forms.ModelForm):
+    class Meta:
+        model = TeacherUser
+        fields = ('first_name',
+                  'last_name',
+                  'organization',
+                  'position',
+                  'street_address',
+                  'city',
+                  'zipcode',
+                  'phone',
+                  'about',
+                  'picture',
+                  'resume',
+                  'experience')
+
 class CreateCourseForm(forms.ModelForm):
     date1 = forms.DateField(label='First Choice for Date to Teach Course')
     start_time1 = forms.TimeField(label='Starting Time for Course Session')

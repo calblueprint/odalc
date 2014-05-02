@@ -1,6 +1,7 @@
 import time, json, base64, hmac, urllib
 import hashlib
 from hashlib import sha1
+from itertools import chain
 
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth.forms import AuthenticationForm
@@ -73,8 +74,12 @@ class CourseDetailView(UserDataMixin, DetailView):
         if self.user.is_authenticated():
             context['email'] = self.user.email
             context['in_class'] = course.students.filter(id=self.user.id).exists()
+            if self.is_student_user:
+                context['submitted_feedback'] = course.coursefeedback_set.filter(student=self.user.id).exists()
+                context['is_past_start_date'] = datetime.datetime.now().date() >= course.start_datetime.date()
         context['cost_in_cents'] = int(course.cost * 100)
         context['course_full'] = course.students.count() >= course.size
+        context['course_finished'] = course.status == Course.STATUS_FINISHED
         context['open_seats'] = course.size - course.students.count()
         context['is_owner'] = (self.user.has_perm('base.teacher_permission') and course.teacher.email == self.user.email)
         return context
@@ -82,7 +87,7 @@ class CourseDetailView(UserDataMixin, DetailView):
     def dispatch(self, request, *args, **kwargs):
         self.user = self.request.user
         course = self.get_object()
-        if (course.status == Course.STATUS_ACCEPTED or
+        if (course.status == Course.STATUS_ACCEPTED or course.status == Course.STATUS_FINISHED or
             (self.user.has_perm('base.teacher_permission') and course.teacher.email == self.user.email) or
             self.user.has_perm('base.admin_permission')):
             return super(CourseDetailView, self).dispatch(request, *args, **kwargs)
@@ -176,9 +181,21 @@ class CourseListingView(UserDataMixin, TemplateView):
         context['upcoming_courses'] = Course.objects.filter(start_datetime__range = [now, month_from_now], status = Course.STATUS_ACCEPTED)
         return context
 
+"""Landing page for the website. Also displays the next three upcoming courses
+as "featured courses". If there are not enough, it will display past courses as well."""
 class HomePageView(UserDataMixin, TemplateView):
     template_name = 'base/home.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(HomePageView, self).get_context_data(**kwargs)
+        num_available = Course.objects.filter(status = Course.STATUS_ACCEPTED).count() 
+        if num_available >= 3:
+            context['featured_courses'] = Course.objects.filter(status = Course.STATUS_ACCEPTED).order_by('start_datetime')[:3]
+        else:
+            upcoming_courses = Course.objects.filter(status = Course.STATUS_ACCEPTED).order_by('start_datetime')[:num_available] 
+            past_courses = Course.objects.filter(status = Course.STATUS_FINISHED).order_by('-start_datetime')[:3-num_available] 
+            context['featured_courses'] = list(chain(upcoming_courses, past_courses))
+        return context
 
 class AboutPageView(UserDataMixin, TemplateView):
     template_name = 'base/about.html'

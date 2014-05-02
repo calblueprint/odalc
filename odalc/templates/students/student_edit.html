@@ -1,0 +1,27 @@
+{% extends "base/base.html" %}
+
+{% load staticfiles %}
+
+{% block body %}
+
+<div class="row white-section">
+    <div class="large-12 columns">
+        <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+
+          {% for error in form.non_field_errors %}
+          <div data-alert class="alert-box alert">
+            {{ error }}
+            <a href="#" class="close">&times;</a>
+          </div>
+          {% endfor %}
+
+          {% include "base/partials/formfield.html" with field=form.first_name %}
+          {% include "base/partials/formfield.html" with field=form.last_name %}
+
+          <input class="button success right" type="submit" value="Save" />
+        </form>
+    </div>
+</div>
+
+{% endblock %}

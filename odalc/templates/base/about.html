@@ -1,32 +1,88 @@
 {% extends "base/base.html" %}
 {% load staticfiles %}
 
-{% block title %}About us{% endblock %}
+{% block title %}About Us{% endblock %}
 
 {% block body %}
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-535c2fec21d43eea"></script>
+
 <div class="mid-dark-section">
     <div class="row">
         <div class="large-7 columns">
-            <h1>Our mission</h1>
-            <p>This is a generic statement of our fundamental platforms that we believe in. We hope to change the world in beneficial ways that will increase productivity amongst the children of the world and yadi yadi ya.</p>
+            <h1>Our Mission</h1>
+            <p>
+            Our mission statement here for Oakland Digital Courses
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class = "large-7 columns">
+            <ul class="inline-list">
+                <li>
+                    <div>
+                    <a href="https://twitter.com/ODALC" class="twitter-follow-button" data-show-count="false" data-size="large">Follow @ODALC</a>
+                    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                    </div>
+                </li>
+                <!--
+                <li>
+                   <div class="fb-follow" data-href="https://www.facebook.com/odalc" data-colorscheme="light" data-layout="button" data-show-faces="false"></div>
+                </li>
+                <li>
+                    <div class="fb-follow" data-href="https://www.facebook.com/odalc" data-colorscheme="light" data-layout="standard" data-show-faces="true"></div>
+                </li>
+                -->
+                <li>
+                    <div class="fb-follow" data-href="https://www.facebook.com/odalc" data-colorscheme="light" data-layout="button_count" data-show-faces="true"></div>
+                </li>
+                <li>
+                    <div>
+                        <div class="g-follow" data-annotation="bubble" data-height="24" data-href="https://plus.google.com/100653295456413757353" data-rel="publisher"></div>
+                        <script type="text/javascript">
+                          (function() {
+                            var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+                            po.src = 'https://apis.google.com/js/platform.js';
+                            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+                          })();
+                        </script>
+                    </div>
+                </li>
+            </ul>
         </div>
     </div>
 </div>
 <div class="white-section">
     <div class="row">
         <div class="large-5 columns">
-            <h2>For students</h2>
-            <p>These are some details about what kind of students are attending these courses. Why are we offering this to students? because because because some reasons here. Yadi yadi ya.</p>
+            <h2>For Students</h2>
+            <p>Info about students and stuff
+            </p>
 
-            <p>Describe the expectations of the students here and blah blah blah. With the ultimate goal of shifting lower income children into the technological age.</p>
         </div>
         <div class="large-5 large-offset-2 columns">
-            <h2>For teachers</h2>
-            <p>Describe the voluntary capacity at which teachers come to volunteer. These are professionals and blah blah blahk</p>
+            <h2>For Teachers</h2>
+            <p>By teaching courses with Oakland Digital, teachers are helping underserved communities achieve economic success and empowerment through digital literacy. Oakland Digital's small business development initiatives and professional development programs for design students are making a difference, but we need your help to reach even more people in the community. Whether you're a creative director at an ad agency or a software engineer at a tech company, your knowledge will have an immediate impact.
+</p>
+        </div>
+    </div>
+</div>
 
-            <p>Also talk about this is another source of small income. Students will pay the teachers and yadi yadi something talking about how good this is.</p>
+<div class="about-splash">
+</div>
 
-            <p>Also talk about philanthropy and giving back to the community and how this one way to do it. blahbidty blah blah.</p>
+<div class="gray-section">
+    <div class="row">
+        <div class="large-12 columns">
+            <h2>About Oakland Digital</h2>
+            <p class="larger">Oakland Digital Arts & Literacy Center is a 501(c)(3) community building organization working to bridge the digital literacy and opportunity divide. Since 2009, Oakland Digital has been working to educate, inspire and empower small business owners, local design students, and entrepreneurs.</p>
         </div>
     </div>
 </div>

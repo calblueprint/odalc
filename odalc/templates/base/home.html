@@ -1,10 +1,9 @@
 {% extends "base/base.html" %}
 {% load staticfiles %}
 
-{% block title %}Welcome to ODALC Courses!{% endblock %}
+{% block title %}Home{% endblock %}
 
 {% block body %}
-  <!-- TODO: FILL THIS SHIT OUT EVENTUALLY -->
   {% if user.is_authenticated %}
   {% else %}
   {% endif %}
@@ -12,10 +11,10 @@
 
   <div class="main-splash">
     <div class="row">
-      <div class="large-7 columns">
-        <h1><strong>Welcome to ODALC</strong></h1>
+      <div class="large-8 columns">
+        <h1><strong>Courses from Oakland Digital</strong></h1>
         <br>
-        <h2>Take <strong>courses</strong> from the Bay Area's leading <strong>professionals</strong>.</h2>
+        <h2>Taught by the Bay Area's leading <strong>tech & design professionals</strong></h2>
       </div>
       <div class="large-5 columns">
       </div>
@@ -25,58 +24,44 @@
   <!-- Upcoming courses title/description -->
   <div class="row course-items-description">
     <div class="large-12 columns">
-      <h3>Upcoming courses</h3>
+      <h3>Featured Courses</h3>
     </div>
   </div>
 
   <!-- Upcoming courses items -->
-  <div class="row">
-    <div class="course-box" onclick="window.location='http://google.com'">
-      <div class="top-shelf">
-        <div class="title-wrap">
-          <h4>Introduction to Yelp</h4>
-        </div>
-        <img src="{% static "base/img/yelp_class.png"%}" alt="Yelp people having fun"/>
-      </div>
-      <div class="bottom-shelf">
-        <h4>By John Du <span class="date">| Starting January 24, 2014</span></h4>
-      </div>
-    </div>
 
+  <div class="row">
+    {% for course in featured_courses %}
     <div class="course-box">
-      <a href="{% url "course_mock" %}">
+      <a href="{% url "courses:detail" course.pk %}">
       <div class="top-shelf">
         <div class="title-wrap">
-          <h4>Web development 101</h4>
+          <h4>{{ course.title }}</h4>
         </div>
-        <img src="{% static "base/img/coding.jpg"%}" alt="Yelp people having fun"/>
+        <img src="{{ course.image }}"></img>
       </div>
       <div class="bottom-shelf">
-        <h4>By Sunny Dee <span class="date">| Starting March 11, 2014</span></h4>
+        <h4>With {{ course.teacher.first_name }} {{ course.teacher.last_name }}<span class="date"> | {{ course.start_datetime|date:'N d Y' }}</span></h4>
       </div>
       </a>
     </div>
-
-    <div class="course-box">
-      <div class="top-shelf">
-        <div class="title-wrap">
-          <h4>Public Speaking Seminar</h4>
-        </div>
-        <img src="{% static "base/img/classroom_boy_small.jpg"%}" alt="Yelp people having fun"/>
-      </div>
-      <div class="bottom-shelf">
-        <h4>By Mr. Atsu <span class="date">| Starting April 18, 2014</span></h4>
-      </div>
-    </div>
+    {% endfor %}
   </div>
 
   <!-- Footer -->
-  <div class="dark-section">
+  <div class="gray-section">
     <div class="row">
       <div class="large-7 columns">
-      <h1><strong>Why ODALC | Courses?</strong></h1>
-      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p><p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?</p>
-      </div>
+        <h3><strong>What is Oakland Digital | Courses?</strong></h3>
+        <p>
+        Oakland Digital Courses are classes taught by the Bay Area's professionals from the tech and design industries.
+        These one-day courses held at the Oakland Digital Arts & Literacy Center are open for anyone to take.
+        Whether it's learning how to make your own website, manage your business' branding, or code your first program, there's something for everybody to take.
+        </p>
+        <p>
+        <a href="{% url "courses:listing" %}">Browse courses &raquo;</a>
+        </p>
+     </div>
     </div>
   </div>
 {% endblock %}

@@ -3,11 +3,22 @@
 
 {% block title %}{{ course.title }}{% endblock %}
 
+
 {% block css %}
 <link rel="stylesheet" href="{% static "base/css/courses.css" %}" />
 {% endblock %}
 
 {% block body %}
+<!-- facebook stuff -->
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
 <!-- Title section -->
     <div class="mid-dark-section">
       <div class="row">
@@ -16,31 +27,97 @@
           <p>{{ course.short_description }}</p>
         </div>
         <div class="large-4 large-offset-1 columns center">
-        {% if user.is_authenticated %}
-            {% if course_full %}
-            <button class="enroll-btn large success disabled">Course Full</button>
-            {% elif in_class %}
-            <button class="enroll-btn large success disabled">Already Enrolled</button>
-            {% elif is_teacher_user %}
-            <button class="enroll-btn large success disabled">Cannot Enroll</button>
+
+        {% if course_full %}
+        <button class="enroll-btn large success disabled">Course Full</button>
+        {% elif user.is_authenticated %}
+            {% if is_student_user %}
+                {% if in_class %}
+                    {% if is_past_start_date %}
+                        {% if not submitted_feedback %}
+                        <form action="{% url "courses:feedback" course.id %}" method="GET">
+                            <button class="enroll-btn large success">Submit Feedback</button>
+                        </form>
+                        {% else %}
+                        <button class="enroll-btn large success disabled">Thanks for participating!</button>
+                        {% endif %}
+                    {% else %}
+                    <button class="enroll-btn large success disabled">Already Enrolled</button>
+                    {% endif %}
+                {% else %}
+                <form method='POST'>
+                    {% csrf_token %}
+                    <button id="enroll-btn" class="enroll-btn large success">Enroll Now</button>
+                </form>
+                {% endif %}
             {% else %}
-            <form method='POST'>
-                {% csrf_token %}
-                <button id="enroll-btn" class="enroll-btn large success">Enroll Now</button>
-            </form>
+            <button class="enroll-btn large success disabled">Cannot Enroll</button>
             {% endif %}
         {% else %}
+            {% if course_finished %}
+            <button class="enroll-btn large success disabled">This course has finished.</button>
+            {% else %}
             <form action="{% url "login" %}" method="GET">
                 <button class="enroll-btn large success">Enroll now</button>
                 <input type="hidden" name="next" value="{{ request.path }}" />
             </form>
+            {% endif %}
         {% endif %}
+        </div>
+      </div>
+      <!-- Social Sharing Buttons -->
+      <div class="row">
+        <div class="large-7 columns center">
+          <ul class="inline-list">
+            <!-- Twitter (Customized) --> 
+            <li>
+              <div>
+              {% if user.is_authenticated %}
+                  {% if is_student_user %}
+                      {% if in_class %} 
+                        <a href="https://twitter.com/share" class="twitter-share-button" data-text="Check out this class I'm taking at Oakland Digital!" data-via="ODALC" data-size="large" data-hashtags="OaklandDigitalCourses">Tweet</a>
+                      {% else %}
+                        <a href="https://twitter.com/share" class="twitter-share-button" data-text="Check out this class at Oakland Digital!" data-via="ODALC" data-size="large" data-hashtags="OaklandDigitalCourses">Tweet</a>
+                      {% endif %}
+                  {% elif is_teacher_user %}
+                      {% if is_owner %}
+                        <a href="https://twitter.com/share" class="twitter-share-button" data-text="Check out this class I'm teaching at Oakland Digital!" data-via="ODALC" data-size="large" data-hashtags="OaklandDigitalCourses">Tweet</a>
+                      {% else %}
+                        <a href="https://twitter.com/share" class="twitter-share-button" data-text="Check out this class at Oakland Digital!" data-via="ODALC" data-size="large" data-hashtags="OaklandDigitalCourses">Tweet</a>
+                      {% endif %}
+                  {% elif is_admin_user %}
+                    <a href="https://twitter.com/share" class="twitter-share-button" data-text="Check out this cool class we're offering at Oakland Digital!" data-via="ODALC" data-size="large" data-hashtags="OaklandDigitalCourses">Tweet</a>
+                  {% endif %}
+              {% else %}
+                <a href="https://twitter.com/share" class="twitter-share-button" data-text="Check out this class at Oakland Digital!" data-via="ODALC" data-size="large" data-hashtags="OaklandDigitalCourses">Tweet</a>
+              {% endif %}
+              <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+              </div>
+            </li>
+            <!-- Facebook -->
+            <li>
+              <div class="fb-like" data-layout="button_count" data-action="like" data-show-faces="false" data-share="true"></div>
+            </li>
+            <!-- Google+ -->
+            <li>
+              <div>
+                <div class="g-plusone"></div>
+                <script type="text/javascript">
+                  (function() {
+                    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+                    po.src = 'https://apis.google.com/js/platform.js';
+                    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+                  })();
+                </script>
+              </div>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
 <!-- end title section-->
     <!-- logistics section -->
-    <div class="blue-section">
+    <div class="blue-section-no-pad">
       <div class="row">
           <table class="course-logistic">
             <tbody>
@@ -72,7 +149,7 @@
           <h3>Additional Information</h3>
           <p>{{ course.additional_info }}</p>
           {% if course.course_material and in_class or is_owner or is_admin_user %}
-          <h3><a href="{{ course.course_material }}">View Course Materials</a></h3>
+          <h3><a href="{{ course.course_material }}">View Course Materials &raquo;</a></h3>
           {% endif %}
         </div>
         <!-- about the teacher -->

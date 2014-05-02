@@ -6,10 +6,12 @@
 <h1>My Dashboard</h1>
     <p><b>Name:</b> {{ user.first_name }} {{ user.last_name }} </p>
     <p><b>E-mail:</b> {{ user.email }} </p>
+    <p><a href="{% url "students:edit" %}">Edit profile information &raquo;</a></p>
+    <p><a href="{% url "students:password_change" %}">Change password &raquo;</a></p>
 
 <h2>Courses Taken</h2>
     <table>
-        <tr> 
+        <tr>
             <th> Course </th>
             <th> Teacher </th>
             <th> Date </th>
@@ -27,6 +29,6 @@
     {% endfor %}
     </table>
 
-</div></div> 
+</div></div>
 
 {% endblock %}

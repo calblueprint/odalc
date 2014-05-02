@@ -1,18 +1,18 @@
 {% extends "base/base.html" %}
 
 {% load staticfiles %}
-{% block title %}Apply to be a teacher{% endblock %}
 
 {% block body %}
 
 <div class="white-section">
 <div class="row">
-    <div class="large-5 columns">
-        <h1>Hi there!</h1>
-        <p class="larger">Thanks for your interest in becoming a teacher with Oakland Digital.</p>
-        <p class="larger">We'll need a few bits and pieces of information about you.</p>
+    <div class="large-7 columns">
+        <h2>Editing your profile information</h2>
+        <p class="larger">Fix up your profile just the way you like it!</p>
     </div>
-    <div class="large-5 offset-2 columns">
+</div>
+<div class="row">
+    <div class="large-5 columns">
         <form method="POST" enctype="multipart/form-data">
           {% csrf_token %}
 
@@ -23,24 +23,23 @@
           </div>
           {% endfor %}
 
-          {% include "base/partials/formfield.html" with field=form.email %}
           {% include "base/partials/formfield.html" with field=form.first_name %}
           {% include "base/partials/formfield.html" with field=form.last_name %}
-          {% include "base/partials/formfield.html" with field=form.password1 %}
-          {% include "base/partials/formfield.html" with field=form.password2 %}
           {% include "base/partials/formfield.html" with field=form.organization %}
           {% include "base/partials/formfield.html" with field=form.position %}
           {% include "base/partials/formfield.html" with field=form.street_address %}
           {% include "base/partials/formfield.html" with field=form.city %}
           {% include "base/partials/formfield.html" with field=form.zipcode %}
           {% include "base/partials/formfield.html" with field=form.phone %}
-          {% include "base/partials/formfield.html" with field=form.about %}
+ 
+    </div>
+    <div class="large-6 offset-1 columns">
+         {% include "base/partials/formfield.html" with field=form.about %}
           {% include "base/partials/formfield.html" with field=form.experience %}
-          {% include "base/partials/formfield.html" with field=form.info_source %}
           {% include "base/partials/hidden_img_uploadfield.html" with field=form.picture %}
           {% include "base/partials/hidden_file_uploadfield.html" with field=form.resume %}
 
-          <input class="button success right" type="submit" value="Register" />
+          <input class="button success left" type="submit" value="Save" />
         </form>
     </div>
 </div>

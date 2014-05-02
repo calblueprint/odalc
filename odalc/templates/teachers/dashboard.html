@@ -1,20 +1,47 @@
 {% extends "base/base.html" %}
+{% block title %}Teacher Dashboard{% endblock %}
+{% block is_teacher_dash %}active{% endblock %}
 
 {% block body %}
-<div class="row"><div class="large-12 columns">
-<h1>Teacher Dashboard</h1>
+<div class="blue-narrow-section">
+<div class="row">
+    <div class="large-6 columns">
+        <h1>Teacher Dashboard</h1>
+    </div>
+    <div class="large-5 offset-1 columns">
+        <div style="margin-top:20px;">
+            <a style="float: left;" href="{% url "teachers:edit" %}">Edit profile information &raquo;</a>            <a style="float:right;" href="{% url "teachers:password_change" %}">Change password &raquo;</a>
+        </div>
+    </div>
+</div>
+</div>
 
-<h3>Profile</h3>
-<p>{{ user.email }}</p>
 
-<h3>Courses</h3>
-<ul>
-{% for course in courses %}
-<li><a href="{% url "courses:edit" course.pk %}">{{ course.title }}</a></li>
-{% empty %}
-  <li>No courses yet.</li>
-{% endfor %}
-</ul>
-<a href="{% url "teachers:create-course" %}">Create A New Course</a>
-</div></div>
+<div class="white-section">
+<div class="row">
+    <div class="large-12 columns">
+        <h3>Your Courses</h3>
+        <table width=100%>
+        <thead>
+            <tr>
+                <th width=80%>Course Name</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for course in courses %}
+        <tr>
+            <td><a href="{% url "courses:detail" course.pk %}">{{ course.title }}</a></td>
+            <td><a href="{% url "courses:edit" course.pk %}">Edit course page &raquo;</a></td>
+        </tr>
+        {% empty %}
+          <tr><td>No courses yet.</td></tr>
+        {% endfor %}
+        </tbody>
+        </table>
+
+        <a class="button large" href="{% url "teachers:create-course" %}">Create a new course &raquo;</a>
+    </div>
+</div>
+</div>
 {% endblock %}

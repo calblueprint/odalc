@@ -17,14 +17,13 @@
               {% if is_student_user %}
               <li><a href="{% url "students:dashboard"%}">Student Dashboard</a></li>
               {% elif is_teacher_user %}
-              <li><a href="{% url "teachers:dashboard"%}">Teacher Dashboard</a></li>
+              <li class="{% block is_teacher_dash %}{% endblock %}"><a href="{% url "teachers:dashboard"%}">Teacher Dashboard</a></li>
               {% elif is_admin_user %}
               <li><a href="{% url "admins:dashboard"%}">Admin Dashboard</a></li>
               {% endif %}
               <li><a href="{% url "logout" %}">Logout</a></li>
           {% else %}
-              <li><a href="{% url "login" %}?next={{ request.path }}">Teacher Login</a></li>
-              <li class="active"><a href="{% url "login" %}?next={{ request.path }}">Student Login</a></li>
+              <li class="active"><a href="{% url "login" %}?next={{ request.path }}">Login</a></li>
           {% endif %}
           </ul>
 
