@@ -41,12 +41,8 @@
     <ul class="messages">
         {% for message in messages %}
         <script>
-            toastr.info('{{ message }}')
+            toastr.{{ message.tags }}('{{ message }}')
         </script>
-        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
-            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
-            {{ message }}
-        </li>
         {% endfor %}
     </ul>
     {% endif %}
