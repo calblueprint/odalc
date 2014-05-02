@@ -13,7 +13,17 @@
             Together, we can help these communities achieve economic success and empowerment through digital literacy.
             By donating to Oakland Digital, you are helping to close the digital literacy and opportunity gap.
             </p>
-            <p><button class="btn large">Donate</button></p>
+
+            <div class="range-slider" id='donate-amt' data-slider data-options="start: 1; end: 50;">
+              <span class="range-slider-handle"></span>
+              <span class="range-slider-active-segment"></span>
+              <input type="hidden">
+            </div>
+            <form method='POST'>
+              {% csrf_token %}
+              <input type="number" name="quantity" min="0" id='donate-amt-box'>
+              <p><button class="btn large" id='donate-btn'>Donate</button></p>
+            </form>
             <p><small>All contributions are tax-exempt to the extent allowed by law. Oakland Digital Arts and Literacy Center Inc is a 501(c)(3) nonprofit organization: Federal Tax 27-0720655. We respond to each donation with a charitable donation letter for your tax records, and we never share your information with other organizations.
             </small></p>
         </div>
@@ -22,4 +32,52 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://checkout.stripe.com/v2/checkout.js"></script>
+    <script>
+        $(document).ready(function() {
+          $("#donate-btn").click(function(){
+              console.log('click!')
+              var token = function(res){
+                var $input = $('<input type=hidden name=stripeToken />').val(res.id);
+                $('form').append($input).submit();
+              };
+
+              StripeCheckout.open({
+                key:         '{{ stripe_public_key }}',
+                amount: $('#donate-amt-box').val() * 100,
+                currency:    'usd',
+                name:'Donate to ODALC',
+                description: 'Thank you for your generosity!',
+                panelLabel:  'Donate',
+                allowRememberMe: false,
+                token:       token
+              });
+
+              return false;
+            });
+
+          $('[data-slider]').on('change', function(){
+              $('#donate-amt-box').val($('#donate-amt').attr('data-slider'));
+            });
+
+          $('#donate-amt-box').on('change',function(){
+              var newValue = $('#donate-amt-box').val();
+              if(!isNaN(newValue)){
+                if(newValue <= 50){
+                  $('#donate-amt').foundation(
+                    'slider',
+                    'set_value',
+                    newValue
+                  );
+                } else{
+                  $('#donate-amt').foundation('slider','set_value',50);
+                  $('#donate-amt-box').val(newValue);
+                }
+              };
+          });
+        });
+    </script>
 {% endblock %}

@@ -202,6 +202,37 @@ class AboutPageView(UserDataMixin, TemplateView):
 class DonatePageView(UserDataMixin, TemplateView):
     template_name = 'base/donate.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(DonatePageView, self).get_context_data(**kwargs)
+        context['stripe_public_key'] = settings.STRIPE_PUBLIC_KEY
+        return context
+
+    #def dispatch(self, request, *args, **kwargs):
+        #self.user = self.request.user
+        #course = self.get_object()
+        #return super(DonatePageView, self).dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+
+        # Get the credit card details submitted by the form
+        token = request.POST.get('stripeToken', False)
+        amount = request.POST.get('quantity', False)
+        if not token or not amount:
+            messages.error(request, "No payment information was included in your submission. Your card hasn't been charged")
+            return redirect('donate')
+        try:
+          charge = stripe.Charge.create(
+              amount=int(amount) * 100, # amount in cents, again
+              currency="usd",
+              card=token
+          )
+        except stripe.CardError, e:
+          # The card has been declined
+            return self.render_to_response(self.get_context_data())
+
+        return redirect('donate')
+
 
 class LoginView(UserDataMixin, FormView):
     template_name = 'base/login.html'
