@@ -208,11 +208,6 @@ class DonatePageView(UserDataMixin, TemplateView):
         context['stripe_public_key'] = settings.STRIPE_PUBLIC_KEY
         return context
 
-    #def dispatch(self, request, *args, **kwargs):
-        #self.user = self.request.user
-        #course = self.get_object()
-        #return super(DonatePageView, self).dispatch(request, *args, **kwargs)
-
     def post(self, request, *args, **kwargs):
         stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -233,6 +228,7 @@ class DonatePageView(UserDataMixin, TemplateView):
             messages.error(request, "Your information was invalid or your card has been declined")
             return self.render_to_response(self.get_context_data())
 
+        messages.success(request, "Super success yeeeeeeeee")
         return redirect('donate')
 
 
