@@ -167,7 +167,7 @@ class CourseEditView(UserDataMixin, UpdateView):
             # Should never happen
             return reverse('home')
 
-"""Main view for displaying the courses offered. There are three categories of courses: 
+"""Main view for displaying the courses offered. There are three categories of courses:
 all courses, past courses, and upcoming courses (courses coming up in the next month)"""
 class CourseListingView(UserDataMixin, TemplateView):
     template_name = 'base/course_listing.html'
@@ -188,12 +188,12 @@ class HomePageView(UserDataMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(HomePageView, self).get_context_data(**kwargs)
-        num_available = Course.objects.filter(status = Course.STATUS_ACCEPTED).count() 
+        num_available = Course.objects.filter(status = Course.STATUS_ACCEPTED).count()
         if num_available >= 3:
             context['featured_courses'] = Course.objects.filter(status = Course.STATUS_ACCEPTED).order_by('start_datetime')[:3]
         else:
-            upcoming_courses = Course.objects.filter(status = Course.STATUS_ACCEPTED).order_by('start_datetime')[:num_available] 
-            past_courses = Course.objects.filter(status = Course.STATUS_FINISHED).order_by('-start_datetime')[:3-num_available] 
+            upcoming_courses = Course.objects.filter(status = Course.STATUS_ACCEPTED).order_by('start_datetime')[:num_available]
+            past_courses = Course.objects.filter(status = Course.STATUS_FINISHED).order_by('-start_datetime')[:3-num_available]
             context['featured_courses'] = list(chain(upcoming_courses, past_courses))
         return context
 
