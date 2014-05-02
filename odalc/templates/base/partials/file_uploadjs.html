@@ -10,8 +10,8 @@ function s3_upload_{{ field.id_for_label }}(){
         },
         onFinishS3Put: function(url) {
             $('#status_{{ field.id_for_label }}').html('Upload completed. Uploaded to: '+ url);
-            $("#{{ field.id_for_label }}").val(url);
-            $("#preview_{{ field.id_for_label }}").html('<a href="'+url+'">'+'Preview File</a>');
+            $('#{{ field.id_for_label }}').val(url);
+            $('#preview_{{ field.id_for_label }}').html('<a href="'+url+'">'+'Preview File</a>');
         },
         onError: function(status) {
             $('#status_{{ field.id_for_label }}').html('Upload error: ' + status);
