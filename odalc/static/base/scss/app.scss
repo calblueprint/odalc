@@ -45,6 +45,10 @@
     padding-bottom: 1.5em;
 }
 
+.course-items {
+    padding-bottom: 1.5em;
+}
+
 .course-box {
     @include grid-column(4);
 
@@ -161,7 +165,7 @@
 
 .mid-dark-section {
     @include section-padding();
-    background-color: $light-secondary-color; 
+    background-color: $light-secondary-color;
 
     p {
         color: #888;
@@ -182,7 +186,7 @@
 
 .gray-section {
     @include section-padding();
-    background-color: #DCE0E6; 
+    background-color: #DCE0E6;
 
     p {
         color: #777;

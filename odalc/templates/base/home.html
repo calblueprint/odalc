@@ -30,7 +30,7 @@
 
   <!-- Upcoming courses items -->
 
-  <div class="row">
+  <div class="row course-items">
     {% for course in featured_courses %}
     <div class="course-box">
       <a href="{% url "courses:detail" course.pk %}">
@@ -46,6 +46,9 @@
       </a>
     </div>
     {% endfor %}
+        <h5>
+            <a class="right" href="{% url "courses:listing" %}">Browse all courses &raquo;</a>
+        </h5>
   </div>
 
   <!-- Footer -->
@@ -59,7 +62,7 @@
         Whether it's learning how to make your own website, manage your business' branding, or code your first program, there's something for everybody to take.
         </p>
         <p>
-        <a href="{% url "courses:listing" %}">Browse courses &raquo;</a>
+            <a href="{% url "about" %}">Learn more &raquo;</a>
         </p>
      </div>
     </div>
