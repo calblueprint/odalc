@@ -96,5 +96,9 @@ class TeacherDashboardView(UserDataMixin, TemplateView):
         context = super(TeacherDashboardView, self).get_context_data(**kwargs)
         context['user'] = self.user
         user = TeacherUser.objects.get(id=self.user.id)
-        context['courses'] = Course.objects.filter(teacher=user)
+        courses = Course.objects.filter(teacher=user)
+        context['pending_courses'] = courses.filter(status=Course.STATUS_PENDING)
+        context['active_courses'] = courses.filter(status=Course.STATUS_ACCEPTED)
+        context['finished_courses'] = courses.filter(status=Course.STATUS_FINISHED)
+        context['denied_courses'] = courses.filter(status=Course.STATUS_DENIED)
         return context
