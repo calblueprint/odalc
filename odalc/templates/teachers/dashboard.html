@@ -1,4 +1,5 @@
 {% extends "base/base.html" %}
+
 {% block title %}Teacher Dashboard{% endblock %}
 {% block is_teacher_dash %}active{% endblock %}
 
@@ -9,9 +10,10 @@
         <h1>Teacher Dashboard</h1>
     </div>
     <div class="large-5 offset-1 columns">
-        <div style="margin-top:20px;">
-            <a style="float: left;" href="{% url "teachers:edit" %}">Edit profile information &raquo;</a>            <a style="float:right;" href="{% url "teachers:password_change" %}">Change password &raquo;</a>
-        </div>
+        <ul class="inline-list right" style="margin-top:15px;">
+            <li><a href="{% url "teachers:edit" %}">Edit profile information &raquo;</a></li>
+            <li><a href="{% url "teachers:password_change" %}">Change password &raquo;</a></li>
+        </ul>
     </div>
 </div>
 </div>

@@ -9,7 +9,7 @@ from odalc.teachers.views import (
 )
 
 urlpatterns = patterns('',
-    url(r'^/password_change/',
+    url(r'^password_change/$',
         password_change,
         {
             'template_name': 'base/password_change.html',

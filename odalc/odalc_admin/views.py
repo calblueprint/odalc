@@ -8,6 +8,8 @@ from odalc.base.forms import EditCourseForm
 from odalc.base.models import Course
 from odalc.base.views import UserDataMixin
 from odalc.mailer import send_odalc_email
+from odalc.odalc_admin.models import AdminUser
+from odalc.odalc_admin.forms import AdminEditForm
 from odalc.students.models import StudentUser
 from odalc.teachers.models import TeacherUser
 
@@ -129,3 +131,13 @@ class CourseFeedbackView(UserDataMixin, DetailView):
             context['visualization'].append(list(item))
 
         return context
+
+
+class AdminEditView(UserDataMixin, UpdateView):
+    model = AdminUser
+    template_name = "odalc_admin/admin_edit.html"
+    form_class = AdminEditForm
+    success_url = reverse_lazy('admins:dashboard')
+
+    def get_object(self):
+        return self.user

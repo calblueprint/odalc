@@ -4,7 +4,7 @@ from django.contrib.auth.views import password_change
 from odalc.students.views import StudentRegisterView, StudentDashboardView, StudentEditView
 
 urlpatterns = patterns('',
-    url(r'^/password_change/',
+    url(r'^password_change/$',
         password_change,
         {
             'template_name': 'base/password_change.html',

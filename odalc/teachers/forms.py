@@ -1,8 +1,11 @@
-from localflavor.us import forms as localflavor_forms
+from django import forms
+
 from odalc.base.forms import UserRegisterForm
 from odalc.teachers.models import TeacherUser
 from odalc.base.models import Course
-from django import forms
+
+from localflavor.us import forms as localflavor_forms
+
 
 class TeacherRegisterForm(UserRegisterForm):
     phone = localflavor_forms.USPhoneNumberField(required=True, label='Phone')
