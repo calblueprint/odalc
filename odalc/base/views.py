@@ -138,6 +138,7 @@ class CourseDetailView(UserDataMixin, DetailView):
         #add student to course
         course.students.add(self.user)
         course.save()
+        messages.success(request, "You have successfully registered for this course!")
         return redirect('courses:detail',course.pk)
 
 
@@ -208,11 +209,6 @@ class DonatePageView(UserDataMixin, TemplateView):
         context['stripe_public_key'] = settings.STRIPE_PUBLIC_KEY
         return context
 
-    #def dispatch(self, request, *args, **kwargs):
-        #self.user = self.request.user
-        #course = self.get_object()
-        #return super(DonatePageView, self).dispatch(request, *args, **kwargs)
-
     def post(self, request, *args, **kwargs):
         stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -233,6 +229,7 @@ class DonatePageView(UserDataMixin, TemplateView):
             messages.error(request, "Your information was invalid or your card has been declined")
             return self.render_to_response(self.get_context_data())
 
+        messages.success(request, "Thank you! Your donation has been processed.")
         return redirect('donate')
 
 
