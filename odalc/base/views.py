@@ -1,5 +1,4 @@
 import time, json, base64, hmac, urllib
-import hashlib
 from hashlib import sha1
 from itertools import chain
 
@@ -22,7 +21,6 @@ from odalc.odalc_admin.models import AdminUser
 from odalc.students.models import StudentUser
 from odalc.teachers.models import TeacherUser
 
-from boto import connect_s3
 import stripe
 import datetime
 
