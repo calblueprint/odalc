@@ -1,15 +1,18 @@
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse, reverse_lazy
+from django.contrib.auth import authenticate
 from django.db.models import Avg
 from django.shortcuts import redirect
-from django.views.generic import UpdateView,TemplateView,DetailView
+from django.views.generic import UpdateView,TemplateView,DetailView,CreateView
 
 from odalc.base.forms import EditCourseForm
+from odalc.odalc_admin.forms import AdminRegisterForm
 from odalc.base.models import Course
 from odalc.base.views import UserDataMixin
 from odalc.mailer import send_odalc_email
 from odalc.students.models import StudentUser
 from odalc.teachers.models import TeacherUser
+from odalc.odalc_admin.models import AdminUser
 
 
 class ApplicationReviewView(UserDataMixin, UpdateView):
@@ -129,3 +132,18 @@ class CourseFeedbackView(UserDataMixin, DetailView):
             context['visualization'].append(list(item))
 
         return context
+
+class AdminRegisterView(UserDataMixin, CreateView):
+    model = AdminUser
+    template_name = "odalc_admin/register.html"
+    form_class = AdminRegisterForm
+    success_url = reverse_lazy('admins:dashboard')
+
+    def form_valid(self, form):
+        resp = super(AdminRegisterView, self).form_valid(form)
+        user = authenticate(
+            username=self.request.POST['email'],
+            password=self.request.POST['password1']
+        )
+        #login(self.request, user)
+        return resp
