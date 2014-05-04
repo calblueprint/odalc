@@ -8,7 +8,7 @@
             <h1>Browse All Courses</h1>
         </div>
         <div class="large-6 columns">
-            <dl class="sub-nav" style="margin-top:15px;" data-tab>
+            <dl class="sub-nav" style="margin-top:20px;" data-tab>
                 <dt>Browse By:</dt>
                 <dd class="active"><a href="#panel2-1">Upcoming</a></dd>
                 <dd><a href="#panel2-2">Past</a></dd>
@@ -26,7 +26,7 @@
                 <div class="small-9 columns">
                     <div class="row">
                         <div class="small-12 columns">
-                        <a href="{% url "courses:detail" course.pk %}"> {{ course.title }}</a>
+                        <h3><a href="{% url "courses:detail" course.pk %}"> {{ course.title }}</a></h3>
                         </div>
                     </div>
                     <div class="row">
@@ -55,7 +55,7 @@
                 <div class="small-9 columns">
                     <div class="row">
                         <div class="small-12 columns">
-                        <a href="{% url "courses:detail" course.pk %}"> {{ course.title }}</a>
+                        <h3><a href="{% url "courses:detail" course.pk %}"> {{ course.title }}</a></h3>
                         </div>
                     </div>
                     <div class="row">
@@ -84,7 +84,7 @@
                 <div class="small-9 columns">
                     <div class="row">
                         <div class="small-12 columns">
-                        <a href="{% url "courses:detail" course.pk %}"> {{ course.title }}</a>
+                        <h3><a href="{% url "courses:detail" course.pk %}"> {{ course.title }}</a></h3>
                         </div>
                     </div>
                     <div class="row">
