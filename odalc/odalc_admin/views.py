@@ -2,9 +2,15 @@ from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.db.models import Avg
 from django.shortcuts import redirect
-from django.views.generic import UpdateView, TemplateView, DetailView
+from django.views.generic import (
+    UpdateView,
+    TemplateView,
+    DetailView,
+    CreateView
+)
 
 from odalc.base.forms import EditCourseForm
+from odalc.odalc_admin.forms import AdminRegisterForm
 from odalc.base.models import Course
 from odalc.base.views import UserDataMixin
 from odalc.mailer import send_odalc_email
@@ -141,3 +147,11 @@ class AdminEditView(UserDataMixin, UpdateView):
 
     def get_object(self):
         return self.user
+
+
+class AdminRegisterView(UserDataMixin, CreateView):
+    model = AdminUser
+    template_name = "odalc_admin/register.html"
+    form_class = AdminRegisterForm
+    success_url = reverse_lazy('admins:dashboard')
+

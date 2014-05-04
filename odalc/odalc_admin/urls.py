@@ -4,7 +4,8 @@ from django.contrib.auth.views import password_change
 from odalc.odalc_admin.views import (
     ApplicationReviewView,
     AdminDashboardView,
-    AdminEditView
+    AdminEditView,
+    AdminRegisterView
 )
 
 urlpatterns = patterns('',
@@ -17,6 +18,7 @@ urlpatterns = patterns('',
        name='password_change'
     ),
     url(r'^edit/$', AdminEditView.as_view(), name='edit'),
+    url(r'^register/$', AdminRegisterView.as_view(), name='register'),
     url(r'^review/(?P<pk>\d+)/$', ApplicationReviewView.as_view(), name='course_review'),
     url(r'^$', AdminDashboardView.as_view(), name='dashboard'),
 )
