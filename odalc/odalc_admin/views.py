@@ -145,5 +145,4 @@ class AdminRegisterView(UserDataMixin, CreateView):
             username=self.request.POST['email'],
             password=self.request.POST['password1']
         )
-        #login(self.request, user)
         return resp
