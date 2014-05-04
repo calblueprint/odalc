@@ -97,8 +97,8 @@ class TeacherDashboardView(UserDataMixin, TemplateView):
         context['user'] = self.user
         user = TeacherUser.objects.get(id=self.user.id)
         courses = Course.objects.filter(teacher=user)
-        context['pending_courses'] = courses.filter(status=Course.STATUS_PENDING)
-        context['active_courses'] = courses.filter(status=Course.STATUS_ACCEPTED)
-        context['finished_courses'] = courses.filter(status=Course.STATUS_FINISHED)
-        context['denied_courses'] = courses.filter(status=Course.STATUS_DENIED)
+        context['pending_courses'] = courses.filter(status=Course.STATUS_PENDING).order_by('-start_datetime')
+        context['active_courses'] = courses.filter(status=Course.STATUS_ACCEPTED).order_by('-start_datetime')
+        context['finished_courses'] = courses.filter(status=Course.STATUS_FINISHED).order_by('-start_datetime')
+        context['denied_courses'] = courses.filter(status=Course.STATUS_DENIED).order_by('-start_datetime')
         return context

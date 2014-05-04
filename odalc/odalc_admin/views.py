@@ -73,10 +73,10 @@ class AdminDashboardView(UserDataMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(AdminDashboardView, self).get_context_data(**kwargs)
-        context['pending_courses'] = Course.objects.filter(status=Course.STATUS_PENDING)
-        context['active_courses'] = Course.objects.filter(status=Course.STATUS_ACCEPTED)
-        context['finished_courses'] = Course.objects.filter(status=Course.STATUS_FINISHED)
-        context['denied_courses'] = Course.objects.filter(status=Course.STATUS_DENIED)
+        context['pending_courses'] = Course.objects.filter(status=Course.STATUS_PENDING).order_by('-start_datetime')
+        context['active_courses'] = Course.objects.filter(status=Course.STATUS_ACCEPTED).order_by('-start_datetime')
+        context['finished_courses'] = Course.objects.filter(status=Course.STATUS_FINISHED).order_by('-start_datetime')
+        context['denied_courses'] = Course.objects.filter(status=Course.STATUS_DENIED).order_by('-start_datetime')
         context['teachers'] = TeacherUser.objects.all()
         context['students'] = StudentUser.objects.all()
         return context

@@ -174,9 +174,9 @@ class CourseListingView(UserDataMixin, TemplateView):
         context = super(CourseListingView, self).get_context_data(**kwargs)
         now = datetime.datetime.now()
         month_from_now = now + datetime.timedelta(days=30)
-        context['all_courses'] = Course.objects.filter(Q(status = Course.STATUS_ACCEPTED) | Q(status = Course.STATUS_FINISHED))
-        context['past_courses'] = Course.objects.filter(status = Course.STATUS_FINISHED)
-        context['upcoming_courses'] = Course.objects.filter(start_datetime__range = [now, month_from_now], status = Course.STATUS_ACCEPTED)
+        context['all_courses'] = Course.objects.filter(Q(status = Course.STATUS_ACCEPTED) | Q(status = Course.STATUS_FINISHED)).order_by('-start_datetime')
+        context['past_courses'] = Course.objects.filter(status = Course.STATUS_FINISHED).order_by('-start_datetime')
+        context['upcoming_courses'] = Course.objects.filter(start_datetime__range = [now, month_from_now], status = Course.STATUS_ACCEPTED).order_by('-start_datetime')
         return context
 
 """Landing page for the website. Also displays the next three upcoming courses
