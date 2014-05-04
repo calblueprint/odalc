@@ -156,6 +156,14 @@
         color: #fff;
         font-size: 2em;
     }
+
+    a {
+        color: #fff;
+        &:hover {
+            color: #DCE0E6;
+       }
+    }
+
 }
 
 .white-section {
