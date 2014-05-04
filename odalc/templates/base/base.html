@@ -16,10 +16,12 @@
   </head>
   <body>
     {% include "base/partials/nav.html" %}
+
     <div class="main-wrap">
     {% block body %}
     {% endblock %}
     </div>
+
     {% block footer %}
     <div class="dark-section">
         <div class="row">
@@ -30,6 +32,7 @@
         </div>
     </div>
     {% endblock %}
+
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/foundation/5.2.2/js/foundation.min.js"></script>
