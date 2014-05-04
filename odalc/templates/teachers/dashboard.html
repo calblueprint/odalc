@@ -1,5 +1,7 @@
 {% extends "base/base.html" %}
+
 {% block title %}Teacher Dashboard{% endblock %}
+
 {% block is_teacher_dash %}active{% endblock %}
 
 {% block body %}
@@ -9,9 +11,10 @@
         <h1>Teacher Dashboard</h1>
     </div>
     <div class="large-5 offset-1 columns">
-        <div style="margin-top:20px;">
-            <a style="float: left;" href="{% url "teachers:edit" %}">Edit profile information &raquo;</a>            <a style="float:right;" href="{% url "teachers:password_change" %}">Change password &raquo;</a>
-        </div>
+        <ul class="inline-list right" style="margin-top:15px;">
+            <li><a href="{% url "teachers:edit" %}">Edit profile information &raquo;</a></li>
+            <li><a href="{% url "teachers:password_change" %}">Change password &raquo;</a></li>
+        </ul>
     </div>
 </div>
 </div>
@@ -20,27 +23,102 @@
 <div class="white-section">
 <div class="row">
     <div class="large-12 columns">
-        <h3>Your Courses</h3>
-        <table width=100%>
-        <thead>
-            <tr>
-                <th width=80%>Course Name</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for course in courses %}
-        <tr>
-            <td><a href="{% url "courses:detail" course.pk %}">{{ course.title }}</a></td>
-            <td><a href="{% url "courses:edit" course.pk %}">Edit course page &raquo;</a></td>
-        </tr>
-        {% empty %}
-          <tr><td>No courses yet.</td></tr>
-        {% endfor %}
-        </tbody>
-        </table>
+        <div class="row">
+            <div class="large-12 columns">
+                <h3>Pending Courses</h3>
+                <table width=100%>
+                <thead>
+                    <tr>
+                        <th width=80%>Course Name</th>
+                        <th width=20%></th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for course in pending_courses %}
+                <tr>
+                    <td><a href="{% url "courses:detail" course.pk %}">{{ course.title }}</a></td>
+                    <td><a href="{% url "courses:edit" course.pk %}">Edit course page &raquo;</a></td>
+                </tr>
+                {% empty %}
+                  <tr><td>No courses pending.</td></tr>
+                {% endfor %}
+                </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="large-12 columns">
+                <h3>Active Courses</h3>
+                <table width=100%>
+                <thead>
+                    <tr>
+                        <th width=80%>Course Name</th>
+                        <th width=20%></th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for course in active_courses %}
+                <tr>
+                    <td><a href="{% url "courses:detail" course.pk %}">{{ course.title }}</a></td>
+                    <td><a href="{% url "courses:edit" course.pk %}">Edit course page &raquo;</a></td>
+                </tr>
+                {% empty %}
+                  <tr><td>No courses active.</td></tr>
+                {% endfor %}
+                </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="large-12 columns">
+                <h3>Finished Courses</h3>
+                <table width=100%>
+                <thead>
+                    <tr>
+                        <th width=60%>Course Name</th>
+                        <th width=20%></th>
+                        <th width=20%></th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for course in finished_courses %}
+                <tr>
+                    <td><a href="{% url "courses:detail" course.pk %}">{{ course.title }}</a></td>
+                    <td><a href="{% url "courses:feedback_review" course.pk %}">View course feedback &raquo;</a></td>
+                    <td><a href="{% url "courses:edit" course.pk %}">Edit course page &raquo;</a></td>
+                </tr>
+                {% empty %}
+                  <tr><td>No courses yet.</td></tr>
+                {% endfor %}
+                </tbody>
+                </table>
+            </div>
+        </div>
+        {% if denied_courses %}
+        <div class="row">
+            <div class="large-12 columns">
+                <h3>Denied Courses</h3>
+                <table width=100%>
+                <thead>
+                    <tr>
+                        <th width=80%>Course Name</th>
+                        <th width=20%></th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for course in denied_courses %}
+                <tr>
+                    <td><a href="{% url "courses:detail" course.pk %}">{{ course.title }}</a></td>
+                    <td><a href="{% url "courses:edit" course.pk %}">Edit course page &raquo;</a></td>
+                </tr>
+                {% endfor %}
+                </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
 
-        <a class="button large" href="{% url "teachers:create-course" %}">Create a new course &raquo;</a>
+        <a class="button large" href="{% url "teachers:create-course" %}">Submit a new course</a>
     </div>
 </div>
 </div>

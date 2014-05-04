@@ -15,11 +15,15 @@ class UserRegisterForm(forms.ModelForm):
         'duplicate_username': _("A user with that username already exists."),
         'password_mismatch': _("The two password fields didn't match."),
     }
-    password1 = forms.CharField(label=_("Password"),
-        widget=forms.PasswordInput)
-    password2 = forms.CharField(label=_("Password confirmation"),
+    password1 = forms.CharField(
+        label=_("Password"),
+        widget=forms.PasswordInput
+    )
+    password2 = forms.CharField(
+        label=_("Password Confirmation"),
         widget=forms.PasswordInput,
-        help_text=_("Enter the same password as above, for verification."))
+        help_text=_("Enter the same password as above, for verification.")
+    )
 
     def clean_username(self):
         # Since User.username is unique, this check is redundant,

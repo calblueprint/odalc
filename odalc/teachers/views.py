@@ -2,6 +2,8 @@ from datetime import datetime as dt
 
 from django.contrib.auth import login, authenticate
 from django.core.urlresolvers import reverse, reverse_lazy
+from django.utils.decorators import method_decorator
+from django.views.decorators.debug import sensitive_post_parameters
 from django.views.generic import CreateView, FormView, TemplateView, UpdateView
 
 from odalc.base.models import Course, CourseAvailability
@@ -11,18 +13,23 @@ from odalc.teachers.forms import CreateCourseForm, TeacherRegisterForm, TeacherE
 from odalc.teachers.models import TeacherUser
 
 
-class TeacherRegisteration(UserDataMixin, CreateView):
+class TeacherRegisterView(UserDataMixin, CreateView):
     model = TeacherUser
     template_name = "teachers/teacher_register.html"
     form_class = TeacherRegisterForm
     success_url = reverse_lazy('teachers:dashboard')
 
+    @method_decorator(sensitive_post_parameters('password1', 'password2'))
+    def dispatch(self, request, *args, **kwargs):
+        return super(TeacherRegisterView, self).dispatch(request, *args, **kwargs)
+
     def form_valid(self, form):
-        a = super(TeacherRegisteration, self).form_valid(form)
+        a = super(TeacherRegisterView, self).form_valid(form)
         user = authenticate(username=self.request.POST['email'],
                          password=self.request.POST['password1'])
         login(self.request, user)
         return a
+
 
 class TeacherEditView(UserDataMixin, UpdateView):
     model = TeacherUser
@@ -33,7 +40,7 @@ class TeacherEditView(UserDataMixin, UpdateView):
     def get_object(self):
         return self.user
 
-class CreateCourse(UserDataMixin, FormView):
+class CreateCourseView(UserDataMixin, FormView):
     model = Course
     template_name = 'teachers/create_course_form.html'
     form_class = CreateCourseForm
@@ -76,7 +83,7 @@ class CreateCourse(UserDataMixin, FormView):
         }
         send_odalc_email('notify_teacher_course_submitted', context, [new_course.teacher.email])
         send_odalc_email('notify_admins_course_submitted', context, [], cc_admins=True)
-        return super(CreateCourse, self).form_valid(form)
+        return super(CreateCourseView, self).form_valid(form)
 
 
 class TeacherDashboardView(UserDataMixin, TemplateView):
@@ -89,5 +96,9 @@ class TeacherDashboardView(UserDataMixin, TemplateView):
         context = super(TeacherDashboardView, self).get_context_data(**kwargs)
         context['user'] = self.user
         user = TeacherUser.objects.get(id=self.user.id)
-        context['courses'] = Course.objects.filter(teacher=user)
+        courses = Course.objects.filter(teacher=user)
+        context['pending_courses'] = courses.filter(status=Course.STATUS_PENDING).order_by('-start_datetime')
+        context['active_courses'] = courses.filter(status=Course.STATUS_ACCEPTED).order_by('-start_datetime')
+        context['finished_courses'] = courses.filter(status=Course.STATUS_FINISHED).order_by('-start_datetime')
+        context['denied_courses'] = courses.filter(status=Course.STATUS_DENIED).order_by('-start_datetime')
         return context

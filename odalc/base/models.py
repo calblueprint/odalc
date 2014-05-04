@@ -1,7 +1,14 @@
-from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
-from django.core.validators import MinValueValidator
+from django.contrib.auth.models import (
+    AbstractBaseUser,
+    BaseUserManager,
+    PermissionsMixin
+)
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.validators import (
+    MaxValueValidator,
+    MinValueValidator,
+)
+from django.db import models
 
 # Create your models here.
 class UserManager(BaseUserManager):
@@ -81,24 +88,72 @@ class Course(models.Model):
 
     teacher = models.ForeignKey('teachers.TeacherUser')
     students = models.ManyToManyField('students.StudentUser',blank=True)
-    title = models.CharField(max_length=50)
-    short_description = models.CharField(max_length=255)
-    long_description = models.TextField()
-    size = models.IntegerField()
-    start_datetime = models.DateTimeField(blank=True, null=True)
-    end_datetime = models.DateTimeField(blank=True, null=True)
-    prereqs = models.TextField()
-    skill_level = models.CharField(max_length=12, choices=SKILL_CHOICES)
+    title = models.CharField('Course Title', max_length=50)
+    short_description = models.CharField(
+        'Short Description',
+        max_length=255,
+        help_text='One or two sentences describing the course.'
+    )
+    long_description = models.TextField(
+        'Long Description',
+        help_text='A full description of what the course will be about and what students will learn.',
+    )
+    size = models.IntegerField(
+        'Course Size',
+        help_text='Number of students to open this course to. The recommended size is 6 to 8 people.',
+    )
+    start_datetime = models.DateTimeField(
+        'Course Start Date/Time',
+        blank=True,
+        null=True
+    )
+    end_datetime = models.DateTimeField(
+        'Course End Date/Time',
+        blank=True,
+        null=True
+    )
+    prereqs = models.TextField(
+        'Course Prerequisites',
+        help_text='Any skills, knowledge, or tools that students should be familiar with before enrolling.'
+    )
+    skill_level = models.CharField(
+        'Course Skill Level',
+        max_length=12,
+        choices=SKILL_CHOICES,
+        help_text='Skill level associated with this course.'
+    )
     cost = models.DecimalField(
+        'Course Cost',
         max_digits=5,
         decimal_places=2,
-        validators=[MinValueValidator(5.00)]
+        validators=[MinValueValidator(5.00), MaxValueValidator(25.00)],
+        help_text='Enrollment cost for students. We have a $5.00 minimum so that we can confirm commitment from students.'
     )
-    odalc_cost_split = models.DecimalField(max_digits=5, decimal_places=2)
-    image = models.URLField()
-    course_material = models.URLField()
-    additional_info = models.TextField(blank=True)
-    status = models.CharField(max_length=3, choices=STATUS_CHOICES, default=STATUS_PENDING)
+    odalc_cost_split = models.DecimalField(
+        'Course Cost to Split with Oakland Digital',
+        max_digits=5,
+        decimal_places=2,
+        help_text='Amount of the enrollment cost you\'d like to donate to Oakland Digital.'
+    )
+    image = models.URLField(
+        'Course Image',
+        help_text='Image to use on the course page'
+    )
+    course_material = models.URLField(
+        'Course Materials',
+        help_text='PDF of any course materials for students. This can include links to other materials as well. Only enrolled students will be able to see this link.'
+    )
+    additional_info = models.TextField(
+        'Additional Information',
+        blank=True,
+        help_text='Any additional information about the course',
+    )
+    status = models.CharField(
+        'Course Status',
+        max_length=3,
+        choices=STATUS_CHOICES,
+        default=STATUS_PENDING
+    )
 
 
 class CourseAvailability(models.Model):

@@ -69,12 +69,12 @@
       <div class="row">
         <div class="large-7 columns center">
           <ul class="inline-list">
-            <!-- Twitter (Customized) --> 
+            <!-- Twitter (Customized) -->
             <li>
               <div>
               {% if user.is_authenticated %}
                   {% if is_student_user %}
-                      {% if in_class %} 
+                      {% if in_class %}
                         <a href="https://twitter.com/share" class="twitter-share-button" data-text="Check out this class I'm taking at Oakland Digital!" data-via="ODALC" data-size="large" data-hashtags="OaklandDigitalCourses">Tweet</a>
                       {% else %}
                         <a href="https://twitter.com/share" class="twitter-share-button" data-text="Check out this class at Oakland Digital!" data-via="ODALC" data-size="large" data-hashtags="OaklandDigitalCourses">Tweet</a>
@@ -167,7 +167,10 @@
           </div>
           <!-- bio portion -->
           <br>
+          <h5>Bio</h5>
           <p class="light">{{ course.teacher.about }}</p>
+          <h5>Professional Experience</h5>
+          <p class="light">{{ course.teacher.experience }}</p>
         </div>
       </div>
     </div>

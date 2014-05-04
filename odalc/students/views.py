@@ -2,6 +2,8 @@ from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth import login, authenticate
 from django.shortcuts import redirect
+from django.utils.decorators import method_decorator
+from django.views.decorators.debug import sensitive_post_parameters
 from django.views.generic import CreateView, TemplateView, UpdateView
 
 from odalc.base.models import Course
@@ -15,6 +17,10 @@ class StudentRegisterView(UserDataMixin, CreateView):
     template_name = "students/register.html"
     form_class = StudentRegisterForm
     success_url = reverse_lazy('home')
+
+    @method_decorator(sensitive_post_parameters('password1', 'password2'))
+    def dispatch(self, request, *args, **kwargs):
+        return super(StudentRegisterView, self).dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         resp = super(StudentRegisterView, self).form_valid(form)
@@ -72,5 +78,5 @@ class StudentDashboardView(UserDataMixin, TemplateView):
         student_user=self.user
         context = super(StudentDashboardView, self).get_context_data(**kwargs)
         context['user'] = student_user
-        context["courses_taken"] = student_user.course_set.all()
+        context["courses_taken"] = student_user.course_set.all().order_by('-start_datetime')
         return context

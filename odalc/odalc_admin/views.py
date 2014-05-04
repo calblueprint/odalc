@@ -1,18 +1,23 @@
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse, reverse_lazy
-from django.contrib.auth import authenticate
 from django.db.models import Avg
 from django.shortcuts import redirect
-from django.views.generic import UpdateView,TemplateView,DetailView,CreateView
+from django.views.generic import (
+    UpdateView,
+    TemplateView,
+    DetailView,
+    CreateView
+)
 
 from odalc.base.forms import EditCourseForm
 from odalc.odalc_admin.forms import AdminRegisterForm
 from odalc.base.models import Course
 from odalc.base.views import UserDataMixin
 from odalc.mailer import send_odalc_email
+from odalc.odalc_admin.models import AdminUser
+from odalc.odalc_admin.forms import AdminEditForm
 from odalc.students.models import StudentUser
 from odalc.teachers.models import TeacherUser
-from odalc.odalc_admin.models import AdminUser
 
 
 class ApplicationReviewView(UserDataMixin, UpdateView):
@@ -74,10 +79,10 @@ class AdminDashboardView(UserDataMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(AdminDashboardView, self).get_context_data(**kwargs)
-        context['pending_courses'] = Course.objects.filter(status=Course.STATUS_PENDING)
-        context['active_courses'] = Course.objects.filter(status=Course.STATUS_ACCEPTED)
-        context['finished_courses'] = Course.objects.filter(status=Course.STATUS_FINISHED)
-        context['denied_courses'] = Course.objects.filter(status=Course.STATUS_DENIED)
+        context['pending_courses'] = Course.objects.filter(status=Course.STATUS_PENDING).order_by('-start_datetime')
+        context['active_courses'] = Course.objects.filter(status=Course.STATUS_ACCEPTED).order_by('-start_datetime')
+        context['finished_courses'] = Course.objects.filter(status=Course.STATUS_FINISHED).order_by('-start_datetime')
+        context['denied_courses'] = Course.objects.filter(status=Course.STATUS_DENIED).order_by('-start_datetime')
         context['teachers'] = TeacherUser.objects.all()
         context['students'] = StudentUser.objects.all()
         return context
@@ -133,16 +138,28 @@ class CourseFeedbackView(UserDataMixin, DetailView):
 
         return context
 
+
+class AdminEditView(UserDataMixin, UpdateView):
+    model = AdminUser
+    template_name = "odalc_admin/admin_edit.html"
+    form_class = AdminEditForm
+    success_url = reverse_lazy('admins:dashboard')
+
+    def get_object(self):
+        return self.user
+
+
 class AdminRegisterView(UserDataMixin, CreateView):
     model = AdminUser
     template_name = "odalc_admin/register.html"
     form_class = AdminRegisterForm
     success_url = reverse_lazy('admins:dashboard')
 
-    def form_valid(self, form):
-        resp = super(AdminRegisterView, self).form_valid(form)
-        user = authenticate(
-            username=self.request.POST['email'],
-            password=self.request.POST['password1']
-        )
-        return resp
+    def dispatch(self, *args, **kwargs):
+        user = self.request.user
+        if not user.is_authenticated():
+            return redirect('/accounts/login?next=%s' % self.request.path)
+        if user.has_perm('base.admin_permission'):
+            return super(AdminRegisterView, self).dispatch(*args, **kwargs)
+        raise PermissionDenied()
+

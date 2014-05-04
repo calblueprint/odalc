@@ -2,6 +2,10 @@
 
 {% load staticfiles %}
 
+{% block title %}Edit Profile{% endblock %}
+
+{% block is_teacher_dash %}active{% endblock %}
+
 {% block body %}
 
 <div class="white-section">
@@ -31,7 +35,7 @@
           {% include "base/partials/formfield.html" with field=form.city %}
           {% include "base/partials/formfield.html" with field=form.zipcode %}
           {% include "base/partials/formfield.html" with field=form.phone %}
- 
+
     </div>
     <div class="large-6 offset-1 columns">
          {% include "base/partials/formfield.html" with field=form.about %}

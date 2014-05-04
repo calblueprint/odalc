@@ -1,5 +1,7 @@
 from django.db import models
+
 from odalc.base.models import User
+
 from localflavor.us import models as localflavor_models
 
 # Create your models here.
@@ -13,17 +15,57 @@ class TeacherUser(User):
             (INFO_SOURCE_OTHER, 'Other')
         )
 
-    organization = models.CharField(max_length=255, blank=True)
-    position = models.CharField(max_length=255, blank=True)
-    street_address = models.CharField(max_length=255, blank=True)
-    city = models.CharField(max_length=255, blank=True)
-    zipcode = models.CharField(max_length=9, blank=True)
-    phone = localflavor_models.PhoneNumberField()
-    about = models.TextField()
-    experience = models.TextField()
-    picture = models.URLField()
-    resume = models.URLField()
-    info_source = models.CharField(max_length=3, choices=INFO_SOURCE_CHOICES)
+    organization = models.CharField(
+        'Organization',
+        max_length=255,
+        blank=True,
+        help_text='Organization you are currently working at'
+    )
+    position = models.CharField(
+        'Position',
+        max_length=255,
+        blank=True,
+        help_text='Position at this organization'
+    )
+    street_address = models.CharField(
+        'Street Address',
+        max_length=255,
+        blank=True,
+        help_text='Business Address',
+    )
+    city = models.CharField(
+        'City',
+        max_length=255,
+        blank=True
+    )
+    zipcode = models.CharField(
+        'ZIP Code',
+        max_length=9,
+        blank=True
+    )
+    phone = localflavor_models.PhoneNumberField(
+        'Contact Number'
+    )
+    about = models.TextField(
+        'About You',
+        help_text='General bio about yourself. This will be shown on the course page.',
+    )
+    experience = models.TextField(
+        'Professional Experience',
+        help_text='Your professional experience. This wil also be shown on the course page.'
+    )
+    picture = models.URLField(
+        'Headshot'
+    )
+    resume = models.URLField(
+        'Resume',
+        help_text='Please upload in PDF format.'
+    )
+    info_source = models.CharField(
+        'How did you hear about us?',
+        max_length=255,
+        choices=INFO_SOURCE_CHOICES
+    )
 
     class Meta:
-        verbose_name = "Teacher"
+        verbose_name = 'Teacher'
