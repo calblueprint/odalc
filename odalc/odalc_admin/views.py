@@ -155,3 +155,11 @@ class AdminRegisterView(UserDataMixin, CreateView):
     form_class = AdminRegisterForm
     success_url = reverse_lazy('admins:dashboard')
 
+    def dispatch(self, *args, **kwargs):
+        user = self.request.user
+        if not user.is_authenticated():
+            return redirect('/accounts/login?next=%s' % self.request.path)
+        if user.has_perm('base.admin_permission'):
+            return super(AdminRegisterView, self).dispatch(*args, **kwargs)
+        raise PermissionDenied()
+
