@@ -15,11 +15,11 @@
           <ul class="right">
           {% if user.is_authenticated %}
               {% if is_student_user %}
-              <li><a href="{% url "students:dashboard"%}">Student Dashboard</a></li>
+              <li class="{% block is_student_dash %}{% endblock %}"><a href="{% url "students:dashboard"%}">Student Dashboard</a></li>
               {% elif is_teacher_user %}
               <li class="{% block is_teacher_dash %}{% endblock %}"><a href="{% url "teachers:dashboard"%}">Teacher Dashboard</a></li>
               {% elif is_admin_user %}
-              <li><a href="{% url "admins:dashboard"%}">Admin Dashboard</a></li>
+              <li class="{% block is_admin_dash %}{% endblock %}"><a href="{% url "admins:dashboard"%}">Admin Dashboard</a></li>
               {% endif %}
               <li><a href="{% url "logout" %}">Logout</a></li>
           {% else %}
@@ -31,7 +31,7 @@
           <ul class="left">
             <li class="{% block is_about_page %}{% endblock %}"><a href={% url "about"%}>About</a></li>
             <li class="{% block is_courses_page %}{% endblock %}"><a href={% url "courses:listing"%}>Courses</a></li>
-            <li class="{% block is_donate %}{% endblock %}"><a href={% url "donate"%}>Donate</a></li>
+            <li class="{% block is_donate_page %}{% endblock %}"><a href={% url "donate"%}>Donate</a></li>
           </ul>
         </section>
       </nav>

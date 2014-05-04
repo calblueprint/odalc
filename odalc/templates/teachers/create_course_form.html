@@ -1,10 +1,13 @@
 {% extends "base/base.html" %}
 {% load staticfiles %}
+
 {% block title %}Create a new course{% endblock %}
 
 {% block css %}
 <link rel="stylesheet" href="{% static "base/css/jquery.timepicker.css" %}" />
 {% endblock %}
+
+{% block is_teacher_dash %}active{% endblock %}
 
 {% block body %}
 <div class="row white-section">
@@ -70,7 +73,7 @@
                           <span class="range-slider-active-segment"></span>
                           <input type="hidden" id="split-slider">
                         </div>
- 
+
                         {% include "base/partials/hidden_formfield.html" with field=form.odalc_cost_split %}
                     </div>
                 </div>

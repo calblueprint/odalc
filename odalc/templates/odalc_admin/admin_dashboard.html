@@ -2,16 +2,19 @@
 
 {% block title %}Admin Dashboard{% endblock %}
 
+{% block is_admin_dash %}active{% endblock %}
+
 {% block body %}
 <div class="blue-narrow-section">
     <div class="row">
-        <div class="large-6 columns">
+        <div class="large-4 columns">
             <h1>Admin Dashboard</h1>
         </div>
-        <div class="large-6 columns">
+        <div class="large-8 columns">
             <ul class="inline-list right" style="margin-top:15px;">
                 <li><a href="{% url "admins:edit" %}">Edit profile information &raquo;</a></li>
                 <li><a href="{% url "admins:password_change" %}">Change password &raquo;</a></li>
+                <li><a href="{% url "admins:register" %}">Register another admin &raquo;</a></li>
             </ul>
         </div>
     </div>
@@ -156,16 +159,6 @@
                 {% endfor %}
             </div>
 
-        </div>
-        <div>
-            <h3>Create another admin</h3>
-            <div class="row">
-                <div class="large-12 medium-6 small-12 columns">
-                    <div>
-                        <a href="{% url "admins:register" %}" class="button">Register another Admin</a>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </div>

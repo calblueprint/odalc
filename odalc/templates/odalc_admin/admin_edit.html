@@ -2,15 +2,17 @@
 
 {% load staticfiles %}
 
+{% block title %}Edit Profile{% endblock %}
+
+{% block is_admin_dash %}active{% endblock %}
+
 {% block body %}
 <div class="white-section">
     <div class="row">
-        <div class="large-7 columns">
-            <h2>Editing Your Profile Information</h2>
-        </div>
-    </div>
-    <div class="row">
         <div class="large-5 columns">
+            <h1>Edit Profile Information</h1`>
+        </div>
+        <div class="large-5 offset-2 columns">
             <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
 
