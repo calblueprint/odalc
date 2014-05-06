@@ -55,7 +55,8 @@ class TeacherUser(User):
         help_text='Your professional experience. This wil also be shown on the course page.'
     )
     picture = models.URLField(
-        'Headshot'
+        'Headshot',
+        help_text='Please try to upload a square image.'
     )
     resume = models.URLField(
         'Resume',

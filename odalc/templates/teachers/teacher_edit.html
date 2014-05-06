@@ -29,19 +29,19 @@
 
           {% include "base/partials/formfield.html" with field=form.first_name %}
           {% include "base/partials/formfield.html" with field=form.last_name %}
-          {% include "base/partials/formfield.html" with field=form.organization %}
-          {% include "base/partials/formfield.html" with field=form.position %}
-          {% include "base/partials/formfield.html" with field=form.street_address %}
+          {% include "base/partials/tooltip_formfield.html" with field=form.organization %}
+          {% include "base/partials/tooltip_formfield.html" with field=form.position %}
+          {% include "base/partials/tooltip_formfield.html" with field=form.street_address %}
           {% include "base/partials/formfield.html" with field=form.city %}
           {% include "base/partials/formfield.html" with field=form.zipcode %}
           {% include "base/partials/formfield.html" with field=form.phone %}
 
     </div>
     <div class="large-6 offset-1 columns">
-         {% include "base/partials/formfield.html" with field=form.about %}
-          {% include "base/partials/formfield.html" with field=form.experience %}
-          {% include "base/partials/hidden_img_uploadfield.html" with field=form.picture %}
-          {% include "base/partials/hidden_file_uploadfield.html" with field=form.resume %}
+        {% include "base/partials/tooltip_formfield.html" with field=form.about %}
+        {% include "base/partials/tooltip_formfield.html" with field=form.experience %}
+        {% include "base/partials/hidden_img_uploadfield.html" with field=form.picture %}
+        {% include "base/partials/hidden_file_uploadfield.html" with field=form.resume %}
 
           <input class="button success left" type="submit" value="Save" />
         </form>
