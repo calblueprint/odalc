@@ -162,6 +162,7 @@ class CourseEditView(UserDataMixin, UpdateView):
         return self.deny_access()
 
     def get_success_url(self):
+        messages.success(self.request, self.get_object().title + ' edited successfully')
         if self.is_teacher_user:
             return reverse('teachers:dashboard')
         elif self.is_admin_user:
