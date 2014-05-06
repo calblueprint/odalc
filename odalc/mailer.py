@@ -1,4 +1,4 @@
-from django.core.mail import  EmailMessage
+from django.core.mail import  EmailMultiAlternatives
 from django.conf import settings
 from django.template import Template, Context
 
@@ -22,11 +22,20 @@ def send_odalc_email(template_name, context_dict, recipient_list, from_email=set
     context = Context(context_dict)
     subject_template = Template(template_data[template_name]['subject'])
     body_template = Template(template_data[template_name]['body'])
+    if 'html' in template_data[template_name]:
+        html_template = Template(template_data[template_name]['html'])
+    else: html_template = False
     subject = subject_template.render(context)
     body = body_template.render(context)
+    if html_template:
+        html_body = html_template.render(context)
+    else: html_body = False
+
     if cc_admins:
         cc_list = AdminUser.objects.all().values_list('email', flat=True)
     else:
         cc_list = []
-    email = EmailMessage(subject=subject, body=body, from_email=from_email, to=recipient_list, cc=cc_list)
+    email = EmailMultiAlternatives(subject=subject, body=body, from_email=from_email, to=recipient_list, cc=cc_list)
+    if html_template:
+        email.attach_alternative(html_body, "text/html")
     email.send()

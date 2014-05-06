@@ -21,6 +21,20 @@ notify_teacher_course_approved:
         Best,\n
         ODALC Team
         "
+    html:
+        "
+        Hello {{ course.teacher.first_name }}, <br><br>
+        Your course {{ course.title }} has been successfully reviewed and approved by the ODALC team!
+        The course page is now open for students to sign up at {{ course_url }}.<br><br>
+        You can go to your dashboard to view and edit course information if necessary.<br><br>
+        Share the good news: <br>
+        <a href='{{ facebook_share }}'>Share on Facebook</a> <br>
+        <a href='{{ twitter_share }}'>Share on Twitter</a> <br>
+        <a href='{{ google_share }}'>Share on Google+</a> <br>
+        Good luck! <br><br>
+        Best, <br>
+        ODALC Team
+        "
 
 notify_admins_course_approved:
 
