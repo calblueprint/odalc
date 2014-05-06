@@ -59,6 +59,11 @@ class UserDataMixin(object):
         context['is_admin_user'] = self.is_admin_user
         return context
 
+    def deny_access(self):
+        """Basic function to replace the default PermissionDenied()"""
+        messages.error(self.request, 'You do not have authorization to access this area')
+        return redirect('home')
+
 
 class CourseDetailView(UserDataMixin, DetailView):
     model = Course
@@ -89,7 +94,7 @@ class CourseDetailView(UserDataMixin, DetailView):
             (self.user.has_perm('base.teacher_permission') and course.teacher.email == self.user.email) or
             self.user.has_perm('base.admin_permission')):
             return super(CourseDetailView, self).dispatch(request, *args, **kwargs)
-        raise PermissionDenied()
+        return self.deny_access()
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -154,9 +159,10 @@ class CourseEditView(UserDataMixin, UpdateView):
         if ((user.has_perm('base.teacher_permission') and course.teacher.email == user.email) or
             user.has_perm('base.admin_permission')):
             return super(CourseEditView, self).dispatch(request, *args, **kwargs)
-        raise PermissionDenied()
+        return self.deny_access()
 
     def get_success_url(self):
+        messages.success(self.request, self.get_object().title + ' edited successfully')
         if self.is_teacher_user:
             return reverse('teachers:dashboard')
         elif self.is_admin_user:
@@ -240,10 +246,11 @@ class LoginView(UserDataMixin, FormView):
         auth_login(self.request, form.get_user())
         if self.request.session.test_cookie_worked():
             self.request.session.delete_test_cookie()
+        messages.success(self.request, 'Logged in as ' + self.request.POST.get('username'))
         return redirect(self.next_url)
 
     def form_invalid(self, form):
-        messages.error(self.request, 'Incorrect login or password')
+        messages.error(self.request, 'Incorrect login or password. Note: Fields are case sensitive.')
         return self.render_to_response(self.get_context_data(form=form))
 
     @method_decorator(sensitive_post_parameters('password'))
@@ -258,6 +265,7 @@ class LoginView(UserDataMixin, FormView):
 class LogoutView(UserDataMixin, View):
     def get(self, request, *args, **kwargs):
         auth_logout(request)
+        messages.success(self.request, 'Logged out successfully')
         return redirect('home')
 
 

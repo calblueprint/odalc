@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.decorators.debug import sensitive_post_parameters
 from django.views.generic import CreateView, FormView, TemplateView, UpdateView
+from django.contrib import messages
 
 from odalc.base.models import Course, CourseAvailability
 from odalc.base.views import UserDataMixin
@@ -39,6 +40,10 @@ class TeacherEditView(UserDataMixin, UpdateView):
 
     def get_object(self):
         return self.user
+
+    def get_success_url(self):
+        messages.success(self.request, 'Information updated')
+        return super(TeacherEditView, self).get_success_url()
 
 class CreateCourseView(UserDataMixin, FormView):
     model = Course
@@ -83,6 +88,7 @@ class CreateCourseView(UserDataMixin, FormView):
         }
         send_odalc_email('notify_teacher_course_submitted', context, [new_course.teacher.email])
         send_odalc_email('notify_admins_course_submitted', context, [], cc_admins=True)
+        messages.success(self.request, new_course.title + 'is now pending approval')
         return super(CreateCourseView, self).form_valid(form)
 
 

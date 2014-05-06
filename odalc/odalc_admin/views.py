@@ -8,6 +8,7 @@ from django.views.generic import (
     DetailView,
     CreateView
 )
+from django.contrib import messages
 
 from odalc.base.forms import EditCourseForm
 from odalc.odalc_admin.forms import AdminRegisterForm
@@ -53,12 +54,14 @@ class ApplicationReviewView(UserDataMixin, UpdateView):
             #2. notify teacher of approval
             send_odalc_email('notify_teacher_course_approved', context, [teacher.email], cc_admins=True)
             #3. make course visible to all (permissions - John)
+            messages.success(self.request, course.title + ' has been approved')
         elif '_deny' in self.request.POST:
             #1. change status of course to "denied"
             course.status = course.STATUS_DENIED
             course.save()
             #2. notify teacher of denial
             send_odalc_email('notify_teacher_course_denied', context, [teacher.email], cc_admins=True)
+            messages.error(self.request, course.title + ' has been denied')
         return redirect(ApplicationReviewView.success_url)
 
     def dispatch(self, *args, **kwargs):
@@ -67,7 +70,7 @@ class ApplicationReviewView(UserDataMixin, UpdateView):
             return redirect('/accounts/login?next=%s' % self.request.path)
         if user.has_perm('base.admin_permission'):
             return super(ApplicationReviewView, self).dispatch(*args, **kwargs)
-        raise PermissionDenied()
+        return self.deny_access()
 
 
 #TODO: show some teacher and student info as well
@@ -93,7 +96,7 @@ class AdminDashboardView(UserDataMixin, TemplateView):
             return redirect('/accounts/login?next=%s' % self.request.path)
         if user.has_perm('base.admin_permission'):
             return super(AdminDashboardView, self).dispatch(*args, **kwargs)
-        raise PermissionDenied()
+        return self.deny_access()
 
 
 class CourseFeedbackView(UserDataMixin, DetailView):
@@ -110,7 +113,7 @@ class CourseFeedbackView(UserDataMixin, DetailView):
             return redirect('/accounts/login?next=%s' % self.request.path)
         if (user.has_perm('base.admin_permission') or (user.has_perm('base.teacher_permission') and self.object.teacher.id==user.id)):
             return super(CourseFeedbackView, self).dispatch(*args, **kwargs)
-        raise PermissionDenied()
+        return self.deny_access()
 
 
     def get_context_data(self, **kwargs):
@@ -148,6 +151,9 @@ class AdminEditView(UserDataMixin, UpdateView):
     def get_object(self):
         return self.user
 
+    def get_success_url(self):
+        messages.success(self.request, 'Information updated')
+        return super(AdminEditView, self).get_success_url()
 
 class AdminRegisterView(UserDataMixin, CreateView):
     model = AdminUser
@@ -161,5 +167,8 @@ class AdminRegisterView(UserDataMixin, CreateView):
             return redirect('/accounts/login?next=%s' % self.request.path)
         if user.has_perm('base.admin_permission'):
             return super(AdminRegisterView, self).dispatch(*args, **kwargs)
-        raise PermissionDenied()
+        return self.deny_access()
 
+    def get_success_url(self):
+        messages.success(self.request, 'New admin created')
+        return super(AdminRegisterView, self).get_success_url()
