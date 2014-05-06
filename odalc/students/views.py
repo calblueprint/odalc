@@ -88,3 +88,11 @@ class StudentDashboardView(UserDataMixin, TemplateView):
         context['user'] = student_user
         context["courses_taken"] = student_user.course_set.all().order_by('-start_datetime')
         return context
+
+    def dispatch(self, *args, **kwargs):
+        user = self.request.user
+        if not user.is_authenticated():
+            return redirect('/accounts/login?next=%s' % self.request.path)
+        if user.has_perm('base.student_permission'):
+            return super(StudentDashboardView, self).dispatch(*args, **kwargs)
+        return self.deny_access()
