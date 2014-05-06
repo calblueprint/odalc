@@ -60,6 +60,7 @@ class UserDataMixin(object):
         return context
 
     def deny_access(self):
+        """Basic function to replace the default PermissionDenied()"""
         messages.error(self.request, 'You do not have authorization to access this area')
         return redirect('home')
 
