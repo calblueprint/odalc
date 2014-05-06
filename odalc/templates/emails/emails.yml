@@ -96,7 +96,9 @@ remind_teacher:
         "
         Hello {{ course.teacher.first_name }},\n\n
         This is a friendly reminder that your course {{ course.title }} is tomorrow, {{ course_date }} from {{ course_start_time }} - {{ course_end_time }}. 
-        You can view your course page at {{ course_url }}. See you tomorrow!\n\n
+        You can view your course page at {{ course_url }}. 
+        You can get direction to ODALC at https://goo.gl/maps/kQZiv. 
+        See you tomorrow!\n\n
         Best,\n
         ODALC Team
         "
@@ -104,7 +106,9 @@ remind_teacher:
         "
         Hello {{ course.teacher.first_name }},<br><br>
         This is a friendly reminder that your course {{ course.title }} is tomorrow, {{ course_date }} from {{ course_start_time }} - {{ course_end_time }}. 
-        You can view your course page <a href='{{ course_url }}'>here</a>. See you tomorrow!<br><br>
+        You can view your course page <a href='{{ course_url }}'>here</a>. 
+        You can get directions to ODALC <a href='https://goo.gl/maps/kQZiv'>here</a>.
+        See you tomorrow!<br><br>
         Best,<br>
         ODALC Team
         "
@@ -115,7 +119,9 @@ remind_students:
         "
         Hello,\n\n
         This is a friendly reminder that the course {{ course.title }} that you've signed up for is tomorrow, {{ course_date }} from {{ course_start_time }} - {{ course_end_time }}.
-        You can see more information about this course at {{ course_url }}. See you tomorrow!\n\n
+        You can see more information about this course at {{ course_url }}. 
+        You can get direction to ODALC at https://goo.gl/maps/kQZiv. 
+        See you tomorrow!\n\n
         Best,\n
         ODALC Team
         "
@@ -123,7 +129,9 @@ remind_students:
         "
         Hello,<br><br>
         This is a friendly reminder that the course {{ course.title }} that you've signed up for is tomorrow, {{ course_date }} from {{ course_start_time }} - {{ course_end_time }}.
-        You can see more information about this course <a href='{{ course_url }}'>here</a>. See you tomorrow!<br><br>
+        You can see more information about this course <a href='{{ course_url }}'>here</a>.
+        You can get directions to ODALC <a href='https://goo.gl/maps/kQZiv'>here</a>.
+        See you tomorrow!<br><br>
         Best,<br>
         ODALC Team
         "
