@@ -123,14 +123,14 @@ class Course(models.Model):
         help_text='Skill level associated with this course.'
     )
     cost = models.DecimalField(
-        'Course Cost',
+        'Course Fee',
         max_digits=5,
         decimal_places=2,
         validators=[MinValueValidator(5.00), MaxValueValidator(25.00)],
         help_text='Enrollment cost for students. We have a $5.00 minimum so that we can confirm commitment from students.'
     )
     odalc_cost_split = models.DecimalField(
-        'Course Cost to Split with Oakland Digital',
+        'Donate to Oakland Digital',
         max_digits=5,
         decimal_places=2,
         help_text='Amount of the enrollment cost you\'d like to donate to Oakland Digital.'
@@ -141,6 +141,7 @@ class Course(models.Model):
     )
     course_material = models.URLField(
         'Course Materials',
+        blank=True,
         help_text='PDF of any course materials for students. This can include links to other materials as well. Only enrolled students will be able to see this link.'
     )
     additional_info = models.TextField(

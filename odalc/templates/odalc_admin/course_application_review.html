@@ -11,19 +11,28 @@
 {% block is_admin_dash %}active{% endblock %}
 
 {% block body %}
+<form method="POST">
+{% csrf_token %}
+<div class="blue-narrow-section">
+    <div class="row">
+        <div class="large-7 columns">
+            <h1>Reviewing: {{ course.title }}</h1>
+            <dl class="sub-nav" data-tab>
+                <dd class="active"><a href="#panel-instructor-info">Instructor Information</a></dd>
+                <dd><a href="#panel-course-info">Course Information</a></dd>
+            </dl>
+        </div>
+        <div class="large-5 columns">
+            <ul class="button-group">
+                <li><input id="approve_course" class="small button success" name="_approve" type="submit" value="Approve" /></li>
+                <li><input id="deny_course" class="small button alert" name="_deny" type="submit" value="Deny" /></li>
+                <li><a href="{% url "admins:dashboard" %}"><input type="button" class="small button info" value="Return to Dashboard" /></a></li>
+            </ul>
+        </div>
+    </div>
+</div>
 <div class="row white-section">
     <div class="medium-12 columns">
-        <form method="POST">
-        {% csrf_token %}
-        <h1>Reviewing: {{ course.title }}</h1>
-
-        <dl class="tabs center" data-tab>
-            <dd class="active"><a href="#panel-instructor-info">Instructor Information</a></dd>
-            <dd><a href="#panel-course-info">Course Information</a></dd>
-            <button id="approve_course" class="success" name="_approve" type="submit">Approve</button>
-            <button id="deny_course" class="alert" name="_deny" type="submit">Deny</button>
-        </dl>
-
         <div class="tabs-content">
             <div class="content active" id="panel-instructor-info">
                 <div class="row">
@@ -58,17 +67,6 @@
                             <p>{{ course.teacher.get_info_source_display }}</p>
                         </div>
                     </div>
-
-                    <!--
-                    <p><b>Name: </b>{{ course.teacher.first_name }} {{ course.teacher.last_name }}</p>
-                    <img src="{{course.teacher.picture }}"></img>
-                    <p><b>About: </b>{{ course.teacher.about }}</p>
-                    <p><b>Experience: </b>{{ course.teacher.experience }}</p>
-                    <p><b>Resume: </b> <a href="{{ course.teacher.resume }}">Link</a></p>
-                    <p><b>Address: </b>{{ course.teacher.street_address }}, {{ course.teacher.city }} {{ course.teacher.zipcode }}</p>
-                    <p><b>Phone: </b>{{ course.teacher.phone }}</p>
-                    <p><b>Heard about ODALC from: </b>{{ course.teacher.get_info_source_display }}</p>
-                    -->
                 </div>
             </div>
 
@@ -170,11 +168,11 @@
 
                         <!--Input Buttons (Approve and Deny)-->
                         </div>
-                </div>
             </div>
-        </form>
+        </div>
     </div>
 </div>
+</form>
 
 {% endblock %}
 
@@ -187,6 +185,7 @@
 $().ready(function() {
     $('#file_{{ form.image.id_for_label }}').on("change", s3_upload_{{ form.image.id_for_label }});
 });
+
 $(function() {
     var dateOptions = {
 
@@ -200,5 +199,6 @@ $(function() {
     $("#{{ form.start_time.id_for_label }}").timepicker(timeOptions);
     $("#{{ form.end_time.id_for_label }}").timepicker(timeOptions);
 });
+
 </script>
 {% endblock %}

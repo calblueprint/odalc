@@ -7,9 +7,16 @@
 {% endblock %}
 
 {% block body %}
+<div class="blue-narrow-section">
+    <div class="row">
+        <div class="large-12 columns">
+            <h1>Editing {{ course.title }}</h1>
+        </div>
+    </div>
+</div>
+
 <div class="row white-section">
     <div class="large-12 columns">
-        <h1>Editing course content</h1>
         <form method="POST">
           {% csrf_token %}
 
@@ -60,10 +67,14 @@
                     {% include "base/partials/formfield.html" with field=form.skill_level %}
                 </div>
                 <div class="medium-3 columns">
-                    {% include "base/partials/formfield.html" with field=form.cost %}
+                    <label for="{{ form.cost.id_for_label }}">Course Fee</label>
+                    <p>${{ form.cost.value }}</p>
+                    {% include "base/partials/hidden_formfield.html" with field=form.cost %}
                 </div>
                 <div class="medium-3 columns">
-                    {% include "base/partials/formfield.html" with field=form.odalc_cost_split %}
+                    <label for="{{ form.odalc_cost_split.id_for_label }}">Donate to ODALC <i class="lighter">(and <span id="your-amt">${{ teacher_split }}</span> to the instructor)</i></label>
+                    <p>${{ form.odalc_cost_split.value }}</p>
+                    {% include "base/partials/hidden_formfield.html" with field=form.odalc_cost_split %}
                 </div>
             </div>
         </fieldset>
@@ -81,7 +92,7 @@
               {# Hide the course status field if the teacher is editing the course #}
               <input id="{{ form.status.id_for_label }}" type="hidden" name="{{ form.status.html_name }}" value="{{ form.status.value }}"/>
           {% endif %}
-          <button id="save_edit" type="submit">Save changes</button>
+          <button class="large right" id="save_edit" type="submit">Save changes</button>
         </form>
     </div>
 </div>
