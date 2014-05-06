@@ -1,3 +1,5 @@
+from datetime import datetime as dt
+
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.db.models import Avg
@@ -53,11 +55,16 @@ class ApplicationReviewView(UserDataMixin, UpdateView):
 
         if '_approve' in self.request.POST:
             #1. Check to see if they added times and dates
-            if not start_time or not end_time or not date:
+            if not start_time and not end_time and not date:
                 messages.error(self.request, 'Please choose a date start time and end time before approval')
                 return redirect('/admins/review/%s' % course.id)
             #2. change status of course to "approved"
             course.status = course.STATUS_ACCEPTED
+            start_time = dt.strptime(start_time, '%I:%M%p').time()
+            end_time = dt.strptime(end_time, '%I:%M%p').time()
+            date = dt.strptime(date, '%m/%d/%Y')
+            course.start_datetime = dt.combine(date, start_time)
+            course.end_datetime = dt.combine(date, end_time)
             course.save()
             #3. notify teacher of approval
             send_odalc_email('notify_teacher_course_approved', context, [teacher.email], cc_admins=True)
