@@ -43,9 +43,9 @@ class StudentEditView(UserDataMixin, UpdateView):
     def get_object(self):
         return self.user
 
-    def post(self, request, *args, **kwargs):
+    def get_success_url(self):
         messages.success(self.request, 'Information updated')
-        return super(StudentEditView, self).post(request, *args, **kwargs)
+        return super(StudentEditView, self).get_success_url()
 
 """Controls course feedback submission for a particular student and course"""
 class SubmitCourseFeedbackView(UserDataMixin, CreateView):

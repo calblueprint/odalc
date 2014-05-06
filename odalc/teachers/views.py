@@ -41,9 +41,9 @@ class TeacherEditView(UserDataMixin, UpdateView):
     def get_object(self):
         return self.user
 
-    def post(self, request, *args, **kwargs):
+    def get_success_url(self):
         messages.success(self.request, 'Information updated')
-        return super(TeacherEditView, self).post(request, *args, **kwargs)
+        return super(TeacherEditView, self).get_success_url()
 
 class CreateCourseView(UserDataMixin, FormView):
     model = Course

@@ -151,6 +151,9 @@ class AdminEditView(UserDataMixin, UpdateView):
     def get_object(self):
         return self.user
 
+    def get_success_url(self):
+        messages.success(self.request, 'Information updated')
+        return super(AdminEditView, self).get_success_url()
 
 class AdminRegisterView(UserDataMixin, CreateView):
     model = AdminUser
