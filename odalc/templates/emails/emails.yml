@@ -25,12 +25,12 @@ notify_teacher_course_approved:
         "
         Hello {{ course.teacher.first_name }}, <br><br>
         Your course {{ course.title }} has been successfully reviewed and approved by the ODALC team!
-        The course page is now open for students to sign up at {{ course_url }}.<br><br>
+        The course page is now open for students to sign up at <a href='{{ course_url }}'>{{ course_url }}</a>.<br><br>
         You can go to your dashboard to view and edit course information if necessary.<br><br>
         Share the good news: <br>
-        <a href='{{ facebook_share }}'>Share on Facebook</a> <br>
-        <a href='{{ twitter_share }}'>Share on Twitter</a> <br>
-        <a href='{{ google_share }}'>Share on Google+</a> <br>
+        &emsp;<a href='{{ facebook_share }}'>Share on Facebook</a> <br>
+        &emsp;<a href='{{ twitter_share }}'>Share on Twitter</a> <br>
+        &emsp;<a href='{{ google_share }}'>Share on Google+</a> <br><br>
         Good luck! <br><br>
         Best, <br>
         ODALC Team
@@ -44,7 +44,7 @@ notify_teacher_course_denied:
         "
         Hello {{ course.teacher.first_name }},\n\n
         Thank you for applying to teach your course {{ course.title }} at ODALC.
-        Unfortunately, we aren't able to approve your application at this time.\n
+        Unfortunately, we aren't able to approve your application at this time.\n\n
         If you would like feedback on your course, please feel free to send a follow-up email for more details.\n\n
         Best,\n
         ODALC Team
@@ -61,6 +61,15 @@ notify_teacher_course_submitted:
         Best,\n
         ODALC Team
         "
+    html:
+        "
+        Hello {{ course.teacher.first_name}},<br><br>
+        Your course {{ course.title }} has successfully been submitted to the ODALC team.
+        We will contact you when the status of your application has been updated, but you can
+        see your status <a href='{{ url_teacher_dashboard }}'>here</a>.<br><br>
+        Best,<br>
+        ODALC Team
+        "
 
 notify_admins_course_submitted:
     subject: "Submission for Course by {{ course.teacher.first_name}} {{ course.teacher.last_name }} - {{ course.title }}"
@@ -72,14 +81,31 @@ notify_admins_course_submitted:
         Best,\n
         ODALC Team
         "
+    html:
+        "
+        Hello Oakland Digital team,<br><br>
+        {{ course.teacher.first_name }} {{ course.teacher.last_name }} has submitted an application to teach the course {{ course.title }}
+        To view this application, go <a href='{{ url_admin_course_review }}'>here</a>.<br><br>
+        Best,<br>
+        ODALC Team
+        "
 
 remind_teacher:
     subject: "Reminder: Your Course {{ course.title }} at ODALC is Tomorrow!"
     body:
         "
         Hello {{ course.teacher.first_name }},\n\n
-        This is a friendly reminder that your course {{ course.title }} is tomorrow, {{ course_date }} from {{ course_start_time }} - {{ course_end_time }}. You can view your course page at {{ course_url }}. See you tomorrow!\n\n
+        This is a friendly reminder that your course {{ course.title }} is tomorrow, {{ course_date }} from {{ course_start_time }} - {{ course_end_time }}. 
+        You can view your course page at {{ course_url }}. See you tomorrow!\n\n
         Best,\n
+        ODALC Team
+        "
+    html:
+        "
+        Hello {{ course.teacher.first_name }},<br><br>
+        This is a friendly reminder that your course {{ course.title }} is tomorrow, {{ course_date }} from {{ course_start_time }} - {{ course_end_time }}. 
+        You can view your course page <a href='{{ course_url }}'>here</a>. See you tomorrow!<br><br>
+        Best,<br>
         ODALC Team
         "
 
@@ -91,5 +117,13 @@ remind_students:
         This is a friendly reminder that the course {{ course.title }} that you've signed up for is tomorrow, {{ course_date }} from {{ course_start_time }} - {{ course_end_time }}.
         You can see more information about this course at {{ course_url }}. See you tomorrow!\n\n
         Best,\n
+        ODALC Team
+        "
+    html:
+        "
+        Hello,<br><br>
+        This is a friendly reminder that the course {{ course.title }} that you've signed up for is tomorrow, {{ course_date }} from {{ course_start_time }} - {{ course_end_time }}.
+        You can see more information about this course <a href='{{ course_url }}'>here</a>. See you tomorrow!<br><br>
+        Best,<br>
         ODALC Team
         "
