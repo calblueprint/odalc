@@ -1,7 +1,9 @@
 {% load widget_tweaks %}
 
 <label for="{{ field.id_for_label }}">
-{{ field.label }}
+<span data-tooltip class="has-tip tip-top tip-thin" title="{{ field.help_text }}">
+{{ field.label }} {% if field.field.required %}<small>Required</small>{% endif %}
+</span>
 {{ field|attr:"type:hidden" }}
 <input type="file" id="file_{{ field.id_for_label }}" />
 </label>

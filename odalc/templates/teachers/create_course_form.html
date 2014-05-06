@@ -35,21 +35,26 @@
                 <div class="row">
                     <div class="medium-12 columns">
                         {% include "base/partials/formfield.html" with field=form.title %}
-                        {% include "base/partials/formfield.html" with field=form.short_description %}
-                        {% include "base/partials/formfield.html" with field=form.long_description %}
+                        {% include "base/partials/tooltip_formfield.html" with field=form.short_description %}
+                        {% include "base/partials/tooltip_formfield.html" with field=form.long_description %}
                     </div>
                 </div>
                 <div class="row">
                     <div class="medium-6 columns">
-                        {% include "base/partials/formfield.html" with field=form.prereqs %}
+                        {% include "base/partials/tooltip_formfield.html" with field=form.prereqs %}
                     </div>
                     <div class="medium-6 columns">
-                        {% include "base/partials/formfield.html" with field=form.additional_info %}
+                        {% include "base/partials/tooltip_formfield.html" with field=form.additional_info %}
                     </div>
                 </div>
                 <div class="row">
                     <div class="medium-12 columns">
                           {% include "base/partials/hidden_file_uploadfield.html" with field=form.course_material %}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="medium-12 columns">
+                          {% include "base/partials/hidden_img_uploadfield.html" with field=form.image %}
                     </div>
                 </div>
             </fieldset>
@@ -58,13 +63,15 @@
                 <legend>Course Logistics</legend>
                 <div class="row">
                     <div class="medium-3 columns">
-                        {% include "base/partials/formfield.html" with field=form.size %}
+                        {% include "base/partials/tooltip_formfield.html" with field=form.size %}
                     </div>
                     <div class="medium-3 columns">
-                        {% include "base/partials/formfield.html" with field=form.skill_level %}
+                        {% include "base/partials/tooltip_formfield.html" with field=form.skill_level %}
                     </div>
                     <div class="medium-3 columns">
-                    <label for="{{ form.cost.id_for_label }}">Course Fee</label>
+                    <span data-tooltip class="has-tip tip-top tip-thin" title="{{ form.cost.help_text }}">
+                        <label for="{{ form.cost.id_for_label }}">Course Fee <small>Required</small></label>
+                    </span>
                         <div class="range-slider round" data-slider>
                           <span id="cost-dollar-amt" class="range-slider-handle slider-dollar">$3.20</span>
                           <span class="range-slider-active-segment"></span>
@@ -73,7 +80,9 @@
                         {% include "base/partials/hidden_formfield.html" with field=form.cost %}
                     </div>
                     <div class="medium-3 columns">
-                    <label for="{{ form.odalc_cost_split.id_for_label }}">Donate to ODALC <i class="lighter">(and <span id="your-amt">$0</span> to you)</i></label>
+                    <span data-tooltip class="has-tip tip-top tip-thin" title="{{ form.odalc_cost_split.help_text }}">
+                        <label for="{{ form.odalc_cost_split.id_for_label }}">Donate to ODALC <i class="lighter">(and <span id="your-amt">$0</span> to you)</i> <small>Required</small></label>
+                    </span>
                         <div class="range-slider round" data-slider>
                           <span id="split-dollar-amt" class="range-slider-handle slider-dollar">$3.20</span>
                           <span class="range-slider-active-segment"></span>
@@ -85,16 +94,16 @@
                 </div>
             </fieldset>
 
-            <fieldset>
-                <legend>Course Image</legend>
-              {% include "base/partials/hidden_img_uploadfield.html" with field=form.image %}
-            </fieldset>
 
           <fieldset>
-          <legend>Availabile Dates and Times for Teaching Course</legend>
-          {% include "base/partials/course_datetimefield.html" with date=form.date1 start_time=form.start_time1 end_time=form.end_time1 %}
-          {% include "base/partials/course_datetimefield.html" with date=form.date2 start_time=form.start_time2 end_time=form.end_time2 %}
-          {% include "base/partials/course_datetimefield.html" with date=form.date3 start_time=form.start_time3 end_time=form.end_time3 %}
+              <legend>
+              <span data-tooltip class="has-tip tip-top tip-thin" title="We prefer course sessions to be during our business hours, from 1pm to 6pm on weekdays.">
+              <strong>Available Dates and Times for Teaching Course</strong>
+              </span>
+              </legend>
+              {% include "base/partials/course_datetimefield.html" with date=form.date1 start_time=form.start_time1 end_time=form.end_time1 %}
+              {% include "base/partials/course_datetimefield.html" with date=form.date2 start_time=form.start_time2 end_time=form.end_time2 %}
+              {% include "base/partials/course_datetimefield.html" with date=form.date3 start_time=form.start_time3 end_time=form.end_time3 %}
           </fieldset>
 
           <button class="large right" id="save_course" type="submit">Submit course</button>

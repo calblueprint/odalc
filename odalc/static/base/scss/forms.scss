@@ -24,3 +24,16 @@ ul.errorlist {
         font-weight: bold;
     }
 }
+
+.tip-thin {
+    color: rgb(77, 77, 77);
+    font-weight: normal;
+}
+
+fieldset {
+    legend {
+        strong {
+            color: rgb(34, 34, 34);
+        }
+    }
+}
