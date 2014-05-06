@@ -1,3 +1,5 @@
+from datetime import datetime as dt
+
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.db.models import Avg
@@ -47,13 +49,26 @@ class ApplicationReviewView(UserDataMixin, UpdateView):
         context['twitter_share'] = 'https://twitter.com/home?status=Check%20out%20this%20new%20course%20that%20just%20went%20live%20at%20Oakland%20Digital!%20'+ context['course_url'] + '%20%23OaklandDigitalCourses%20via%20@ODALC'
         context['google_share'] = 'https://plus.google.com/share?url=' + context['course_url']
 
+        start_time = self.request.POST.get('start_time', False)
+        end_time = self.request.POST.get('end_time', False)
+        date = self.request.POST.get('date', False)
+
         if '_approve' in self.request.POST:
-            #1. change status of course to "approved"
+            #1. Check to see if they added times and dates
+            if not start_time and not end_time and not date:
+                messages.error(self.request, 'Please choose a date start time and end time before approval')
+                return redirect('/admins/review/%s' % course.id)
+            #2. change status of course to "approved"
             course.status = course.STATUS_ACCEPTED
+            start_time = dt.strptime(start_time, '%I:%M%p').time()
+            end_time = dt.strptime(end_time, '%I:%M%p').time()
+            date = dt.strptime(date, '%m/%d/%Y')
+            course.start_datetime = dt.combine(date, start_time)
+            course.end_datetime = dt.combine(date, end_time)
             course.save()
-            #2. notify teacher of approval
+            #3. notify teacher of approval
             send_odalc_email('notify_teacher_course_approved', context, [teacher.email], cc_admins=True)
-            #3. make course visible to all (permissions - John)
+            #4. make course visible to all (permissions - John)
             messages.success(self.request, course.title + ' has been approved')
         elif '_deny' in self.request.POST:
             #1. change status of course to "denied"
