@@ -10,10 +10,16 @@
 {% block is_teacher_dash %}active{% endblock %}
 
 {% block body %}
+<div class="blue-narrow-section">
+    <div class="row">
+        <div class="large-12 columns">
+            <h1>Create a new course</h1>
+            <p class="larger">Want to teach a class at ODALC? Tell us about the class you wish to offer below.</p>
+        </div>
+    </div>
+</div>
 <div class="row white-section">
     <div class="large-12 columns">
-        <h1>Create a new course</h1>
-        <p class="larger">Want to teach a class at ODALC? Tell us about the class you wish to offer below.</p>
         <form method="POST" enctype="multipart/form-data">
           {% csrf_token %}
 
@@ -58,7 +64,7 @@
                         {% include "base/partials/formfield.html" with field=form.skill_level %}
                     </div>
                     <div class="medium-3 columns">
-                    <label for="{{ form.cost.id_for_label }}">Course cost</label>
+                    <label for="{{ form.cost.id_for_label }}">Course Fee</label>
                         <div class="range-slider round" data-slider>
                           <span id="cost-dollar-amt" class="range-slider-handle slider-dollar">$3.20</span>
                           <span class="range-slider-active-segment"></span>
@@ -67,7 +73,7 @@
                         {% include "base/partials/hidden_formfield.html" with field=form.cost %}
                     </div>
                     <div class="medium-3 columns">
-                    <label for="{{ form.odalc_cost_split.id_for_label }}">Split to ODALC <i class="lighter">(and <span id="your-amt">$0</span> to you)</i></label>
+                    <label for="{{ form.odalc_cost_split.id_for_label }}">Donate to ODALC <i class="lighter">(and <span id="your-amt">$0</span> to you)</i></label>
                         <div class="range-slider round" data-slider>
                           <span id="split-dollar-amt" class="range-slider-handle slider-dollar">$3.20</span>
                           <span class="range-slider-active-segment"></span>
@@ -91,7 +97,7 @@
           {% include "base/partials/course_datetimefield.html" with date=form.date3 start_time=form.start_time3 end_time=form.end_time3 %}
           </fieldset>
 
-          <button id="save_course" type="submit">Submit course</button>
+          <button class="large right" id="save_course" type="submit">Submit course</button>
 
         </form>
     </div>
@@ -104,28 +110,8 @@
 <script src="{% static "base/js/jquery.timepicker.min.js" %}"></script>
 {% include "base/partials/img_uploadjs.html" with field=form.image %}
 {% include "base/partials/file_uploadjs.html" with field=form.course_material %}
+
 <script>
-
-
-var MAX_AMT = 20.00;
-
-var calculateAmount = function(perc) {
-    return perc/100 * MAX_AMT + 5;
-};
-
-var percentageToDollar = function(perc) {
-    return calculateAmount(perc).toFixed(2);
-};
-
-var percentageOfDollar = function(costPerc, perc) {
-    return (calculateAmount(costPerc) * perc / 100).toFixed(2);
-};
-
-var calculateYourAmt = function(costPerc, perc) {
-    return (percentageToDollar(costPerc) - percentageOfDollar(costPerc, perc)).toFixed(2);
-};
-
-
 $().ready(function() {
     $('#file_{{ form.image.id_for_label }}').on("change", s3_upload_{{ form.image.id_for_label }});
     $('#file_{{ form.course_material.id_for_label }}').on("change", s3_upload_{{ form.course_material.id_for_label }});
@@ -150,74 +136,11 @@ $().ready(function() {
     $("#{{ form.start_time3.id_for_label }}").timepicker(timeOptions);
     $("#{{ form.end_time3.id_for_label }}").timepicker(timeOptions);
 
-    // update UI elements
-    $('#cost-dollar-amt').text('$' + percentageToDollar(parseInt($('#cost-slider').val())));
-    $('#split-dollar-amt').text('$' + percentageOfDollar(
-        parseInt($('#cost-slider').val()),
-        parseInt($('#split-slider').val())
-    ));
-    $('#your-amt').text('$' + calculateYourAmt(
-        parseInt($('#cost-slider').val()),
-        parseInt($('#split-slider').val())
-    ));
-
-    // update actual form elements
-    $('#{{ form.cost.id_for_label}}').val(percentageToDollar(
-        parseInt($('#cost-slider').val())
-    ));
-    $('#{{ form.odalc_cost_split.id_for_label}}').val(percentageOfDollar(
-        parseInt($('#cost-slider').val()),
-        parseInt($('#split-slider').val())
-    ));
-
-
-    // Event handler when cost amount is adjusted
-    $('#cost-dollar-amt').on('mousedown mousemove', function() {
-        $('body').on('mousemove', function() {
-            // update UI elements
-            $('#cost-dollar-amt').text('$' + percentageToDollar(parseInt($('#cost-slider').val())));
-            $('#split-dollar-amt').text('$' + percentageOfDollar(
-                parseInt($('#cost-slider').val()),
-                parseInt($('#split-slider').val())
-            ));
-            $('#your-amt').text('$' + calculateYourAmt(
-                parseInt($('#cost-slider').val()),
-                parseInt($('#split-slider').val())
-            ));
-
-            // update actual form elements
-            $('#{{ form.cost.id_for_label}}').val(percentageToDollar(
-                parseInt($('#cost-slider').val())
-            ));
-            $('#{{ form.odalc_cost_split.id_for_label}}').val(percentageOfDollar(
-                parseInt($('#cost-slider').val()),
-                parseInt($('#split-slider').val())
-            ));
-
-        });
-    });
-
-    // Event handler for when split amount is adjusted
-    $('#split-dollar-amt').on('mousedown mousemove', function() {
-        $('body').on('mousemove', function() {
-            // update UI elements
-            $('#split-dollar-amt').text('$' + percentageOfDollar(
-                parseInt($('#cost-slider').val()),
-                parseInt($('#split-slider').val())
-            ));
-            $('#your-amt').text('$' + calculateYourAmt(
-                parseInt($('#cost-slider').val()),
-                parseInt($('#split-slider').val())
-            ));
-
-            // update actual form elements
-            $('#{{ form.odalc_cost_split.id_for_label}}').val(percentageOfDollar(
-                parseInt($('#cost-slider').val()),
-                parseInt($('#split-slider').val())
-            ));
-        });
-    });
-
 });
+
+var formCostId = '#' + '{{ form.cost.id_for_label }}'
+var formOdalcSplitId = '#' + '{{ form.odalc_cost_split.id_for_label }}'
+
 </script>
+<script src="{% static "base/js/costSplitSlider.js" %}"></script>
 {% endblock %}
