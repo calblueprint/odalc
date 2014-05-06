@@ -3,34 +3,48 @@
 {% block is_student_dash %}active{% endblock %}
 
 {% block body %}
-<div class="row"><div class="large-12 columns">
 
-<h1>My Dashboard</h1>
-    <p><b>Name:</b> {{ user.first_name }} {{ user.last_name }} </p>
-    <p><b>E-mail:</b> {{ user.email }} </p>
-    <p><a href="{% url "students:edit" %}">Edit profile information &raquo;</a></p>
-    <p><a href="{% url "students:password_change" %}">Change password &raquo;</a></p>
+<div class="blue-narrow-section">
+    <div class="row">
+        <div class="large-6 columns">
+            <h1>My Dashboard</h1>
+            <p>{{ user.first_name }} {{ user.last_name }} | <a href='mailto:{{ user.email }}'>{{ user.email }}</a></p>
+        </div>
+        <div class="large-5 offset-1 columns">
+            <ul class="inline-list right" style="margin-top:15px;">
+                <li><a href="{% url "teachers:edit" %}">Edit profile information &raquo;</a></li>
+                <li><a href="{% url "teachers:password_change" %}">Change password &raquo;</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
 
-<h2>Courses Taken</h2>
-    <table>
-        <tr>
-            <th> Course </th>
-            <th> Teacher </th>
-            <th> Date </th>
-            <th> Skill Level </th>
-        </tr>
-    {% for course in courses_taken %}
-        <tr>
-            <td> <a href="{% url "courses:detail" course.pk %}"> {{ course.title }}</a> </td>
-            <td> {{ course.teacher.first_name }} {{ course.teacher.last_name }} </td>
-            <td> {{ course.start_datetime|date:'D, N d Y' }} </td>
-            <td> {{ course.skill_level }} </td>
-        </tr>
-    {% empty %}
-        <li> No courses taken yet! </li>
-    {% endfor %}
-    </table>
 
-</div></div>
+<div class="white-section">
+<div class="row">
+    <div class="large-12 columns">
+        <h2>Courses Taken</h2>
+        <table width='100%'>
+            <tr>
+                <th> Course </th>
+                <th> Teacher </th>
+                <th> Date </th>
+                <th> Skill Level </th>
+            </tr>
+        {% for course in courses_taken %}
+            <tr>
+                <td> <a href="{% url "courses:detail" course.pk %}"> {{ course.title }}</a> </td>
+                <td> {{ course.teacher.first_name }} {{ course.teacher.last_name }} </td>
+                <td> {{ course.start_datetime|date:'D, N d Y' }} </td>
+                <td> {{ course.skill_level }} </td>
+            </tr>
+        {% empty %}
+            <li> No courses taken yet! </li>
+        {% endfor %}
+        </table>
+
+    </div>
+</div>
+</div>
 
 {% endblock %}
