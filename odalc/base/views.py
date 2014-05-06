@@ -161,6 +161,12 @@ class CourseEditView(UserDataMixin, UpdateView):
             return super(CourseEditView, self).dispatch(request, *args, **kwargs)
         return self.deny_access()
 
+    def get_context_data(self, **kwargs):
+        context = super(CourseEditView, self).get_context_data(**kwargs)
+        course = context['course']
+        context['teacher_split'] = course.cost - course.odalc_cost_split
+        return context
+
     def get_success_url(self):
         messages.success(self.request, self.get_object().title + ' edited successfully')
         if self.is_teacher_user:
@@ -182,7 +188,7 @@ class CourseListingView(UserDataMixin, TemplateView):
         month_from_now = now + datetime.timedelta(days=30)
         context['all_courses'] = Course.objects.filter(Q(status = Course.STATUS_ACCEPTED) | Q(status = Course.STATUS_FINISHED)).order_by('-start_datetime')
         context['past_courses'] = Course.objects.filter(status = Course.STATUS_FINISHED).order_by('-start_datetime')
-        context['upcoming_courses'] = Course.objects.filter(start_datetime__range = [now, month_from_now], status = Course.STATUS_ACCEPTED).order_by('-start_datetime')
+        context['upcoming_courses'] = Course.objects.filter(start_datetime__range = [now, month_from_now], status = Course.STATUS_ACCEPTED).order_by('start_datetime')
         return context
 
 """Landing page for the website. Also displays the next three upcoming courses

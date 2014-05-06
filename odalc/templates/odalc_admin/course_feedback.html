@@ -1,15 +1,26 @@
 {% extends "base/base.html" %}
-{% block body %}
 
-<div class="row"><div class="large-12 columns">
-<h1>Course Feedback</h1>
-    <p>
-        <b>Course:</b> {{ course.title }}</br>
-        <b>Teacher:</b> {{ course.teacher.first_name }} {{ course.teacher.last_name }}</br>
-        <b>Responses:</b> {{ num_forms }}</br>
-    </p>
+{% block body %}
+<div class="blue-narrow-section">
+    <div class="row">
+        <div class="large-9 columns">
+            <h1>Course Feedback: {{ course.title }} ({{ num_forms }} responses)</h1>
+            <p class="larger">{{ course.teacher.first_name }} {{ course.teacher.last_name }}</p>
+        </div>
+        <div class="large-3 columns">
+            {% if is_admin_user %}
+                <a href="{% url "admins:dashboard" %}" class="button info">Return to Dashboard</a>
+            {% else %}
+                <a href="{% url "teachers:dashboard" %}" class="button info">Return to Dashboard</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="row white-section"><div class="large-12 columns">
     <table>
         <tr>
+            <th></th>
             <th> Question </th>
             {% for form in feedback_forms %}
             <th> Response {{ forloop.counter }} </th>
@@ -17,6 +28,7 @@
             <th> Average </th>
         </tr>
         <tr>
+            <td>1</td>
             <td>  The instructor was knowledgeable of the subject matter. </td>
             {% for form in feedback_forms %}
             <td> {{ form.knowledgeable_of_subject }} </td>
@@ -24,6 +36,7 @@
             <td> {{ q1_avg|floatformat:"-2" }} </td>
         </tr>
         <tr>
+            <td>2</td>
             <td>  The instructor encouraged questions and/or discussion. </td>
             {% for form in feedback_forms %}
             <td> {{ form.encourages_questions }} </td>
@@ -31,6 +44,7 @@
             <td> {{ q2_avg|floatformat:"-2" }} </td>
         </tr>
         <tr>
+            <td>3</td>
             <td>  The instructor was effective in teaching the material. </td>
             {% for form in feedback_forms %}
             <td> {{ form.teaching_effectiveness }} </td>
@@ -38,6 +52,7 @@
             <td> {{ q3_avg|floatformat:"-2" }} </td>
         </tr>
         <tr>
+            <td>4</td>
             <td>  The course was applicable to my needs. </td>
             {% for form in feedback_forms %}
             <td> {{ form.applicable_to_needs }} </td>
@@ -45,6 +60,7 @@
             <td> {{ q4_avg|floatformat:"-2" }} </td>
         </tr>
         <tr>
+            <td>5</td>
             <td>  I would recommend this course to a friend. </td>
             {% for form in feedback_forms %}
             <td> {{ form.would_recommend }} </td>
@@ -52,6 +68,7 @@
             <td> {{ q5_avg|floatformat:"-2" }} </td>
         </tr>
         <tr>
+            <td>6</td>
             <td>  The course session was inspiring. </td>
             {% for form in feedback_forms %}
             <td> {{ form.course_inspiring }} </td>
@@ -105,7 +122,7 @@ $(document).ready(function() {
         scaleStepWidth : 1,
         scaleStartValue : 0
     }
-    new Chart(ctx).Line(data, options); 
+    new Chart(ctx).Line(data, options);
 });
 </script>
 {% endblock %}

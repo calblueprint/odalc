@@ -15,16 +15,19 @@
 {% csrf_token %}
 <div class="blue-narrow-section">
     <div class="row">
-        <div class="large-8 columns">
+        <div class="large-7 columns">
             <h1>Reviewing: {{ course.title }}</h1>
             <dl class="sub-nav" data-tab>
                 <dd class="active"><a href="#panel-instructor-info">Instructor Information</a></dd>
                 <dd><a href="#panel-course-info">Course Information</a></dd>
             </dl>
         </div>
-        <div class="large-4 columns">
-            <button id="approve_course" class="success" name="_approve" type="submit">Approve</button>
-            <button id="deny_course" class="alert" name="_deny" type="submit">Deny</button>
+        <div class="large-5 columns">
+            <ul class="button-group">
+                <li><input id="approve_course" class="small button success" name="_approve" type="submit" value="Approve" /></li>
+                <li><input id="deny_course" class="small button alert" name="_deny" type="submit" value="Deny" /></li>
+                <li><a href="{% url "admins:dashboard" %}"><input type="button" class="small button info" value="Return to Dashboard" /></a></li>
+            </ul>
         </div>
     </div>
 </div>
