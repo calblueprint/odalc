@@ -68,7 +68,7 @@ class SubmitCourseFeedbackView(UserDataMixin, CreateView):
         if ((user.has_perm('base.student_permission') and user.email in students) or
             user.has_perm('base.admin_permission')):
             return super(SubmitCourseFeedbackView, self).dispatch(*args, **kwargs)
-        raise PermissionDenied()
+        return self.deny_access()
 
 """StudentDashboardView shows the student his/her basic information and courses taken."""
 class StudentDashboardView(UserDataMixin, TemplateView):

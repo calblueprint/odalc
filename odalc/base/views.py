@@ -59,6 +59,10 @@ class UserDataMixin(object):
         context['is_admin_user'] = self.is_admin_user
         return context
 
+    def deny_access(self):
+        messages.error(self.request, 'You do not have authorization to access this area')
+        return redirect('home')
+
 
 class CourseDetailView(UserDataMixin, DetailView):
     model = Course
@@ -89,7 +93,7 @@ class CourseDetailView(UserDataMixin, DetailView):
             (self.user.has_perm('base.teacher_permission') and course.teacher.email == self.user.email) or
             self.user.has_perm('base.admin_permission')):
             return super(CourseDetailView, self).dispatch(request, *args, **kwargs)
-        raise PermissionDenied()
+        return self.deny_access()
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -154,7 +158,7 @@ class CourseEditView(UserDataMixin, UpdateView):
         if ((user.has_perm('base.teacher_permission') and course.teacher.email == user.email) or
             user.has_perm('base.admin_permission')):
             return super(CourseEditView, self).dispatch(request, *args, **kwargs)
-        raise PermissionDenied()
+        return self.deny_access()
 
     def get_success_url(self):
         if self.is_teacher_user:

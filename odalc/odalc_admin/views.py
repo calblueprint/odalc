@@ -70,7 +70,7 @@ class ApplicationReviewView(UserDataMixin, UpdateView):
             return redirect('/accounts/login?next=%s' % self.request.path)
         if user.has_perm('base.admin_permission'):
             return super(ApplicationReviewView, self).dispatch(*args, **kwargs)
-        raise PermissionDenied()
+        return self.deny_access()
 
 
 #TODO: show some teacher and student info as well
@@ -96,7 +96,7 @@ class AdminDashboardView(UserDataMixin, TemplateView):
             return redirect('/accounts/login?next=%s' % self.request.path)
         if user.has_perm('base.admin_permission'):
             return super(AdminDashboardView, self).dispatch(*args, **kwargs)
-        raise PermissionDenied()
+        return self.deny_access()
 
 
 class CourseFeedbackView(UserDataMixin, DetailView):
@@ -113,7 +113,7 @@ class CourseFeedbackView(UserDataMixin, DetailView):
             return redirect('/accounts/login?next=%s' % self.request.path)
         if (user.has_perm('base.admin_permission') or (user.has_perm('base.teacher_permission') and self.object.teacher.id==user.id)):
             return super(CourseFeedbackView, self).dispatch(*args, **kwargs)
-        raise PermissionDenied()
+        return self.deny_access()
 
 
     def get_context_data(self, **kwargs):
@@ -164,5 +164,5 @@ class AdminRegisterView(UserDataMixin, CreateView):
             return redirect('/accounts/login?next=%s' % self.request.path)
         if user.has_perm('base.admin_permission'):
             return super(AdminRegisterView, self).dispatch(*args, **kwargs)
-        raise PermissionDenied()
+        return self.deny_access()
 
