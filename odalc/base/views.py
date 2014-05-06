@@ -244,7 +244,7 @@ class LoginView(UserDataMixin, FormView):
         return redirect(self.next_url)
 
     def form_invalid(self, form):
-        messages.error(self.request, 'Incorrect login or password')
+        messages.error(self.request, 'Incorrect login or password. Note: Fields are case sensitive.')
         return self.render_to_response(self.get_context_data(form=form))
 
     @method_decorator(sensitive_post_parameters('password'))
@@ -259,6 +259,7 @@ class LoginView(UserDataMixin, FormView):
 class LogoutView(UserDataMixin, View):
     def get(self, request, *args, **kwargs):
         auth_logout(request)
+        messages.success(self.request, 'Logged out successfully')
         return redirect('home')
 
 

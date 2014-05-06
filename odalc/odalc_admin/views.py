@@ -8,6 +8,7 @@ from django.views.generic import (
     DetailView,
     CreateView
 )
+from django.contrib import messages
 
 from odalc.base.forms import EditCourseForm
 from odalc.odalc_admin.forms import AdminRegisterForm
@@ -53,12 +54,14 @@ class ApplicationReviewView(UserDataMixin, UpdateView):
             #2. notify teacher of approval
             send_odalc_email('notify_teacher_course_approved', context, [teacher.email], cc_admins=True)
             #3. make course visible to all (permissions - John)
+            messages.success(self.request, course.title + ' has been approved')
         elif '_deny' in self.request.POST:
             #1. change status of course to "denied"
             course.status = course.STATUS_DENIED
             course.save()
             #2. notify teacher of denial
             send_odalc_email('notify_teacher_course_denied', context, [teacher.email], cc_admins=True)
+            messages.error(self.request, course.title + ' has been denied')
         return redirect(ApplicationReviewView.success_url)
 
     def dispatch(self, *args, **kwargs):
