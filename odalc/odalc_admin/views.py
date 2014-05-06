@@ -169,3 +169,6 @@ class AdminRegisterView(UserDataMixin, CreateView):
             return super(AdminRegisterView, self).dispatch(*args, **kwargs)
         return self.deny_access()
 
+    def get_success_url(self):
+        messages.success(self.request, 'New admin created')
+        return super(AdminRegisterView, self).get_success_url()
