@@ -23,25 +23,56 @@
 <div class="white-section">
 <div class="row">
     <div class="large-12 columns">
-        <h2>Courses Taken</h2>
-        <table width='100%'>
-            <tr>
-                <th> Course </th>
-                <th> Teacher </th>
-                <th> Date </th>
-                <th> Skill Level </th>
-            </tr>
-        {% for course in courses_taken %}
-            <tr>
-                <td> <a href="{% url "courses:detail" course.pk %}"> {{ course.title }}</a> </td>
-                <td> {{ course.teacher.first_name }} {{ course.teacher.last_name }} </td>
-                <td> {{ course.start_datetime|date:'D, N d Y' }} </td>
-                <td> {{ course.skill_level }} </td>
-            </tr>
-        {% empty %}
-            <li> No courses taken yet! </li>
-        {% endfor %}
-        </table>
+        <div class="row">
+            <div class="large-12 columns">
+                <h2>Upcoming Courses</h2>
+                {% if courses_upcoming %}
+                    <table width='100%'>
+                        <tr>
+                            <th> Course </th>
+                            <th> Teacher </th>
+                            <th> Date </th>
+                            <th> Skill Level </th>
+                        </tr>
+                    {% for course in courses_upcoming %}
+                        <tr>
+                            <td> <a href="{% url "courses:detail" course.pk %}"> {{ course.title }}</a> </td>
+                            <td> {{ course.teacher.first_name }} {{ course.teacher.last_name }} </td>
+                            <td> {{ course.start_datetime|date:'D, N d Y' }} </td>
+                            <td> {{ course.skill_level }} </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <h5> You aren't registered for any upcoming courses yet! </h5>
+                {% endif %}
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="large-12 columns">
+                <h2>Completed Courses</h2>
+                {% if courses_taken %}
+                    <table width='100%'>
+                        <tr>
+                            <th> Course </th>
+                            <th> Teacher </th>
+                            <th> Date </th>
+                            <th> Skill Level </th>
+                        </tr>
+                    {% for course in courses_taken %}
+                        <tr>
+                            <td> <a href="{% url "courses:detail" course.pk %}"> {{ course.title }}</a> </td>
+                            <td> {{ course.teacher.first_name }} {{ course.teacher.last_name }} </td>
+                            <td> {{ course.start_datetime|date:'D, N d Y' }} </td>
+                            <td> {{ course.skill_level }} </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <h5> You haven't taken any courses yet! </h5>
+                {% endif %}
+                </table>
+            </div>
+        </div>
 
     </div>
 </div>
