@@ -10,22 +10,40 @@
 <div class="white-section">
     <div class="row">
         <div class="large-5 columns">
-            <h1>Contribute</h1>
+            <h1>Donate</h1>
             <p>
             Your support helps keeps this program running and allows us to reach more underserved communities with the knowledge and skills they need.
             Together, we can help these communities achieve economic success and empowerment through digital literacy.
             By donating to Oakland Digital, you are helping to close the digital literacy and opportunity gap.
             </p>
 
-            <div class="range-slider" id='donate-amt' data-slider data-options="start: 1; end: 50;">
-              <span class="range-slider-handle"></span>
-              <span class="range-slider-active-segment"></span>
-              <input type="hidden">
-            </div>
             <form method='POST'>
-              {% csrf_token %}
-              <input type="number" name="quantity" min="0" id='donate-amt-box'>
-              <p><button class="btn large" id='donate-btn'>Donate</button></p>
+            {% csrf_token %}
+            <div class="row">
+                <div class="small-8 columns">
+                    <div class="range-slider round" id='donate-amt' data-slider data-options="start: 1; end: 50;">
+                      <span id="donate-amt-handle" class="range-slider-handle slider-dollar"></span>
+                      <span class="range-slider-active-segment"></span>
+                      <input type="hidden">
+                    </div>
+                </div>
+                <div class="small-3 small-offset-1 columns">
+                    <div class="row collapse">
+                        <div class="small-2 columns">
+                            <span data-tooltip class="prefix has-tip tip-bottom" title="If you would like to, you can input more than the $50.00 limit on the slider in the input box. We really appreciate your generosity!">$</span>
+                        </div>
+                        <div class="small-10 columns">
+                            <input type="number" name="quantity" min="0" id='donate-amt-box'>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-12 columns">
+                    <button class="btn success right" id='donate-btn'>Donate</button>
+                </div>
+            </div>
+
             </form>
             <p><small>All contributions are tax-exempt to the extent allowed by law. Oakland Digital Arts and Literacy Center Inc is a 501(c)(3) nonprofit organization: Federal Tax 27-0720655. We respond to each donation with a charitable donation letter for your tax records, and we never share your information with other organizations.
             </small></p>
