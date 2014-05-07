@@ -87,7 +87,8 @@ class StudentDashboardView(UserDataMixin, TemplateView):
         student_user = self.user
         context = super(StudentDashboardView, self).get_context_data(**kwargs)
         context['user'] = student_user
-        context["courses_taken"] = student_user.course_set.all().order_by('-start_datetime')
+        context['courses_upcoming'] = student_user.course_set.filter(status = Course.STATUS_ACCEPTED).order_by('-start_datetime')
+        context["courses_taken"] = student_user.course_set.filter(status = Course.STATUS_FINISHED).order_by('-start_datetime')
         return context
 
     def dispatch(self, *args, **kwargs):

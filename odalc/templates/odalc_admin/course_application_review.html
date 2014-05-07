@@ -15,14 +15,14 @@
 {% csrf_token %}
 <div class="blue-narrow-section">
     <div class="row">
-        <div class="large-7 columns">
+        <div class="large-6 columns">
             <h1>Reviewing: {{ course.title }}</h1>
             <dl class="sub-nav" data-tab>
                 <dd class="active"><a href="#panel-instructor-info">Instructor Information</a></dd>
                 <dd><a href="#panel-course-info">Course Information</a></dd>
             </dl>
         </div>
-        <div class="large-5 columns">
+        <div class="large-6 columns">
             <ul class="button-group">
                 <li><input id="approve_course" class="small button success" name="_approve" type="submit" value="Approve" /></li>
                 <li><input id="deny_course" class="small button alert" name="_deny" type="submit" value="Deny" /></li>
