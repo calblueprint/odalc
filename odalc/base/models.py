@@ -147,7 +147,7 @@ class Course(models.Model):
     additional_info = models.TextField(
         'Additional Information',
         blank=True,
-        help_text='Any additional information about the course',
+        help_text='Any additional information about the course.',
     )
     status = models.CharField(
         'Course Status',

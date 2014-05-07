@@ -12,9 +12,12 @@
 {% block body %}
 <div class="blue-narrow-section">
     <div class="row">
-        <div class="large-12 columns">
+        <div class="large-7 columns">
             <h1>Create a new course</h1>
-            <p class="larger">Want to teach a class at ODALC? Tell us about the class you wish to offer below.</p>
+            <p>Want to teach a class at ODALC? Tell us about the class you wish to offer below. You can hover over questions for more information.</p>
+        </div>
+        <div class="large-5 columns">
+            {% include "base/partials/return_to_dashboard.html" %}
         </div>
     </div>
 </div>
@@ -101,13 +104,15 @@
               </span>
               </legend>
               {% include "base/partials/course_datetimefield.html" with date=form.date1 start_time=form.start_time1 end_time=form.end_time1 %}
+              <hr/>
               {% include "base/partials/course_datetimefield.html" with date=form.date2 start_time=form.start_time2 end_time=form.end_time2 %}
+              <hr/>
               {% include "base/partials/course_datetimefield.html" with date=form.date3 start_time=form.start_time3 end_time=form.end_time3 %}
           </fieldset>
 
           {% include "base/partials/hidden_img_uploadfield.html" with field=form.image %}
 
-          <button class="large right" id="save_course" type="submit">Submit course</button>
+          <button class="large right success" id="save_course" type="submit">Submit course</button>
 
         </form>
     </div>
