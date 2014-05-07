@@ -1,5 +1,30 @@
 @import "app";
 
+.course-background-image {
+    padding: 4em 0;
+    background-color: $light-secondary-color;
+
+    p {
+        color: #888;
+        font-size: 1.3em;
+    }
+
+    .enroll-btn {
+        margin-top: 3rem;
+    }
+
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: fixed;
+
+    -webkit-filter: blur(5px);
+    -moz-filter: blur(5px);
+    -o-filter: blur(5px);
+    -ms-filter: blur(5px);
+    filter: blur(5px);
+
+}
+
 table.course-logistic {
     @include grid-column(12);
 
