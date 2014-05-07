@@ -20,6 +20,8 @@ class StudentRegisterView(UserDataMixin, CreateView):
 
     @method_decorator(sensitive_post_parameters('password1', 'password2'))
     def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated():
+            return redirect('home')
         return super(StudentRegisterView, self).dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
