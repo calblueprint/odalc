@@ -7,14 +7,19 @@
 {% block is_teacher_dash %}active{% endblock %}
 
 {% block body %}
-
-<div class="white-section">
-<div class="row">
-    <div class="large-7 columns">
-        <h2>Editing your profile information</h2>
-        <p class="larger">Fix up your profile just the way you like it!</p>
+<div class="blue-narrow-section">
+    <div class="row">
+        <div class="large-7 columns">
+            <h1>Edit profile information</h1>
+            <p>This information appears on your course pages, except for your address, phone number, and resume.</p>
+        </div>
+        <div class="large-5 columns">
+            {% include "base/partials/return_to_dashboard.html" %}
+        </div>
     </div>
 </div>
+
+<div class="white-section">
 <div class="row">
     <div class="large-5 columns">
         <form method="POST" enctype="multipart/form-data">

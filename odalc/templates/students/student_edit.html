@@ -5,9 +5,19 @@
 {% block is_student_dash %}"active"{% endblock %}
 
 {% block body %}
+<div class="blue-narrow-section">
+    <div class="row">
+        <div class="large-7 columns">
+            <h1>Edit profile information</h1>
+        </div>
+        <div class="large-5 columns">
+            {% include "base/partials/return_to_dashboard.html" %}
+        </div>
+    </div>
+</div>
 
 <div class="row white-section">
-    <div class="large-12 columns">
+    <div class="large-7 small-centered columns">
         <form method="POST" enctype="multipart/form-data">
           {% csrf_token %}
 
@@ -18,6 +28,7 @@
           </div>
           {% endfor %}
 
+          {% include "base/partials/formfield.html" with field=form.email %}
           {% include "base/partials/formfield.html" with field=form.first_name %}
           {% include "base/partials/formfield.html" with field=form.last_name %}
 
