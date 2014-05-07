@@ -48,20 +48,18 @@ class ApplicationReviewView(UserDataMixin, UpdateView):
         context['twitter_share'] = 'https://twitter.com/home?status=Check%20out%20this%20new%20course%20that%20just%20went%20live%20at%20Oakland%20Digital!%20'+ context['course_url'] + '%20%23OaklandDigitalCourses%20via%20@ODALC'
         context['google_share'] = 'https://plus.google.com/share?url=' + context['course_url']
 
-        start_time = self.request.POST.get('start_time', False)
-        end_time = self.request.POST.get('end_time', False)
-        date = self.request.POST.get('date', False)
 
         if '_approve' in self.request.POST:
+            start_time = form.cleaned_data.get('start_time', False)
+            end_time = form.cleaned_data.get('end_time', False)
+            date = form.cleaned_data.get('date', False)
+
             #1. Check to see if they added times and dates
             if not start_time and not end_time and not date:
                 messages.error(self.request, 'Please choose a date start time and end time before approval')
                 return redirect('/admins/review/%s' % course.id)
             #2. change status of course to "approved"
             course.status = course.STATUS_ACCEPTED
-            start_time = dt.strptime(start_time, '%I:%M%p').time()
-            end_time = dt.strptime(end_time, '%I:%M%p').time()
-            date = dt.strptime(date, '%m/%d/%Y')
             course.start_datetime = dt.combine(date, start_time)
             course.end_datetime = dt.combine(date, end_time)
             course.save()
@@ -168,6 +166,7 @@ class AdminEditView(UserDataMixin, UpdateView):
     def get_success_url(self):
         messages.success(self.request, 'Information updated')
         return super(AdminEditView, self).get_success_url()
+
 
 class AdminRegisterView(UserDataMixin, CreateView):
     model = AdminUser
