@@ -54,7 +54,6 @@
                 </div>
                 <div class="row">
                     <div class="medium-12 columns">
-                          {% include "base/partials/hidden_img_uploadfield.html" with field=form.image %}
                     </div>
                 </div>
             </fieldset>
@@ -105,6 +104,8 @@
               {% include "base/partials/course_datetimefield.html" with date=form.date2 start_time=form.start_time2 end_time=form.end_time2 %}
               {% include "base/partials/course_datetimefield.html" with date=form.date3 start_time=form.start_time3 end_time=form.end_time3 %}
           </fieldset>
+
+          {% include "base/partials/hidden_img_uploadfield.html" with field=form.image %}
 
           <button class="large right" id="save_course" type="submit">Submit course</button>
 

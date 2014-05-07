@@ -49,12 +49,6 @@
                           {% include "base/partials/hidden_file_uploadfield.html" with field=form.course_material %}
                     </div>
                 </div>
-                <div class="row">
-                    <div class="medium-12 columns">
-                          {% include "base/partials/hidden_img_uploadfield.html" with field=form.image %}
-                    </div>
-                </div>
-
         </fieldset>
           {% if is_admin_user %}
         <fieldset>
@@ -98,7 +92,17 @@
               {# Hide the course status field if the teacher is editing the course #}
               <input id="{{ form.status.id_for_label }}" type="hidden" name="{{ form.status.html_name }}" value="{{ form.status.value }}"/>
           {% endif %}
+        <div class="row">
+            <div class="medium-12 columns">
+                {% include "base/partials/hidden_img_uploadfield.html" with field=form.image %}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="medium-12 columns">
           <button class="large right" id="save_edit" type="submit">Save changes</button>
+            </div>
+        </div>
         </form>
     </div>
 </div>
