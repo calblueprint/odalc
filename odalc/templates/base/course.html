@@ -20,10 +20,12 @@
 }(document, 'script', 'facebook-jssdk'));</script>
 
 <!-- Title section -->
-    <div class="mid-dark-section">
-      <div class="row">
+<div class="course-background-image" style="background-image: url('{{ course.image }}');"></div>
+<div class="course-top-section">
+    <div class="row">
         <div class="large-7 columns">
-            <h1><strong>{{ course.title }}</strong></h1>
+          <h1><strong>{{ course.title }}</strong></h1>
+          <br/>
           <p>{{ course.short_description }}</p>
         </div>
         <div class="large-4 large-offset-1 columns center">
