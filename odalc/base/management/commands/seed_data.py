@@ -281,7 +281,7 @@ class Command(BaseCommand):
         print "Generating Courses..."
         self.generate_courses(6)
         print "Generating Course Feedback..."
-        self.generate_course_feedback(10)
+        self.generate_course_feedback(50)
         print "Generating Course Availabilities..."
         self.generate_course_availability()
         print "Done!"

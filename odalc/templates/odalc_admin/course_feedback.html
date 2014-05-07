@@ -1,11 +1,13 @@
 {% extends "base/base.html" %}
 
+{% block title %}Course Feedback for {{ course.title }}{% endblock %}
+
 {% block body %}
 <div class="blue-narrow-section">
     <div class="row">
         <div class="large-9 columns">
             <h1>Course Feedback: {{ course.title }} ({{ num_forms }} responses)</h1>
-            <p class="larger">{{ course.teacher.first_name }} {{ course.teacher.last_name }}</p>
+            <p>{{ course.teacher.first_name }} {{ course.teacher.last_name }}</p>
         </div>
         <div class="large-3 columns">
             {% include "base/partials/return_to_dashboard.html" %}
