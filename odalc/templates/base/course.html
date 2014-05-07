@@ -28,9 +28,7 @@
         </div>
         <div class="large-4 large-offset-1 columns center">
 
-        {% if course_full %}
-        <button class="enroll-btn large success disabled">Course Full</button>
-        {% elif user.is_authenticated %}
+        {% if user.is_authenticated %}
             {% if is_student_user %}
                 {% if in_class %}
                     {% if is_past_start_date %}
@@ -44,12 +42,16 @@
                     {% else %}
                     <button class="enroll-btn large success disabled">Already Enrolled</button>
                     {% endif %}
+                {% elif course_full %}
+                    <button class="enroll-btn large success disabled">Course Full</button>
                 {% else %}
                 <form method='POST'>
                     {% csrf_token %}
                     <button id="enroll-btn" class="enroll-btn large success">Enroll Now</button>
                 </form>
                 {% endif %}
+            {% elif course_full %}
+                <button class="enroll-btn large success disabled">Course Full</button>
             {% else %}
             <button class="enroll-btn large success disabled">Cannot Enroll</button>
             {% endif %}

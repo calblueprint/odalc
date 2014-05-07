@@ -1,4 +1,3 @@
-from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth import login, authenticate
 from django.shortcuts import redirect
@@ -88,7 +87,7 @@ class StudentDashboardView(UserDataMixin, TemplateView):
         context = super(StudentDashboardView, self).get_context_data(**kwargs)
         context['user'] = student_user
         context['courses_upcoming'] = student_user.course_set.filter(status = Course.STATUS_ACCEPTED).order_by('-start_datetime')
-        context["courses_taken"] = student_user.course_set.filter(status = Course.STATUS_FINISHED).order_by('-start_datetime')
+        context['courses_taken'] = student_user.course_set.filter(status = Course.STATUS_FINISHED).order_by('-start_datetime')
         return context
 
     def dispatch(self, *args, **kwargs):
