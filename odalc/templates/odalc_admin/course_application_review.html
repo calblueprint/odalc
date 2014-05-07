@@ -11,7 +11,7 @@
 {% block is_admin_dash %}active{% endblock %}
 
 {% block body %}
-<form method="POST">
+<form method="POST" id='course_review'>
 {% csrf_token %}
 <div class="blue-narrow-section">
     <div class="row">
@@ -199,6 +199,24 @@ $(function() {
     $("#{{ form.start_time.id_for_label }}").timepicker(timeOptions);
     $("#{{ form.end_time.id_for_label }}").timepicker(timeOptions);
 });
+
+$('#approve_course').confirmOn({
+        questionText: 'Are you sure you want to approve {{ course.title }}?',
+        textYes: 'Yes, I\'m sure',
+        textNo: 'No, I\'m not sure'
+    },'click', function(e, confirmed) {
+        if(confirmed){$('#course_review').append('<input type="hidden" name="_approve" value="Approve" />').submit()}
+        else{e.preventDefault; return false}
+    });
+
+$('#deny_course').confirmOn({
+        questionText: 'Are you sure you want to deny {{ course.title }}?',
+        textYes: 'Yes, I\'m sure',
+        textNo: 'No, I\'m not sure'
+    },'click', function(e, confirmed) {
+        if(confirmed){$('#course_review').append('<input type="hidden" name="_deny" value="Deny" />').submit()}
+        else{e.preventDefault; return false}
+    });
 
 </script>
 {% endblock %}
