@@ -31,7 +31,7 @@ class TeacherUser(User):
         'Street Address',
         max_length=255,
         blank=True,
-        help_text='Business Address',
+        help_text='You can enter your home or business address',
     )
     city = models.CharField(
         'City',
@@ -44,7 +44,8 @@ class TeacherUser(User):
         blank=True
     )
     phone = localflavor_models.PhoneNumberField(
-        'Contact Number'
+        'Contact Number',
+        help_text='Please use the most reliable phone number for contacting you'
     )
     about = models.TextField(
         'About You',

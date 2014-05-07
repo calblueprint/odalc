@@ -32,19 +32,31 @@
           </div>
           {% endfor %}
 
+          <fieldset>
+          <legend>Account Information</legend>
           {% include "base/partials/formfield.html" with field=form.first_name %}
           {% include "base/partials/formfield.html" with field=form.last_name %}
+          {% include "base/partials/formfield.html" with field=form.email %}
+          </fieldset>
+          <fieldset>
+          <legend>Current Work Experience</legend>
           {% include "base/partials/tooltip_formfield.html" with field=form.organization %}
           {% include "base/partials/tooltip_formfield.html" with field=form.position %}
+          </fieldset>
+          <fieldset>
+          <legend>Contact Information</legend>
           {% include "base/partials/tooltip_formfield.html" with field=form.street_address %}
           {% include "base/partials/formfield.html" with field=form.city %}
           {% include "base/partials/formfield.html" with field=form.zipcode %}
-          {% include "base/partials/formfield.html" with field=form.phone %}
-
+          {% include "base/partials/tooltip_formfield.html" with field=form.phone %}
+          </fieldset>
     </div>
     <div class="large-6 offset-1 columns">
+        <fieldset>
+        <legend>Bio</legend>
         {% include "base/partials/tooltip_formfield.html" with field=form.about %}
         {% include "base/partials/tooltip_formfield.html" with field=form.experience %}
+        </fieldset>
         {% include "base/partials/hidden_img_uploadfield.html" with field=form.picture %}
         {% include "base/partials/hidden_file_uploadfield.html" with field=form.resume %}
 
