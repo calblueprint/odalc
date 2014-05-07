@@ -8,11 +8,7 @@
             <p class="larger">{{ course.teacher.first_name }} {{ course.teacher.last_name }}</p>
         </div>
         <div class="large-3 columns">
-            {% if is_admin_user %}
-                <a href="{% url "admins:dashboard" %}" class="button info">Return to Dashboard</a>
-            {% else %}
-                <a href="{% url "teachers:dashboard" %}" class="button info">Return to Dashboard</a>
-            {% endif %}
+            {% include "base/partials/return_to_dashboard.html" %}
         </div>
     </div>
 </div>

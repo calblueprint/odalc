@@ -16,7 +16,12 @@
         <br>
         <h2>Taught by the Bay Area's leading <strong>tech & design professionals</strong></h2>
       </div>
-      <div class="large-5 columns">
+      <!-- Something like this on the landing page? Not sure, maybe one button would be better? -atsu -->
+      <div class="large-4 medium-centered columns">
+            {% if not user.is_authenticated %}
+            <a href="{% url "courses:listing" %}" class="button success">Want to learn? Start here</a>
+            <a href="{% url "teachers:register" %}" class="button info">Want to teach? Start here</a>
+            {% endif %}
       </div>
     </div>
   </div>

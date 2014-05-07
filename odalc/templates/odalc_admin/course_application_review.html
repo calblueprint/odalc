@@ -86,16 +86,16 @@
                             <div class="row">
                                 <div class="medium-12 columns">
                                     {% include "base/partials/formfield.html" with field=form.title %}
-                                    {% include "base/partials/formfield.html" with field=form.short_description %}
-                                    {% include "base/partials/formfield.html" with field=form.long_description %}
+                                    {% include "base/partials/tooltip_formfield.html" with field=form.short_description %}
+                                    {% include "base/partials/tooltip_formfield.html" with field=form.long_description %}
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="medium-6 columns">
-                                    {% include "base/partials/formfield.html" with field=form.prereqs %}
+                                    {% include "base/partials/tooltip_formfield.html" with field=form.prereqs %}
                                 </div>
                                 <div class="medium-6 columns">
-                                    {% include "base/partials/formfield.html" with field=form.additional_info %}
+                                    {% include "base/partials/tooltip_formfield.html" with field=form.additional_info %}
                                 </div>
                             </div>
                             <div class="row">
@@ -108,16 +108,16 @@
                             <legend>Course Logistics</legend>
                             <div class="row">
                                 <div class="medium-3 columns">
-                                    {% include "base/partials/formfield.html" with field=form.size %}
+                                    {% include "base/partials/tooltip_formfield.html" with field=form.size %}
                                 </div>
                                 <div class="medium-3 columns">
-                                    {% include "base/partials/formfield.html" with field=form.skill_level %}
+                                    {% include "base/partials/tooltip_formfield.html" with field=form.skill_level %}
                                 </div>
                                 <div class="medium-3 columns">
-                                    {% include "base/partials/formfield.html" with field=form.cost %}
+                                    {% include "base/partials/tooltip_formfield.html" with field=form.cost %}
                                 </div>
                                 <div class="medium-3 columns">
-                                    {% include "base/partials/formfield.html" with field=form.odalc_cost_split %}
+                                    {% include "base/partials/tooltip_formfield.html" with field=form.odalc_cost_split %}
                                 </div>
                             </div>
                             <div class="row">

@@ -10,7 +10,7 @@ class StudentRegisterForm(UserRegisterForm):
 class StudentEditForm(forms.ModelForm):
     class Meta:
         model = StudentUser
-        fields = ('first_name', 'last_name')
+        fields = ('email', 'first_name', 'last_name')
 
 class FeedbackForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):

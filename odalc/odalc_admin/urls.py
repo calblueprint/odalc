@@ -12,10 +12,10 @@ urlpatterns = patterns('',
     url(r'^password_change/$',
         password_change,
         {
-            'template_name': 'base/password_change.html',
+            'template_name': 'odalc_admin/password_change.html',
             'post_change_redirect': 'admins:dashboard'
         },
-       name='password_change'
+        name='password_change',
     ),
     url(r'^edit/$', AdminEditView.as_view(), name='edit'),
     url(r'^register/$', AdminRegisterView.as_view(), name='register'),

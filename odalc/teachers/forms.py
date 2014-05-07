@@ -9,7 +9,7 @@ from localflavor.us import forms as localflavor_forms
 
 class TeacherRegisterForm(UserRegisterForm):
     phone = localflavor_forms.USPhoneNumberField(required=True, label='Phone')
-    zipcode = localflavor_forms.USZipCodeField(required=True, label='Zipcode')
+    zipcode = localflavor_forms.USZipCodeField(required=False, label='Zipcode')
 
     class Meta:
         model = TeacherUser
@@ -31,7 +31,8 @@ class TeacherRegisterForm(UserRegisterForm):
 class TeacherEditForm(forms.ModelForm):
     class Meta:
         model = TeacherUser
-        fields = ('first_name',
+        fields = ('email',
+                  'first_name',
                   'last_name',
                   'organization',
                   'position',

@@ -9,8 +9,11 @@
 {% block body %}
 <div class="blue-narrow-section">
     <div class="row">
-        <div class="large-12 columns">
+        <div class="large-7 columns">
             <h1>Editing {{ course.title }}</h1>
+        </div>
+        <div class="large-5 columns">
+            {% include "base/partials/return_to_dashboard.html" %}
         </div>
     </div>
 </div>
@@ -32,19 +35,23 @@
                 <div class="row">
                     <div class="medium-12 columns">
           {% include "base/partials/formfield.html" with field=form.title %}
-          {% include "base/partials/formfield.html" with field=form.short_description %}
-          {% include "base/partials/formfield.html" with field=form.long_description %}
+          {% include "base/partials/tooltip_formfield.html" with field=form.short_description %}
+          {% include "base/partials/tooltip_formfield.html" with field=form.long_description %}
                     </div>
                </div>
                 <div class="row">
                     <div class="medium-6 columns">
-                        {% include "base/partials/formfield.html" with field=form.prereqs %}
+                        {% include "base/partials/tooltip_formfield.html" with field=form.prereqs %}
                     </div>
                     <div class="medium-6 columns">
-                        {% include "base/partials/formfield.html" with field=form.additional_info %}
+                        {% include "base/partials/tooltip_formfield.html" with field=form.additional_info %}
                     </div>
                 </div>
-
+                <div class="row">
+                    <div class="medium-12 columns">
+                          {% include "base/partials/hidden_file_uploadfield.html" with field=form.course_material %}
+                    </div>
+                </div>
         </fieldset>
           {% if is_admin_user %}
         <fieldset>
@@ -61,38 +68,44 @@
             <legend>Course Logistics</legend>
             <div class="row">
                 <div class="medium-3 columns">
-                    {% include "base/partials/formfield.html" with field=form.size %}
+                    {% include "base/partials/tooltip_formfield.html" with field=form.size %}
                 </div>
                 <div class="medium-3 columns">
-                    {% include "base/partials/formfield.html" with field=form.skill_level %}
+                    {% include "base/partials/tooltip_formfield.html" with field=form.skill_level %}
                 </div>
                 <div class="medium-3 columns">
-                    <label for="{{ form.cost.id_for_label }}">Course Fee</label>
+                    <span data-tooltip class="has-tip tip-top tip-thin" title="{{ form.cost.help_text }}">
+                        <label for="{{ form.cost.id_for_label }}">Course Fee</label>
+                    </span>
                     <p>${{ form.cost.value }}</p>
                     {% include "base/partials/hidden_formfield.html" with field=form.cost %}
                 </div>
                 <div class="medium-3 columns">
-                    <label for="{{ form.odalc_cost_split.id_for_label }}">Donate to ODALC <i class="lighter">(and <span id="your-amt">${{ teacher_split }}</span> to the instructor)</i></label>
+                    <span data-tooltip class="has-tip tip-top tip-thin" title="{{ form.odalc_cost_split.help_text }}">
+                        <label for="{{ form.odalc_cost_split.id_for_label }}">Donate to ODALC <i class="lighter">(and <span id="your-amt">${{ teacher_split }}</span> to the instructor)</i></label>
+                    </span>
                     <p>${{ form.odalc_cost_split.value }}</p>
                     {% include "base/partials/hidden_formfield.html" with field=form.odalc_cost_split %}
                 </div>
             </div>
         </fieldset>
-        <fieldset>
-            <legend>Course image</legend>
-          {% include "base/partials/hidden_img_uploadfield.html" with field=form.image %}
-        </fieldset>
-        <fieldset>
-            <legend>Course material</legend>
-          {% include "base/partials/hidden_file_uploadfield.html" with field=form.course_material %}
-        </fieldset>
           {% if is_admin_user %}
-              {% include "base/partials/formfield.html" with field=form.status %}
+              {% include "base/partials/tooltip_formfield.html" with field=form.status %}
           {% else %}
               {# Hide the course status field if the teacher is editing the course #}
               <input id="{{ form.status.id_for_label }}" type="hidden" name="{{ form.status.html_name }}" value="{{ form.status.value }}"/>
           {% endif %}
+        <div class="row">
+            <div class="medium-12 columns">
+                {% include "base/partials/hidden_img_uploadfield.html" with field=form.image %}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="medium-12 columns">
           <button class="large right" id="save_edit" type="submit">Save changes</button>
+            </div>
+        </div>
         </form>
     </div>
 </div>

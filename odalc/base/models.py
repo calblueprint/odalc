@@ -137,17 +137,17 @@ class Course(models.Model):
     )
     image = models.URLField(
         'Course Image',
-        help_text='Image to use on the course page'
+        help_text='Image to use as the banner on the course page. Please use a high-resolution image if possible, but the Oakland Digital team can help find an appropriate image for this.'
     )
     course_material = models.URLField(
         'Course Materials',
         blank=True,
-        help_text='PDF of any course materials for students. This can include links to other materials as well. Only enrolled students will be able to see this link.'
+        help_text='Optional PDF of any course materials for students. This can include links to other materials as well. Only enrolled students will be able to see this link.'
     )
     additional_info = models.TextField(
         'Additional Information',
         blank=True,
-        help_text='Any additional information about the course',
+        help_text='Any additional information about the course.',
     )
     status = models.CharField(
         'Course Status',

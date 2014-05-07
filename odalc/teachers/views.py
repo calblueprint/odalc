@@ -2,6 +2,7 @@ from datetime import datetime as dt
 
 from django.contrib.auth import login, authenticate
 from django.core.urlresolvers import reverse, reverse_lazy
+from django.shortcuts import redirect
 from django.utils.decorators import method_decorator
 from django.views.decorators.debug import sensitive_post_parameters
 from django.views.generic import CreateView, FormView, TemplateView, UpdateView
@@ -22,6 +23,8 @@ class TeacherRegisterView(UserDataMixin, CreateView):
 
     @method_decorator(sensitive_post_parameters('password1', 'password2'))
     def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated():
+            return redirect('home')
         return super(TeacherRegisterView, self).dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
@@ -44,6 +47,7 @@ class TeacherEditView(UserDataMixin, UpdateView):
     def get_success_url(self):
         messages.success(self.request, 'Information updated')
         return super(TeacherEditView, self).get_success_url()
+
 
 class CreateCourseView(UserDataMixin, FormView):
     model = Course

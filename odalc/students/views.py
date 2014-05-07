@@ -1,4 +1,3 @@
-from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth import login, authenticate
 from django.shortcuts import redirect
@@ -21,6 +20,8 @@ class StudentRegisterView(UserDataMixin, CreateView):
 
     @method_decorator(sensitive_post_parameters('password1', 'password2'))
     def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated():
+            return redirect('home')
         return super(StudentRegisterView, self).dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
@@ -46,6 +47,7 @@ class StudentEditView(UserDataMixin, UpdateView):
     def get_success_url(self):
         messages.success(self.request, 'Information updated')
         return super(StudentEditView, self).get_success_url()
+
 
 """Controls course feedback submission for a particular student and course"""
 class SubmitCourseFeedbackView(UserDataMixin, CreateView):
@@ -88,7 +90,7 @@ class StudentDashboardView(UserDataMixin, TemplateView):
         context = super(StudentDashboardView, self).get_context_data(**kwargs)
         context['user'] = student_user
         context['courses_upcoming'] = student_user.course_set.filter(status = Course.STATUS_ACCEPTED).order_by('-start_datetime')
-        context["courses_taken"] = student_user.course_set.filter(status = Course.STATUS_FINISHED).order_by('-start_datetime')
+        context['courses_taken'] = student_user.course_set.filter(status = Course.STATUS_FINISHED).order_by('-start_datetime')
         return context
 
     def dispatch(self, *args, **kwargs):

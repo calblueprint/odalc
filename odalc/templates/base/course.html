@@ -28,9 +28,7 @@
         </div>
         <div class="large-4 large-offset-1 columns center">
 
-        {% if course_full %}
-        <button class="enroll-btn large success disabled">Course Full</button>
-        {% elif user.is_authenticated %}
+        {% if user.is_authenticated %}
             {% if is_student_user %}
                 {% if in_class %}
                     {% if is_past_start_date %}
@@ -44,12 +42,16 @@
                     {% else %}
                     <button class="enroll-btn large success disabled">Already Enrolled</button>
                     {% endif %}
+                {% elif course_full %}
+                    <button class="enroll-btn large success disabled">Course Full</button>
                 {% else %}
                 <form method='POST'>
                     {% csrf_token %}
                     <button id="enroll-btn" class="enroll-btn large success">Enroll Now</button>
                 </form>
                 {% endif %}
+            {% elif course_full %}
+                <button class="enroll-btn large success disabled">Course Full</button>
             {% else %}
             <button class="enroll-btn large success disabled">Cannot Enroll</button>
             {% endif %}
@@ -65,10 +67,70 @@
         {% endif %}
         </div>
       </div>
+    </div>
+<!-- end title section-->
+    <!-- logistics section -->
+    <div class="blue-section-no-pad">
+      <div class="row">
+          <table class="course-logistic">
+            <tbody>
+              <tr>
+                  <td class="item">Course Session:</td>
+                  <td>{{ course.start_datetime|date:'D, N d Y' }} | {{ course.start_datetime|date:'P'}} - {{ course.end_datetime|date:'P' }}</td>
+                  <td class="item">Enrollment:</td>
+                  {% if course_full %}
+                  <td>All seats full</td>
+                  {% else %}
+                  <td>{{ open_seats }} of {{ course.size }} seats open</td>
+                  {% endif %}
+                  <td class="item">Cost:</td>
+                  <td>${{ course.cost }}</td>
+              </tr>
+            </tbody>
+          </table>
+      </div>
+    </div>
+    <!-- about section -->
+    <div class="white-section">
+      <div class="row">
+        <!-- about the course -->
+        <div class="large-7 columns">
+          <h3>About the Course</h3>
+          <p>{{ course.long_description }}</p>
+          <h3>Prerequisites</h3>
+          <p>{{ course.prereqs }}</p>
+          <h3>Additional Information</h3>
+          <p>{{ course.additional_info }}</p>
+          {% if course.course_material and in_class or is_owner or is_admin_user %}
+          <h5><a href="{{ course.course_material }}">View Course Materials &raquo;</a></h5>
+          {% endif %}
+        </div>
+        <!-- about the teacher -->
+        <div class="large-5 columns">
+          <h3>About the Instructor</h3>
+          <div class="row author">
+            <div class="pic">
+                <img class="th" src="{{ course.teacher.picture }}" />
+            </div>
+            <div class="details">
+                <h4>{{ course.teacher.first_name }} {{ course.teacher.last_name }}</h4>
+              <div class="role"><i>{{ course.teacher.position }}</i></div>
+              <div class="inst">{{ course.teacher.organization }}</div>
+            </div>
+          </div>
+          <!-- bio portion -->
+          <br>
+          <h5>Bio</h5>
+          <p class="light">{{ course.teacher.about }}</p>
+          <h5>Professional Experience</h5>
+          <p class="light">{{ course.teacher.experience }}</p>
+        </div>
+      </div>
       <!-- Social Sharing Buttons -->
       <div class="row">
         <div class="large-7 columns center">
-          <ul class="inline-list">
+         <br>
+         <ul class="inline-list">
             <!-- Twitter (Customized) -->
             <li>
               <div>
@@ -112,65 +174,6 @@
               </div>
             </li>
           </ul>
-        </div>
-      </div>
-    </div>
-<!-- end title section-->
-    <!-- logistics section -->
-    <div class="blue-section-no-pad">
-      <div class="row">
-          <table class="course-logistic">
-            <tbody>
-              <tr>
-                  <td class="item">Course Session:</td>
-                  <td>{{ course.start_datetime|date:'D, N d Y' }} | {{ course.start_datetime|date:'P'}} - {{ course.end_datetime|date:'P' }}</td>
-                  <td class="item">Enrollment:</td>
-                  {% if course_full %}
-                  <td>All seats full</td>
-                  {% else %}
-                  <td>{{ open_seats }} of {{ course.size }} seats open</td>
-                  {% endif %}
-                  <td class="item">Cost:</td>
-                  <td>${{ course.cost }}</td>
-              </tr>
-            </tbody>
-          </table>
-      </div>
-    </div>
-    <!-- about section -->
-    <div class="white-section">
-      <div class="row">
-        <!-- about the course -->
-        <div class="large-7 columns">
-          <h3>About the Course</h3>
-          <p>{{ course.long_description }}</p>
-          <h3>Prerequisites</h3>
-          <p>{{ course.prereqs }}</p>
-          <h3>Additional Information</h3>
-          <p>{{ course.additional_info }}</p>
-          {% if course.course_material and in_class or is_owner or is_admin_user %}
-          <h3><a href="{{ course.course_material }}">View Course Materials &raquo;</a></h3>
-          {% endif %}
-        </div>
-        <!-- about the teacher -->
-        <div class="large-5 columns">
-          <h3>About the Instructor</h3>
-          <div class="row author">
-            <div class="pic">
-                <img class="th" src="{{ course.teacher.picture }}" />
-            </div>
-            <div class="details">
-                <h4>{{ course.teacher.first_name }} {{ course.teacher.last_name }}</h4>
-              <div class="role"><i>{{ course.teacher.position }}</i></div>
-              <div class="inst">{{ course.teacher.organization }}</div>
-            </div>
-          </div>
-          <!-- bio portion -->
-          <br>
-          <h5>Bio</h5>
-          <p class="light">{{ course.teacher.about }}</p>
-          <h5>Professional Experience</h5>
-          <p class="light">{{ course.teacher.experience }}</p>
         </div>
       </div>
     </div>

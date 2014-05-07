@@ -1,6 +1,5 @@
 from datetime import datetime as dt
 
-from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.db.models import Avg
 from django.shortcuts import redirect

@@ -7,13 +7,13 @@
 <div class="blue-narrow-section">
     <div class="row">
         <div class="large-6 columns">
-            <h1>My Dashboard</h1>
-            <p>{{ user.first_name }} {{ user.last_name }} | <a href='mailto:{{ user.email }}'>{{ user.email }}</a></p>
+            <h1>Student Dashboard</h1>
+            <p>{{ user.first_name }} {{ user.last_name }} | {{ user.email }}</p>
         </div>
         <div class="large-5 offset-1 columns">
             <ul class="inline-list right" style="margin-top:15px;">
-                <li><a href="{% url "teachers:edit" %}">Edit profile information &raquo;</a></li>
-                <li><a href="{% url "teachers:password_change" %}">Change password &raquo;</a></li>
+                <li><a href="{% url "students:edit" %}">Edit profile information &raquo;</a></li>
+                <li><a href="{% url "students:password_change" %}">Change password &raquo;</a></li>
             </ul>
         </div>
     </div>

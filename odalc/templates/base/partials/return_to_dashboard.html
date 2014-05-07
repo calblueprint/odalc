@@ -1,0 +1,10 @@
+<p style="margin-top:15px;">
+{% if is_student_user %}
+<a href="{% url "students:dashboard" %}" class="right">Return to dashboard &raquo;</a>
+{% elif is_teacher_user %}
+<a href="{% url "teachers:dashboard" %}" class="right">Return to dashboard &raquo;</a>
+{% elif is_admin_user %}
+<a href="{% url "admins:dashboard" %}" class="right">Return to dashboard &raquo;</a>
+{% else %}
+{% endif %}
+</p>
