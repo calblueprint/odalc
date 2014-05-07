@@ -1,4 +1,4 @@
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import reverse_lazy, resolve
 from django.contrib.auth import login, authenticate
 from django.shortcuts import redirect
 from django.utils.decorators import method_decorator
@@ -25,14 +25,26 @@ class StudentRegisterView(UserDataMixin, CreateView):
         return super(StudentRegisterView, self).dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
-        resp = super(StudentRegisterView, self).form_valid(form)
+        super(StudentRegisterView, self).form_valid(form)
         user = authenticate(
             username=self.request.POST['email'],
             password=self.request.POST['password1']
         )
         login(self.request, user)
-        messages.success(self.request, 'Registration successful')
-        return resp
+        messages.success(self.request, 'Account created successfully')
+        self.next_url = self.request.POST.get('next', None)
+        if self.next_url:
+            match = resolve(self.next_url)
+            print match
+            if match.namespace == 'courses' and match.url_name == 'detail':
+                messages.info(
+                    self.request,
+                    'You have created an account, but you are not yet enrolled in the course. Please click "Enroll" again to register for the course.'
+                )
+            return redirect(self.next_url)
+        else:
+            return redirect(StudentRegisterView.success_url)
+
 
 """Controls the editing of personal information by the student"""
 class StudentEditView(UserDataMixin, UpdateView):
@@ -80,6 +92,7 @@ class SubmitCourseFeedbackView(UserDataMixin, CreateView):
             user.has_perm('base.admin_permission')):
             return super(SubmitCourseFeedbackView, self).dispatch(*args, **kwargs)
         return self.deny_access()
+
 
 """StudentDashboardView shows the student his/her basic information and courses taken."""
 class StudentDashboardView(UserDataMixin, TemplateView):
