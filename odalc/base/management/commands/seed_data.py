@@ -56,9 +56,9 @@ class Command(BaseCommand):
                 zipcode='94709',
                 phone=self.sd.phone('es', 1),
                 about=self.sd.paragraph(),
-                picture=RANDOM_TEACHER_IMAGE_URL % randint(1 , 10),
+                picture=RANDOM_TEACHER_IMAGE_URL % randint(1,10),
                 resume=TEST_PDF_URL,
-                experience='Here is my experience',
+                experience=self.sd.paragraph(),
                 info_source='WEB'
             )
             teacher.set_password(TEST_PASSWORD)
@@ -67,10 +67,10 @@ class Command(BaseCommand):
         if not TeacherUser.objects.filter(email=TEST_TEACHER_EMAIL).exists():
             teacher = TeacherUser.objects.create(
                 email=TEST_TEACHER_EMAIL,
-                first_name='TEACHER',
-                last_name='ODALC',
+                first_name='Awesome',
+                last_name='Teacher',
                 organization='Blueprint',
-                position='The Best',
+                position='President',
                 street_address=self.sd.number_string(3) + ' ' + self.sd.word() + ' St.',
                 city='Berkeley',
                 zipcode='94709',
@@ -78,7 +78,7 @@ class Command(BaseCommand):
                 about=self.sd.paragraph(),
                 picture=TEST_TEACHER_IMAGE_URL,
                 resume=TEST_PDF_URL,
-                experience='Here is my experience',
+                experience=self.sd.paragraph(),
                 info_source='WEB'
             )
             teacher.set_password(TEST_PASSWORD)
