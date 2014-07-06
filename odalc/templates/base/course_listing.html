@@ -44,7 +44,11 @@
                         <div class="small-3 columns">{{ course.start_datetime|date:'D, N d Y' }}</div>
                     </div>
                 </div>
-                <div class="small-3 columns"> <img src="{{ course.image }}"> </img></div>
+                <div class="small-3 columns">
+                    <a href="{% url "courses:detail" course.pk %}">
+                        <img src="{{ course.image }}"></img>
+                    </a>
+                </div>
             </div>
             <hr/>
             <br/>
@@ -73,7 +77,11 @@
                         <div class="small-3 columns">{{ course.start_datetime|date:'D, N d Y' }}</div>
                     </div>
                 </div>
-                <div class="small-3 columns"> <img src="{{ course.image }}"> </img></div>
+                <div class="small-3 columns">
+                    <a href="{% url "courses:detail" course.pk %}">
+                        <img src="{{ course.image }}"></img>
+                    </a>
+                </div>
             </div>
             <hr/>
             <br/>
@@ -102,7 +110,11 @@
                         <div class="small-3 columns">{{ course.start_datetime|date:'D, N d Y' }}</div>
                     </div>
                 </div>
-                <div class="small-3 columns"> <img src="{{ course.image }}"> </img></div>
+                <div class="small-3 columns">
+                    <a href="{% url "courses:detail" course.pk %}">
+                        <img src="{{ course.image }}"></img>
+                    </a>
+                </div>
             </div>
             <hr/>
             <br/>
