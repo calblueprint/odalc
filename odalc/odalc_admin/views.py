@@ -34,10 +34,6 @@ class ApplicationReviewView(UserDataMixin, UpdateView):
     template_name = 'odalc_admin/course_application_review.html'
     success_url = reverse_lazy('admins:dashboard')
 
-    def get_context_data(self, **kwargs):
-        context = super(ApplicationReviewView, self).get_context_data(**kwargs)
-        return context
-
     def form_valid(self, form):
         course = self.object
         teacher = self.object.teacher
@@ -47,7 +43,6 @@ class ApplicationReviewView(UserDataMixin, UpdateView):
         context['facebook_share'] = 'http://www.facebook.com/sharer.php?u=' + context['course_url']
         context['twitter_share'] = 'https://twitter.com/home?status=Check%20out%20this%20new%20course%20that%20just%20went%20live%20at%20Oakland%20Digital!%20'+ context['course_url'] + '%20%23OaklandDigitalCourses%20via%20@ODALC'
         context['google_share'] = 'https://plus.google.com/share?url=' + context['course_url']
-
 
         if '_approve' in self.request.POST:
             start_time = form.cleaned_data.get('start_time', False)
@@ -127,7 +122,6 @@ class CourseFeedbackView(UserDataMixin, DetailView):
             return super(CourseFeedbackView, self).dispatch(*args, **kwargs)
         return self.deny_access()
 
-
     def get_context_data(self, **kwargs):
         course = self.object
         forms = course.coursefeedback_set.all()
@@ -150,7 +144,6 @@ class CourseFeedbackView(UserDataMixin, DetailView):
         scores = forms.values_list(*questions)
         for index, item in enumerate(scores):
             context['visualization'].append(list(item))
-
         return context
 
 
@@ -181,6 +174,14 @@ class AdminRegisterView(UserDataMixin, CreateView):
         if user.has_perm('base.admin_permission'):
             return super(AdminRegisterView, self).dispatch(*args, **kwargs)
         return self.deny_access()
+
+    def form_valid(self, form):
+        admin_name = form.cleaned_data.get('first_name') + ' ' + form.cleaned_data.get('last_name')
+        context = {
+            'admin_name': admin_name
+        }
+        send_odalc_email('notify_admins_new_admin', context, [], cc_admins=True)
+        return super(AdminRegisterView, self).form_valid(form)
 
     def get_success_url(self):
         messages.success(self.request, 'New admin created')

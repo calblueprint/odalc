@@ -90,14 +90,27 @@ notify_admins_course_submitted:
         ODALC Team
         "
 
+notify_admins_new_admin:
+    subject: "New Admin Registered: {{ admin_name }}"
+    body:
+        "
+        Hello Oakland Digital team,\n\n
+        {{ admin_name }} has been registered as a new admin!
+        "
+    html:
+        "
+        Hello Oakland Digital team,<br><br>
+        {{ admin_name }} has been registered as a new admin!
+        "
+
 remind_teacher:
     subject: "Reminder: Your Course {{ course.title }} at ODALC is Tomorrow!"
     body:
         "
         Hello {{ course.teacher.first_name }},\n\n
-        This is a friendly reminder that your course {{ course.title }} is tomorrow, {{ course_date }} from {{ course_start_time }} - {{ course_end_time }}. 
-        You can view your course page at {{ course_url }}. 
-        You can get direction to ODALC at https://goo.gl/maps/kQZiv. 
+        This is a friendly reminder that your course {{ course.title }} is tomorrow, {{ course_date }} from {{ course_start_time }} - {{ course_end_time }}.
+        You can view your course page at {{ course_url }}.
+        You can get direction to ODALC at https://goo.gl/maps/kQZiv.
         See you tomorrow!\n\n
         Best,\n
         ODALC Team
@@ -105,8 +118,8 @@ remind_teacher:
     html:
         "
         Hello {{ course.teacher.first_name }},<br><br>
-        This is a friendly reminder that your course {{ course.title }} is tomorrow, {{ course_date }} from {{ course_start_time }} - {{ course_end_time }}. 
-        You can view your course page <a href='{{ course_url }}'>here</a>. 
+        This is a friendly reminder that your course {{ course.title }} is tomorrow, {{ course_date }} from {{ course_start_time }} - {{ course_end_time }}.
+        You can view your course page <a href='{{ course_url }}'>here</a>.
         You can get directions to ODALC <a href='https://goo.gl/maps/kQZiv'>here</a>.
         See you tomorrow!<br><br>
         Best,<br>
@@ -119,8 +132,8 @@ remind_students:
         "
         Hello,\n\n
         This is a friendly reminder that the course {{ course.title }} that you've signed up for is tomorrow, {{ course_date }} from {{ course_start_time }} - {{ course_end_time }}.
-        You can see more information about this course at {{ course_url }}. 
-        You can get direction to ODALC at https://goo.gl/maps/kQZiv. 
+        You can see more information about this course at {{ course_url }}.
+        You can get direction to ODALC at https://goo.gl/maps/kQZiv.
         See you tomorrow!\n\n
         Best,\n
         ODALC Team
