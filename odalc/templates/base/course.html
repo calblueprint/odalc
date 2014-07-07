@@ -73,23 +73,29 @@
 <!-- end title section-->
     <!-- logistics section -->
     <div class="blue-section-no-pad">
-      <div class="row">
-          <table class="course-logistic">
-            <tbody>
-              <tr>
-                  <td class="item">Course Session:</td>
-                  <td>{{ course.start_datetime|date:'D, N d Y' }} | {{ course.start_datetime|date:'P'}} - {{ course.end_datetime|date:'P' }}</td>
-                  <td class="item">Enrollment:</td>
+      <div class="row course-logistic">
+          <div class="medium-6 columns">
+              <div class="row item">
+                  <span class="col title">Course Session:</span>
+                  <span class="col">{{ course.start_datetime|date:'D, N d Y' }} | {{ course.start_datetime|date:'P'}} - {{ course.end_datetime|date:'P' }}</span>
+              </div>
+          </div>
+          <div class="medium-4 columns">
+              <div class="row item">
+                  <span class="col title">Enrollment:</span>
                   {% if course_full %}
-                  <td>All seats full</td>
+                  <span class="col">All seats full</span>
                   {% else %}
-                  <td>{{ open_seats }} of {{ course.size }} seats open</td>
+                  <span class="col">{{ open_seats }} of {{ course.size }} seats open</span>
                   {% endif %}
-                  <td class="item">Cost:</td>
-                  <td>${{ course.cost }}</td>
-              </tr>
-            </tbody>
-          </table>
+              </div>
+          </div>
+          <div class="medium-2 columns">
+              <div class="row item">
+                  <span class="col title">Cost:</span>
+                  <span class="col">${{ course.cost }}</span>
+              </div>
+          </div>
       </div>
     </div>
     <!-- about section -->
