@@ -46,7 +46,7 @@
             Your contact information and resume will only be visible to the Oakland Digital staff. Your name, experience, and bio, however, will be visible to the public on the course page if your course is approved.
             </p>
         </div>
-            <div class="large-5 offset-2 columns">
+        <div class="large-5 offset-2 columns">
               <fieldset>
               <legend>Contact Information</legend>
               {% include "base/partials/tooltip_formfield.html" with field=form.street_address %}
@@ -59,6 +59,15 @@
               {% include "base/partials/tooltip_formfield.html" with field=form.about %}
               {% include "base/partials/tooltip_formfield.html" with field=form.experience %}
               </fieldset>
+        </div>
+    </div>
+    <div class="row">
+        <div class="large-5 columns">
+            <p class="larger">
+            Please try to upload a square image for your headshot. Resumes should be in PDF format.
+            </p>
+        </div>
+        <div class="large-5 offset-2 columns">
               <fieldset>
               <legend>File Uploads</legend>
               {% include "base/partials/hidden_img_uploadfield.html" with field=form.picture %}

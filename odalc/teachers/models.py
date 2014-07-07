@@ -61,7 +61,7 @@ class TeacherUser(User):
     )
     resume = models.URLField(
         'Resume',
-        help_text='Please upload in PDF format.'
+        help_text='Resumes should be in PDF format'
     )
     info_source = models.CharField(
         'How did you hear about us?',
