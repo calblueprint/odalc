@@ -1,5 +1,21 @@
 @import "app";
 
+@mixin border-radius($radius){
+    -webkit-border-radius: $radius;
+    -moz-border-radius: $radius;
+    -ms-border-radius: $radius;
+    -o-border-radius: $radius;
+    border-radius: $radius;
+}
+
+@mixin transition-duration($time){
+    transition-duration:$time;
+    -webkit-transition-duration:$time;
+    -ms-transition-duration:$time;
+    -moz-transition-duration:$time;
+    -o-transition-duration:$time;
+}
+
 form, .form-list{
 	list-style: none;
 	> li > label {
@@ -35,5 +51,20 @@ fieldset {
         strong {
             color: rgb(34, 34, 34);
         }
+    }
+}
+
+.datetime-option{
+    cursor:pointer;
+    margin:4px 0px;
+    padding:4px;
+    border: 1px solid $light-secondary-color;
+    @include border-radius(4px);
+    @include transition-duration(0.3s);
+    &:hover{
+        background-color:$light-secondary-color;
+    }
+    &:active{
+        background-color:$dark-secondary-color;
     }
 }
