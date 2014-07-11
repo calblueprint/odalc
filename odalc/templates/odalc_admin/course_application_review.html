@@ -18,8 +18,8 @@
         <div class="large-6 columns">
             <h1>Reviewing: {{ course.title }}</h1>
             <dl class="sub-nav" data-tab>
-                <dd class="active"><a href="#panel-instructor-info">Instructor Information</a></dd>
-                <dd><a href="#panel-course-info">Course Information</a></dd>
+                <dd class="active"><a href="#panel-course-info">Course Information</a></dd>
+                <dd><a href="#panel-instructor-info">Instructor Information</a></dd>
             </dl>
         </div>
         <div class="large-6 columns">
@@ -34,7 +34,7 @@
 <div class="row white-section">
     <div class="medium-12 columns">
         <div class="tabs-content">
-            <div class="content active" id="panel-instructor-info">
+            <div class="content" id="panel-instructor-info">
                 <div class="row">
                     <div class="medium-3 columns">
                         <div class="pic">
@@ -70,7 +70,7 @@
                 </div>
             </div>
 
-            <div class="content" id="panel-course-info">
+            <div class="content active" id="panel-course-info">
                         <div class="row">
                             <div class="medium-12 columns">
                                 {% for error in form.non_field_errors %}
@@ -123,15 +123,21 @@
                             <div class="row">
                                 <div class="medium-6 columns">
                                     <h5>Teacher's Available Time Slots:</h5>
-                                    <strong>Option 1: </strong>
-                                    <p>{{ course.courseavailability.start_datetime1|date:'D, N d, Y' }} |
-                                    {{ course.courseavailability.start_datetime1|date:'P'}} - {{ course.courseavailability.end_datetime1|date:'P' }}</p>
-                                    <strong>Option 2: </strong>
-                                    <p>{{ course.courseavailability.start_datetime2|date:'D, N d, Y' }} |
-                                    {{ course.courseavailability.start_datetime2|date:'P'}} - {{ course.courseavailability.end_datetime2|date:'P' }}</p>
-                                    <strong>Option 3: </strong>
-                                    <p>{{ course.courseavailability.start_datetime3|date:'D, N d, Y' }} |
-                                    {{ course.courseavailability.start_datetime3|date:'P'}} - {{ course.courseavailability.end_datetime3|date:'P' }}</p>
+                                    <div class='datetime-option' data-start='{{ course.courseavailability.start_datetime1|date:'r' }}' data-end='{{ course.courseavailability.end_datetime1|date:'r' }}'>
+                                        <strong>Option 1: </strong>
+                                        <p>{{ course.courseavailability.start_datetime1|date:'D, N d, Y' }} |
+                                        {{ course.courseavailability.start_datetime1|date:'P'}} - {{ course.courseavailability.end_datetime1|date:'P' }}</p>
+                                    </div>
+                                    <div class='datetime-option' data-start='{{ course.courseavailability.start_datetime2|date:'r' }}' data-end='{{ course.courseavailability.end_datetime2|date:'r' }}'>
+                                        <strong>Option 2: </strong>
+                                        <p>{{ course.courseavailability.start_datetime2|date:'D, N d, Y' }} |
+                                        {{ course.courseavailability.start_datetime2|date:'P'}} - {{ course.courseavailability.end_datetime2|date:'P' }}</p>
+                                    </div>
+                                    <div class='datetime-option' data-start='{{ course.courseavailability.start_datetime3|date:'r' }}' data-end='{{ course.courseavailability.end_datetime3|date:'r' }}'>
+                                        <strong>Option 3: </strong>
+                                        <p>{{ course.courseavailability.start_datetime3|date:'D, N d, Y' }} |
+                                        {{ course.courseavailability.start_datetime3|date:'P'}} - {{ course.courseavailability.end_datetime3|date:'P' }}</p>
+                                    </div>
                                 </div>
                                 <div class="medium-6 columns">
                                     <label for="{{ form.date.id_for_label }}">
@@ -198,6 +204,15 @@ $(function() {
     $("#{{ form.date.id_for_label }}").datepicker(dateOptions);
     $("#{{ form.start_time.id_for_label }}").timepicker(timeOptions);
     $("#{{ form.end_time.id_for_label }}").timepicker(timeOptions);
+
+    $('.datetime-option').on('click', function(e){
+        var option = $(e.target).closest('.datetime-option'),
+            startDateTime = new Date($(option).data('start')),
+            endDateTime = new Date($(option).data('end'));
+        $("#{{ form.date.id_for_label }}").datepicker('setDate', startDateTime);
+        $("#{{ form.start_time.id_for_label }}").timepicker('setTime', startDateTime);
+        $("#{{ form.end_time.id_for_label }}").timepicker('setTime', endDateTime);
+    });
 });
 
 $('#approve_course').confirmOn({
