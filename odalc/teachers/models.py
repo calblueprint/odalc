@@ -4,22 +4,23 @@ from odalc.base.models import User
 
 from localflavor.us import models as localflavor_models
 
+
 # Create your models here.
 class TeacherUser(User):
     INFO_SOURCE_FRIEND = 'FRD'
     INFO_SOURCE_WEB = 'WEB'
     INFO_SOURCE_OTHER = 'OTH'
     INFO_SOURCE_CHOICES = (
-            (INFO_SOURCE_FRIEND, 'From a friend'),
-            (INFO_SOURCE_WEB, 'Our website'),
-            (INFO_SOURCE_OTHER, 'Other')
-        )
+        (INFO_SOURCE_FRIEND, 'From a friend'),
+        (INFO_SOURCE_WEB, 'Our website'),
+        (INFO_SOURCE_OTHER, 'Other')
+    )
 
     organization = models.CharField(
         'Organization',
         max_length=255,
         blank=True,
-        help_text='Organization you are currently working at'
+        help_text='Organization you are currently working at.'
     )
     position = models.CharField(
         'Position',
@@ -31,7 +32,7 @@ class TeacherUser(User):
         'Street Address',
         max_length=255,
         blank=True,
-        help_text='You can enter your home or business address',
+        help_text='You can enter your home or business address.',
     )
     city = models.CharField(
         'City',
@@ -45,8 +46,7 @@ class TeacherUser(User):
     )
     phone = localflavor_models.PhoneNumberField(
         'Contact Number',
-        help_text='Please use the most reliable phone number for contacting you'
-    )
+        help_text='Please use the most reliable phone number for contacting you.')
     about = models.TextField(
         'About You',
         help_text='General bio about yourself. This will be shown on the course page.',
