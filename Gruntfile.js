@@ -10,7 +10,7 @@ module.exports = function(grunt) {
       },
       dist: {
         options: {
-          //outputStyle: 'compressed'
+          outputStyle: 'compressed'
         },
         files: {
           'odalc/static/base/css/app.css': 'odalc/static/base/scss/app.scss',
