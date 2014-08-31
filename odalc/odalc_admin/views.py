@@ -2,8 +2,11 @@ from datetime import datetime as dt
 
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.db.models import Avg
+from django.http import HttpResponse
 from django.shortcuts import redirect
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import (
+    View,
     UpdateView,
     TemplateView,
     DetailView,
@@ -34,10 +37,6 @@ class ApplicationReviewView(UserDataMixin, UpdateView):
     template_name = 'odalc_admin/course_application_review.html'
     success_url = reverse_lazy('admins:dashboard')
 
-    def get_context_data(self, **kwargs):
-        context = super(ApplicationReviewView, self).get_context_data(**kwargs)
-        return context
-
     def form_valid(self, form):
         course = self.object
         teacher = self.object.teacher
@@ -45,9 +44,8 @@ class ApplicationReviewView(UserDataMixin, UpdateView):
         context['course'] = course
         context['course_url'] = 'http://' + self.request.get_host() + reverse('courses:detail', args=(course.id,))
         context['facebook_share'] = 'http://www.facebook.com/sharer.php?u=' + context['course_url']
-        context['twitter_share'] = 'https://twitter.com/home?status=Check%20out%20this%20new%20course%20that%20just%20went%20live%20at%20Oakland%20Digital!%20'+ context['course_url'] + '%20%23OaklandDigitalCourses%20via%20@ODALC'
+        context['twitter_share'] = 'https://twitter.com/home?status=Check%20out%20this%20new%20course%20that%20just%20went%20live%20at%20Oakland%20Digital!%20'+ context['course_url'] + '%20%23OaklandDigital%20via%20@ODALC'
         context['google_share'] = 'https://plus.google.com/share?url=' + context['course_url']
-
 
         if '_approve' in self.request.POST:
             start_time = form.cleaned_data.get('start_time', False)
@@ -95,7 +93,8 @@ class AdminDashboardView(UserDataMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super(AdminDashboardView, self).get_context_data(**kwargs)
         context['pending_courses'] = Course.objects.filter(status=Course.STATUS_PENDING).order_by('-start_datetime')
-        context['active_courses'] = Course.objects.filter(status=Course.STATUS_ACCEPTED).order_by('-start_datetime')
+        context['featured_courses'] = Course.objects.filter(status=Course.STATUS_ACCEPTED, is_featured = True).order_by('-start_datetime')
+        context['active_courses'] = Course.objects.filter(status=Course.STATUS_ACCEPTED, is_featured = False).order_by('-start_datetime')
         context['finished_courses'] = Course.objects.filter(status=Course.STATUS_FINISHED).order_by('-start_datetime')
         context['denied_courses'] = Course.objects.filter(status=Course.STATUS_DENIED).order_by('-start_datetime')
         context['teachers'] = TeacherUser.objects.all()
@@ -109,6 +108,18 @@ class AdminDashboardView(UserDataMixin, TemplateView):
         if user.has_perm('base.admin_permission'):
             return super(AdminDashboardView, self).dispatch(*args, **kwargs)
         return self.deny_access()
+
+class AJAXAdminDashboardView(View):
+    @csrf_exempt
+    def dispatch(self, *args, **kwargs):
+        return super(AJAXAdminDashboardView, self).dispatch(*args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        course_id = request.POST.get('courseId')
+        course = Course.objects.get(id=course_id)
+        course.is_featured = request.POST.get('isFeatured') == 'true'
+        course.save()
+        return HttpResponse('')
 
 
 class CourseFeedbackView(UserDataMixin, DetailView):
@@ -126,7 +137,6 @@ class CourseFeedbackView(UserDataMixin, DetailView):
         if (user.has_perm('base.admin_permission') or (user.has_perm('base.teacher_permission') and self.object.teacher.id==user.id)):
             return super(CourseFeedbackView, self).dispatch(*args, **kwargs)
         return self.deny_access()
-
 
     def get_context_data(self, **kwargs):
         course = self.object
@@ -150,7 +160,6 @@ class CourseFeedbackView(UserDataMixin, DetailView):
         scores = forms.values_list(*questions)
         for index, item in enumerate(scores):
             context['visualization'].append(list(item))
-
         return context
 
 
@@ -181,6 +190,14 @@ class AdminRegisterView(UserDataMixin, CreateView):
         if user.has_perm('base.admin_permission'):
             return super(AdminRegisterView, self).dispatch(*args, **kwargs)
         return self.deny_access()
+
+    def form_valid(self, form):
+        admin_name = form.cleaned_data.get('first_name') + ' ' + form.cleaned_data.get('last_name')
+        context = {
+            'admin_name': admin_name
+        }
+        send_odalc_email('notify_admins_new_admin', context, [], cc_admins=True)
+        return super(AdminRegisterView, self).form_valid(form)
 
     def get_success_url(self):
         messages.success(self.request, 'New admin created')

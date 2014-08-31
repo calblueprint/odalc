@@ -5,7 +5,8 @@ from odalc.odalc_admin.views import (
     ApplicationReviewView,
     AdminDashboardView,
     AdminEditView,
-    AdminRegisterView
+    AdminRegisterView,
+    AJAXAdminDashboardView
 )
 
 urlpatterns = patterns('',
@@ -17,6 +18,7 @@ urlpatterns = patterns('',
         },
         name='password_change',
     ),
+    url(r'^ajax/dashboard$', AJAXAdminDashboardView.as_view(), name='ajax_dashboard'),
     url(r'^edit/$', AdminEditView.as_view(), name='edit'),
     url(r'^register/$', AdminRegisterView.as_view(), name='register'),
     url(r'^review/(?P<pk>\d+)/$', ApplicationReviewView.as_view(), name='course_review'),

@@ -29,17 +29,15 @@
                 {% if courses_upcoming %}
                     <table width='100%'>
                         <tr>
-                            <th> Course </th>
-                            <th> Teacher </th>
-                            <th> Date </th>
-                            <th> Skill Level </th>
+                            <th>Course</th>
+                            <th>Teacher</th>
+                            <th>Date</th>
                         </tr>
                     {% for course in courses_upcoming %}
                         <tr>
-                            <td> <a href="{% url "courses:detail" course.pk %}"> {{ course.title }}</a> </td>
-                            <td> {{ course.teacher.first_name }} {{ course.teacher.last_name }} </td>
-                            <td> {{ course.start_datetime|date:'D, N d Y' }} </td>
-                            <td> {{ course.skill_level }} </td>
+                            <td><a href="{% url "courses:detail" course.pk %}"> {{ course.title }}</a></td>
+                            <td>{{ course.teacher.first_name }} {{ course.teacher.last_name }}</td>
+                            <td class="right">{{ course.start_datetime|date:'D, N d Y' }} | {{ course.start_datetime|date:'P'}} - {{ course.end_datetime|date:'P' }}</td>
                         </tr>
                     {% endfor %}
                 {% else %}
@@ -54,17 +52,15 @@
                 {% if courses_taken %}
                     <table width='100%'>
                         <tr>
-                            <th> Course </th>
-                            <th> Teacher </th>
-                            <th> Date </th>
-                            <th> Skill Level </th>
+                            <th>Course</th>
+                            <th>Teacher</th>
+                            <th>Date</th>
                         </tr>
                     {% for course in courses_taken %}
                         <tr>
                             <td> <a href="{% url "courses:detail" course.pk %}"> {{ course.title }}</a> </td>
                             <td> {{ course.teacher.first_name }} {{ course.teacher.last_name }} </td>
-                            <td> {{ course.start_datetime|date:'D, N d Y' }} </td>
-                            <td> {{ course.skill_level }} </td>
+                            <td class="right">{{ course.start_datetime|date:'D, N d Y' }} | {{ course.start_datetime|date:'P'}} - {{ course.end_datetime|date:'P' }}</td>
                         </tr>
                     {% endfor %}
                 {% else %}
