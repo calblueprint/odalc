@@ -87,7 +87,7 @@ class Course(models.Model):
     )
 
     teacher = models.ForeignKey('teachers.TeacherUser')
-    students = models.ManyToManyField('students.StudentUser',blank=True)
+    students = models.ManyToManyField('students.StudentUser', blank=True)
     title = models.CharField('Course Title', max_length=50)
     short_description = models.CharField(
         'Short Description',
@@ -154,6 +154,10 @@ class Course(models.Model):
         max_length=3,
         choices=STATUS_CHOICES,
         default=STATUS_PENDING
+    )
+    is_featured = models.BooleanField(
+        'Course Featured',
+        default=False
     )
 
 

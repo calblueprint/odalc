@@ -1,4 +1,5 @@
 {% extends "base/base.html" %}
+{% load staticfiles %}
 
 {% block title %}Admin Dashboard{% endblock %}
 
@@ -63,35 +64,73 @@
             </div>
 
             <div class="content" id="panel-courses-active">
-                {% for course in active_courses %}
-                <div class="row">
-                    <div class="small-9 columns">
-                        <div class="row">
-                            <div class="small-12 columns">
-                                <h4>{{ course.title }}</h4>
+                <h3>Featured Courses</h3>
+                <div id="featured-section">
+                    {% for course in featured_courses %}
+                    <div id="{{ course.id }}" class="row course-row">
+                        <hr/>
+                        <div class="small-9 columns">
+                            <div class="row">
+                                <div class="small-12 columns">
+                                    <h4 class="left">{{ course.title }}</h4>
+                                    <a class="button tiny right unfeature-course-button">Remove from featured</a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="small-12 columns">
+                                    <p>{{ course.short_description }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="small-6 columns"><strong>Teacher:</strong> {{ course.teacher.first_name }} {{ course.teacher.last_name }}</div>
+                                <div class="small-6 columns">{{ course.start_datetime|date:'D, N d Y' }} | {{ course.start_datetime|date:'P'}} - {{ course.end_datetime|date:'P' }}</div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="small-12 columns">
-                                <p>{{ course.short_description }}</p>
-                            </div>
+                        <div class="small-3 columns">
+                            <img src="{{ course.image }}"></img>
+                            <h5 class="right"><a href="{% url "courses:edit" course.pk %}">Edit course information &raquo;</a></h5>
+                            <h5 class="right"><a href="{% url "courses:detail" course.pk %}">View course page &raquo;</a></h5>
                         </div>
-                        <div class="row">
-                            <div class="small-6 columns"><strong>Teacher:</strong> {{ course.teacher.first_name }} {{ course.teacher.last_name }}</div>
-                            <div class="small-6 columns">{{ course.start_datetime|date:'D, N d Y' }} | {{ course.start_datetime|date:'P'}} - {{ course.end_datetime|date:'P' }}</div>
-                        </div>
+                    <br/>
                     </div>
-                    <div class="small-3 columns">
-                        <img src="{{ course.image }}"></img>
-                        <h5 class="right"><a href="{% url "courses:edit" course.pk %}">Edit course information &raquo;</a></h5>
-                        <h5 class="right"><a href="{% url "courses:detail" course.pk %}">View course page &raquo;</a></h5>
-                    </div>
+                    {% empty %}
+                    <hr/>
+                    {% endfor %}
                 </div>
-                <hr/>
-                <br/>
-                {% empty %}
-                <p>There are currently no active courses.</p>
-                {% endfor %}
+
+                <h3>Active Courses</h3>
+                <div id="active-section">
+                    {% for course in active_courses %}
+                    <div id="{{ course.id }}" class="row course-row">
+                        <hr/>
+                        <div class="small-9 columns">
+                            <div class="row">
+                                <div class="small-12 columns">
+                                    <h4 class="left">{{ course.title }}</h4>
+                                    <a class="button tiny right feature-course-button">Add to featured</a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="small-12 columns">
+                                    <p>{{ course.short_description }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="small-6 columns"><strong>Teacher:</strong> {{ course.teacher.first_name }} {{ course.teacher.last_name }}</div>
+                                <div class="small-6 columns">{{ course.start_datetime|date:'D, N d Y' }} | {{ course.start_datetime|date:'P'}} - {{ course.end_datetime|date:'P' }}</div>
+                            </div>
+                        </div>
+                        <div class="small-3 columns">
+                            <img src="{{ course.image }}"></img>
+                            <h5 class="right"><a href="{% url "courses:edit" course.pk %}">Edit course information &raquo;</a></h5>
+                            <h5 class="right"><a href="{% url "courses:detail" course.pk %}">View course page &raquo;</a></h5>
+                        </div>
+                    <br/>
+                    </div>
+                    {% empty %}
+                    <hr/>
+                    {% endfor %}
+                </div>
             </div>
 
             <div class="content" id="panel-courses-finished">
@@ -162,4 +201,9 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block javascripts %}
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="{% static "odalc_admin/js/dashboard.js" %}"></script>
 {% endblock %}

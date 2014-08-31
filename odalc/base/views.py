@@ -193,17 +193,24 @@ class CourseListingView(UserDataMixin, TemplateView):
 """Landing page for the website. Also displays the next three upcoming courses
 as "featured courses". If there are not enough, it will display past courses as well."""
 class HomePageView(UserDataMixin, TemplateView):
+    NUM_COURSES_SHOWN = 3
     template_name = 'base/home.html'
 
     def get_context_data(self, **kwargs):
         context = super(HomePageView, self).get_context_data(**kwargs)
-        num_available = Course.objects.filter(status = Course.STATUS_ACCEPTED).count()
-        if num_available >= 3:
-            context['featured_courses'] = Course.objects.filter(status = Course.STATUS_ACCEPTED).order_by('start_datetime')[:3]
+        featured_courses = Course.objects.filter(is_featured = True).order_by('start_datetime')
+        # We have enough featured courses
+        if featured_courses.count() < HomePageView.NUM_COURSES_SHOWN:
+            num_upcoming_needed = HomePageView.NUM_COURSES_SHOWN - featured_courses.count()
+            upcoming_courses = Course.objects.filter(status = Course.STATUS_ACCEPTED).exclude(is_featured = True).order_by('start_datetime')[:num_upcoming_needed]
+            # We don't have enough featured or upcoming courses, so show some past courses too
+            num_retrieved = upcoming_courses.count() + featured_courses.count()
+            past_courses = []
+            if num_retrieved < HomePageView.NUM_COURSES_SHOWN:
+                past_courses = Course.objects.filter(status = Course.STATUS_FINISHED).order_by('-start_datetime')[:HomePageView.NUM_COURSES_SHOWN-num_retrieved]
+            context['featured_courses'] = list(chain(featured_courses, upcoming_courses, past_courses))
         else:
-            upcoming_courses = Course.objects.filter(status = Course.STATUS_ACCEPTED).order_by('start_datetime')[:num_available]
-            past_courses = Course.objects.filter(status = Course.STATUS_FINISHED).order_by('-start_datetime')[:3-num_available]
-            context['featured_courses'] = list(chain(upcoming_courses, past_courses))
+            context['featured_courses'] = featured_courses[:HomePageView.NUM_COURSES_SHOWN]
         return context
 
 class AboutPageView(UserDataMixin, TemplateView):

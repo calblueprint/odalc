@@ -2,8 +2,11 @@ from datetime import datetime as dt
 
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.db.models import Avg
+from django.http import HttpResponse
 from django.shortcuts import redirect
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import (
+    View,
     UpdateView,
     TemplateView,
     DetailView,
@@ -90,7 +93,8 @@ class AdminDashboardView(UserDataMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super(AdminDashboardView, self).get_context_data(**kwargs)
         context['pending_courses'] = Course.objects.filter(status=Course.STATUS_PENDING).order_by('-start_datetime')
-        context['active_courses'] = Course.objects.filter(status=Course.STATUS_ACCEPTED).order_by('-start_datetime')
+        context['featured_courses'] = Course.objects.filter(status=Course.STATUS_ACCEPTED, is_featured = True).order_by('-start_datetime')
+        context['active_courses'] = Course.objects.filter(status=Course.STATUS_ACCEPTED, is_featured = False).order_by('-start_datetime')
         context['finished_courses'] = Course.objects.filter(status=Course.STATUS_FINISHED).order_by('-start_datetime')
         context['denied_courses'] = Course.objects.filter(status=Course.STATUS_DENIED).order_by('-start_datetime')
         context['teachers'] = TeacherUser.objects.all()
@@ -104,6 +108,18 @@ class AdminDashboardView(UserDataMixin, TemplateView):
         if user.has_perm('base.admin_permission'):
             return super(AdminDashboardView, self).dispatch(*args, **kwargs)
         return self.deny_access()
+
+class AJAXAdminDashboardView(View):
+    @csrf_exempt
+    def dispatch(self, *args, **kwargs):
+        return super(AJAXAdminDashboardView, self).dispatch(*args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        course_id = request.POST.get('courseId')
+        course = Course.objects.get(id=course_id)
+        course.is_featured = request.POST.get('isFeatured') == 'true'
+        course.save()
+        return HttpResponse('')
 
 
 class CourseFeedbackView(UserDataMixin, DetailView):
