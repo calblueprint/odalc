@@ -126,14 +126,14 @@ class Course(models.Model):
         'Course Fee',
         max_digits=5,
         decimal_places=2,
-        validators=[MinValueValidator(5.00), MaxValueValidator(25.00)],
+        validators=[MinValueValidator(5.00), MaxValueValidator(50.00)],
         help_text='Enrollment cost for students. We have a $5.00 minimum so that we can confirm commitment from students.'
     )
     odalc_cost_split = models.DecimalField(
         'Donate to Oakland Digital',
         max_digits=5,
         decimal_places=2,
-        help_text='Amount of the enrollment cost you\'d like to donate to Oakland Digital.'
+        help_text='Amount of the enrollment cost you\'d like to donate to Oakland Digital. 100% of the proceeds go back to this program.'
     )
     image = models.URLField(
         'Course Image',

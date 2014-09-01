@@ -1,5 +1,6 @@
 {% extends "base/base.html" %}
 {% load staticfiles %}
+{% load widget_tweaks %}
 
 {% block title %}Create a new course{% endblock %}
 
@@ -64,34 +65,53 @@
             <fieldset>
                 <legend>Course Logistics</legend>
                 <div class="row">
-                    <div class="medium-3 columns">
+                    <div class="medium-4 columns">
                         {% include "base/partials/tooltip_formfield.html" with field=form.size %}
                     </div>
-                    <div class="medium-3 columns">
+                    <div class="medium-4 columns">
                         {% include "base/partials/tooltip_formfield.html" with field=form.skill_level %}
                     </div>
-                    <div class="medium-3 columns">
-                    <span data-tooltip class="has-tip tip-top tip-thin" title="{{ form.cost.help_text }}">
-                        <label for="{{ form.cost.id_for_label }}">Course Fee <small>Required</small></label>
-                    </span>
-                        <div class="range-slider round" data-slider>
-                          <span id="cost-dollar-amt" class="range-slider-handle slider-dollar">$3.20</span>
-                          <span class="range-slider-active-segment"></span>
-                          <input type="hidden" id="cost-slider">
-                        </div>
-                        {% include "base/partials/hidden_formfield.html" with field=form.cost %}
+                    <div class="medium-4 columns">
+                        <label has-tooltip for="{{ form.cost.id_for_label }}">
+                            <span data-tooltip class="has-tip tip-top tip-thin" title="{{ form.cost.help_text }}">
+                                Course Fee <small>Required</small>
+                            </span>
+                            <div class="row collapse">
+                                <div class="small-2 columns">
+                                    <span class="prefix">$</span>
+                                </div>
+                                <div class="small-10 columns">
+                                    {{ form.cost | attr:"min:5" | attr:"value:5.00" | attr:"step:0.5" }}
+                                </div>
+                            </div>
+                            {% for error in field.errors %}
+                            <small class="error">{{ error }}</small>
+                            {% endfor %}
+                        </label>
                     </div>
-                    <div class="medium-3 columns">
-                    <span data-tooltip class="has-tip tip-top tip-thin" title="{{ form.odalc_cost_split.help_text }}">
-                        <label for="{{ form.odalc_cost_split.id_for_label }}">Donate to ODALC <i class="lighter">(and <span id="your-amt">$0</span> to you)</i> <small>Required</small></label>
-                    </span>
-                        <div class="range-slider round" data-slider>
-                          <span id="split-dollar-amt" class="range-slider-handle slider-dollar">$3.20</span>
-                          <span class="range-slider-active-segment"></span>
-                          <input type="hidden" id="split-slider">
-                        </div>
+                </div>
 
-                        {% include "base/partials/hidden_formfield.html" with field=form.odalc_cost_split %}
+                <div class="row">
+                    <div class="small-2 columns text-right">
+                        <label>For you:</label>
+                        <span id="your-amt">$0.00</span>
+                    </div>
+                    <div class="small-8 columns">
+                        <span data-tooltip class="has-tip tip-top tip-thin" title="{{ form.odalc_cost_split.help_text }}">
+                            <label for="{{ form.odalc_cost_split.id_for_label }}">ODALC Donation Split <small>Required</small></label>
+                        </span>
+                            <div id="split-dollar-slider" class="range-slider round" data-slider data-options="start:20; end:100">
+                                <span id='dollar-handle' class="range-slider-handle slider-dollar"></span>
+                                <span class="range-slider-active-segment"></span>
+                            <input type="hidden" id="split-slider">
+                            </div>
+                            {% include "base/partials/hidden_formfield.html" with field=form.odalc_cost_split %}
+                    </div>
+                    <div class="small-2 columns text-left ">
+                        <label>Donate to ODALC:</label>
+                        <span id="split-dollar-amt">$0.00</span>
+                    </div>
+
                     </div>
                 </div>
             </fieldset>
@@ -136,7 +156,7 @@ $().ready(function() {
         minDate: 0
     };
     var timeOptions = {
-        'minTime': '9:00am',
+        'minTime': '12:00pm',
         'maxTime': '9:00pm',
         'forceRoundTime': true,
     };
@@ -155,6 +175,10 @@ $().ready(function() {
 
 var formCostId = '#' + '{{ form.cost.id_for_label }}'
 var formOdalcSplitId = '#' + '{{ form.odalc_cost_split.id_for_label }}'
+
+$("#{{ form.cost.id_for_label }}").blur(function() {
+    $(this).val(parseFloat($(this).val()).toFixed(2));
+});
 
 </script>
 <script src="{% static "base/js/costSplitSlider.js" %}"></script>

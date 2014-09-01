@@ -5657,3 +5657,9 @@ p.larger {
   background: #888888; }
 .sub-nav #tab-courses-denied.active a {
   background: #f04124; }
+
+.range-slider-active-segment {
+  background: #436c6a !important; }
+
+.slider-dollar {
+  background: #43ac6a !important; }

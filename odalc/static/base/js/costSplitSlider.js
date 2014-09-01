@@ -1,87 +1,37 @@
-var MAX_AMT = 20.00;
+var MAX_AMT = 50.00;
+var MIN_DONATE_PERCENT = 0.2;
 
-var calculateAmount = function(perc) {
-    return perc/100 * MAX_AMT + 5;
+var percentageToDollar = function(perc, maxAmt) {
+    return ((perc/100) * maxAmt).toFixed(2);
 };
 
-var percentageToDollar = function(perc) {
-    return calculateAmount(perc).toFixed(2);
-};
+var calculatePercentage = function(cost, perc) {
+    return (cost - percentageToDollar(perc, cost)).toFixed(2);
+}
 
-var percentageOfDollar = function(costPerc, perc) {
-    return (calculateAmount(costPerc) * perc / 100).toFixed(2);
-};
-
-var calculateYourAmt = function(costPerc, perc) {
-    return (percentageToDollar(costPerc) - percentageOfDollar(costPerc, perc)).toFixed(2);
-};
-
-$().ready(function() {
-    $('#cost-dollar-amt').text('$' + percentageToDollar(parseInt($('#cost-slider').val())));
-    $('#split-dollar-amt').text('$' + percentageOfDollar(
-        parseInt($('#cost-slider').val()),
-        parseInt($('#split-slider').val())
-    ));
-    $('#your-amt').text('$' + calculateYourAmt(
-        parseInt($('#cost-slider').val()),
-        parseInt($('#split-slider').val())
-    ));
-
-    // update actual form elements
-    $(formCostId).val(percentageToDollar(
-        parseInt($('#cost-slider').val())
-    ));
-    $(formOdalcSplitId).val(percentageOfDollar(
-        parseInt($('#cost-slider').val()),
-        parseInt($('#split-slider').val())
-    ));
-
-
-    // Event handler when cost amount is adjusted
-    $('#cost-dollar-amt').on('mousedown mousemove', function() {
-        $('body').on('mousemove', function() {
-            // update UI elements
-            $('#cost-dollar-amt').text('$' + percentageToDollar(parseInt($('#cost-slider').val())));
-            $('#split-dollar-amt').text('$' + percentageOfDollar(
-                parseInt($('#cost-slider').val()),
-                parseInt($('#split-slider').val())
-            ));
-            $('#your-amt').text('$' + calculateYourAmt(
-                parseInt($('#cost-slider').val()),
-                parseInt($('#split-slider').val())
-            ));
-
-            // update actual form elements
-            $(formCostId).val(percentageToDollar(
-                parseInt($('#cost-slider').val())
-            ));
-            $(formOdalcSplitId).val(percentageOfDollar(
-                parseInt($('#cost-slider').val()),
-                parseInt($('#split-slider').val())
-            ));
-
-        });
-    });
+$('[data-slider]').on('change', function(){
+    $('#donate-amt-box').val($('#donate-amt').attr('data-slider'));
+});
 
     // Event handler for when split amount is adjusted
-    $('#split-dollar-amt').on('mousedown mousemove', function() {
-        $('body').on('mousemove', function() {
-            // update UI elements
-            $('#split-dollar-amt').text('$' + percentageOfDollar(
-                parseInt($('#cost-slider').val()),
-                parseInt($('#split-slider').val())
-            ));
-            $('#your-amt').text('$' + calculateYourAmt(
-                parseInt($('#cost-slider').val()),
-                parseInt($('#split-slider').val())
-            ));
+$('#split-dollar-slider').on('mousedown mousemove', function() {
+    $('body').on('mousemove', function() {
+        // update UI elements
+        $('#split-dollar-amt').text('$' + calculatePercentage(
+            parseFloat($('#id_cost').val()),
+            100 - parseInt($('#split-slider').val())
+        ));
 
-            // update actual form elements
-            $(formOdalcSplitId).val(percentageOfDollar(
-                parseInt($('#cost-slider').val()),
-                parseInt($('#split-slider').val())
-            ));
-        });
+        $('#your-amt').text('$' + calculatePercentage(
+            parseFloat($('#id_cost').val()),
+            parseInt($('#split-slider').val())
+        ));
+
+        $('#dollar-handle').text($('#split-slider').val() + '%');
+
+        // update actual form elements
+        $('#id_odalc_cost_split').val(
+            parseFloat($('#split-dollar-amt').text().slice(1))
+        );
     });
-
 });
