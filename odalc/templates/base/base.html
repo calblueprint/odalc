@@ -7,7 +7,7 @@
     <title>{% block title %}{% endblock %} | Oakland Digital Courses</title>
 
     <link rel="shortcut icon" href="{% static "base/img/odalc_16px.ico" %}" type="image/x-icon"/>
-    <link rel="icon" href="{% static "base/img/ODALC-16px.png" %}" type="image/png"/>  
+    <link rel="icon" href="{% static "base/img/ODALC-16px.png" %}" type="image/png"/>
     <link rel="apple-touch-icon" type="image/x-icon" href="{% static "base/img/ODALC-57px.png" %}">
     <link rel="apple-touch-icon" type="image/x-icon" sizes="72x72" href="{% static "base/img/ODALC-72px.png" %}">
     <link rel="apple-touch-icon" type="image/x-icon" sizes="114x114" href="{% static "base/img/ODALC-117px.png" %}">
@@ -34,9 +34,18 @@
     {% block footer %}
     <div class="dark-section">
         <div class="row">
-            <div class="large-12 columns">
-            <small class="left">&copy; {% now "Y" %} <a href="http://odalc.org">Oakland Digital Arts and Literacy Center Inc.</a></small>
-            <small class="right">Developed by <a href="http://calblueprint.org">Blueprint</a></small>
+            <div class="small-4 columns">
+                <div class="left" id="odalc-footer">
+                    <small>&copy; {% now "Y" %} <a href="http://odalc.org">Oakland Digital Arts and Literacy Center Inc.</a></small>
+                </div>
+            </div>
+            <div class="small-4 offset-4 columns">
+                <div class="right" id="bp-wrapper">
+                    <a href="http://www.calblueprint.org">
+                      <div class="powered_by"><small>Powered by</small></div>
+                      <img class="spinner" id="bp-logo" src="{% static 'base/img/bp_logo_small.png' %}"></img>
+                    </a>
+                </div>
             </div>
         </div>
     </div>

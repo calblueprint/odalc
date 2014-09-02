@@ -5664,6 +5664,36 @@ p.larger {
 .slider-dollar {
   background: #43ac6a !important; }
 
+/* footer things */
+#bp-wrapper {
+  vertical-align: top; }
+  #bp-wrapper a {
+    text-decoration: none; }
+  #bp-wrapper .powered_by {
+    display: inline-block;
+    vertical-align: middle;
+    height: 45px;
+    margin: 15px 5px 0;
+    opacity: 0.8;
+    color: white; }
+  #bp-wrapper #bp-logo {
+    width: 30px;
+    cursor: pointer; }
+  #bp-wrapper .spinner {
+    -webkit-transition: -webkit-transform 0.5s ease-in-out;
+    -moz-transition: -moz-transform 0.5s ease-in-out;
+    -o-transition: -o-transform 0.5s ease-in-out;
+    transition: transform 0.5s ease-in-out; }
+  #bp-wrapper .spinner:hover {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg); }
+
+#odalc-footer {
+  padding-top: 20px; }
+
 form, .form-list {
   list-style: none; }
   form > li > label, .form-list > li > label {
