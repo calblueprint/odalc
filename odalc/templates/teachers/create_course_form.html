@@ -130,7 +130,7 @@
               {% include "base/partials/course_datetimefield.html" with date=form.date3 start_time=form.start_time3 end_time=form.end_time3 %}
           </fieldset>
 
-          {% include "base/partials/hidden_img_uploadfield.html" with field=form.image %}
+            {% include "base/partials/formfield.html" with field=form.image %}
 
           <button class="large right success" id="save_course" type="submit">Submit course</button>
 
@@ -143,12 +143,10 @@
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
 <script src="{% static "base/js/s3upload.js" %}"></script>
 <script src="{% static "base/js/jquery.timepicker.min.js" %}"></script>
-{% include "base/partials/img_uploadjs.html" with field=form.image %}
 {% include "base/partials/file_uploadjs.html" with field=form.course_material %}
 
 <script>
 $().ready(function() {
-    $('#file_{{ form.image.id_for_label }}').on("change", s3_upload_{{ form.image.id_for_label }});
     $('#file_{{ form.course_material.id_for_label }}').on("change", s3_upload_{{ form.course_material.id_for_label }});
 
     var dateOptions = {

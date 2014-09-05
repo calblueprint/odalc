@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'localflavor',
+    'athumb',
     'djangobower',
     'widget_tweaks',
     'odalc.base',
@@ -144,10 +145,18 @@ BOWER_INSTALLED_APPS = (
     'foundation',
 )
 
+# If you don't want this to be the global default, just make sure you
+# specify the S3BotoStorage_AllPublic backend on a per-field basis.
+DEFAULT_FILE_STORAGE = 'athumb.backends.s3boto.S3BotoStorage_AllPublic'
+
 # Amazon S3 Configs
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', '')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY', '')
-S3_BUCKET = os.environ.get('S3_BUCKET', '')
+S3_BUCKET = os.environ.get('S3_BUCKET', 'odalc-stage-media-2')
+
+AWS_STORAGE_BUCKET_NAME = S3_BUCKET
+AWS_REGION = ''
+MEDIA_CACHE_BUSTER = 'refetch'
 
 ###################
 # Heroku Settings #

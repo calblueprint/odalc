@@ -10,6 +10,11 @@ from django.core.validators import (
 )
 from django.db import models
 
+from odalc.base.backends.upload import S3BotoStorage_ODALC
+
+from athumb.fields import ImageWithThumbsField
+from athumb.backends.s3boto import S3BotoStorage_AllPublic
+
 # Create your models here.
 class UserManager(BaseUserManager):
     def create_user(self, email, first_name, last_name, password=None):
@@ -64,6 +69,8 @@ class User(PermissionsMixin, AbstractBaseUser):
 
 
 class Course(models.Model):
+    PUBLIC_MEDIA_BUCKET = S3BotoStorage_ODALC(bucket='odalc-stage-media-2')
+
     SKILL_BEGINNER = 'Beginner'
     SKILL_INTERMEDIATE = 'Intermediate'
     SKILL_ADVANCED = 'Advanced'
@@ -135,9 +142,15 @@ class Course(models.Model):
         decimal_places=2,
         help_text='Amount of the enrollment cost you\'d like to donate to Oakland Digital. 100% of the proceeds go back to this program.'
     )
-    image = models.URLField(
+    image = ImageWithThumbsField(
         'Course Image',
-        help_text='Image to use as the banner on the course page. Please use a high-resolution image if possible, but the Oakland Digital team can help find an appropriate image for this.'
+        help_text='Image to use as the banner on the course page. Please use a high-resolution image if possible, but the Oakland Digital team can help find an appropriate image for this.',
+        upload_to="images/courses",
+        thumbs=(
+            ('thumb', {'size': (300, 200), 'crop': True}),
+            ('full', {'size': (1400, 500), 'crop': True}),
+        ),
+        storage=PUBLIC_MEDIA_BUCKET
     )
     course_material = models.URLField(
         'Course Materials',

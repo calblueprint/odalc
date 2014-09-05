@@ -161,7 +161,7 @@
                         </div>
                     </div>
                 </fieldset>
-                {% include "base/partials/hidden_img_uploadfield.html" with field=form.image %}
+                {% include "base/partials/formfield.html" with field=form.image %}
 
                 {# Hidden form inputs so that we can use EditCourseForm in the View #}
                 <input id="{{ form.status.id_for_label }}" type="hidden" name="{{ form.status.html_name }}" value="{{ form.status.value }}"/>
@@ -174,7 +174,7 @@
                 <div class="row">
                     <div class="medium-3 columns">
                         <div class="pic">
-                            <img class="th" src="{{ course.teacher.picture }}" />
+                            <img class="th" src="{% thumbnail course.teacher.picture 'full' %}" />
                         </div>
                         <div class="details">
                             <ul class="vcard">
@@ -219,12 +219,7 @@
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
 <script src="{% static "base/js/s3upload.js" %}"></script>
 <script src="{% static "base/js/jquery.timepicker.min.js" %}"></script>
-{% include "base/partials/img_uploadjs.html" with field=form.image %}
 <script>
-$().ready(function() {
-    $('#file_{{ form.image.id_for_label }}').on("change", s3_upload_{{ form.image.id_for_label }});
-});
-
 $(function() {
     var dateOptions = {
 
