@@ -152,8 +152,7 @@ DEFAULT_FILE_STORAGE = 'athumb.backends.s3boto.S3BotoStorage_AllPublic'
 # Amazon S3 Configs
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', '')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY', '')
-S3_BUCKET = os.environ.get('S3_BUCKET', 'odalc-stage-media-2')
-
+S3_BUCKET = os.environ.get('S3_BUCKET', '')
 AWS_STORAGE_BUCKET_NAME = S3_BUCKET
 AWS_REGION = ''
 MEDIA_CACHE_BUSTER = 'refetch'

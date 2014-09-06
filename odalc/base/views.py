@@ -289,7 +289,7 @@ class SignS3View(View):
         S3_BUCKET = settings.S3_BUCKET.strip()
 
         # Collect information on the file from the GET parameters of the request:
-        object_name = urllib.quote(request.GET.get('s3_object_name'))
+        object_name = 'materials/' + urllib.quote(request.GET.get('s3_object_name'))
         mime_type = request.GET.get('s3_object_type')
 
         # Set the expiry time of the signature (in seconds) and declare the permissions of the file to be uploaded
