@@ -1,12 +1,17 @@
 from django.db import models
 
 from odalc.base.models import User
+from odalc.base.backends.upload import S3BotoStorage_ODALC
 
 from localflavor.us import models as localflavor_models
 
+from athumb.fields import ImageWithThumbsField
+from athumb.backends.s3boto import S3BotoStorage_AllPublic
 
 # Create your models here.
 class TeacherUser(User):
+    PUBLIC_MEDIA_BUCKET = S3BotoStorage_ODALC(bucket='odalc-stage-media-2')
+
     INFO_SOURCE_FRIEND = 'FRD'
     INFO_SOURCE_WEB = 'WEB'
     INFO_SOURCE_OTHER = 'OTH'
@@ -55,9 +60,14 @@ class TeacherUser(User):
         'Professional Experience',
         help_text='Your professional experience. This wil also be shown on the course page.'
     )
-    picture = models.URLField(
+    picture = ImageWithThumbsField(
         'Headshot',
-        help_text='Please try to upload a square image.'
+        help_text='Please upload a square image.',
+        upload_to="images/profiles",
+        thumbs=(
+            ('full', {'size': (600, 600)}),
+        ),
+        storage=PUBLIC_MEDIA_BUCKET
     )
     resume = models.URLField(
         'Resume',

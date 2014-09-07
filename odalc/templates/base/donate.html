@@ -20,26 +20,17 @@
             <form method='POST'>
             {% csrf_token %}
             <div class="row">
-                <div class="small-8 columns">
-                    <div class="range-slider round" id='donate-amt' data-slider data-options="start: 1; end: 50;">
-                      <span id="donate-amt-handle" class="range-slider-handle slider-dollar"></span>
-                      <span class="range-slider-active-segment"></span>
-                      <input type="hidden">
-                    </div>
-                </div>
-                <div class="small-3 small-offset-1 columns">
+                <div class="small-7 columns">
                     <div class="row collapse">
                         <div class="small-2 columns">
-                            <span data-tooltip class="prefix has-tip tip-bottom" title="If you would like to, you can input more than the $50.00 limit on the slider in the input box. We really appreciate your generosity!">$</span>
+                            <span class="prefix">$</span>
                         </div>
                         <div class="small-10 columns">
-                            <input type="number" name="quantity" min="0" id='donate-amt-box'>
+                            <input type="number" name="quantity" min="0" id='donate-amt-box' value="5.00">
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="small-12 columns">
+                <div class="small-2 small-offset-3 columns">
                     <button class="btn success right" id='donate-btn'>Donate</button>
                 </div>
             </div>

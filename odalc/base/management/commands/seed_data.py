@@ -5,6 +5,7 @@ import os
 
 from django.contrib.auth.models import Group, Permission
 from django.core.management.base import BaseCommand
+from django.db import connection
 
 from odalc.base.models import Course, CourseAvailability
 from odalc.odalc_admin.models import AdminUser
@@ -17,13 +18,14 @@ from sampledatahelper.model_helper import ModelDataHelper
 US='us'
 DIR = os.path.dirname(os.path.abspath(__file__))
 
-TEST_COURSE_IMAGE_URL = 'https://s3-us-west-1.amazonaws.com/odalc-stage-media/sample/sample_course_pic.jpg'
-TEST_TEACHER_IMAGE_URL = 'https://s3-us-west-1.amazonaws.com/odalc-stage-media/sample/sample_headshot.jpg'
-RANDOM_COURSE_IMAGE_URL = 'https://s3-us-west-1.amazonaws.com/odalc-stage-media/sample/sample_course_%d.JPG'
-RANDOM_TEACHER_IMAGE_URL = 'https://s3-us-west-1.amazonaws.com/odalc-stage-media/sample/sample_headshot_%d.JPG'
+TEST_COURSE_IMAGE_PATH = 'sample/sample_course_pic.jpg'
+TEST_TEACHER_IMAGE_PATH = 'sample/sample_headshot.jpg'
 
+RANDOM_COURSE_IMAGE_PATH = 'sample/sample_course_%d.JPG'
 
-TEST_PDF_URL = 'https://s3-us-west-1.amazonaws.com/odalc-stage-media/sample/sample_pdf.pdf'
+RANDOM_TEACHER_IMAGE_PATH = 'sample/sample_headshot_%d.JPG'
+
+TEST_PDF_URL = 'https://s3.amazonaws.com/odalc-stage-media/sample/sample_pdf.pdf'
 TEST_TEACHER_EMAIL = 'teacher@teacher.com'
 TEST_STUDENT_EMAIL = 'student@student.com'
 TEST_ADMIN_EMAIL = 'admin@admin.com'
@@ -44,6 +46,7 @@ class Command(BaseCommand):
             group = Group(name="teachers")
             group.save()
             group.permissions.add(Permission.objects.get(codename="teacher_permission"))
+        cursor = connection.cursor()
         for x in range(instances):
             teacher = TeacherUser.objects.create(
                 email=self.sd.email(),
@@ -56,13 +59,13 @@ class Command(BaseCommand):
                 zipcode='94709',
                 phone=self.sd.phone('es', 1),
                 about=self.sd.paragraph(),
-                picture=RANDOM_TEACHER_IMAGE_URL % randint(1,10),
                 resume=TEST_PDF_URL,
                 experience=self.sd.paragraph(),
                 info_source='WEB'
             )
             teacher.set_password(TEST_PASSWORD)
             teacher.save()
+            cursor.execute('UPDATE teachers_teacheruser SET picture = %s WHERE user_ptr_id = %s', [RANDOM_TEACHER_IMAGE_PATH % randint(1,10), teacher.id])
             group.user_set.add(teacher)
         if not TeacherUser.objects.filter(email=TEST_TEACHER_EMAIL).exists():
             teacher = TeacherUser.objects.create(
@@ -76,13 +79,14 @@ class Command(BaseCommand):
                 zipcode='94709',
                 phone=self.sd.phone('es', 1),
                 about=self.sd.paragraph(),
-                picture=TEST_TEACHER_IMAGE_URL,
+                picture=TEST_TEACHER_IMAGE_PATH,
                 resume=TEST_PDF_URL,
                 experience=self.sd.paragraph(),
                 info_source='WEB'
             )
             teacher.set_password(TEST_PASSWORD)
             teacher.save()
+            cursor.execute('UPDATE teachers_teacheruser SET picture = %s WHERE user_ptr_id = %s', [TEST_TEACHER_IMAGE_PATH, teacher.id])
             group.user_set.add(teacher)
         return
 
@@ -133,6 +137,7 @@ class Command(BaseCommand):
 
     def generate_courses(self, instances):
         # Generate 'Pending' Courses
+        cursor = connection.cursor()
         for x in range(instances):
             student_qs = StudentUser.objects.all()
             course_students = []
@@ -152,7 +157,6 @@ class Command(BaseCommand):
                 skill_level=self.sd.choice(COURSE_SKILL_CHOICES),
                 cost=decimal.Decimal('6.00'),
                 odalc_cost_split=decimal.Decimal('2.50'),
-                image=RANDOM_COURSE_IMAGE_URL % randint(1, 10),
                 course_material=TEST_PDF_URL,
                 additional_info=self.sd.paragraph(),
                 status=Course.STATUS_PENDING
@@ -161,6 +165,7 @@ class Command(BaseCommand):
             for s in course_students:
                 course.students.add(s)
             course.save()
+            cursor.execute('UPDATE base_course SET image = %s WHERE id = %s', [RANDOM_COURSE_IMAGE_PATH % randint(1,10), course.id])
         # Generate 'Accepted' Courses
         for x in range(instances):
             student_qs = StudentUser.objects.all()
@@ -181,7 +186,6 @@ class Command(BaseCommand):
                 skill_level=self.sd.choice(COURSE_SKILL_CHOICES),
                 cost=decimal.Decimal('6.00'),
                 odalc_cost_split=decimal.Decimal('2.50'),
-                image=RANDOM_COURSE_IMAGE_URL % randint(1, 10),
                 course_material=TEST_PDF_URL,
                 additional_info=self.sd.paragraph(),
                 status=Course.STATUS_ACCEPTED
@@ -190,6 +194,7 @@ class Command(BaseCommand):
             for s in course_students:
                 course.students.add(s)
             course.save()
+            cursor.execute('UPDATE base_course SET image = %s WHERE id = %s', [RANDOM_COURSE_IMAGE_PATH % randint(1,10), course.id])
         # Generate 'Finished' Courses
         for x in range(instances):
             student_qs = StudentUser.objects.all()
@@ -210,7 +215,6 @@ class Command(BaseCommand):
                 skill_level=self.sd.choice(COURSE_SKILL_CHOICES),
                 cost=decimal.Decimal('6.00'),
                 odalc_cost_split=decimal.Decimal('2.50'),
-                image=RANDOM_COURSE_IMAGE_URL % randint(1, 10),
                 course_material=TEST_PDF_URL,
                 additional_info=self.sd.paragraph(),
                 status=Course.STATUS_FINISHED
@@ -219,6 +223,7 @@ class Command(BaseCommand):
             for s in course_students:
                 course.students.add(s)
             course.save()
+            cursor.execute('UPDATE base_course SET image = %s WHERE id = %s', [RANDOM_COURSE_IMAGE_PATH % randint(1,10), course.id])
         # Generate 'Denied' Courses
         for x in range(instances):
             student_qs = StudentUser.objects.all()
@@ -239,7 +244,6 @@ class Command(BaseCommand):
                 skill_level=self.sd.choice(COURSE_SKILL_CHOICES),
                 cost=decimal.Decimal('6.00'),
                 odalc_cost_split=decimal.Decimal('2.50'),
-                image=RANDOM_COURSE_IMAGE_URL % randint(1, 10),
                 course_material=TEST_PDF_URL,
                 additional_info=self.sd.paragraph(),
                 status=Course.STATUS_DENIED
@@ -248,6 +252,7 @@ class Command(BaseCommand):
             for s in course_students:
                 course.students.add(s)
             course.save()
+            cursor.execute('UPDATE base_course SET image = %s WHERE id = %s', [RANDOM_COURSE_IMAGE_PATH % randint(1,10), course.id])
 
     def generate_course_feedback(self, instances):
         self.md.fill_model(CourseFeedback, instances)

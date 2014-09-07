@@ -8,26 +8,22 @@ var calculatePercentage = function(cost, perc) {
 
 
 $().ready(function() {
-    $('#split-dollar-amt').text('$' + calculatePercentage(
-        parseFloat($('#id_cost').val()),
-        100 - parseInt($('#split-slider-val').val())
-    ));
+    var cost = parseFloat($('#id_cost').val());
+    var odalc_cost_split =  parseFloat($('#id_odalc_cost_split').val());
+    var slider_val = Math.round((odalc_cost_split / cost) * 100);
 
-    $('#your-amt').text('$' + calculatePercentage(
-        parseFloat($('#id_cost').val()),
-        parseInt($('#split-slider-val').val())
-    ));
+    $('#split-dollar-amt').text('$' + odalc_cost_split.toFixed(2));
 
-    $('#dollar-handle').text($('#split-slider-val').val() + '%');
+    $('#your-amt').text('$' + (cost - odalc_cost_split).toFixed(2));
 
-    // update actual form elements
-    $('#id_odalc_cost_split').val(
-        parseFloat($('#split-dollar-amt').text().slice(1))
-    );
+    $('#split-slider-val').val(slider_val);
+    $('#dollar-handle').text(slider_val + '%');
+    $('#split-dollar-slider').attr('data-slider', slider_val);
 
 
     // Event handler for when split amount is adjusted
     $('#split-dollar-slider').on('mousedown mousemove', function() {
+
         $('body').on('mousemove', function() {
             // update UI elements
             $('#split-dollar-amt').text('$' + calculatePercentage(

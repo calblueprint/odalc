@@ -1,6 +1,7 @@
 {% extends "base/base.html" %}
 
 {% load staticfiles %}
+{% load widget_tweaks %}
 
 {% block css %}
 <link rel="stylesheet" href="{% static "base/css/jquery.timepicker.css" %}" />
@@ -71,19 +72,55 @@
                 <fieldset>
                     <legend>Course Logistics</legend>
                     <div class="row">
-                        <div class="medium-3 columns">
+                        <div class="medium-4 columns">
                             {% include "base/partials/tooltip_formfield.html" with field=form.size %}
                         </div>
-                        <div class="medium-3 columns">
+                        <div class="medium-4 columns">
                             {% include "base/partials/tooltip_formfield.html" with field=form.skill_level %}
                         </div>
-                        <div class="medium-3 columns">
-                            {% include "base/partials/tooltip_formfield.html" with field=form.cost %}
-                        </div>
-                        <div class="medium-3 columns">
-                            {% include "base/partials/tooltip_formfield.html" with field=form.odalc_cost_split %}
+                        <div class="medium-4 columns">
+                            <label has-tooltip for="{{ form.cost.id_for_label }}">
+                                <span data-tooltip class="has-tip tip-top tip-thin" title="{{ form.cost.help_text }}">
+                                    Course Fee <small>Required</small>
+                                </span>
+                                <div class="row collapse">
+                                    <div class="small-2 columns">
+                                        <span class="prefix">$</span>
+                                    </div>
+                                    <div class="small-10 columns">
+                                        {{ form.cost | attr:"min:5" | attr:"step:0.5" }}
+                                    </div>
+                                </div>
+                                {% for error in field.errors %}
+                                <small class="error">{{ error }}</small>
+                                {% endfor %}
+                            </label>
                         </div>
                     </div>
+
+                    <div class="row">
+                        <div class="small-2 columns text-right">
+                            <label>For you:</label>
+                            <span id="your-amt">$0.00</span>
+                        </div>
+                        <div class="small-8 columns">
+                            <span data-tooltip class="has-tip tip-top tip-thin" title="{{ form.odalc_cost_split.help_text }}">
+                                <label for="{{ form.odalc_cost_split.id_for_label }}">ODALC Donation Split <small>Required</small></label>
+                            </span>
+                                <div id="split-dollar-slider" class="range-slider round" data-slider data-options="start:20; end:100">
+                                    <span id='dollar-handle' class="range-slider-handle slider-dollar"></span>
+                                    <span class="range-slider-active-segment"></span>
+                                <input type="hidden" id="split-slider-val">
+                                </div>
+                                {% include "base/partials/hidden_formfield.html" with field=form.odalc_cost_split %}
+                        </div>
+                        <div class="small-2 columns text-left ">
+                            <label>Donate to ODALC:</label>
+                            <span id="split-dollar-amt">$0.00</span>
+                        </div>
+
+                        </div>
+
                     <div class="row">
                         <div class="medium-6 columns">
                             <h5>Teacher's Available Time Slots:</h5>
@@ -124,19 +161,20 @@
                         </div>
                     </div>
                 </fieldset>
-                {% include "base/partials/hidden_img_uploadfield.html" with field=form.image %}
+                {% include "base/partials/formfield.html" with field=form.image %}
 
                 {# Hidden form inputs so that we can use EditCourseForm in the View #}
                 <input id="{{ form.status.id_for_label }}" type="hidden" name="{{ form.status.html_name }}" value="{{ form.status.value }}"/>
                 <input id="{{ form.course_material.id_for_label }}" type="hidden" name="{{ form.course_material.html_name }}" value="{{ form.course_material.value }}"/>
+                    </div>
 
                 <!--Input Buttons (Approve and Deny)-->
-                </div>
+
             <div class="content" id="panel-instructor-info">
                 <div class="row">
                     <div class="medium-3 columns">
                         <div class="pic">
-                            <img class="th" src="{{ course.teacher.picture }}" />
+                            <img class="th" src="{% thumbnail course.teacher.picture 'full' %}" />
                         </div>
                         <div class="details">
                             <ul class="vcard">
@@ -167,6 +205,7 @@
                     </div>
                 </div>
             </div>
+                </div>
 
             </div>
         </div>
@@ -180,12 +219,7 @@
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
 <script src="{% static "base/js/s3upload.js" %}"></script>
 <script src="{% static "base/js/jquery.timepicker.min.js" %}"></script>
-{% include "base/partials/img_uploadjs.html" with field=form.image %}
 <script>
-$().ready(function() {
-    $('#file_{{ form.image.id_for_label }}').on("change", s3_upload_{{ form.image.id_for_label }});
-});
-
 $(function() {
     var dateOptions = {
 
@@ -219,4 +253,5 @@ $('#deny_course').confirmOn({
     });
 
 </script>
+<script src="{% static "odalc_admin/js/adminCostSplitSlider.js" %}"></script>
 {% endblock %}
