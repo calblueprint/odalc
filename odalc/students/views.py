@@ -69,12 +69,10 @@ class SubmitCourseFeedbackView(UserDataMixin, CreateView):
 
     def form_valid(self, form):
         course_feedback = form.save(commit=False)
-        pk = self.kwargs.get('pk', None)
-        course_feedback.course = Course.objects.get(pk=pk)
-        course_feedback.student = StudentUser.objects.get(id=self.user.id)
-        course_feedback.save()
+        course_id = self.kwargs.get('pk', None)
+        CourseFeedback.objects.create_from_form(form, course_id, self.user.id)
         messages.success(self.request, 'Feedback for submitted')
-        return redirect('courses:detail', pk)
+        return redirect('courses:detail', course_id)
 
     def get_context_data(self, **kwargs):
         context = super(SubmitCourseFeedbackView, self).get_context_data(**kwargs)

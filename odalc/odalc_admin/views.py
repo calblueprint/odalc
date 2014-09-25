@@ -48,27 +48,26 @@ class ApplicationReviewView(UserDataMixin, UpdateView):
         context['google_share'] = 'https://plus.google.com/share?url=' + context['course_url']
 
         if '_approve' in self.request.POST:
-            start_time = form.cleaned_data.get('start_time', False)
-            end_time = form.cleaned_data.get('end_time', False)
-            date = form.cleaned_data.get('date', False)
+            start_time = form.cleaned_data.get('start_time')
+            end_time = form.cleaned_data.get('end_time')
+            date = form.cleaned_data.get('date')
 
             #1. Check to see if they added times and dates
             if not start_time and not end_time and not date:
                 messages.error(self.request, 'Please choose a date start time and end time before approval')
                 return redirect('/admins/review/%s' % course.id)
+
             #2. change status of course to "approved"
-            course.status = course.STATUS_ACCEPTED
-            course.start_datetime = dt.combine(date, start_time)
-            course.end_datetime = dt.combine(date, end_time)
-            course.save()
+            Course.objects.approve_course(course, date, start_time, end_time)
+
             #3. notify teacher of approval
             send_odalc_email('notify_teacher_course_approved', context, [teacher.email], cc_admins=True)
             #4. make course visible to all (permissions - John)
             messages.success(self.request, course.title + ' has been approved')
         elif '_deny' in self.request.POST:
             #1. change status of course to "denied"
-            course.status = course.STATUS_DENIED
-            course.save()
+            Course.objects.deny_course(course)
+
             #2. notify teacher of denial
             send_odalc_email('notify_teacher_course_denied', context, [teacher.email], cc_admins=True)
             messages.error(self.request, course.title + ' has been denied')
@@ -115,10 +114,10 @@ class AJAXAdminDashboardView(View):
         return super(AJAXAdminDashboardView, self).dispatch(*args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        course_id = request.POST.get('courseId')
-        course = Course.objects.get(id=course_id)
-        course.is_featured = request.POST.get('isFeatured') == 'true'
-        course.save()
+        Course.objects.toggle_featured(
+            request.POST.get('courseId'),
+            request.POST.get('isFeatured') == 'true'
+        )
         return HttpResponse('')
 
 

@@ -57,30 +57,10 @@ class CreateCourseView(UserDataMixin, FormView):
 
     def form_valid(self, form):
         # Create a new Course Instance
-        new_course = form.save(commit=False)
-        new_course.teacher = self.request.user.child
-        new_course.status = Course.STATUS_PENDING
-        new_course.save()
-
-        # Combine the separate date and time fields to create datetime instances
-        start_datetime1 = dt.combine(form.cleaned_data.get('date1'), form.cleaned_data.get('start_time1'))
-        start_datetime2 = dt.combine(form.cleaned_data.get('date2'), form.cleaned_data.get('start_time2'))
-        start_datetime3 = dt.combine(form.cleaned_data.get('date3'), form.cleaned_data.get('start_time3'))
-        end_datetime1 = dt.combine(form.cleaned_data.get('date1'), form.cleaned_data.get('end_time1'))
-        end_datetime2 = dt.combine(form.cleaned_data.get('date2'), form.cleaned_data.get('end_time2'))
-        end_datetime3 = dt.combine(form.cleaned_data.get('date3'), form.cleaned_data.get('end_time3'))
+        new_course = Course.objects.create_from_form(form, self.request.user.child)
 
         # Create a CourseAvailability instance tied to the new Course
-        new_course_availability = CourseAvailability(
-            start_datetime1 = start_datetime1,
-            start_datetime2 = start_datetime2,
-            start_datetime3 = start_datetime3,
-            end_datetime1 = end_datetime1,
-            end_datetime2 = end_datetime2,
-            end_datetime3 = end_datetime3,
-            course = new_course
-        )
-        new_course_availability.save()
+        CourseAvailability.objects.create_from_form_data(form.cleaned_data, new_course)
 
         # Notify admins and teachers about the course submission
         url_teacher_dashboard = 'http://' + self.request.get_host() + reverse('teachers:dashboard')

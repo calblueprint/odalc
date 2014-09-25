@@ -1,3 +1,5 @@
+from datetime import datetime as dt
+
 from django.conf import settings
 from django.core.validators import (
     MaxValueValidator,
@@ -189,7 +191,30 @@ class CourseManager(models.Manager):
             qs = super(CourseManager, self).get_queryset()
         return qs.filter(status=Course.STATUS_DENIED).order_by('-start_datetime')
 
+    def approve_course(self, course, date, start_time, end_time):
+        course.status = course.STATUS_ACCEPTED
+        course.start_datetime = dt.combine(date, start_time)
+        course.end_datetime = dt.combine(date, end_time)
+        course.save()
+        return course
 
+    def deny_course(self, course):
+        course.status = course.STATUS_DENIED
+        course.save()
+        return course
+
+    def create_from_form(self, form, teacher):
+        course = form.save(commit=False)
+        course.teacher = teacher
+        course.status = Course.STATUS_PENDING
+        course.save()
+        return course
+
+    def toggle_featured(self, course_id, is_featured):
+        course = Course.objects.get(id=course_id)
+        course.is_featured = is_featured
+        course.save()
+        return course
 
 
 class CourseAvailability(models.Model):
@@ -200,6 +225,45 @@ class CourseAvailability(models.Model):
     end_datetime2 = models.DateTimeField()
     start_datetime3 = models.DateTimeField()
     end_datetime3 = models.DateTimeField()
+
+    objects = CourseAvailabilityManager()
+
+
+class CourseAvailabilityManager(models.Manager):
+    def create_from_form_data(self, cleaned_data, course):
+        start_datetime1 = dt.combine(
+            cleaned_data.get('date1'),
+            cleaned_data.get('start_time1')
+        )
+        start_datetime2 = dt.combine(
+            cleaned_data.get('date2'),
+            cleaned_data.get('start_time2')
+        )
+        start_datetime3 = dt.combine(
+            cleaned_data.get('date3'),
+            cleaned_data.get('start_time3')
+        )
+        end_datetime1 = dt.combine(
+            cleaned_data.get('date1'),
+            cleaned_data.get('end_time1')
+        )
+        end_datetime2 = dt.combine(
+            cleaned_data.get('date2'),
+            cleaned_data.get('end_time2')
+        )
+        end_datetime3 = dt.combine(
+            cleaned_data.get('date3'),
+            cleaned_data.get('end_time3')
+        )
+        return super(CourseAvailabilityManager, self).get_queryset().create(
+            start_datetime1=start_datetime1,
+            start_datetime2=start_datetime2,
+            start_datetime3=start_datetime3,
+            end_datetime1=end_datetime1,
+            end_datetime2=end_datetime2,
+            end_datetime3=end_datetime3,
+            course=course
+        )
 
 
 class CourseFeedback(models.Model):
@@ -247,3 +311,14 @@ class CourseFeedback(models.Model):
         'Please provide any additional comments or suggestions about the course and/or the instructor.',
         blank=True
     )
+
+    objects = CourseFeedbackManager()
+
+
+class CourseFeedbackManager(models.Manager):
+    def create_from_form(self, form, course_id, user_id):
+        course_feedback = form.save(commit=False)
+        course_feedback.course = Course.objects.get(id=course_id)
+        course_feedback.student = StudentUser.objects.get(id=user_id)
+        course_feedback.save()
+        return course_feedback
