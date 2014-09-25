@@ -15,7 +15,8 @@ from django.views.generic import DetailView, UpdateView, TemplateView, FormView,
 from django.db.models import Q
 
 from odalc.base.forms import EditCourseForm
-from odalc.base.models import Course, User
+from odalc.base.models import User
+from odalc.courses.models import Course
 from odalc.odalc_admin.models import AdminUser
 from odalc.students.models import StudentUser
 from odalc.teachers.models import TeacherUser

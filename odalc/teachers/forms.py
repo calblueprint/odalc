@@ -2,7 +2,7 @@ from django import forms
 
 from odalc.base.forms import UserRegisterForm
 from odalc.teachers.models import TeacherUser
-from odalc.base.models import Course
+from odalc.courses.models import Course
 
 from localflavor.us import forms as localflavor_forms
 
@@ -44,6 +44,7 @@ class TeacherEditForm(forms.ModelForm):
                   'picture',
                   'resume',
                   'experience')
+
 
 class CreateCourseForm(forms.ModelForm):
     date1 = forms.DateField(label='First Choice for Date to Teach Course')

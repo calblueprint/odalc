@@ -1,12 +1,7 @@
-from django.contrib.auth.models import (
-    AbstractBaseUser,
-    BaseUserManager,
-    PermissionsMixin
-)
-from django.core.exceptions import ObjectDoesNotExist
+from django.conf import settings
 from django.core.validators import (
     MaxValueValidator,
-    MinValueValidator,
+    MinValueValidator
 )
 from django.db import models
 
@@ -15,61 +10,9 @@ from odalc.base.backends.upload import S3BotoStorage_ODALC
 from athumb.fields import ImageWithThumbsField
 from athumb.backends.s3boto import S3BotoStorage_AllPublic
 
-# Create your models here.
-class UserManager(BaseUserManager):
-    def create_user(self, email, first_name, last_name, password=None):
-        """
-        Creates and saves a User with the given email, date of
-        birth and password.
-        """
-        if not email:
-            raise ValueError('Users must have an email address')
-
-        user = self.model(
-            email=self.normalize_email(email),
-            first_name=first_name,
-            last_name=last_name
-        )
-
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
-
-    def create_superuser(self, email, first_name, last_name, password=None):
-        user = self.create_user(email, first_name, last_name, password)
-        user.save(using=self._db)
-        return user
-
-
-class User(PermissionsMixin, AbstractBaseUser):
-    email = models.EmailField("Email", max_length=255, unique=True)
-    first_name = models.CharField("First Name", max_length=255)
-    last_name = models.CharField("Last Name", max_length=255)
-
-    USERNAME_FIELD = 'email'
-
-    objects = UserManager()
-
-    @property
-    def child(self):
-        for related_object in self._meta.get_all_related_objects():
-            if not issubclass(related_object.model, self.__class__):
-                continue
-            try:
-                return getattr(self, related_object.get_accessor_name())
-            except ObjectDoesNotExist:
-                pass
-
-    class Meta:
-        permissions = (
-            ("admin_permission", "Admin Permission"),
-            ("teacher_permission", "Teacher Permission"),
-            ("student_permission", "Student Permission")
-        )
-
 
 class Course(models.Model):
-    PUBLIC_MEDIA_BUCKET = S3BotoStorage_ODALC(bucket='odalc-stage-media-2')
+    PUBLIC_MEDIA_BUCKET = S3BotoStorage_ODALC(bucket=settings.S3_BUCKET)
 
     SKILL_BEGINNER = 'Beginner'
     SKILL_INTERMEDIATE = 'Intermediate'
@@ -182,3 +125,50 @@ class CourseAvailability(models.Model):
     end_datetime2 = models.DateTimeField()
     start_datetime3 = models.DateTimeField()
     end_datetime3 = models.DateTimeField()
+
+
+class CourseFeedback(models.Model):
+    STRONGLY_DISAGREE = 1
+    DISAGREE = 2
+    NEITHER = 3
+    AGREE = 4
+    STRONGLY_AGREE = 5
+    AGREEMENT_CHOICES = (
+        (STRONGLY_AGREE, 'Strongly Agree'),
+        (AGREE, 'Agree'),
+        (NEITHER, 'Neither'),
+        (DISAGREE, 'Disagree'),
+        (STRONGLY_DISAGREE, 'Strongly Disagree'),
+    )
+
+    student = models.ForeignKey('students.StudentUser')
+    course = models.ForeignKey('Course')
+
+    knowledgeable_of_subject = models.IntegerField(
+        'The instructor was knowledgeable of the subject matter.',
+        choices=AGREEMENT_CHOICES
+    )
+    encourages_questions = models.IntegerField(
+        'The instructor encouraged questions and/or discussion.',
+        choices=AGREEMENT_CHOICES
+    )
+    teaching_effectiveness = models.IntegerField(
+        'The instructor was effective in teaching the material.',
+        choices=AGREEMENT_CHOICES
+    )
+    applicable_to_needs = models.IntegerField(
+        'The course was applicable to my needs.',
+        choices=AGREEMENT_CHOICES
+    )
+    would_recommend = models.IntegerField(
+        'I would recommend this course to a friend.',
+        choices=AGREEMENT_CHOICES
+    )
+    course_inspiring = models.IntegerField(
+        'The course session was inspiring.',
+        choices=AGREEMENT_CHOICES
+    )
+    other_topics = models.TextField(
+        'Please provide any additional comments or suggestions about the course and/or the instructor.',
+        blank=True
+    )

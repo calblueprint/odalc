@@ -7,7 +7,7 @@ from django.contrib.auth.models import Group, Permission
 from django.core.management.base import BaseCommand
 from django.db import connection
 
-from odalc.base.models import Course, CourseAvailability
+from odalc.courses.models import Course, CourseAvailability
 from odalc.odalc_admin.models import AdminUser
 from odalc.students.models import StudentUser, CourseFeedback
 from odalc.teachers.models import TeacherUser

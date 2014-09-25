@@ -4,7 +4,7 @@ from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.core.urlresolvers import reverse
 
-from odalc.base.models import Course
+from odalc.courses.models import Course
 from odalc.mailer import send_odalc_email
 
 class Command(BaseCommand):

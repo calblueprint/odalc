@@ -6,10 +6,10 @@ from django.views.decorators.debug import sensitive_post_parameters
 from django.views.generic import CreateView, TemplateView, UpdateView
 from django.contrib import messages
 
-from odalc.base.models import Course
 from odalc.base.views import UserDataMixin
+from odalc.courses.models import Course, CourseFeedback
 from odalc.students.forms import StudentRegisterForm, StudentEditForm, FeedbackForm
-from odalc.students.models import CourseFeedback, StudentUser
+from odalc.students.models import StudentUser
 
 """Allows a student to register"""
 class StudentRegisterView(UserDataMixin, CreateView):

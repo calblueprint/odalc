@@ -1,16 +1,81 @@
+from django.contrib.auth.models import (
+    AbstractBaseUser,
+    BaseUserManager,
+    PermissionsMixin
+)
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 
-from odalc.base.models import User
 from odalc.base.backends.upload import S3BotoStorage_ODALC
-
-from localflavor.us import models as localflavor_models
 
 from athumb.fields import ImageWithThumbsField
 from athumb.backends.s3boto import S3BotoStorage_AllPublic
+from localflavor.us import models as localflavor_models
 
-# Create your models here.
+class UserManager(BaseUserManager):
+    def create_user(self, email, first_name, last_name, password=None):
+        """
+        Creates and saves a User with the given email, date of
+        birth and password.
+        """
+        if not email:
+            raise ValueError('Users must have an email address')
+
+        user = self.model(
+            email=self.normalize_email(email),
+            first_name=first_name,
+            last_name=last_name
+        )
+
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, email, first_name, last_name, password=None):
+        user = self.create_user(email, first_name, last_name, password)
+        user.save(using=self._db)
+        return user
+
+
+class User(PermissionsMixin, AbstractBaseUser):
+    email = models.EmailField("Email", max_length=255, unique=True)
+    first_name = models.CharField("First Name", max_length=255)
+    last_name = models.CharField("Last Name", max_length=255)
+
+    USERNAME_FIELD = 'email'
+
+    objects = UserManager()
+
+    @property
+    def child(self):
+        for related_object in self._meta.get_all_related_objects():
+            if not issubclass(related_object.model, self.__class__):
+                continue
+            try:
+                return getattr(self, related_object.get_accessor_name())
+            except ObjectDoesNotExist:
+                pass
+
+    class Meta:
+        permissions = (
+            ("admin_permission", "Admin Permission"),
+            ("teacher_permission", "Teacher Permission"),
+            ("student_permission", "Student Permission")
+        )
+
+
+class AdminUser(User):
+    class Meta:
+        verbose_name = "Admin"
+
+
+class StudentUser(User):
+    class Meta:
+        verbose_name = "Student"
+
+
 class TeacherUser(User):
-    PUBLIC_MEDIA_BUCKET = S3BotoStorage_ODALC(bucket='odalc-stage-media-2')
+    PUBLIC_MEDIA_BUCKET = S3BotoStorage_ODALC(bucket=settings.S3_BUCKET)
 
     INFO_SOURCE_FRIEND = 'FRD'
     INFO_SOURCE_WEB = 'WEB'
