@@ -12,6 +12,7 @@ from athumb.fields import ImageWithThumbsField
 from athumb.backends.s3boto import S3BotoStorage_AllPublic
 from localflavor.us import models as localflavor_models
 
+
 class UserManager(BaseUserManager):
     def create_user(self, email, first_name, last_name, password=None):
         """
@@ -20,13 +21,11 @@ class UserManager(BaseUserManager):
         """
         if not email:
             raise ValueError('Users must have an email address')
-
         user = self.model(
             email=self.normalize_email(email),
             first_name=first_name,
             last_name=last_name
         )
-
         user.set_password(password)
         user.save(using=self._db)
         return user
@@ -43,7 +42,6 @@ class User(PermissionsMixin, AbstractBaseUser):
     last_name = models.CharField("Last Name", max_length=255)
 
     USERNAME_FIELD = 'email'
-
     objects = UserManager()
 
     @property

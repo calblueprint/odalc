@@ -17,9 +17,7 @@ from django.db.models import Q
 from odalc.base.forms import EditCourseForm
 from odalc.base.models import User
 from odalc.courses.models import Course
-from odalc.odalc_admin.models import AdminUser
-from odalc.students.models import StudentUser
-from odalc.teachers.models import TeacherUser
+from odalc.users.models import AdminUser, StudentUser, TeacherUser
 
 import stripe
 import datetime
@@ -163,8 +161,7 @@ class CourseEditView(UserDataMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(CourseEditView, self).get_context_data(**kwargs)
-        course = context['course']
-        context['teacher_split'] = course.cost - course.odalc_cost_split
+        context['teacher_split'] = self.get_object().get_teacher_cost_split()
         return context
 
     def get_success_url(self):
@@ -186,33 +183,23 @@ class CourseListingView(UserDataMixin, TemplateView):
         context = super(CourseListingView, self).get_context_data(**kwargs)
         now = datetime.datetime.now()
         month_from_now = now + datetime.timedelta(days=30)
-        context['all_courses'] = Course.objects.filter(Q(status = Course.STATUS_ACCEPTED) | Q(status = Course.STATUS_FINISHED)).order_by('-start_datetime')
-        context['past_courses'] = Course.objects.filter(status = Course.STATUS_FINISHED).order_by('-start_datetime')
-        context['upcoming_courses'] = Course.objects.filter(start_datetime__range = [now, month_from_now], status = Course.STATUS_ACCEPTED).order_by('start_datetime')
+        context['all_courses'] = Course.objects.get_all_approved()
+        context['past_courses'] = Course.objects.get_finish()
+        context['upcoming_courses'] = Course.objects.get_in_date_range(now, month_from_now)
         return context
 
-"""Landing page for the website. Also displays the next three upcoming courses
-as "featured courses". If there are not enough, it will display past courses as well."""
 class HomePageView(UserDataMixin, TemplateView):
+    """Landing page for the website. Also displays the next three upcoming
+    courses as "featured courses". If there are not enough, it will display past
+    courses as well."""
     NUM_COURSES_SHOWN = 3
     template_name = 'base/home.html'
 
     def get_context_data(self, **kwargs):
         context = super(HomePageView, self).get_context_data(**kwargs)
-        featured_courses = Course.objects.filter(is_featured = True).order_by('start_datetime')
-        # We have enough featured courses
-        if featured_courses.count() < HomePageView.NUM_COURSES_SHOWN:
-            num_upcoming_needed = HomePageView.NUM_COURSES_SHOWN - featured_courses.count()
-            upcoming_courses = Course.objects.filter(status = Course.STATUS_ACCEPTED).exclude(is_featured = True).order_by('start_datetime')[:num_upcoming_needed]
-            # We don't have enough featured or upcoming courses, so show some past courses too
-            num_retrieved = upcoming_courses.count() + featured_courses.count()
-            past_courses = []
-            if num_retrieved < HomePageView.NUM_COURSES_SHOWN:
-                past_courses = Course.objects.filter(status = Course.STATUS_FINISHED).order_by('-start_datetime')[:HomePageView.NUM_COURSES_SHOWN-num_retrieved]
-            context['featured_courses'] = list(chain(featured_courses, upcoming_courses, past_courses))
-        else:
-            context['featured_courses'] = featured_courses[:HomePageView.NUM_COURSES_SHOWN]
+        context['featured_courses'] = Course.objects.get_featured(NUM_COURSES_SHOWN)
         return context
+
 
 class AboutPageView(UserDataMixin, TemplateView):
     template_name = 'base/about.html'

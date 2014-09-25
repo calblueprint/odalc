@@ -11,8 +11,8 @@ from odalc.courses.models import Course, CourseFeedback
 from odalc.students.forms import StudentRegisterForm, StudentEditForm, FeedbackForm
 from odalc.students.models import StudentUser
 
-"""Allows a student to register"""
 class StudentRegisterView(UserDataMixin, CreateView):
+    """Allows a student to register"""
     model = StudentUser
     template_name = "students/register.html"
     form_class = StudentRegisterForm
@@ -46,8 +46,8 @@ class StudentRegisterView(UserDataMixin, CreateView):
             return redirect(StudentRegisterView.success_url)
 
 
-"""Controls the editing of personal information by the student"""
 class StudentEditView(UserDataMixin, UpdateView):
+    """Controls the editing of personal information by the student"""
     model = StudentUser
     template_name = "students/student_edit.html"
     form_class = StudentEditForm
@@ -91,19 +91,21 @@ class SubmitCourseFeedbackView(UserDataMixin, CreateView):
         if ((user.has_perm('base.student_permission') and user.email in students) or
             user.has_perm('base.admin_permission')):
             return super(SubmitCourseFeedbackView, self).dispatch(*args, **kwargs)
-        return self.deny_access()
+        else:
+            return self.deny_access()
 
 
-"""StudentDashboardView shows the student his/her basic information and courses taken."""
 class StudentDashboardView(UserDataMixin, TemplateView):
+    """StudentDashboardView shows the student his/her basic information and
+    courses taken."""
     template_name = "students/student_dashboard.html"
 
     def get_context_data(self, **kwargs):
         student_user = self.user
         context = super(StudentDashboardView, self).get_context_data(**kwargs)
         context['user'] = student_user
-        context['courses_upcoming'] = student_user.course_set.filter(status = Course.STATUS_ACCEPTED).order_by('-start_datetime')
-        context['courses_taken'] = student_user.course_set.filter(status = Course.STATUS_FINISHED).order_by('-start_datetime')
+        context['courses_upcoming'] = Course.objects.get_all_active(student_user.course_set)
+        context['courses_taken'] = Course.objects.get_finished(student_user.course_set)
         return context
 
     def dispatch(self, *args, **kwargs):
