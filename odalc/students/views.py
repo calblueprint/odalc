@@ -9,7 +9,7 @@ from django.contrib import messages
 from odalc.base.views import UserDataMixin
 from odalc.courses.models import Course, CourseFeedback
 from odalc.students.forms import StudentRegisterForm, StudentEditForm, FeedbackForm
-from odalc.students.models import StudentUser
+from odalc.users.models import StudentUser
 
 class StudentRegisterView(UserDataMixin, CreateView):
     """Allows a student to register"""

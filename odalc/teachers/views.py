@@ -12,7 +12,7 @@ from odalc.courses.models import Course, CourseAvailability
 from odalc.base.views import UserDataMixin
 from odalc.mailer import send_odalc_email
 from odalc.teachers.forms import CreateCourseForm, TeacherRegisterForm, TeacherEditForm
-from odalc.teachers.models import TeacherUser
+from odalc.users.models import TeacherUser
 
 
 class TeacherRegisterView(UserDataMixin, CreateView):

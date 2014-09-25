@@ -15,9 +15,8 @@ from django.views.generic import DetailView, UpdateView, TemplateView, FormView,
 from django.db.models import Q
 
 from odalc.base.forms import EditCourseForm
-from odalc.base.models import User
 from odalc.courses.models import Course
-from odalc.users.models import AdminUser, StudentUser, TeacherUser
+from odalc.users.models import AdminUser, StudentUser, TeacherUser, User
 
 import stripe
 import datetime

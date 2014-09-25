@@ -1,6 +1,7 @@
 from django import forms
 from odalc.base.forms import UserRegisterForm
-from odalc.students.models import CourseFeedback, StudentUser
+from odalc.courses.models import CourseFeedback
+from odalc.users.models import StudentUser
 
 class StudentRegisterForm(UserRegisterForm):
     class Meta:

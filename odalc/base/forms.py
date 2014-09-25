@@ -4,11 +4,8 @@ from django import forms
 from django.contrib.auth.models import Group, Permission
 from django.utils.translation import ugettext as _
 
-from odalc.base.models import User
 from odalc.courses.models import Course
-from odalc.odalc_admin.models import AdminUser
-from odalc.students.models import StudentUser
-from odalc.teachers.models import TeacherUser
+from odalc.users.models import AdminUser, StudentUser, TeacherUser, User
 
 
 class UserRegisterForm(forms.ModelForm):

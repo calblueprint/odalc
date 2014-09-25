@@ -1,8 +1,8 @@
 from django import forms
 
 from odalc.base.forms import UserRegisterForm
-from odalc.teachers.models import TeacherUser
 from odalc.courses.models import Course
+from odalc.users.models import TeacherUser
 
 from localflavor.us import forms as localflavor_forms
 

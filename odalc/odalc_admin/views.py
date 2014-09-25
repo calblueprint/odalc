@@ -15,14 +15,11 @@ from django.views.generic import (
 from django.contrib import messages
 
 from odalc.base.forms import EditCourseForm
-from odalc.odalc_admin.forms import AdminRegisterForm
-from odalc.course.models import Course
 from odalc.base.views import UserDataMixin
+from odalc.courses.models import Course
 from odalc.mailer import send_odalc_email
-from odalc.odalc_admin.models import AdminUser
-from odalc.odalc_admin.forms import AdminEditForm
-from odalc.students.models import StudentUser
-from odalc.teachers.models import TeacherUser
+from odalc.odalc_admin.forms import AdminEditForm, AdminRegisterForm
+from odalc.users.models import AdminUser, StudentUser, TeacherUser
 
 
 class ApplicationReviewView(UserDataMixin, UpdateView):

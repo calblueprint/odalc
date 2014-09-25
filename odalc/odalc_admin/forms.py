@@ -1,7 +1,7 @@
 from django import forms
 
 from odalc.base.forms import UserRegisterForm
-from odalc.odalc_admin.models import AdminUser
+from odalc.users.models import AdminUser
 
 
 class AdminEditForm(forms.ModelForm):
