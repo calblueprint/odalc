@@ -51,7 +51,7 @@
                         </div>
                     </div>
                     <div class="small-3 columns">
-                        <img src="{{ course.image }}"></img>
+                        <img src="{% thumbnail course.image 'thumb' %}"></img>
                         <h5 class="right"><a href="{% url "admins:course_review" course.pk %}">Review course &raquo;</a></h5>
                         <h5 class="right"><a href="{% url "courses:detail" course.pk %}">View course page &raquo;</a></h5>
                     </div>
@@ -87,7 +87,7 @@
                             </div>
                         </div>
                         <div class="small-3 columns">
-                            <img src="{{ course.image }}"></img>
+                            <img src="{% thumbnail course.image 'thumb' %}"></img>
                             <h5 class="right"><a href="{% url "courses:edit" course.pk %}">Edit course information &raquo;</a></h5>
                             <h5 class="right"><a href="{% url "courses:detail" course.pk %}">View course page &raquo;</a></h5>
                         </div>
@@ -121,7 +121,7 @@
                             </div>
                         </div>
                         <div class="small-3 columns">
-                            <img src="{{ course.image }}"></img>
+                            <img src="{% thumbnail course.image 'thumb' %}"></img>
                             <h5 class="right"><a href="{% url "courses:edit" course.pk %}">Edit course information &raquo;</a></h5>
                             <h5 class="right"><a href="{% url "courses:detail" course.pk %}">View course page &raquo;</a></h5>
                         </div>
@@ -153,7 +153,7 @@
                         </div>
                     </div>
                     <div class="small-3 columns">
-                        <img src="{{ course.image }}"></img>
+                        <img src="{% thumbnail course.image 'thumb' %}"></img>
                         <h5 class="right"><a href="{% url "courses:edit" course.pk %}">Edit course information &raquo;</a></h5>
                         <h5 class="right"><a href="{% url "courses:detail" course.pk %}">View course page &raquo;</a></h5>
                         <h5 class="right"><a href="{% url "courses:feedback_review" course.pk %}">View course feedback &raquo;</a></h5>
@@ -186,7 +186,7 @@
                         </div>
                     </div>
                     <div class="small-3 columns">
-                        <img src="{{ course.image }}"></img>
+                        <img src="{% thumbnail course.image 'thumb' %}"></img>
                         <h5 class="right"><a href="{% url "courses:edit" course.pk %}">Edit course information &raquo;</a></h5>
                         <h5 class="right"><a href="{% url "courses:detail" course.pk %}">View course page &raquo;</a></h5>
                     </div>
