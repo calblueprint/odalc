@@ -124,15 +124,21 @@
                     <div class="row">
                         <div class="medium-6 columns">
                             <h5>Teacher's Available Time Slots:</h5>
-                            <strong>Option 1: </strong>
-                            <p>{{ course.courseavailability.start_datetime1|date:'D, N d, Y' }} |
-                            {{ course.courseavailability.start_datetime1|date:'P'}} - {{ course.courseavailability.end_datetime1|date:'P' }}</p>
+                            <div class="time-slot-select" id="start-datetime-1">
+                                <strong>Option 1: </strong>
+                                <p>{{ course.courseavailability.start_datetime1|date:'D, N d, Y' }} |
+                                {{ course.courseavailability.start_datetime1|date:'P'}} - {{ course.courseavailability.end_datetime1|date:'P' }}</p>
+                            </div>
+                            <div class="time-slot-select" id="start-datetime-2">
                             <strong>Option 2: </strong>
-                            <p>{{ course.courseavailability.start_datetime2|date:'D, N d, Y' }} |
-                            {{ course.courseavailability.start_datetime2|date:'P'}} - {{ course.courseavailability.end_datetime2|date:'P' }}</p>
+                                <p>{{ course.courseavailability.start_datetime2|date:'D, N d, Y' }} |
+                                {{ course.courseavailability.start_datetime2|date:'P'}} - {{ course.courseavailability.end_datetime2|date:'P' }}</p>
+                            </div>
+                            <div class="time-slot-select" id="start-datetime-3">
                             <strong>Option 3: </strong>
-                            <p>{{ course.courseavailability.start_datetime3|date:'D, N d, Y' }} |
-                            {{ course.courseavailability.start_datetime3|date:'P'}} - {{ course.courseavailability.end_datetime3|date:'P' }}</p>
+                                <p>{{ course.courseavailability.start_datetime3|date:'D, N d, Y' }} |
+                                {{ course.courseavailability.start_datetime3|date:'P'}} - {{ course.courseavailability.end_datetime3|date:'P' }}</p>
+                            </div>
                         </div>
                         <div class="medium-6 columns">
                             <label for="{{ form.date.id_for_label }}">
