@@ -2,15 +2,12 @@ import decimal
 from random import randint
 import os
 
-
-from django.contrib.auth.models import Group, Permission
+from django.contrib.auth.models import Permission
 from django.core.management.base import BaseCommand
 from django.db import connection
 
-from odalc.base.models import Course, CourseAvailability
-from odalc.odalc_admin.models import AdminUser
-from odalc.students.models import StudentUser, CourseFeedback
-from odalc.teachers.models import TeacherUser
+from odalc.courses.models import Course, CourseAvailability, CourseFeedback
+from odalc.users.models import AdminUser, StudentUser, TeacherUser
 
 from sampledatahelper.helper import SampleDataHelper
 from sampledatahelper.model_helper import ModelDataHelper
@@ -40,12 +37,6 @@ class Command(BaseCommand):
     md = ModelDataHelper()
 
     def generate_teachers(self, instances):
-        try:
-            group = Group.objects.get(name='teachers')
-        except Group.DoesNotExist:
-            group = Group(name="teachers")
-            group.save()
-            group.permissions.add(Permission.objects.get(codename="teacher_permission"))
         cursor = connection.cursor()
         for x in range(instances):
             teacher = TeacherUser.objects.create(
@@ -65,8 +56,7 @@ class Command(BaseCommand):
             )
             teacher.set_password(TEST_PASSWORD)
             teacher.save()
-            cursor.execute('UPDATE teachers_teacheruser SET picture = %s WHERE user_ptr_id = %s', [RANDOM_TEACHER_IMAGE_PATH % randint(1,10), teacher.id])
-            group.user_set.add(teacher)
+            cursor.execute('UPDATE users_teacheruser SET picture = %s WHERE user_ptr_id = %s', [RANDOM_TEACHER_IMAGE_PATH % randint(1,10), teacher.id])
         if not TeacherUser.objects.filter(email=TEST_TEACHER_EMAIL).exists():
             teacher = TeacherUser.objects.create(
                 email=TEST_TEACHER_EMAIL,
@@ -86,17 +76,10 @@ class Command(BaseCommand):
             )
             teacher.set_password(TEST_PASSWORD)
             teacher.save()
-            cursor.execute('UPDATE teachers_teacheruser SET picture = %s WHERE user_ptr_id = %s', [TEST_TEACHER_IMAGE_PATH, teacher.id])
-            group.user_set.add(teacher)
+            cursor.execute('UPDATE users_teacheruser SET picture = %s WHERE user_ptr_id = %s', [TEST_TEACHER_IMAGE_PATH, teacher.id])
         return
 
     def generate_students(self, instances):
-        try:
-            group = Group.objects.get(name='students')
-        except Group.DoesNotExist:
-            group = Group(name="students")
-            group.save()
-            group.permissions.add(Permission.objects.get(codename="student_permission"))
         for x in range(instances):
             student = StudentUser.objects.create(
                 email=self.sd.email(),
@@ -105,7 +88,6 @@ class Command(BaseCommand):
             )
             student.set_password(TEST_PASSWORD)
             student.save()
-            group.user_set.add(student)
         if not StudentUser.objects.filter(email=TEST_STUDENT_EMAIL).exists():
             student = StudentUser.objects.create(
                 email=TEST_STUDENT_EMAIL,
@@ -114,16 +96,9 @@ class Command(BaseCommand):
             )
             student.set_password(TEST_PASSWORD)
             student.save()
-            group.user_set.add(student)
         return
 
     def generate_admin(self):
-        try:
-            group = Group.objects.get(name='admins')
-        except Group.DoesNotExist:
-            group = Group(name='admins')
-            group.save()
-            group.permissions.add(Permission.objects.get(codename='admin_permission'))
         if not AdminUser.objects.filter(email=TEST_ADMIN_EMAIL).exists():
             admin = AdminUser.objects.create(
                 email=TEST_ADMIN_EMAIL,
@@ -132,7 +107,6 @@ class Command(BaseCommand):
             )
             admin.set_password(TEST_PASSWORD)
             admin.save()
-            group.user_set.add(admin)
         return
 
     def generate_courses(self, instances):
@@ -165,7 +139,7 @@ class Command(BaseCommand):
             for s in course_students:
                 course.students.add(s)
             course.save()
-            cursor.execute('UPDATE base_course SET image = %s WHERE id = %s', [RANDOM_COURSE_IMAGE_PATH % randint(1,10), course.id])
+            cursor.execute('UPDATE courses_course SET image = %s WHERE id = %s', [RANDOM_COURSE_IMAGE_PATH % randint(1,10), course.id])
         # Generate 'Accepted' Courses
         for x in range(instances):
             student_qs = StudentUser.objects.all()
@@ -194,7 +168,7 @@ class Command(BaseCommand):
             for s in course_students:
                 course.students.add(s)
             course.save()
-            cursor.execute('UPDATE base_course SET image = %s WHERE id = %s', [RANDOM_COURSE_IMAGE_PATH % randint(1,10), course.id])
+            cursor.execute('UPDATE courses_course SET image = %s WHERE id = %s', [RANDOM_COURSE_IMAGE_PATH % randint(1,10), course.id])
         # Generate 'Finished' Courses
         for x in range(instances):
             student_qs = StudentUser.objects.all()
@@ -223,7 +197,7 @@ class Command(BaseCommand):
             for s in course_students:
                 course.students.add(s)
             course.save()
-            cursor.execute('UPDATE base_course SET image = %s WHERE id = %s', [RANDOM_COURSE_IMAGE_PATH % randint(1,10), course.id])
+            cursor.execute('UPDATE courses_course SET image = %s WHERE id = %s', [RANDOM_COURSE_IMAGE_PATH % randint(1,10), course.id])
         # Generate 'Denied' Courses
         for x in range(instances):
             student_qs = StudentUser.objects.all()
@@ -252,7 +226,7 @@ class Command(BaseCommand):
             for s in course_students:
                 course.students.add(s)
             course.save()
-            cursor.execute('UPDATE base_course SET image = %s WHERE id = %s', [RANDOM_COURSE_IMAGE_PATH % randint(1,10), course.id])
+            cursor.execute('UPDATE courses_course SET image = %s WHERE id = %s', [RANDOM_COURSE_IMAGE_PATH % randint(1,10), course.id])
 
     def generate_course_feedback(self, instances):
         self.md.fill_model(CourseFeedback, instances)

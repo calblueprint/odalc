@@ -6,13 +6,13 @@ from django.views.decorators.debug import sensitive_post_parameters
 from django.views.generic import CreateView, TemplateView, UpdateView
 from django.contrib import messages
 
-from odalc.base.models import Course
-from odalc.base.views import UserDataMixin
+from odalc.courses.models import Course, CourseFeedback
 from odalc.students.forms import StudentRegisterForm, StudentEditForm, FeedbackForm
-from odalc.students.models import CourseFeedback, StudentUser
+from odalc.users.models import StudentUser
+from odalc.users.views import UserDataMixin
 
-"""Allows a student to register"""
 class StudentRegisterView(UserDataMixin, CreateView):
+    """Allows a student to register"""
     model = StudentUser
     template_name = "students/register.html"
     form_class = StudentRegisterForm
@@ -22,7 +22,8 @@ class StudentRegisterView(UserDataMixin, CreateView):
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated():
             return redirect('home')
-        return super(StudentRegisterView, self).dispatch(request, *args, **kwargs)
+        else:
+            return super(StudentRegisterView, self).dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         super(StudentRegisterView, self).form_valid(form)
@@ -35,7 +36,6 @@ class StudentRegisterView(UserDataMixin, CreateView):
         self.next_url = self.request.POST.get('next', None)
         if self.next_url:
             match = resolve(self.next_url)
-            print match
             if match.namespace == 'courses' and match.url_name == 'detail':
                 messages.info(
                     self.request,
@@ -46,8 +46,8 @@ class StudentRegisterView(UserDataMixin, CreateView):
             return redirect(StudentRegisterView.success_url)
 
 
-"""Controls the editing of personal information by the student"""
 class StudentEditView(UserDataMixin, UpdateView):
+    """Controls the editing of personal information by the student"""
     model = StudentUser
     template_name = "students/student_edit.html"
     form_class = StudentEditForm
@@ -61,55 +61,51 @@ class StudentEditView(UserDataMixin, UpdateView):
         return super(StudentEditView, self).get_success_url()
 
 
-"""Controls course feedback submission for a particular student and course"""
 class SubmitCourseFeedbackView(UserDataMixin, CreateView):
+    """Controls course feedback submission for a particular student and course"""
     model = CourseFeedback
     template_name = 'students/course_feedback_form.html'
     form_class = FeedbackForm
 
+    def dispatch(self, *args, **kwargs):
+        handler = super(SubmitCourseFeedbackView, self).dispatch(*args, **kwargs)
+        if not self.user.is_authenticated():
+            return redirect('/users/login?next=%s' % self.request.path)
+        # The course is guaranteed to exist!
+        self.course = Course.objects.get(pk=self.kwargs.get('pk', None))
+        if self.is_student_user and self.course.is_student_in_course(self.user):
+            return handler
+        else:
+            return self.deny_access()
+
     def form_valid(self, form):
-        course_feedback = form.save(commit=False)
-        pk = self.kwargs.get('pk', None)
-        course_feedback.course = Course.objects.get(pk=pk)
-        course_feedback.student = StudentUser.objects.get(id=self.user.id)
-        course_feedback.save()
+        CourseFeedback.objects.create_from_form(form, self.course.id, self.user.id)
         messages.success(self.request, 'Feedback for submitted')
-        return redirect('courses:detail', pk)
+        return redirect('courses:detail', self.course.id)
 
     def get_context_data(self, **kwargs):
         context = super(SubmitCourseFeedbackView, self).get_context_data(**kwargs)
-        context['pk'] = self.kwargs.get('pk', None)
-        context['title'] = Course.objects.get(pk=context['pk']).title
+        context['title'] = self.course.title
         return context
 
-    def dispatch(self, *args, **kwargs):
-        user = self.request.user
-        if not user.is_authenticated():
-            return redirect('/accounts/login?next=%s' % self.request.path)
-        course = Course.objects.get(pk=self.kwargs.get('pk', None))
-        students = [student.email for student in course.students.all()]
-        if ((user.has_perm('base.student_permission') and user.email in students) or
-            user.has_perm('base.admin_permission')):
-            return super(SubmitCourseFeedbackView, self).dispatch(*args, **kwargs)
-        return self.deny_access()
 
-
-"""StudentDashboardView shows the student his/her basic information and courses taken."""
 class StudentDashboardView(UserDataMixin, TemplateView):
+    """StudentDashboardView shows the student his/her basic information and
+    courses taken."""
     template_name = "students/student_dashboard.html"
 
-    def get_context_data(self, **kwargs):
-        student_user = self.user
-        context = super(StudentDashboardView, self).get_context_data(**kwargs)
-        context['user'] = student_user
-        context['courses_upcoming'] = student_user.course_set.filter(status = Course.STATUS_ACCEPTED).order_by('-start_datetime')
-        context['courses_taken'] = student_user.course_set.filter(status = Course.STATUS_FINISHED).order_by('-start_datetime')
-        return context
-
     def dispatch(self, *args, **kwargs):
-        user = self.request.user
-        if not user.is_authenticated():
-            return redirect('/accounts/login?next=%s' % self.request.path)
-        if user.has_perm('base.student_permission'):
-            return super(StudentDashboardView, self).dispatch(*args, **kwargs)
-        return self.deny_access()
+        handler = super(StudentDashboardView, self).dispatch(*args, **kwargs)
+        if not self.user.is_authenticated():
+            return redirect('/users/login?next=%s' % self.request.path)
+        elif self.is_student_user:
+            return handler
+        else:
+            return self.deny_access()
+
+    def get_context_data(self, **kwargs):
+        context = super(StudentDashboardView, self).get_context_data(**kwargs)
+        context['user'] = self.user
+        context['courses_upcoming'] = Course.objects.get_all_active(self.user.course_set)
+        context['courses_taken'] = Course.objects.get_finished(self.user.course_set)
+        return context

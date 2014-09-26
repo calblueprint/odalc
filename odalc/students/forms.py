@@ -1,16 +1,21 @@
 from django import forms
-from odalc.base.forms import UserRegisterForm
-from odalc.students.models import CourseFeedback, StudentUser
+
+from odalc.courses.models import CourseFeedback
+from odalc.users.forms import UserRegisterForm
+from odalc.users.models import StudentUser
+
 
 class StudentRegisterForm(UserRegisterForm):
     class Meta:
         model = StudentUser
         fields = ('email', 'first_name', 'last_name')
 
+
 class StudentEditForm(forms.ModelForm):
     class Meta:
         model = StudentUser
         fields = ('email', 'first_name', 'last_name')
+
 
 class FeedbackForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):

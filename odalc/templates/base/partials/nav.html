@@ -21,9 +21,9 @@
               {% elif is_admin_user %}
               <li class="{% block is_admin_dash %}{% endblock %}"><a href="{% url "admins:dashboard"%}">Admin Dashboard</a></li>
               {% endif %}
-              <li><a href="{% url "logout" %}">Logout</a></li>
+              <li><a href="{% url "users:logout" %}">Logout</a></li>
           {% else %}
-              <li class="active"><a href="{% url "login" %}?next={{ request.path }}">Login</a></li>
+              <li class="active"><a href="{% url "users:login" %}?next={{ request.path }}">Login</a></li>
           {% endif %}
           </ul>
 

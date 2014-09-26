@@ -20,7 +20,7 @@
 
 <div class="row white-section">
     <div class="large-12 columns">
-        <form method="POST">
+        <form enctype="multipart/form-data" method="POST">
           {% csrf_token %}
 
           {% for error in form.non_field_errors %}
@@ -97,7 +97,7 @@
           {% endif %}
         <div class="row">
             <div class="medium-12 columns">
-                {% include "base/partials/hidden_img_uploadfield.html" with field=form.image %}
+                {% include "base/partials/formfield.html" with field=form.image %}
             </div>
         </div>
 
@@ -143,12 +143,8 @@ properly upload files, we need these few lines in the following order:
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
 <script src="{% static "base/js/s3upload.js" %}"></script>
 <script src="{% static "base/js/jquery.timepicker.min.js" %}"></script>
-{% include "base/partials/img_uploadjs.html" with field=form.image %}
 {% include "base/partials/file_uploadjs.html" with field=form.course_material %}
 <script>
-$().ready(function() {
-    $('#file_{{ form.image.id_for_label }}').on("change", s3_upload_{{ form.image.id_for_label }});
-});
 $().ready(function() {
     $('#file_{{ form.course_material.id_for_label }}').on("change", s3_upload_{{ form.course_material.id_for_label }});
 });

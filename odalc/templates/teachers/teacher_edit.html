@@ -22,7 +22,7 @@
 <div class="white-section">
 <div class="row">
     <div class="large-5 columns">
-        <form method="POST" enctype="multipart/form-data">
+        <form enctype="multipart/form-data" method="POST">
           {% csrf_token %}
 
           {% for error in form.non_field_errors %}

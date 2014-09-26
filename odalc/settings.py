@@ -35,7 +35,6 @@ PROJECT_ROOT = os.path.abspath(
 # Application definition
 
 INSTALLED_APPS = (
-    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -46,9 +45,11 @@ INSTALLED_APPS = (
     'djangobower',
     'widget_tweaks',
     'odalc.base',
+    'odalc.courses',
     'odalc.odalc_admin',
     'odalc.students',
     'odalc.teachers',
+    'odalc.users',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -82,7 +83,7 @@ ROOT_URLCONF = 'odalc.urls'
 
 WSGI_APPLICATION = 'odalc.wsgi.application'
 
-AUTH_USER_MODEL = 'base.User'
+AUTH_USER_MODEL = 'users.User'
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
@@ -147,7 +148,9 @@ BOWER_INSTALLED_APPS = (
 
 # If you don't want this to be the global default, just make sure you
 # specify the S3BotoStorage_AllPublic backend on a per-field basis.
-DEFAULT_FILE_STORAGE = 'athumb.backends.s3boto.S3BotoStorage_AllPublic'
+#DEFAULT_FILE_STORAGE = 'athumb.backends.s3boto.S3BotoStorage_AllPublic'
+
+DEFAULT_FILE_STORAGE = 'odalc.lib.s3.S3BotoStorage_ODALC'
 
 # Amazon S3 Configs
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', '')

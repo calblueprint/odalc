@@ -1,8 +1,8 @@
 from django import forms
 
-from odalc.base.forms import UserRegisterForm
-from odalc.teachers.models import TeacherUser
-from odalc.base.models import Course
+from odalc.courses.models import Course
+from odalc.users.forms import UserRegisterForm
+from odalc.users.models import TeacherUser
 
 from localflavor.us import forms as localflavor_forms
 
@@ -28,6 +28,7 @@ class TeacherRegisterForm(UserRegisterForm):
                   'experience',
                   'info_source')
 
+
 class TeacherEditForm(forms.ModelForm):
     class Meta:
         model = TeacherUser
@@ -45,6 +46,7 @@ class TeacherEditForm(forms.ModelForm):
                   'resume',
                   'experience')
 
+
 class CreateCourseForm(forms.ModelForm):
     date1 = forms.DateField(label='First Choice for Date to Teach Course')
     start_time1 = forms.TimeField(label='Starting Time for Course Session')
@@ -60,4 +62,11 @@ class CreateCourseForm(forms.ModelForm):
 
     class Meta:
         model = Course
-        exclude = ['teacher', 'students', 'start_datetime', 'end_datetime', 'status', 'is_featured']
+        exclude = (
+            'teacher',
+            'students',
+            'start_datetime',
+            'end_datetime',
+            'status',
+            'is_featured'
+        )
