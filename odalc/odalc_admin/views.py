@@ -14,7 +14,7 @@ from django.views.generic import (
 )
 from django.contrib import messages
 
-from odalc.base.forms import EditCourseForm
+from odalc.courses.forms import EditCourseForm
 from odalc.courses.models import Course
 from odalc.lib.mailer import send_odalc_email
 from odalc.odalc_admin.forms import AdminEditForm, AdminRegisterForm
