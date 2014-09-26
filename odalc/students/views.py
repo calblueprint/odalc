@@ -68,6 +68,18 @@ class SubmitCourseFeedbackView(UserDataMixin, CreateView):
     template_name = 'students/course_feedback_form.html'
     form_class = FeedbackForm
 
+    def dispatch(self, *args, **kwargs):
+        handler = super(SubmitCourseFeedbackView, self).dispatch(*args, **kwargs)
+        if not self.user.is_authenticated():
+            return redirect('/accounts/login?next=%s' % self.request.path)
+        # The course is guaranteed to exist!
+        course = Course.objects.get(pk=self.kwargs.get('pk', None))
+        in_course = course.students.filter(email=self.user.email).exists()
+        if (self.is_student_user and in_course) or self.is_admin_user:
+            return handler
+        else:
+            return self.deny_access()
+
     def form_valid(self, form):
         course_feedback = form.save(commit=False)
         course_id = self.kwargs.get('pk', None)
@@ -81,31 +93,11 @@ class SubmitCourseFeedbackView(UserDataMixin, CreateView):
         context['title'] = Course.objects.get(pk=context['pk']).title
         return context
 
-    def dispatch(self, *args, **kwargs):
-        handler = super(SubmitCourseFeedbackView, self).dispatch(*args, **kwargs)
-        if not self.user.is_authenticated():
-            return redirect('/accounts/login?next=%s' % self.request.path)
-        # The course is guaranteed to exist!
-        course = Course.objects.get(pk=self.kwargs.get('pk', None))
-        in_course = course.students.filter(email=self.user.email).exists()
-        if (self.is_student_user and in_course) or self.is_admin_user:
-            return handler
-        else:
-            return self.deny_access()
-
 
 class StudentDashboardView(UserDataMixin, TemplateView):
     """StudentDashboardView shows the student his/her basic information and
     courses taken."""
     template_name = "students/student_dashboard.html"
-
-    def get_context_data(self, **kwargs):
-        student_user = self.user
-        context = super(StudentDashboardView, self).get_context_data(**kwargs)
-        context['user'] = student_user
-        context['courses_upcoming'] = Course.objects.get_all_active(student_user.course_set)
-        context['courses_taken'] = Course.objects.get_finished(student_user.course_set)
-        return context
 
     def dispatch(self, *args, **kwargs):
         handler = super(StudentDashboardView, self).dispatch(*args, **kwargs)
@@ -115,3 +107,10 @@ class StudentDashboardView(UserDataMixin, TemplateView):
             return handler
         else:
             return self.deny_access()
+
+    def get_context_data(self, **kwargs):
+        context = super(StudentDashboardView, self).get_context_data(**kwargs)
+        context['user'] = self.user
+        context['courses_upcoming'] = Course.objects.get_all_active(self.user.course_set)
+        context['courses_taken'] = Course.objects.get_finished(self.user.course_set)
+        return context

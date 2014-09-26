@@ -10,7 +10,7 @@ from django.contrib import messages
 
 from odalc.courses.models import Course, CourseAvailability
 from odalc.base.views import UserDataMixin
-from odalc.mailer import send_odalc_email
+from odalc.lib.mailer import send_odalc_email
 from odalc.teachers.forms import CreateCourseForm, TeacherRegisterForm, TeacherEditForm
 from odalc.users.models import TeacherUser
 

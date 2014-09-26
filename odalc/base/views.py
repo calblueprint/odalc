@@ -1,5 +1,6 @@
-import time, json, base64, hmac, urllib
+import datetime
 from hashlib import sha1
+import time, json, base64, hmac, urllib
 
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth.forms import AuthenticationForm
@@ -16,12 +17,18 @@ from django.db.models import Q
 from odalc.base.forms import EditCourseForm
 from odalc.courses.models import Course
 from odalc.users.models import AdminUser, StudentUser, TeacherUser, User
-
-import stripe
-import datetime
+from odalc.lib.stripe import MissingTokenException, handle_course_registration, handle_donation
 
 
-class UserDataMixin(object):
+class UserDataMixin():
+    def deny_access(self):
+        """Basic method to replace the default PermissionDenied()"""
+        messages.error(
+            self.request,
+            'Oops! You do not have permission to access this page.'
+        )
+        return redirect('home')
+
     def dispatch(self, request, *args, **kwargs):
         """ dispatch() gets request.user and downcasts self.user to the actual
         user type, if possible. If the user isn't logged in, then self.user is
@@ -32,13 +39,9 @@ class UserDataMixin(object):
         self.user = request.user
         if isinstance(self.user, User):
             self.user = self.user.child
-            print self.user
             self.is_student_user = self.user.groups.filter(name="students").exists()
             self.is_teacher_user = self.user.groups.filter(name="teachers").exists()
             self.is_admin_user = self.user.groups.filter(name="odalc_admins").exists()
-            print self.is_student_user
-            print self.is_teacher_user
-            print self.is_admin_user
         else:
             self.is_student_user = False
             self.is_teacher_user = False
@@ -58,14 +61,6 @@ class UserDataMixin(object):
         context['is_teacher_user'] = self.is_teacher_user
         context['is_admin_user'] = self.is_admin_user
         return context
-
-    def deny_access(self):
-        """Basic method to replace the default PermissionDenied()"""
-        messages.error(
-            self.request,
-            'Oops! You do not have permission to access this page.'
-        )
-        return redirect('home')
 
 
 class CourseDetailView(UserDataMixin, DetailView):
@@ -102,52 +97,29 @@ class CourseDetailView(UserDataMixin, DetailView):
         return context
 
     def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        course = self.object
         context = self.get_context_data(object=course)
-
-        stripe.api_key = settings.STRIPE_SECRET_KEY
-
-        # Get the credit card details submitted by the form
-        token = request.POST.get('stripeToken', False)
-        if not token:
-            messages.error(request, "No payment information was included in your submission. Your card hasn't been charged")
-            return redirect('courses:detail',course.pk)
-
-        # Create the charge on Stripe's servers - this will charge the user's card
+        course = self.get_object()
         if context['course_full']:
             messages.error(request, "This course is already full. Your card hasn't been charged")
-            return redirect('courses:detail',course.pk)
+            return redirect('courses:detail', course.pk)
         if context['in_class']:
             messages.error(request, "You are already signed up for this course. Your card hasn't been charged")
-            return redirect('courses:detail',course.pk)
+            return redirect('courses:detail', course.pk)
         try:
-          charge = stripe.Charge.create(
-              amount=int(course.cost * 100), # amount in cents, again
-              currency="usd",
-              card=token,
-              description='This is a payment for ' + self.object.title,
-              metadata={
-                'first_name':self.user.first_name,
-                'last_name':self.user.last_name,
-                'email':self.user.email,
-                'course':course.title,
-                'teacher_first_name':course.teacher.first_name,
-                'teacher_last_name':course.teacher.last_name,
-                'teacher_email':course.teacher.email,
-                'odalc_funds': course.odalc_cost_split
-                }
-          )
-        except stripe.CardError, e:
-          # The card has been declined
-            messages.error(request, "Your information was invalid or your card has been declined")
-            return self.render_to_response(self.get_context_data())
+            token = request.POST.get('stripeToken', False)
+            handle_course_registration(self.user, course, token)
 
-        #add student to course
-        course.students.add(self.user)
-        course.save()
-        messages.success(request, "You have successfully registered for this course!")
-        return redirect('courses:detail',course.pk)
+            course.students.add(self.user)
+            course.save()
+
+            messages.success(request, "You have successfully registered for this course!")
+            return redirect('courses:detail',course.pk)
+        except MissingTokenException:
+            messages.error(request, "No payment information was included in your submission. Your card was not charged.")
+            return redirect('courses:detail', course.pk)
+        except stripe.CardError:
+            messages.error(request, "Your information was invalid or your card has been declined.")
+            return self.render_to_response(self.get_context_data())
 
 
 class CourseEditView(UserDataMixin, UpdateView):
@@ -223,27 +195,20 @@ class DonatePageView(UserDataMixin, TemplateView):
         return context
 
     def post(self, request, *args, **kwargs):
-        stripe.api_key = settings.STRIPE_SECRET_KEY
-
         # Get the credit card details submitted by the form
         token = request.POST.get('stripeToken', False)
         amount = request.POST.get('quantity', False)
-        if not token or not amount:
+        try:
+            handle_donation(amount, token)
+            messages.success(request, "Thank you! Your donation has been processed.")
+            return redirect('donate')
+        except MissingTokenException:
             messages.error(request, "No payment information was included in your submission. Your card hasn't been charged")
             return redirect('donate')
-        try:
-          charge = stripe.Charge.create(
-              amount=int(amount) * 100, # amount in cents, again
-              currency="usd",
-              card=token
-          )
-        except stripe.CardError, e:
-          # The card has been declined
+        except stripe.CardError:
+            # The card has been declined
             messages.error(request, "Your information was invalid or your card has been declined")
             return self.render_to_response(self.get_context_data())
-
-        messages.success(request, "Thank you! Your donation has been processed.")
-        return redirect('donate')
 
 
 class LoginView(UserDataMixin, FormView):
