@@ -28,11 +28,12 @@ class TeacherRegisterView(UserDataMixin, CreateView):
         return super(TeacherRegisterView, self).dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
-        a = super(TeacherRegisterView, self).form_valid(form)
-        user = authenticate(username=self.request.POST['email'],
-                         password=self.request.POST['password1'])
+        user = authenticate(
+            username=self.request.POST['email'],
+            password=self.request.POST['password1']
+        )
         login(self.request, user)
-        return a
+        return super(TeacherRegisterView, self).form_valid(form)
 
 
 class TeacherEditView(UserDataMixin, UpdateView):
@@ -80,9 +81,6 @@ class TeacherDashboardView(UserDataMixin, TemplateView):
     template_name = "teachers/dashboard.html"
 
     def get_context_data(self, **kwargs):
-        """
-        Insert the single object into the context dict.
-        """
         context = super(TeacherDashboardView, self).get_context_data(**kwargs)
         owned_courses = Course.objects.filter(teacher=self.user)
         context['user'] = self.user

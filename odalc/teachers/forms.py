@@ -28,6 +28,7 @@ class TeacherRegisterForm(UserRegisterForm):
                   'experience',
                   'info_source')
 
+
 class TeacherEditForm(forms.ModelForm):
     class Meta:
         model = TeacherUser
@@ -61,4 +62,11 @@ class CreateCourseForm(forms.ModelForm):
 
     class Meta:
         model = Course
-        exclude = ['teacher', 'students', 'start_datetime', 'end_datetime', 'status', 'is_featured']
+        exclude = (
+            'teacher',
+            'students',
+            'start_datetime',
+            'end_datetime',
+            'status',
+            'is_featured'
+        )

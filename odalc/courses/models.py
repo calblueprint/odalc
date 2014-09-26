@@ -235,8 +235,8 @@ class Course(models.Model):
     def is_owner(self, teacher):
         return self.teacher == teacher
 
-    def is_past_start_date(self, curr_date):
-        return curr_date >= self.start_datetime.date()
+    def is_past_start_date(self, curr_datetime):
+        return curr_datetime.date() >= self.start_datetime.date()
 
     def is_student_in_course(self, student):
         return self.students.filter(id=student.id).exists()

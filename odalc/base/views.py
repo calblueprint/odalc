@@ -22,11 +22,13 @@ from django.views.generic import (
 from odalc.base.forms import EditCourseForm
 from odalc.courses.models import Course
 from odalc.users.models import AdminUser, StudentUser, TeacherUser, User
-from odalc.lib.stripe import (
+from odalc.lib.payments import (
     MissingTokenException,
     handle_stripe_course_registration,
     handle_stripe_donation
 )
+
+import stripe
 
 
 class UserDataMixin(object):
@@ -94,7 +96,7 @@ class CourseDetailView(UserDataMixin, DetailView):
             context['email'] = self.user.email
             context['in_class'] = course.is_student_in_course(self.user)
             context['submitted_feedback'] = course.is_student_feedback_submitted(self.user)
-            context['is_past_start_date'] = course.is_past_start(datetime.datetime.now())
+            context['is_past_start_date'] = course.is_past_start_date(datetime.datetime.now())
         context['cost_in_cents'] = course.get_cost_in_cents()
         context['course_full'] = course.is_full()
         context['course_finished'] = course.is_finished()

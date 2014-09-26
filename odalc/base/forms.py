@@ -49,32 +49,6 @@ class UserRegisterForm(forms.ModelForm):
     def save(self, commit=True):
         user = super(UserRegisterForm, self).save(commit=False)
         user.set_password(self.cleaned_data["password1"])
-        if commit:
-            if type(user) == TeacherUser:
-                try:
-                    group = Group.objects.get(name='teachers')
-                except Group.DoesNotExist:
-                    group = Group(name="teachers")
-                    group.save()
-                    group.permissions.add(Permission.objects.get(codename="teacher_permission"))
-            elif type(user) == StudentUser:
-                try:
-                    group = Group.objects.get(name='students')
-                except Group.DoesNotExist:
-                    group = Group(name="students")
-                    group.save()
-                    group.permissions.add(Permission.objects.get(codename="student_permission"))
-            elif type(user) == AdminUser:
-                try:
-                    group = Group.objects.get(name='admins')
-                except Group.DoesNotExist:
-                    group = Group(name="admins")
-                    group.save()
-                    group.permissions.add(Permission.objects.get(codename="admin_permission"))
-            else:
-                raise Exception()
-            user.save()
-            group.user_set.add(user)
         return user
 
 
@@ -82,6 +56,15 @@ class EditCourseForm(forms.ModelForm):
     date = forms.DateField(label='Date to Teach Course', required=False)
     start_time = forms.TimeField(label='Starting Time for Course Session', required=False)
     end_time = forms.TimeField(label='Ending Time for Course Session', required=False)
+
+    def __init__(self, *args, **kwargs):
+        super(EditCourseForm, self).__init__(*args, **kwargs)
+        # TODO: Fix the timezones on these initial values
+        if self.instance.start_datetime:
+            self.fields['date'].initial = self.instance.start_datetime.date
+            self.fields['start_time'].initial = self.instance.start_datetime.time
+        if self.instance.end_datetime:
+            self.fields['end_time'].initial = self.instance.end_datetime.time
 
     def save(self, *args, **kwargs):
         date = self.cleaned_data.get('date')
@@ -93,15 +76,6 @@ class EditCourseForm(forms.ModelForm):
             self.instance.end_datetime = dt.combine(date, end_time)
         return super(EditCourseForm, self).save(*args, **kwargs)
 
-    def __init__(self, *args, **kwargs):
-        super(EditCourseForm, self).__init__(*args, **kwargs)
-        # TODO: Fix the timezones on these initial values
-        if self.instance.start_datetime:
-            self.fields['date'].initial = self.instance.start_datetime.date
-            self.fields['start_time'].initial = self.instance.start_datetime.time
-        if self.instance.end_datetime:
-            self.fields['end_time'].initial = self.instance.end_datetime.time
-
     class Meta:
         model = Course
-        exclude = ['teacher', 'students', 'start_datetime', 'end_datetime',]
+        exclude = ('teacher', 'students', 'start_datetime', 'end_datetime')
