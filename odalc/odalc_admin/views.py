@@ -15,11 +15,11 @@ from django.views.generic import (
 from django.contrib import messages
 
 from odalc.base.forms import EditCourseForm
-from odalc.base.views import UserDataMixin
 from odalc.courses.models import Course
 from odalc.lib.mailer import send_odalc_email
 from odalc.odalc_admin.forms import AdminEditForm, AdminRegisterForm
 from odalc.users.models import AdminUser, StudentUser, TeacherUser
+from odalc.users.views import UserDataMixin
 
 
 class ApplicationReviewView(UserDataMixin, UpdateView):
@@ -73,7 +73,7 @@ class ApplicationReviewView(UserDataMixin, UpdateView):
     def dispatch(self, *args, **kwargs):
         handler = super(ApplicationReviewView, self).dispatch(*args, **kwargs)
         if not self.user.is_authenticated():
-            return redirect('/accounts/login?next=%s' % self.request.path)
+            return redirect('/users/login?next=%s' % self.request.path)
         elif self.is_admin_user:
             return super(ApplicationReviewView, self).dispatch(*args, **kwargs)
         else:
@@ -90,7 +90,7 @@ class AdminDashboardView(UserDataMixin, TemplateView):
     def dispatch(self, *args, **kwargs):
         handler = super(AdminDashboardView, self).dispatch(*args, **kwargs)
         if not self.user.is_authenticated():
-            return redirect('/accounts/login?next=%s' % self.request.path)
+            return redirect('/users/login?next=%s' % self.request.path)
         elif self.is_admin_user:
             return handler
         return self.deny_access()
@@ -130,7 +130,7 @@ class CourseFeedbackView(UserDataMixin, DetailView):
         handler = super(CourseFeedbackView, self).dispatch(*args, **kwargs)
         course = self.get_object()
         if not self.user.is_authenticated():
-            return redirect('/accounts/login?next=%s' % self.request.path)
+            return redirect('/users/login?next=%s' % self.request.path)
         elif self.is_admin_user or course.is_owner(self.user):
             return handler
         else:
@@ -184,7 +184,7 @@ class AdminRegisterView(UserDataMixin, CreateView):
     def dispatch(self, *args, **kwargs):
         handler = super(AdminRegisterView, self).dispatch(*args, **kwargs)
         if not self.user.is_authenticated():
-            return redirect('/accounts/login?next=%s' % self.request.path)
+            return redirect('/users/login?next=%s' % self.request.path)
         elif self.is_admin_user:
             return handler
         else:

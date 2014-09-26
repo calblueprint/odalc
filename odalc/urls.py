@@ -10,9 +10,7 @@ add_to_builtins('athumb.templatetags.thumbnail')
 from odalc.base.views import (
     AboutPageView,
     DonatePageView,
-    HomePageView,
-    LoginView,
-    LogoutView
+    HomePageView
 )
 from odalc.lib.s3 import SignS3View
 
@@ -21,8 +19,7 @@ urlpatterns = patterns('',
     url(r'^courses/', include('odalc.base.urls', namespace='courses')),
     url(r'^students/', include('odalc.students.urls', namespace='students')),
     url(r'^teachers/', include('odalc.teachers.urls', namespace='teachers')),
-    url(r'^accounts/login/', LoginView.as_view(), name='login'),
-    url(r'^accounts/logout/', LogoutView.as_view(), name='logout'),
+    url(r'^users/', include('odalc.users.urls', namespace='users')),
     url(r'^about/', AboutPageView.as_view(), name='about'),
     url(r'^donate/', DonatePageView.as_view(), name='donate'),
     url(r'^sign_s3/', SignS3View.as_view(), name='sign_s3'),

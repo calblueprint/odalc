@@ -6,10 +6,10 @@ from django.views.decorators.debug import sensitive_post_parameters
 from django.views.generic import CreateView, TemplateView, UpdateView
 from django.contrib import messages
 
-from odalc.base.views import UserDataMixin
 from odalc.courses.models import Course, CourseFeedback
 from odalc.students.forms import StudentRegisterForm, StudentEditForm, FeedbackForm
 from odalc.users.models import StudentUser
+from odalc.users.views import UserDataMixin
 
 class StudentRegisterView(UserDataMixin, CreateView):
     """Allows a student to register"""
@@ -70,7 +70,7 @@ class SubmitCourseFeedbackView(UserDataMixin, CreateView):
     def dispatch(self, *args, **kwargs):
         handler = super(SubmitCourseFeedbackView, self).dispatch(*args, **kwargs)
         if not self.user.is_authenticated():
-            return redirect('/accounts/login?next=%s' % self.request.path)
+            return redirect('/users/login?next=%s' % self.request.path)
         # The course is guaranteed to exist!
         self.course = Course.objects.get(pk=self.kwargs.get('pk', None))
         if self.is_student_user and self.course.is_student_in_course(self.user):
@@ -97,7 +97,7 @@ class StudentDashboardView(UserDataMixin, TemplateView):
     def dispatch(self, *args, **kwargs):
         handler = super(StudentDashboardView, self).dispatch(*args, **kwargs)
         if not self.user.is_authenticated():
-            return redirect('/accounts/login?next=%s' % self.request.path)
+            return redirect('/users/login?next=%s' % self.request.path)
         elif self.is_student_user:
             return handler
         else:

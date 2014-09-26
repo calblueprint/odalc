@@ -9,10 +9,10 @@ from django.views.generic import CreateView, FormView, TemplateView, UpdateView
 from django.contrib import messages
 
 from odalc.courses.models import Course, CourseAvailability
-from odalc.base.views import UserDataMixin
 from odalc.lib.mailer import send_odalc_email
 from odalc.teachers.forms import CreateCourseForm, TeacherRegisterForm, TeacherEditForm
 from odalc.users.models import TeacherUser
+from odalc.users.views import UserDataMixin
 
 
 class TeacherRegisterView(UserDataMixin, CreateView):
@@ -87,3 +87,4 @@ class TeacherDashboardView(UserDataMixin, TemplateView):
         context['finished_courses'] = Course.objects.get_finished(owned_courses)
         context['denied_courses'] = Course.objects.get_denied(owned_courses)
         return context
+
