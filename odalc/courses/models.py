@@ -8,7 +8,7 @@ from django.core.validators import (
 )
 from django.db import models
 
-from odalc.base.backends.upload import S3BotoStorage_ODALC
+from odalc.lib.s3 import S3BotoStorage_ODALC
 
 from athumb.fields import ImageWithThumbsField
 from athumb.backends.s3boto import S3BotoStorage_AllPublic
@@ -19,7 +19,7 @@ class CourseManager(models.Manager):
         """ Get num_courses amount of featured courses. If we don't have enough
         featured courses, then we retrieve older ones
         """
-        if not qs:
+        if qs is None:
             qs = super(CourseManager, self).get_queryset()
         featured_courses = qs.filter(
             is_featured = True).order_by('start_datetime')[:num_courses]
@@ -40,14 +40,14 @@ class CourseManager(models.Manager):
             return featured_courses
 
     def get_all_approved(self, qs=None):
-        if not qs:
+        if qs is None:
             qs = super(CourseManager, self).get_queryset()
         return qs.filter(
             models.Q(status=Course.STATUS_ACCEPTED) | models.Q(status=Course.STATUS_FINISHED)
         ).order_by('-start_datetime')
 
     def get_in_date_range(self, start, finish, qs=None):
-        if not qs:
+        if qs is None:
             qs = super(CourseManager, self).get_queryset()
         return qs.filter(
             start_datetime__range=[start, finish],
@@ -55,29 +55,29 @@ class CourseManager(models.Manager):
         ).order_by('start_datetime')
 
     def get_pending(self, qs=None):
-        if not qs:
+        if qs is None:
             qs = super(CourseManager, self).get_queryset()
         return qs.filter(status=Course.STATUS_PENDING).order_by('-start_datetime')
 
     def get_active(self, is_featured=False, qs=None):
         """ Gets active courses, with a flag to specify if we want active featured
         courses or active non-featured courses """
-        if not qs:
+        if qs is None:
             qs = super(CourseManager, self).get_queryset()
         return qs.filter(status=Course.STATUS_ACCEPTED, is_featured=is_featured).order_by('-start_datetime')
 
     def get_all_active(self, qs=None):
-        if not qs:
+        if qs is None:
             qs = super(CourseManager, self).get_queryset()
         return qs.filter(status=Course.STATUS_ACCEPTED).order_by('-start_datetime')
 
     def get_finished(self, qs=None):
-        if not qs:
+        if qs is None:
             qs = super(CourseManager, self).get_queryset()
         return qs.filter(status=Course.STATUS_FINISHED).order_by('-start_datetime')
 
     def get_denied(self, qs=None):
-        if not qs:
+        if qs is None:
             qs = super(CourseManager, self).get_queryset()
         return qs.filter(status=Course.STATUS_DENIED).order_by('-start_datetime')
 
@@ -236,7 +236,10 @@ class Course(models.Model):
         return self.teacher == teacher
 
     def is_past_start_date(self, curr_datetime):
-        return curr_datetime.date() >= self.start_datetime.date()
+        if self.start_datetime:
+            return curr_datetime.date() >= self.start_datetime.date()
+        else:
+            return False
 
     def is_student_in_course(self, student):
         return self.students.filter(id=student.id).exists()

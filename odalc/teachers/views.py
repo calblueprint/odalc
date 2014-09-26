@@ -28,11 +28,9 @@ class TeacherRegisterView(UserDataMixin, CreateView):
         return super(TeacherRegisterView, self).dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
-        user = authenticate(
-            username=self.request.POST['email'],
-            password=self.request.POST['password1']
-        )
-        login(self.request, user)
+        user = form.save()
+        login(self.request, authenticate(
+            username=user.email, password=self.request.POST['password1']))
         return super(TeacherRegisterView, self).form_valid(form)
 
 

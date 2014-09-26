@@ -11,10 +11,9 @@ from django.db import models
 from django.db.models.signals import post_save, post_syncdb
 from django.dispatch import receiver
 
-from odalc.base.backends.upload import S3BotoStorage_ODALC
+from odalc.lib.s3 import S3BotoStorage_ODALC
 
 from athumb.fields import ImageWithThumbsField
-from athumb.backends.s3boto import S3BotoStorage_AllPublic
 from localflavor.us import models as localflavor_models
 
 
@@ -63,17 +62,11 @@ class User(PermissionsMixin, AbstractBaseUser):
 class AdminUser(User):
     class Meta:
         verbose_name = "Admin"
-        permissions = (
-            ("admin_permission", "Is an ODALC Admin"),
-        )
 
 
 class StudentUser(User):
     class Meta:
         verbose_name = "Student"
-        permissions = (
-            ("student_permission", "Is a Student"),
-        )
 
 
 class TeacherUser(User):
@@ -118,7 +111,8 @@ class TeacherUser(User):
     )
     phone = localflavor_models.PhoneNumberField(
         'Contact Number',
-        help_text='Please use the most reliable phone number for contacting you.')
+        help_text='Please use the most reliable phone number for contacting you.'
+    )
     about = models.TextField(
         'About You',
         help_text='General bio about yourself. This will be shown on the course page.',
@@ -148,9 +142,6 @@ class TeacherUser(User):
 
     class Meta:
         verbose_name = 'Teacher'
-        permissions = (
-            ("teacher_permission", "Is a Teacher"),
-        )
 
 
 # On syncdb, create groups if they don't already exist

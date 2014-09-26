@@ -12,7 +12,7 @@
 {% block is_admin_dash %}active{% endblock %}
 
 {% block body %}
-<form method="POST" id='course_review'>
+<form enctype="multipart/form-data" method="POST" id='course_review'>
 {% csrf_token %}
 <div class="blue-narrow-section">
     <div class="row">
