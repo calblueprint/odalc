@@ -131,7 +131,7 @@ class CourseFeedbackView(UserDataMixin, DetailView):
         course = self.get_object()
         if not self.user.is_authenticated():
             return redirect('/accounts/login?next=%s' % self.request.path)
-        elif (self.is_admin_user or (self.is_teacher_user and course.teacher.id==self.user.id)):
+        elif self.is_admin_user or course.is_owner(self.user):
             return handler
         else:
             return self.deny_access()

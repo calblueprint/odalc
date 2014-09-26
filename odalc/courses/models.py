@@ -214,8 +214,35 @@ class Course(models.Model):
 
     objects = CourseManager()
 
+    def get_cost_in_cents(self):
+        return int(self.cost * 100)
+
+    def get_num_open_seats(self):
+        return self.size - self.students.count()
+
     def get_teacher_cost_split(self):
         return self.cost - self.odalc_cost_split
+
+    def is_accepted(self):
+        return self.status == Course.STATUS_ACCEPTED
+
+    def is_finished(self):
+        return self.status == Course.STATUS_FINISHED
+
+    def is_full(self):
+        return self.students.count() >= self.size
+
+    def is_owner(self, teacher):
+        return self.teacher == teacher
+
+    def is_past_start_date(self, curr_date):
+        return curr_date >= self.start_datetime.date()
+
+    def is_student_in_course(self, student):
+        return self.students.filter(id=student.id).exists()
+
+    def is_student_feedback_submitted(self, student):
+        return self.coursefeedback_set.filter(student=student.id).exists()
 
 
 class CourseAvailabilityManager(models.Manager):

@@ -159,17 +159,21 @@ def create_groups(sender, **kwargs):
     Group.objects.get_or_create(name='students')
     Group.objects.get_or_create(name='teachers')
 
+
 post_syncdb.connect(create_groups, sender=auth_models)
+
 
 @receiver(post_save, sender=AdminUser)
 def add_to_odalc_admins_group(sender, instance, created, **kwargs):
     if created:
         instance.groups.add(Group.objects.get(name='odalc_admins'))
 
+
 @receiver(post_save, sender=StudentUser)
 def add_to_students_group(sender, instance, created, **kwargs):
     if created:
         instance.groups.add(Group.objects.get(name='students'))
+
 
 @receiver(post_save, sender=TeacherUser)
 def add_to_teachers_group(sender, instance, created, **kwargs):

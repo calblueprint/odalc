@@ -36,7 +36,6 @@ class StudentRegisterView(UserDataMixin, CreateView):
         self.next_url = self.request.POST.get('next', None)
         if self.next_url:
             match = resolve(self.next_url)
-            print match
             if match.namespace == 'courses' and match.url_name == 'detail':
                 messages.info(
                     self.request,
@@ -73,24 +72,20 @@ class SubmitCourseFeedbackView(UserDataMixin, CreateView):
         if not self.user.is_authenticated():
             return redirect('/accounts/login?next=%s' % self.request.path)
         # The course is guaranteed to exist!
-        course = Course.objects.get(pk=self.kwargs.get('pk', None))
-        in_course = course.students.filter(email=self.user.email).exists()
-        if (self.is_student_user and in_course) or self.is_admin_user:
+        self.course = Course.objects.get(pk=self.kwargs.get('pk', None))
+        if self.is_student_user and self.course.is_student_in_course(self.user):
             return handler
         else:
             return self.deny_access()
 
     def form_valid(self, form):
-        course_feedback = form.save(commit=False)
-        course_id = self.kwargs.get('pk', None)
-        CourseFeedback.objects.create_from_form(form, course_id, self.user.id)
+        CourseFeedback.objects.create_from_form(form, self.course.id, self.user.id)
         messages.success(self.request, 'Feedback for submitted')
-        return redirect('courses:detail', course_id)
+        return redirect('courses:detail', self.course.id)
 
     def get_context_data(self, **kwargs):
         context = super(SubmitCourseFeedbackView, self).get_context_data(**kwargs)
-        context['pk'] = self.kwargs.get('pk', None)
-        context['title'] = Course.objects.get(pk=context['pk']).title
+        context['title'] = self.course.title
         return context
 
 

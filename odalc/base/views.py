@@ -11,16 +11,25 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.utils.decorators import method_decorator
 from django.views.decorators.debug import sensitive_post_parameters
-from django.views.generic import DetailView, UpdateView, TemplateView, FormView, View
-from django.db.models import Q
+from django.views.generic import (
+    DetailView,
+    FormView,
+    TemplateView,
+    UpdateView,
+    View
+)
 
 from odalc.base.forms import EditCourseForm
 from odalc.courses.models import Course
 from odalc.users.models import AdminUser, StudentUser, TeacherUser, User
-from odalc.lib.stripe import MissingTokenException, handle_course_registration, handle_donation
+from odalc.lib.stripe import (
+    MissingTokenException,
+    handle_stripe_course_registration,
+    handle_stripe_donation
+)
 
 
-class UserDataMixin():
+class UserDataMixin(object):
     def deny_access(self):
         """Basic method to replace the default PermissionDenied()"""
         messages.error(
@@ -71,49 +80,43 @@ class CourseDetailView(UserDataMixin, DetailView):
     def dispatch(self, request, *args, **kwargs):
         handler = super(CourseDetailView, self).dispatch(request, *args, **kwargs)
         course = self.get_object()
-        if (course.status == Course.STATUS_ACCEPTED or
-            course.status == Course.STATUS_FINISHED or
-            (self.is_teacher_user and course.teacher.email == self.user.email) or
-            self.is_admin_user):
+        if (course.is_accepted() or course.is_finished() or
+            (self.user.is_authenticated and (course.is_owner(self.user) or self.is_admin_user))):
             return handler
         else:
             return self.deny_access()
 
     def get_context_data(self, **kwargs):
         context = super(CourseDetailView, self).get_context_data(**kwargs)
-        course = self.object
+        course = self.get_object()
         context['stripe_public_key'] = settings.STRIPE_PUBLIC_KEY
         if self.user.is_authenticated():
             context['email'] = self.user.email
-            context['in_class'] = course.students.filter(id=self.user.id).exists()
-            if self.is_student_user:
-                context['submitted_feedback'] = course.coursefeedback_set.filter(student=self.user.id).exists()
-                context['is_past_start_date'] = datetime.datetime.now().date() >= course.start_datetime.date()
-        context['cost_in_cents'] = int(course.cost * 100)
-        context['course_full'] = course.students.count() >= course.size
-        context['course_finished'] = course.status == Course.STATUS_FINISHED
-        context['open_seats'] = course.size - course.students.count()
-        context['is_owner'] = (self.user.has_perm('base.teacher_permission') and course.teacher.email == self.user.email)
+            context['in_class'] = course.is_student_in_course(self.user)
+            context['submitted_feedback'] = course.is_student_feedback_submitted(self.user)
+            context['is_past_start_date'] = course.is_past_start(datetime.datetime.now())
+        context['cost_in_cents'] = course.get_cost_in_cents()
+        context['course_full'] = course.is_full()
+        context['course_finished'] = course.is_finished()
+        context['open_seats'] = course.get_num_open_seats()
+        context['is_owner'] = course.is_owner(self.user)
         return context
 
     def post(self, request, *args, **kwargs):
-        context = self.get_context_data(object=course)
         course = self.get_object()
-        if context['course_full']:
+        if course.is_full():
             messages.error(request, "This course is already full. Your card hasn't been charged")
             return redirect('courses:detail', course.pk)
-        if context['in_class']:
+        if course.is_student_in_course(self.user):
             messages.error(request, "You are already signed up for this course. Your card hasn't been charged")
             return redirect('courses:detail', course.pk)
         try:
             token = request.POST.get('stripeToken', False)
-            handle_course_registration(self.user, course, token)
-
+            handle_stripe_course_registration(self.user, course, token)
             course.students.add(self.user)
             course.save()
-
             messages.success(request, "You have successfully registered for this course!")
-            return redirect('courses:detail',course.pk)
+            return redirect('courses:detail', course.pk)
         except MissingTokenException:
             messages.error(request, "No payment information was included in your submission. Your card was not charged.")
             return redirect('courses:detail', course.pk)
@@ -133,8 +136,7 @@ class CourseEditView(UserDataMixin, UpdateView):
         course = self.get_object()
         if not self.user.is_authenticated():
             return redirect('/accounts/login?next=%s' % self.request.path)
-        elif ((self.is_teacher_user and (course.teacher.email == self.user.email))
-            or self.is_admin_user):
+        elif course.is_owner(self.user) or self.is_admin_user:
             return handler
         else:
             return self.deny_access()
@@ -154,9 +156,9 @@ class CourseEditView(UserDataMixin, UpdateView):
             # Should never happen
             return reverse('home')
 
-"""Main view for displaying the courses offered. There are three categories of courses:
-all courses, past courses, and upcoming courses (courses coming up in the next month)"""
 class CourseListingView(UserDataMixin, TemplateView):
+    """Main view for displaying the courses offered. There are three categories of courses:
+    all courses, past courses, and upcoming courses (courses coming up in the next month)"""
     template_name = 'base/course_listing.html'
 
     def get_context_data(self, **kwargs):
@@ -199,7 +201,7 @@ class DonatePageView(UserDataMixin, TemplateView):
         token = request.POST.get('stripeToken', False)
         amount = request.POST.get('quantity', False)
         try:
-            handle_donation(amount, token)
+            handle_stripe_donation(amount, token)
             messages.success(request, "Thank you! Your donation has been processed.")
             return redirect('donate')
         except MissingTokenException:
@@ -215,18 +217,6 @@ class LoginView(UserDataMixin, FormView):
     template_name = 'base/login.html'
     form_class = AuthenticationForm
 
-    # TODO: Add proper redirection when urls/templates are better defined
-    def form_valid(self, form):
-        auth_login(self.request, form.get_user())
-        if self.request.session.test_cookie_worked():
-            self.request.session.delete_test_cookie()
-        messages.success(self.request, 'Logged in as ' + self.request.POST.get('username'))
-        return redirect(self.next_url)
-
-    def form_invalid(self, form):
-        messages.error(self.request, 'Incorrect login or password. Note: Fields are case sensitive.')
-        return self.render_to_response(self.get_context_data(form=form))
-
     @method_decorator(sensitive_post_parameters('password'))
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated():
@@ -235,6 +225,17 @@ class LoginView(UserDataMixin, FormView):
             request.session.set_test_cookie()
             self.next_url = request.GET.get('next', 'home')
             return super(LoginView, self).dispatch(request, *args, **kwargs)
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'Incorrect login or password. Note: Fields are case sensitive.')
+        return self.render_to_response(self.get_context_data(form=form))
+
+    def form_valid(self, form):
+        auth_login(self.request, form.get_user())
+        if self.request.session.test_cookie_worked():
+            self.request.session.delete_test_cookie()
+        messages.success(self.request, 'Logged in as ' + self.request.POST.get('username'))
+        return redirect(self.next_url)
 
 
 class LogoutView(UserDataMixin, View):

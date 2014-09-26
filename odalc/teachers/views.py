@@ -84,9 +84,7 @@ class TeacherDashboardView(UserDataMixin, TemplateView):
         Insert the single object into the context dict.
         """
         context = super(TeacherDashboardView, self).get_context_data(**kwargs)
-        user = TeacherUser.objects.get(id=self.user.id)
-        owned_courses = Course.objects.filter(teacher=user)
-
+        owned_courses = Course.objects.filter(teacher=self.user)
         context['user'] = self.user
         context['pending_courses'] = Course.objects.get_pending(owned_courses)
         context['active_courses'] = Course.objects.get_all_active(owned_courses)
