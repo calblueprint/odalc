@@ -2,7 +2,7 @@ from django.core.mail import  EmailMultiAlternatives
 from django.conf import settings
 from django.template import Template, Context
 
-from odalc.odalc_admin.models import AdminUser
+from odalc.users.models import AdminUser
 
 import yaml
 

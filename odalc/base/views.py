@@ -1,6 +1,5 @@
 import time, json, base64, hmac, urllib
 from hashlib import sha1
-from itertools import chain
 
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth.forms import AuthenticationForm
@@ -32,10 +31,14 @@ class UserDataMixin(object):
         """
         self.user = request.user
         if isinstance(self.user, User):
-            self.is_student_user = isinstance(self.user.child, StudentUser)
-            self.is_teacher_user = isinstance(self.user.child, TeacherUser)
-            self.is_admin_user = isinstance(self.user.child, AdminUser)
             self.user = self.user.child
+            print self.user
+            self.is_student_user = self.user.groups.filter(name="students").exists()
+            self.is_teacher_user = self.user.groups.filter(name="teachers").exists()
+            self.is_admin_user = self.user.groups.filter(name="odalc_admins").exists()
+            print self.is_student_user
+            print self.is_teacher_user
+            print self.is_admin_user
         else:
             self.is_student_user = False
             self.is_teacher_user = False
@@ -57,8 +60,11 @@ class UserDataMixin(object):
         return context
 
     def deny_access(self):
-        """Basic function to replace the default PermissionDenied()"""
-        messages.error(self.request, 'You do not have authorization to access this area')
+        """Basic method to replace the default PermissionDenied()"""
+        messages.error(
+            self.request,
+            'Oops! You do not have permission to access this page.'
+        )
         return redirect('home')
 
 
@@ -66,6 +72,17 @@ class CourseDetailView(UserDataMixin, DetailView):
     model = Course
     context_object_name = 'course'
     template_name = 'base/course.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        handler = super(CourseDetailView, self).dispatch(request, *args, **kwargs)
+        course = self.get_object()
+        if (course.status == Course.STATUS_ACCEPTED or
+            course.status == Course.STATUS_FINISHED or
+            (self.is_teacher_user and course.teacher.email == self.user.email) or
+            self.is_admin_user):
+            return handler
+        else:
+            return self.deny_access()
 
     def get_context_data(self, **kwargs):
         context = super(CourseDetailView, self).get_context_data(**kwargs)
@@ -83,15 +100,6 @@ class CourseDetailView(UserDataMixin, DetailView):
         context['open_seats'] = course.size - course.students.count()
         context['is_owner'] = (self.user.has_perm('base.teacher_permission') and course.teacher.email == self.user.email)
         return context
-
-    def dispatch(self, request, *args, **kwargs):
-        self.user = self.request.user
-        course = self.get_object()
-        if (course.status == Course.STATUS_ACCEPTED or course.status == Course.STATUS_FINISHED or
-            (self.user.has_perm('base.teacher_permission') and course.teacher.email == self.user.email) or
-            self.user.has_perm('base.admin_permission')):
-            return super(CourseDetailView, self).dispatch(request, *args, **kwargs)
-        return self.deny_access()
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -149,14 +157,15 @@ class CourseEditView(UserDataMixin, UpdateView):
     template_name = 'base/course_edit.html'
 
     def dispatch(self, request, *args, **kwargs):
-        user = self.request.user
-        if not user.is_authenticated():
-            return redirect('/accounts/login?next=%s' % self.request.path)
+        handler = super(CourseEditView, self).dispatch(request, *args, **kwargs)
         course = self.get_object()
-        if ((user.has_perm('base.teacher_permission') and course.teacher.email == user.email) or
-            user.has_perm('base.admin_permission')):
-            return super(CourseEditView, self).dispatch(request, *args, **kwargs)
-        return self.deny_access()
+        if not self.user.is_authenticated():
+            return redirect('/accounts/login?next=%s' % self.request.path)
+        elif ((self.is_teacher_user and (course.teacher.email == self.user.email))
+            or self.is_admin_user):
+            return handler
+        else:
+            return self.deny_access()
 
     def get_context_data(self, **kwargs):
         context = super(CourseEditView, self).get_context_data(**kwargs)
@@ -183,7 +192,7 @@ class CourseListingView(UserDataMixin, TemplateView):
         now = datetime.datetime.now()
         month_from_now = now + datetime.timedelta(days=30)
         context['all_courses'] = Course.objects.get_all_approved()
-        context['past_courses'] = Course.objects.get_finish()
+        context['past_courses'] = Course.objects.get_finished()
         context['upcoming_courses'] = Course.objects.get_in_date_range(now, month_from_now)
         return context
 
@@ -196,7 +205,8 @@ class HomePageView(UserDataMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(HomePageView, self).get_context_data(**kwargs)
-        context['featured_courses'] = Course.objects.get_featured(NUM_COURSES_SHOWN)
+        context['featured_courses'] = Course.objects.get_featured(
+            HomePageView.NUM_COURSES_SHOWN)
         return context
 
 
@@ -256,9 +266,10 @@ class LoginView(UserDataMixin, FormView):
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated():
             return redirect('home')
-        request.session.set_test_cookie()
-        self.next_url = request.GET.get('next', 'home')
-        return super(LoginView, self).dispatch(request, *args, **kwargs)
+        else:
+            request.session.set_test_cookie()
+            self.next_url = request.GET.get('next', 'home')
+            return super(LoginView, self).dispatch(request, *args, **kwargs)
 
 
 class LogoutView(UserDataMixin, View):

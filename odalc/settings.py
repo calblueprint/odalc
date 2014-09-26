@@ -35,7 +35,6 @@ PROJECT_ROOT = os.path.abspath(
 # Application definition
 
 INSTALLED_APPS = (
-    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -46,9 +45,11 @@ INSTALLED_APPS = (
     'djangobower',
     'widget_tweaks',
     'odalc.base',
+    'odalc.courses',
     'odalc.odalc_admin',
     'odalc.students',
     'odalc.teachers',
+    'odalc.users',
 )
 
 MIDDLEWARE_CLASSES = (

@@ -22,7 +22,8 @@ class StudentRegisterView(UserDataMixin, CreateView):
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated():
             return redirect('home')
-        return super(StudentRegisterView, self).dispatch(request, *args, **kwargs)
+        else:
+            return super(StudentRegisterView, self).dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         super(StudentRegisterView, self).form_valid(form)
@@ -81,14 +82,14 @@ class SubmitCourseFeedbackView(UserDataMixin, CreateView):
         return context
 
     def dispatch(self, *args, **kwargs):
-        user = self.request.user
-        if not user.is_authenticated():
+        handler = super(SubmitCourseFeedbackView, self).dispatch(*args, **kwargs)
+        if not self.user.is_authenticated():
             return redirect('/accounts/login?next=%s' % self.request.path)
+        # The course is guaranteed to exist!
         course = Course.objects.get(pk=self.kwargs.get('pk', None))
-        students = [student.email for student in course.students.all()]
-        if ((user.has_perm('base.student_permission') and user.email in students) or
-            user.has_perm('base.admin_permission')):
-            return super(SubmitCourseFeedbackView, self).dispatch(*args, **kwargs)
+        in_course = course.students.filter(email=self.user.email).exists()
+        if (self.is_student_user and in_course) or self.is_admin_user:
+            return handler
         else:
             return self.deny_access()
 
@@ -107,9 +108,10 @@ class StudentDashboardView(UserDataMixin, TemplateView):
         return context
 
     def dispatch(self, *args, **kwargs):
-        user = self.request.user
-        if not user.is_authenticated():
+        handler = super(StudentDashboardView, self).dispatch(*args, **kwargs)
+        if not self.user.is_authenticated():
             return redirect('/accounts/login?next=%s' % self.request.path)
-        if user.has_perm('base.student_permission'):
-            return super(StudentDashboardView, self).dispatch(*args, **kwargs)
-        return self.deny_access()
+        elif self.is_student_user:
+            return handler
+        else:
+            return self.deny_access()

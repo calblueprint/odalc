@@ -88,7 +88,7 @@ class TeacherDashboardView(UserDataMixin, TemplateView):
         owned_courses = Course.objects.filter(teacher=user)
 
         context['user'] = self.user
-        context['pending_courses'] = Courses.objects.get_pending(owned_courses)
+        context['pending_courses'] = Course.objects.get_pending(owned_courses)
         context['active_courses'] = Course.objects.get_all_active(owned_courses)
         context['finished_courses'] = Course.objects.get_finished(owned_courses)
         context['denied_courses'] = Course.objects.get_denied(owned_courses)

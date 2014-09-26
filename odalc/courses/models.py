@@ -1,4 +1,5 @@
 from datetime import datetime as dt
+from itertools import chain
 
 from django.conf import settings
 from django.core.validators import (
@@ -11,6 +12,99 @@ from odalc.base.backends.upload import S3BotoStorage_ODALC
 
 from athumb.fields import ImageWithThumbsField
 from athumb.backends.s3boto import S3BotoStorage_AllPublic
+
+
+class CourseManager(models.Manager):
+    def get_featured(self, num_courses, qs=None):
+        """ Get num_courses amount of featured courses. If we don't have enough
+        featured courses, then we retrieve older ones
+        """
+        if not qs:
+            qs = super(CourseManager, self).get_queryset()
+        featured_courses = qs.filter(
+            is_featured = True).order_by('start_datetime')[:num_courses]
+        # We don't have enough featured or upcoming courses, so show some past courses too
+        if featured_courses.count() < num_courses:
+            num_upcoming_needed = num_courses - featured_courses.count()
+            upcoming_courses = qs.filter(status=Course.STATUS_ACCEPTED).exclude(
+                is_featured=True).order_by('start_datetime')[:num_upcoming_needed]
+            num_retrieved = upcoming_courses.count() + featured_courses.count()
+            past_courses = []
+            if num_retrieved < num_courses:
+                past_courses = Course.objects.filter(
+                    status=Course.STATUS_FINISHED
+                ).order_by('-start_datetime')[:num_courses - num_retrieved]
+            return list(chain(featured_courses, upcoming_courses, past_courses))
+        # We have enough featured courses
+        else:
+            return featured_courses
+
+    def get_all_approved(self, qs=None):
+        if not qs:
+            qs = super(CourseManager, self).get_queryset()
+        return qs.filter(
+            models.Q(status=Course.STATUS_ACCEPTED) | models.Q(status=Course.STATUS_FINISHED)
+        ).order_by('-start_datetime')
+
+    def get_in_date_range(self, start, finish, qs=None):
+        if not qs:
+            qs = super(CourseManager, self).get_queryset()
+        return qs.filter(
+            start_datetime__range=[start, finish],
+            status=Course.STATUS_ACCEPTED
+        ).order_by('start_datetime')
+
+    def get_pending(self, qs=None):
+        if not qs:
+            qs = super(CourseManager, self).get_queryset()
+        return qs.filter(status=Course.STATUS_PENDING).order_by('-start_datetime')
+
+    def get_active(self, is_featured=False, qs=None):
+        """ Gets active courses, with a flag to specify if we want active featured
+        courses or active non-featured courses """
+        if not qs:
+            qs = super(CourseManager, self).get_queryset()
+        return qs.filter(status=Course.STATUS_ACCEPTED, is_featured=is_featured).order_by('-start_datetime')
+
+    def get_all_active(self, qs=None):
+        if not qs:
+            qs = super(CourseManager, self).get_queryset()
+        return qs.filter(status=Course.STATUS_ACCEPTED).order_by('-start_datetime')
+
+    def get_finished(self, qs=None):
+        if not qs:
+            qs = super(CourseManager, self).get_queryset()
+        return qs.filter(status=Course.STATUS_FINISHED).order_by('-start_datetime')
+
+    def get_denied(self, qs=None):
+        if not qs:
+            qs = super(CourseManager, self).get_queryset()
+        return qs.filter(status=Course.STATUS_DENIED).order_by('-start_datetime')
+
+    def approve_course(self, course, date, start_time, end_time):
+        course.status = course.STATUS_ACCEPTED
+        course.start_datetime = dt.combine(date, start_time)
+        course.end_datetime = dt.combine(date, end_time)
+        course.save()
+        return course
+
+    def deny_course(self, course):
+        course.status = course.STATUS_DENIED
+        course.save()
+        return course
+
+    def create_from_form(self, form, teacher):
+        course = form.save(commit=False)
+        course.teacher = teacher
+        course.status = Course.STATUS_PENDING
+        course.save()
+        return course
+
+    def toggle_featured(self, course_id, is_featured):
+        course = Course.objects.get(id=course_id)
+        course.is_featured = is_featured
+        course.save()
+        return course
 
 
 class Course(models.Model):
@@ -38,8 +132,8 @@ class Course(models.Model):
         (STATUS_FINISHED, 'Finished')
     )
 
-    teacher = models.ForeignKey('teachers.TeacherUser')
-    students = models.ManyToManyField('students.StudentUser', blank=True)
+    teacher = models.ForeignKey('users.TeacherUser')
+    students = models.ManyToManyField('users.StudentUser', blank=True)
     title = models.CharField('Course Title', max_length=50)
     short_description = models.CharField(
         'Short Description',
@@ -124,111 +218,6 @@ class Course(models.Model):
         return self.cost - self.odalc_cost_split
 
 
-class CourseManager(models.Manager):
-    def get_featured(self, num_courses, qs=None):
-        """ Get num_courses amount of featured courses. If we don't have enough
-        featured courses, then we retrieve older ones
-        """
-        if not qs:
-            qs = super(CourseManager, self).get_queryset()
-        featured_courses = qs.filter(
-            is_featured = True).order_by('start_datetime')[:num_courses]
-        # We don't have enough featured or upcoming courses, so show some past courses too
-        if featured_courses.count() < num_courses:
-            num_upcoming_needed = num_courses - featured_courses.count()
-            upcoming_courses = qs.filter(status=Course.STATUS_ACCEPTED).exclude(
-                is_featured=True).order_by('start_datetime')[:num_upcoming_needed]
-            num_retrieved = upcoming_courses.count() + featured_courses.count()
-            past_courses = []
-            if num_retrieved < num_courses:
-                past_courses = Course.objects.filter(
-                    status=Course.STATUS_FINISHED
-                ).order_by('-start_datetime')[:num_courses - num_retrieved]
-            return list(chain(featured_courses, upcoming_courses, past_courses))
-        # We have enough featured courses
-        else:
-            return featured_courses
-
-    def get_all_approved(self, qs=None):
-        if not qs:
-            qs = super(CourseManager, self).get_queryset()
-        return qs.filter(
-            Q(status=Course.STATUS_ACCEPTED) | Q(status=Course.STATUS_FINISHED)
-        ).order_by('-start_datetime')
-
-    def get_in_date_range(self, start, finish, qs=None):
-        if not qs:
-            qs = super(CourseManager, self).get_queryset()
-        return qs.filter(
-            start_datetime__range=[start, finish],
-            status=Course.STATUS_ACCEPTED
-        ).order_by('start_datetime')
-
-    def get_pending(self, qs=None):
-        if not qs:
-            qs = super(CourseManager, self).get_queryset()
-        return qs.filter(status=Course.STATUS_PENDING).order_by('-start_datetime')
-
-    def get_active(self, is_featured=False, qs=None)
-        """ Gets active courses, with a flag to specify if we want active featured
-        courses or active non-featured courses """
-        if not qs:
-            qs = super(CourseManager, self).get_queryset()
-        return qs.filter(status=Course.STATUS_ACCEPTED, is_featured=is_featured).order_by('-start_datetime')
-
-    def get_all_active(self, qs=None)
-        if not qs:
-            qs = super(CourseManager, self).get_queryset()
-        return qs.filter(status=Course.STATUS_ACCEPTED).order_by('-start_datetime')
-
-    def get_finished(self, qs=None):
-        if not qs:
-            qs = super(CourseManager, self).get_queryset()
-        return qs.filter(status=Course.STATUS_FINISHED).order_by('-start_datetime')
-
-    def get_denied(self, qs=None):
-        if not qs:
-            qs = super(CourseManager, self).get_queryset()
-        return qs.filter(status=Course.STATUS_DENIED).order_by('-start_datetime')
-
-    def approve_course(self, course, date, start_time, end_time):
-        course.status = course.STATUS_ACCEPTED
-        course.start_datetime = dt.combine(date, start_time)
-        course.end_datetime = dt.combine(date, end_time)
-        course.save()
-        return course
-
-    def deny_course(self, course):
-        course.status = course.STATUS_DENIED
-        course.save()
-        return course
-
-    def create_from_form(self, form, teacher):
-        course = form.save(commit=False)
-        course.teacher = teacher
-        course.status = Course.STATUS_PENDING
-        course.save()
-        return course
-
-    def toggle_featured(self, course_id, is_featured):
-        course = Course.objects.get(id=course_id)
-        course.is_featured = is_featured
-        course.save()
-        return course
-
-
-class CourseAvailability(models.Model):
-    course = models.OneToOneField('Course')
-    start_datetime1 = models.DateTimeField()
-    end_datetime1 = models.DateTimeField()
-    start_datetime2 = models.DateTimeField()
-    end_datetime2 = models.DateTimeField()
-    start_datetime3 = models.DateTimeField()
-    end_datetime3 = models.DateTimeField()
-
-    objects = CourseAvailabilityManager()
-
-
 class CourseAvailabilityManager(models.Manager):
     def create_from_form_data(self, cleaned_data, course):
         start_datetime1 = dt.combine(
@@ -266,6 +255,27 @@ class CourseAvailabilityManager(models.Manager):
         )
 
 
+class CourseAvailability(models.Model):
+    course = models.OneToOneField('Course')
+    start_datetime1 = models.DateTimeField()
+    end_datetime1 = models.DateTimeField()
+    start_datetime2 = models.DateTimeField()
+    end_datetime2 = models.DateTimeField()
+    start_datetime3 = models.DateTimeField()
+    end_datetime3 = models.DateTimeField()
+
+    objects = CourseAvailabilityManager()
+
+
+class CourseFeedbackManager(models.Manager):
+    def create_from_form(self, form, course_id, user_id):
+        course_feedback = form.save(commit=False)
+        course_feedback.course = Course.objects.get(id=course_id)
+        course_feedback.student = StudentUser.objects.get(id=user_id)
+        course_feedback.save()
+        return course_feedback
+
+
 class CourseFeedback(models.Model):
     STRONGLY_DISAGREE = 1
     DISAGREE = 2
@@ -280,7 +290,7 @@ class CourseFeedback(models.Model):
         (STRONGLY_DISAGREE, 'Strongly Disagree'),
     )
 
-    student = models.ForeignKey('students.StudentUser')
+    student = models.ForeignKey('users.StudentUser')
     course = models.ForeignKey('Course')
 
     knowledgeable_of_subject = models.IntegerField(
@@ -314,11 +324,3 @@ class CourseFeedback(models.Model):
 
     objects = CourseFeedbackManager()
 
-
-class CourseFeedbackManager(models.Manager):
-    def create_from_form(self, form, course_id, user_id):
-        course_feedback = form.save(commit=False)
-        course_feedback.course = Course.objects.get(id=course_id)
-        course_feedback.student = StudentUser.objects.get(id=user_id)
-        course_feedback.save()
-        return course_feedback

@@ -71,12 +71,13 @@ class ApplicationReviewView(UserDataMixin, UpdateView):
         return redirect(ApplicationReviewView.success_url)
 
     def dispatch(self, *args, **kwargs):
-        user = self.request.user
-        if not user.is_authenticated():
+        handler = super(ApplicationReviewView, self).dispatch(*args, **kwargs)
+        if not self.user.is_authenticated():
             return redirect('/accounts/login?next=%s' % self.request.path)
-        if user.has_perm('base.admin_permission'):
+        elif self.is_admin_user:
             return super(ApplicationReviewView, self).dispatch(*args, **kwargs)
-        return self.deny_access()
+        else:
+            return self.deny_access()
 
 
 #TODO: show some teacher and student info as well
@@ -85,6 +86,14 @@ class AdminDashboardView(UserDataMixin, TemplateView):
     as well as finished courses and links to feedback for those finished courses
     """
     template_name = 'odalc_admin/admin_dashboard.html'
+
+    def dispatch(self, *args, **kwargs):
+        handler = super(AdminDashboardView, self).dispatch(*args, **kwargs)
+        if not self.user.is_authenticated():
+            return redirect('/accounts/login?next=%s' % self.request.path)
+        elif self.is_admin_user:
+            return handler
+        return self.deny_access()
 
     def get_context_data(self, **kwargs):
         context = super(AdminDashboardView, self).get_context_data(**kwargs)
@@ -96,14 +105,6 @@ class AdminDashboardView(UserDataMixin, TemplateView):
         context['teachers'] = TeacherUser.objects.all()
         context['students'] = StudentUser.objects.all()
         return context
-
-    def dispatch(self, *args, **kwargs):
-        user = self.request.user
-        if not user.is_authenticated():
-            return redirect('/accounts/login?next=%s' % self.request.path)
-        if user.has_perm('base.admin_permission'):
-            return super(AdminDashboardView, self).dispatch(*args, **kwargs)
-        return self.deny_access()
 
 class AJAXAdminDashboardView(View):
     @csrf_exempt
@@ -126,13 +127,14 @@ class CourseFeedbackView(UserDataMixin, DetailView):
     model = Course
 
     def dispatch(self, *args, **kwargs):
-        user = self.request.user
-        self.object = self.get_object()
-        if not user.is_authenticated():
+        handler = super(CourseFeedbackView, self).dispatch(*args, **kwargs)
+        course = self.get_object()
+        if not self.user.is_authenticated():
             return redirect('/accounts/login?next=%s' % self.request.path)
-        if (user.has_perm('base.admin_permission') or (user.has_perm('base.teacher_permission') and self.object.teacher.id==user.id)):
-            return super(CourseFeedbackView, self).dispatch(*args, **kwargs)
-        return self.deny_access()
+        elif (self.is_admin_user or (self.is_teacher_user and course.teacher.id==self.user.id)):
+            return handler
+        else:
+            return self.deny_access()
 
     def get_context_data(self, **kwargs):
         course = self.object
@@ -180,12 +182,13 @@ class AdminRegisterView(UserDataMixin, CreateView):
     success_url = reverse_lazy('admins:dashboard')
 
     def dispatch(self, *args, **kwargs):
-        user = self.request.user
-        if not user.is_authenticated():
+        handler = super(AdminRegisterView, self).dispatch(*args, **kwargs)
+        if not self.user.is_authenticated():
             return redirect('/accounts/login?next=%s' % self.request.path)
-        if user.has_perm('base.admin_permission'):
-            return super(AdminRegisterView, self).dispatch(*args, **kwargs)
-        return self.deny_access()
+        elif self.is_admin_user:
+            return handler
+        else:
+            return self.deny_access()
 
     def form_valid(self, form):
         admin_name = form.cleaned_data.get('first_name') + ' ' + form.cleaned_data.get('last_name')

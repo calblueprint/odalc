@@ -1,10 +1,15 @@
+from django.contrib.auth import models as auth_models
 from django.contrib.auth.models import (
     AbstractBaseUser,
     BaseUserManager,
+    Group,
     PermissionsMixin
 )
+from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
+from django.db.models.signals import post_save, post_syncdb
+from django.dispatch import receiver
 
 from odalc.base.backends.upload import S3BotoStorage_ODALC
 
@@ -54,22 +59,21 @@ class User(PermissionsMixin, AbstractBaseUser):
             except ObjectDoesNotExist:
                 pass
 
-    class Meta:
-        permissions = (
-            ("admin_permission", "Admin Permission"),
-            ("teacher_permission", "Teacher Permission"),
-            ("student_permission", "Student Permission")
-        )
-
 
 class AdminUser(User):
     class Meta:
         verbose_name = "Admin"
+        permissions = (
+            ("admin_permission", "Is an ODALC Admin"),
+        )
 
 
 class StudentUser(User):
     class Meta:
         verbose_name = "Student"
+        permissions = (
+            ("student_permission", "Is a Student"),
+        )
 
 
 class TeacherUser(User):
@@ -144,3 +148,30 @@ class TeacherUser(User):
 
     class Meta:
         verbose_name = 'Teacher'
+        permissions = (
+            ("teacher_permission", "Is a Teacher"),
+        )
+
+
+# On syncdb, create groups if they don't already exist
+def create_groups(sender, **kwargs):
+    Group.objects.get_or_create(name='odalc_admins')
+    Group.objects.get_or_create(name='students')
+    Group.objects.get_or_create(name='teachers')
+
+post_syncdb.connect(create_groups, sender=auth_models)
+
+@receiver(post_save, sender=AdminUser)
+def add_to_odalc_admins_group(sender, instance, created, **kwargs):
+    if created:
+        instance.groups.add(Group.objects.get(name='odalc_admins'))
+
+@receiver(post_save, sender=StudentUser)
+def add_to_students_group(sender, instance, created, **kwargs):
+    if created:
+        instance.groups.add(Group.objects.get(name='students'))
+
+@receiver(post_save, sender=TeacherUser)
+def add_to_teachers_group(sender, instance, created, **kwargs):
+    if created:
+        instance.groups.add(Group.objects.get(name='teachers'))
