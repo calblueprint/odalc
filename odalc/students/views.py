@@ -61,8 +61,8 @@ class StudentEditView(UserDataMixin, UpdateView):
         return super(StudentEditView, self).get_success_url()
 
 
-"""Controls course feedback submission for a particular student and course"""
 class SubmitCourseFeedbackView(UserDataMixin, CreateView):
+    """Controls course feedback submission for a particular student and course"""
     model = CourseFeedback
     template_name = 'students/course_feedback_form.html'
     form_class = FeedbackForm

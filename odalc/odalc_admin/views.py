@@ -80,7 +80,6 @@ class ApplicationReviewView(UserDataMixin, UpdateView):
             return self.deny_access()
 
 
-#TODO: show some teacher and student info as well
 class AdminDashboardView(UserDataMixin, TemplateView):
     """AdminDashboardView shows the admin all pending course applications, current (live) courses,
     as well as finished courses and links to feedback for those finished courses
@@ -105,6 +104,7 @@ class AdminDashboardView(UserDataMixin, TemplateView):
         context['teachers'] = TeacherUser.objects.all()
         context['students'] = StudentUser.objects.all()
         return context
+
 
 class AJAXAdminDashboardView(View):
     @csrf_exempt
