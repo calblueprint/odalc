@@ -1,5 +1,6 @@
 {% extends "base/base.html" %}
 {% load staticfiles %}
+{% load course_renderer %}
 
 {% block title %}{{ course.title }}{% endblock %}
 
@@ -106,7 +107,7 @@
           <p>{{ course.long_description }}</p>
           <p>The course is held at the ODALC office at <a href="https://maps.google.com/?daddr=1224+Harrison+Street+Oakland+CA+94612" target="_blank">1224 Harrison St.</a></p>
           <h3>Prerequisites</h3>
-          <p>{{ course.prereqs }}</p>
+          <ul>{{ course.prereqs|to_list_elements }}</ul>
           <h3>Additional Information</h3>
           <p>{{ course.additional_info }}</p>
           {% if course.course_material and in_class or is_owner or is_admin_user %}

@@ -1,3 +1,5 @@
+import re
+
 from django import forms
 
 from odalc.courses.models import Course
@@ -59,6 +61,18 @@ class CreateCourseForm(forms.ModelForm):
     date3 = forms.DateField(label='Third Choice for Date to Teach Course')
     start_time3 = forms.TimeField(label='Starting Time for Course Session')
     end_time3 = forms.TimeField(label='Ending Time for Course Session')
+
+    def clean_prereqs(self):
+        prereq_fields =  self.data.getlist('prereq_fields[]')
+        if prereq_fields:
+            return "\n".join(prereq_fields)
+        else:
+            return ""
+        raise ValidationError(
+            _('Invalid value: %(value)s'),
+            code='invalid',
+            params={'value': '42'},
+        )
 
     class Meta:
         model = Course

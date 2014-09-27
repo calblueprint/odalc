@@ -4,7 +4,8 @@ from itertools import chain
 from django.conf import settings
 from django.core.validators import (
     MaxValueValidator,
-    MinValueValidator
+    MinValueValidator,
+    RegexValidator
 )
 from django.db import models
 
@@ -160,7 +161,14 @@ class Course(models.Model):
     )
     prereqs = models.TextField(
         'Course Prerequisites',
-        help_text='Any skills, knowledge, or tools that students should be familiar with before enrolling.'
+        blank=True,
+        help_text='Any skills, knowledge, or tools that students should be familiar with before enrolling. This will be displayed as a list, and you can separate list items using line breaks.',
+        validators=[
+            RegexValidator('^[^<>&]*$',
+                message='Prerequisite text cannot include the characters <, >, or &.',
+                code='invalid_prereqs'
+            ),
+        ]
     )
     skill_level = models.CharField(
         'Course Skill Level',

@@ -38,7 +38,11 @@
                 <legend>Course Content</legend>
                 <div class="row">
                     <div class="medium-12 columns">
-                        {% include "base/partials/formfield.html" with field=form.title %}
+                        <div class="row">
+                            <div class="medium-12 columns">
+                                {% include "base/partials/formfield.html" with field=form.title %}
+                            </div>
+                        </div>
                         {% include "base/partials/tooltip_formfield.html" with field=form.short_description %}
                         {% include "base/partials/tooltip_formfield.html" with field=form.long_description %}
                     </div>
