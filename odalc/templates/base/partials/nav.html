@@ -29,8 +29,9 @@
 
           <!-- Left Nav Section -->
           <ul class="left">
-            <li class="{% block is_about_page %}{% endblock %}"><a href={% url "about"%}>About</a></li>
             <li class="{% block is_courses_page %}{% endblock %}"><a href={% url "courses:listing"%}>Courses</a></li>
+            <li class="{% block is_about_page %}{% endblock %}"><a href={% url "about"%}>About</a></li>
+            <li class="{% block is_faq_page %}{% endblock %}"><a href={% url "faq"%}>FAQ</a></li>
             <li class="{% block is_donate_page %}{% endblock %}"><a href={% url "donate"%}>Donate</a></li>
           </ul>
         </section>

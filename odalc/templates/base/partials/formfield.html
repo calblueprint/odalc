@@ -1,7 +1,13 @@
+{% load widget_tweaks %}
+
 <label for="{{ field.id_for_label }}">
 {{ field.label }} {% if field.field.required %}<small>Required</small>{% endif %}
-{{ field }}
+{% if field.errors %}
+    {{ field|add_class:"error" }}
+{% else %}
+    {{ field }}
+{% endif %}
 </label>
 {% for error in field.errors %}
-  <small class="error">{{ error }}</small>
+<small class="error">{{ error }}</small>
 {% endfor %}

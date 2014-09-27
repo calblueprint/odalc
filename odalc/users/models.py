@@ -78,7 +78,7 @@ class TeacherUser(User):
     INFO_SOURCE_CHOICES = (
         (INFO_SOURCE_FRIEND, INFO_SOURCE_FRIEND),
         (INFO_SOURCE_WEB, INFO_SOURCE_WEB),
-        (INFO_SOURCE_OTHER, INFO_SOURCE_OTHER)
+        (INFO_SOURCE_OTHER, 'Other (just type it in!)')
     )
 
     organization = models.CharField(

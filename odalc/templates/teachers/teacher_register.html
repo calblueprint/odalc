@@ -4,6 +4,10 @@
 
 {% block title %}Teacher Registration{% endblock %}
 
+{% block css %}
+<link rel="stylesheet" href="{% static "base/css/jquery.scombobox.css" %}" />
+{% endblock %}
+
 {% block body %}
 
 <div class="white-section">
@@ -92,4 +96,6 @@ $().ready(function() {
     $('#file_{{ form.resume.id_for_label }}').on("change", s3_upload_{{ form.resume.id_for_label }});
 });
 </script>
+<script src="{% static "base/js/jquery.scombobox.min.js" %}"></script>
+<script src="{% static "teachers/js/register.js" %}"></script>
 {% endblock %}

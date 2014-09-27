@@ -3,7 +3,11 @@
     <div class="medium-4 columns">
         <label for="{{ date.id_for_label }}">
         {{ date.label }} <small>Required</small>
-        {{ date }}
+        {% if date.errors %}
+            {{ date|add_class:"error" }}
+        {% else %}
+            {{ date }}
+        {% endif %}
         </label>
     {% for error in date.errors %}
         <small class="error">{{ error }}</small>
@@ -13,7 +17,11 @@
     <div class="medium-4 columns">
         <label for="{{ start_time.id_for_label }}">
         {{ start_time.label }} <small>Required</small>
-        {{ start_time }}
+        {% if start_time.errors %}
+            {{ start_time|add_class:"error" }}
+        {% else %}
+            {{ start_time }}
+        {% endif %}
         </label>
     {% for error in start_time.errors %}
         <small class="error">{{ error }}</small>
@@ -23,7 +31,11 @@
     <div class="medium-4 columns">
         <label for="{{ end_time.id_for_label }}">
         {{ end_time.label }} <small>Required</small>
-        {{ end_time }}
+        {% if end_time.errors %}
+            {{ end_time|add_class:"error" }}
+        {% else %}
+            {{ end_time }}
+        {% endif %}
         </label>
     {% for error in end_time.errors %}
         <small class="error">{{ error }}</small>
