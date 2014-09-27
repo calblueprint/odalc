@@ -1,11 +1,3 @@
-.slider-dollar {
-    font-family: 'Courier New';
-    font-size: 10pt;
-    color: #fff;
-    width: 65px;
-    padding: 5px 0px 5px 8px;
-}
-
 .sub-nav {
     #tab-courses-pending.active a {
         background: $element-blue;
@@ -20,12 +12,3 @@
         background: $element-red;
     }
 }
-
-.range-slider-active-segment {
-    background: $element-green-light !important;
-}
-
-.slider-dollar {
-    background: $element-green !important;
-}
-

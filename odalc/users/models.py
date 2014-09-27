@@ -72,13 +72,13 @@ class StudentUser(User):
 class TeacherUser(User):
     PUBLIC_MEDIA_BUCKET = S3BotoStorage_ODALC(bucket=settings.S3_BUCKET)
 
-    INFO_SOURCE_FRIEND = 'FRD'
-    INFO_SOURCE_WEB = 'WEB'
-    INFO_SOURCE_OTHER = 'OTH'
+    INFO_SOURCE_FRIEND = 'From a friend'
+    INFO_SOURCE_WEB = 'Our website'
+    INFO_SOURCE_OTHER = 'Other'
     INFO_SOURCE_CHOICES = (
-        (INFO_SOURCE_FRIEND, 'From a friend'),
-        (INFO_SOURCE_WEB, 'Our website'),
-        (INFO_SOURCE_OTHER, 'Other')
+        (INFO_SOURCE_FRIEND, INFO_SOURCE_FRIEND),
+        (INFO_SOURCE_WEB, INFO_SOURCE_WEB),
+        (INFO_SOURCE_OTHER, INFO_SOURCE_OTHER)
     )
 
     organization = models.CharField(

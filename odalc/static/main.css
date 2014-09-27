@@ -1,3 +1,4 @@
+
 meta.foundation-version {
   font-family: "/5.4.2/"; }
 
@@ -5529,26 +5530,15 @@ fieldset legend strong {
     background-color: #888888; }
 
 .slider-dollar {
+  background: #43ac6a !important;
   font-family: 'Courier New';
   font-size: 10pt;
   color: white;
   width: 65px;
   padding: 5px 0px 5px 8px; }
 
-.sub-nav #tab-courses-pending.active a {
-  background: #567ebb; }
-.sub-nav #tab-courses-active.active a {
-  background: #43ac6a; }
-.sub-nav #tab-courses-finished.active a {
-  background: #888888; }
-.sub-nav #tab-courses-denied.active a {
-  background: #f04124; }
-
 .range-slider-active-segment {
   background: #436c6a !important; }
-
-.slider-dollar {
-  background: #43ac6a !important; }
 
 .red {
   background-color: red; }
@@ -5789,3 +5779,12 @@ p.larger {
   .author .details .inst {
     color: #888888;
     margin-top: 0.5em; }
+
+.sub-nav #tab-courses-pending.active a {
+  background: #567ebb; }
+.sub-nav #tab-courses-active.active a {
+  background: #43ac6a; }
+.sub-nav #tab-courses-finished.active a {
+  background: #888888; }
+.sub-nav #tab-courses-denied.active a {
+  background: #f04124; }
