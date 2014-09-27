@@ -39,6 +39,10 @@ class DonatePageView(UserDataMixin, TemplateView):
             return self.render_to_response(self.get_context_data())
 
 
+class FaqPageView(UserDataMixin, TemplateView):
+    template_name = 'base/faq.html'
+
+
 class HomePageView(UserDataMixin, TemplateView):
     """Landing page for the website. Also displays the next three upcoming
     courses as "featured courses". If there are not enough, it will display past

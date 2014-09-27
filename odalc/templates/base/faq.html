@@ -1,0 +1,47 @@
+{% extends "base/base.html" %}
+{% load staticfiles %}
+
+{% block title %}About Us{% endblock %}
+
+{% block is_faq_page %}active{% endblock %}
+
+{% block body %}
+<div class="mid-dark-section">
+    <div class="row">
+        <div class="large-8 columns">
+            <h1>Frequently Asked Questions</h1>
+        </div>
+    </div>
+</div>
+<div class="white-section">
+    <div class="row">
+        <div class="large-12 columns">
+            <dl class="accordion" data-accordion>
+                <dd class="accordion-navigation">
+                    <a href="#panel1"><h3>Who are you?</h3></a>
+                    <div id="panel1" class="content">
+                        <p>Here is a very informative answer.</p>
+                    </div>
+                </dd>
+                <dd class="accordion-navigation">
+                    <a href="#panel2"><h3>Where are courses held?</h3></a>
+                    <div id="panel2" class="content">
+                        <p>Here is a very informative answer.</p>
+                    </div>
+                </dd>
+                <dd class="accordion-navigation">
+                    <a href="#panel3"><h3>Who is Blueprint?</h3></a>
+                    <div id="panel3" class="content">
+                        <p>Here is a very informative answer.</p>
+                    </div>
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script src="//cdnjs.cloudflare.com/ajax/libs/foundation/5.4.5/js/foundation/foundation.accordion.min.js"></script>
+<script src="{% static 'base/js/faq.js' %}"></script>
+{% endblock %}
