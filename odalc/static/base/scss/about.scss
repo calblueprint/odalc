@@ -1,0 +1,22 @@
+#about-bottom-image {
+    background-color: #eee;
+    background: url('base/img/hipster_stuff.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: fixed;
+    height: 480px;
+}
+
+.mid-dark-section {
+    @include section-padding();
+    background-color: $light-secondary-color;
+
+    p {
+        color: #888;
+        font-size: 1.3em;
+    }
+
+    .enroll-btn {
+        margin-top: 3rem;
+    }
+}

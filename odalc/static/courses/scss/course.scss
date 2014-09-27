@@ -39,7 +39,13 @@
     }
 }
 
+.blue-section {
+    background-color: #606D80;
+}
+
+
 .course-logistic {
+    background-color: #606D80;
     border: none;
     margin-top: 1.25rem; // bottom margin from column
     padding: 2rem;
@@ -55,14 +61,12 @@
             }
         }
     }
-
 }
 
 .author {
     .pic {
         @include grid-column(5);
     }
-
     .details {
         @include grid-column(7);
 
@@ -76,3 +80,4 @@
         }
     }
 }
+
