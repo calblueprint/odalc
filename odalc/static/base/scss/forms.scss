@@ -1,5 +1,3 @@
-@import "app";
-
 @mixin border-radius($radius){
     -webkit-border-radius: $radius;
     -moz-border-radius: $radius;
@@ -68,3 +66,17 @@ fieldset {
         background-color:$dark-secondary-color;
     }
 }
+
+.slider-dollar {
+    background: $element-green !important;
+    font-family: 'Courier New';
+    font-size: 10pt;
+    color: #fff;
+    width: 65px;
+    padding: 5px 0px 5px 8px;
+}
+
+.range-slider-active-segment {
+    background: $element-green-light !important;
+}
+

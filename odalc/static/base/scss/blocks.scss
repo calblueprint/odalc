@@ -1,0 +1,43 @@
+@mixin section-padding() {
+    padding: 4em 0;
+}
+
+.main-wrap {
+    min-height: 680px;
+}
+
+.blue-header {
+    padding: 2em 0;
+    background-color: #2B4C7E;
+    h1 {
+        color: #fff;
+        font-size: 2em;
+    }
+
+    p{
+        color: #fff;
+    }
+
+    a {
+        color: #fff;
+        &:hover {
+            color: $light-secondary-color;
+       }
+    }
+
+}
+
+.white-section {
+    @include section-padding();
+    background-color: #FFFFFF;
+}
+
+.gray-section {
+    @include section-padding();
+    background-color: $light-secondary-color;
+
+    p {
+        color: #777;
+        font-size: 1.25em;
+    }
+}

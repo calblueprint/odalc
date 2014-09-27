@@ -1,0 +1,14 @@
+.sub-nav {
+    #tab-courses-pending.active a {
+        background: $element-blue;
+    }
+    #tab-courses-active.active a {
+        background: $element-green;
+    }
+    #tab-courses-finished.active a {
+        background: $element-grey;
+    }
+    #tab-courses-denied.active a {
+        background: $element-red;
+    }
+}
