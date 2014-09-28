@@ -2,26 +2,31 @@
     padding: 4em 0;
 }
 
+@mixin section-border() {
+    border-top: 1px $medium-grey;
+    border-bottom: 1px $medium-grey;
+}
+
 .main-wrap {
     min-height: 680px;
 }
 
 .blue-header {
     padding: 2em 0;
-    background-color: #2B4C7E;
+    background-color: $dark-blue;
     h1 {
-        color: #fff;
+        color: $white;
         font-size: 2em;
     }
 
     p{
-        color: #fff;
+        color: $white;
     }
 
     a {
-        color: #fff;
+        color: $light-grey;
         &:hover {
-            color: $light-secondary-color;
+            color: $white;
        }
     }
 
@@ -29,15 +34,28 @@
 
 .white-section {
     @include section-padding();
-    background-color: #FFFFFF;
+    @include section-border();
+    background-color: $light-grey;
 }
 
 .gray-section {
     @include section-padding();
-    background-color: $light-secondary-color;
+    @include section-border();
+    background-color: $dark-grey;
 
     p {
-        color: #777;
-        font-size: 1.25em;
+        color: $charcoal;
     }
+}
+
+.light-grey-section {
+    @include section-padding();
+    @include section-border();
+    background-color: $light-grey;
+}
+
+.medium-grey-section {
+    @include section-padding();
+    @include section-border();
+    background-color: $medium-grey;
 }

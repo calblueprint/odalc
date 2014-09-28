@@ -3,7 +3,9 @@
 
 {% block title %}About Us{% endblock %}
 
-{% block is_about_page %}active{% endblock %}
+{% block nav %}
+    {% include "base/partials/nav/nav_about.html" %}
+{% endblock %}
 
 {% block body %}
 <div id="fb-root"></div>
@@ -16,7 +18,7 @@
 }(document, 'script', 'facebook-jssdk'));</script>
 <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-535c2fec21d43eea"></script>
 
-<div class="mid-dark-section">
+<div class="header-section">
     <div class="row">
         <div class="large-8 columns">
             <h1>Our Mission</h1>
@@ -49,11 +51,11 @@
 <div id="about-bottom-image">
 </div>
 
-<div class="gray-section">
+<div class="light-grey-section">
     <div class="row">
         <div class="large-12 columns">
             <h2>About Oakland Digital</h2>
-            <p class="larger">Oakland Digital Arts & Literacy Center is a 501(c)(3) community building organization working to bridge the digital literacy and opportunity divide. Since 2009, Oakland Digital has been working to educate, inspire and empower small business owners, local design students, and entrepreneurs.</p>
+            <p>Oakland Digital Arts & Literacy Center is a 501(c)(3) community building organization working to bridge the digital literacy and opportunity divide. Since 2009, Oakland Digital has been working to educate, inspire and empower small business owners, local design students, and entrepreneurs.</p>
         </div>
     </div>
     <div class="row">

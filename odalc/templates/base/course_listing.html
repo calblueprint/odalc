@@ -2,7 +2,9 @@
 
 {% block title %}Browse Courses {% endblock %}
 
-{% block is_courses_page %}active{% endblock %}
+{% block nav %}
+    {% include "base/partials/nav/nav_courses.html" %}
+{% endblock %}
 
 {% block body %}
 
@@ -22,7 +24,9 @@
     </div>
 </div>
 
-<div class="row white-section"><div class="large-12 columns">
+<div class="white-section">
+<div class="row">
+<div class="large-12 columns">
 <div class="tabs-content">
     <div class="content active" id="panel2-1">
         {% for course in upcoming_courses %}
@@ -124,5 +128,6 @@
     </div>
 </div>
 
-</div></div>
+
+</div></div></div>
 {% endblock %}

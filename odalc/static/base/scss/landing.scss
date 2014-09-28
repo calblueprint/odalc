@@ -1,5 +1,5 @@
 #main-splash {
-    background-color: #eee;
+    background-color: $light-grey;
     background: url('base/img/computer_class.jpg');
     background-size: cover;
     background-repeat: no-repeat;
@@ -11,7 +11,7 @@
     }
 
     h1, h2 {
-        color: #fff;
+        color: $white;
         background-color: rgba(0,0,0,0.7);
         display:inline;
         padding: 0.025em;
@@ -19,13 +19,12 @@
 }
 
 .course-items-description {
-    padding-top: 2em;
-    padding-bottom: 1.5em;
+    padding-bottom: 3.0em;
 }
 
 .course-items {
-    padding-bottom: 1.5em;
 }
+
 
 .course-box {
     @include grid-column(4);
@@ -62,7 +61,7 @@
             transition: all 0.25s ease;
 
             h4 {
-                color: #fff;
+                color: $white;
                 font-size: 1em;
 
             }
@@ -75,17 +74,17 @@
     }
     .bottom-shelf {
         display: block;
-        background-color: $dark-primary-color;
+        background-color: $charcoal;
         border-bottom-left-radius: 5px;
         border-bottom-right-radius: 5px;
         z-index: 2;
 
         padding: 1.3em 1em;
         h4 {
-            color: #fff;
+            color: $white;
             font-size: 0.9em;
             span.date {
-                color: $dark-secondary-color;
+                color: $light-grey;
                 font-weight: bold;
             }
         }

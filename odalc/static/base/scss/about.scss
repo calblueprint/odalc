@@ -7,16 +7,12 @@
     height: 480px;
 }
 
-.mid-dark-section {
+.header-section {
     @include section-padding();
-    background-color: $light-secondary-color;
+    background-color: $medium-grey;
 
     p {
         color: #888;
         font-size: 1.3em;
-    }
-
-    .enroll-btn {
-        margin-top: 3rem;
     }
 }

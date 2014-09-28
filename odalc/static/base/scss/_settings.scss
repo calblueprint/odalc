@@ -14,16 +14,27 @@
 @import "foundation/functions";
 
 // COLORS
-$light-primary-color: #567EBB;
-$light-secondary-color: #DCE0E6;
-$dark-primary-color: #1F1F20;
-$dark-secondary-color: #888888;
 
-$element-green-light: #436c6a;
-$element-green: #43ac6a;
-$element-blue: #567ebb;
-$element-red: #f04124;
-$element-grey: #888888;
+$bright-red: #F16664;
+$black: #000000;
+$white: #ffffff;
+$off-white: #FFF6E6;
+$light-blue: #79CCCD;
+$medium-blue: #6BB7B9;
+$dark-blue: #007D8C;
+$dark-green: #3fb34f;
+$light-grey: #f5f5f5;
+$medium-grey: #edefed;
+$dark-grey: #dce0e0;
+$charcoal: #565a5c;
+
+$primary-color: $light-blue;   // bondi-blue
+$secondary-color: $off-white; // white-lilac
+$alert-color: $bright-red;     // cinnabar
+$success-color: $dark-green;   // sea-green
+$warning-color: $bright-red;   // carrot
+$info-color: $medium-blue;      // cornflower
+
 
 // $experimental: true;
 
@@ -53,11 +64,11 @@ $element-grey: #888888;
 // $total-columns: 12;
 
 // We use these to control various global styles
-// $body-bg: #fff;
-// $body-font-color: #222;
-// $body-font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
-// $body-font-weight: normal;
-// $body-font-style: normal;
+$body-bg: $light-grey;
+$body-font-color: $charcoal;
+$body-font-family: "", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+$body-font-weight: normal;
+$body-font-style: normal;
 
 // We use this to control font-smoothing
 // $font-smoothing: antialiased;
@@ -68,16 +79,16 @@ $element-grey: #888888;
 // $default-float: left;
 
 // We use these as default colors throughout
-$primary-color: #567EBB;
-$secondary-color: #606D80;
-// $alert-color: #f04124;
-// $success-color: #43AC6A;
-// $warning-color: #f08a24;
-// $info-color: #a0d3e8;
+$primary-color: $dark-blue;   // bondi-blue
+$secondary-color: $off-white; // white-lilac
+$alert-color: $bright-red;     // cinnabar
+$success-color: $dark-green;   // sea-green
+$warning-color: $bright-red;   // carrot
+$info-color: $dark-blue;      // cornflower
 
 // We use these to make sure border radius matches unless we want it different.
-// $global-radius: 3px;
-// $global-rounded: 1000px;
+$global-radius: 5px;
+$global-rounded: 1000px;
 
 // We use these to control inset shadow shiny edges and depressions.
 // $shiny-edge-size: 0 1px 0;
@@ -133,7 +144,7 @@ $secondary-color: #606D80;
 // $header-font-family: $body-font-family;
 // $header-font-weight: normal;
 // $header-font-style: normal;
-// $header-font-color: #222;
+$header-font-color: $charcoal;
 // $header-line-height: 1.4;
 // $header-top-margin: .2rem;
 // $header-bottom-margin: .5rem;
@@ -175,9 +186,9 @@ $secondary-color: #606D80;
 // $code-font-weight: bold;
 
 // We use these to style anchors
-// $anchor-text-decoration: none;
-// $anchor-font-color: $primary-color;
-// $anchor-font-color-hover: scale-color($primary-color, $lightness: -14%);
+//$anchor-text-decoration: none;
+$anchor-font-color: $dark-blue;
+$anchor-font-color-hover: scale-color($dark-blue, $lightness: -14%);
 
 // We use these to style the <hr> element
 // $hr-border-width: 1px;
@@ -1140,11 +1151,11 @@ $secondary-color: #606D80;
 // $include-html-top-bar-classes: $include-html-classes;
 
 // Background color for the top bar
-$topbar-bg-color: $dark-primary-color;
-// $topbar-bg: $topbar-bg-color;
+$topbar-bg-color: $charcoal;
+$topbar-bg: $topbar-bg-color;
 
 // Height and margin
- $topbar-height: 65px;
+$topbar-height: 65px;
 // $topbar-margin-bottom: 0;
 
 // Controlling the styles for the title in the top bar
@@ -1161,16 +1172,16 @@ $topbar-bg-color: $dark-primary-color;
 // $topbar-dropdown-toggle-alpha: 0.4;
 
 // Set the link colors and styles for top-level nav
-// $topbar-link-color: #fff;
-// $topbar-link-color-hover: #fff;
+$topbar-link-color: $dark-grey;
+$topbar-link-color-hover: $white;
 // $topbar-link-color-active: #fff;
 // $topbar-link-color-active-hover: #fff;
 // $topbar-link-weight: normal;
 // $topbar-link-font-size: rem-calc(13);
-// $topbar-link-hover-lightness: -10%; // Darken by 10%
-// $topbar-link-bg-hover: #272727;
-$topbar-link-bg-active: $light-primary-color;
-$topbar-link-bg-active-hover: scale-color($light-primary-color, $lightness: -14%);
+// $topbar-link-hover-lightness: 10%; // Darken by 0%
+$topbar-link-bg-hover: scale-color($charcoal, $lightness: 10%);
+$topbar-link-bg-active: scale-color($charcoal, $lightness: 10%);
+$topbar-link-bg-active-hover: scale-color($charcoal, $lightness: 10%);
 // $topbar-link-font-family: $body-font-family;
 // $topbar-link-text-transform: none;
 // $topbar-link-padding: $topbar-height / 3;

@@ -4,11 +4,6 @@
 {% block title %}Home{% endblock %}
 
 {% block body %}
-  {% if user.is_authenticated %}
-  {% else %}
-  {% endif %}
-
-
   <div id="main-splash">
     <div class="row">
       <div class="large-8 columns">
@@ -19,41 +14,43 @@
       <!-- Something like this on the landing page? Not sure, maybe one button would be better? -atsu -->
       <div class="large-4 columns">
             {% if not user.is_authenticated %}
-            <a href="{% url "courses:listing" %}" class="button success">Want to learn? Start here</a>
-            <a href="{% url "teachers:register" %}" class="button info">Want to teach? Start here</a>
+            <a href="{% url "courses:listing" %}" class="button alert radius">Want to learn? Start here</a>
+            <a href="{% url "teachers:register" %}" class="button info radius">Want to teach? Start here</a>
             {% endif %}
       </div>
     </div>
   </div>
 
-  <!-- Upcoming courses title/description -->
-  <div class="row course-items-description">
-    <div class="large-12 columns">
-      <h3>Featured Courses</h3>
-    </div>
-  </div>
-
-  <!-- Upcoming courses items -->
-
-  <div class="row course-items">
-    {% for course in featured_courses %}
-    <div class="course-box">
-      <a href="{% url "courses:detail" course.pk %}">
-      <div class="top-shelf">
-        <div class="title-wrap">
-          <h4>{{ course.title }}</h4>
+  <div class="light-grey-section">
+      <!-- Upcoming courses title/description -->
+      <div class="row course-items-description">
+        <div class="large-12 columns">
+          <h3>Featured Courses</h3>
         </div>
-        <img src="{% thumbnail course.image 'thumb' %}"></img>
       </div>
-      <div class="bottom-shelf">
-        <h4>With {{ course.teacher.first_name }} {{ course.teacher.last_name }}<span class="date"> | {{ course.start_datetime|date:'N d Y' }}</span></h4>
-      </div>
-      </a>
-    </div>
-    {% endfor %}
-        <h5>
-            <a class="right" href="{% url "courses:listing" %}">Browse all courses &raquo;</a>
-        </h5>
+
+      <!-- Upcoming courses items -->
+
+      <div class="row course-items">
+        {% for course in featured_courses %}
+            <div class="course-box">
+              <a href="{% url "courses:detail" course.pk %}">
+              <div class="top-shelf">
+                <div class="title-wrap">
+                  <h4>{{ course.title }}</h4>
+                </div>
+                <img src="{% thumbnail course.image 'thumb' %}"></img>
+              </div>
+              <div class="bottom-shelf">
+                <h4>With {{ course.teacher.first_name }} {{ course.teacher.last_name }}<span class="date"> | {{ course.start_datetime|date:'N d Y' }}</span></h4>
+              </div>
+              </a>
+            </div>
+        {% endfor %}
+                <h5>
+                    <a class="right" href="{% url "courses:listing" %}">Browse all courses &raquo;</a>
+                </h5>
+        </div>
   </div>
 
   <!-- Footer -->
