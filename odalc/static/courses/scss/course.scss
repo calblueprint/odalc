@@ -47,12 +47,10 @@
 
 .course-logistic {
     border: none;
-    margin-top: 1.25rem; // bottom margin from column
     padding: 2rem;
     background: transparent;
 
     .item {
-        margin: 0.25rem;
         .col {
             color: $charcoal;
             &.title {

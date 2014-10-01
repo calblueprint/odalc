@@ -231,6 +231,12 @@ class Course(models.Model):
     def get_teacher_cost_split(self):
         return self.cost - self.odalc_cost_split
 
+    def set_datetimes(self, date, start_time, end_time):
+        self.start_datetime = dt.combine(date, start_time)
+        self.end_datetime = dt.combine(date, end_time)
+        self.save()
+        return self
+
     def is_accepted(self):
         return self.status == Course.STATUS_ACCEPTED
 

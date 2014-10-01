@@ -3,6 +3,8 @@
 @import "base/scss/settings";
 @import "foundation";
 
+@import "base/scss/confirmon";
+
 @import "base/scss/forms";
 @import "base/scss/colors";
 @import "base/scss/text";
@@ -15,3 +17,5 @@
 
 @import "courses/scss/course";
 @import "courses/scss/course_list";
+
+@import "odalc_admin/scss/admin";

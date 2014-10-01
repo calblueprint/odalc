@@ -1,6 +1,10 @@
 {% extends "base/base.html" %}
 
-{% block is_student_dash %}active{% endblock %}
+{% block title %}Student Dashboard{% endblock %}
+
+{% block nav %}
+    {% include "base/partials/nav/nav_student.html" %}
+{% endblock %}
 
 {% block body %}
 

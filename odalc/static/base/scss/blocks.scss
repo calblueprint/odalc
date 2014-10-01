@@ -59,3 +59,18 @@
     @include section-border();
     background-color: $medium-grey;
 }
+
+.charcoal-section {
+    @include section-padding();
+    @include section-border();
+    background-color: $charcoal;
+}
+
+.charcoal-section-no-pad {
+    @include section-border();
+    background-color: $charcoal;
+}
+
+a .button {
+    @include button();
+}

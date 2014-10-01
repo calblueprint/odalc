@@ -1,0 +1,29 @@
+.sub-nav-title {
+    color: $white;
+    margin-left: 1rem;
+    margin-top: 2rem;
+}
+
+.sub-nav-odalc {
+    @include sub-nav();
+    background-color: $charcoal;
+    margin-top: 1px;
+    padding-bottom: 1rem;
+    dd .nav-tab {
+        @include radius();
+        background-color: scale-color($charcoal, $lightness: 20%);
+        color: $dark-grey;
+        &:hover {
+            color: $light-grey;
+        }
+    }
+}
+
+.nav-tab-button-group {
+    margin-top: -1.5rem;
+    border-left: none;
+}
+
+.button-group li .button {
+    border-left: none;
+}

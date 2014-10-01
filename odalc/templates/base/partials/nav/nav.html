@@ -31,7 +31,7 @@
           {% endif %}
           <li><a href="{% url "users:logout" %}">Logout</a></li>
       {% else %}
-          <li><a href="{% url "users:login" %}?next={{ request.path }}">Login</a></li>
+          <li class="{% block is_login_page %}{% endblock %}"><a href="{% url "users:login" %}?next={{ request.path }}">Login</a></li>
       {% endif %}
       </ul>
     </section>

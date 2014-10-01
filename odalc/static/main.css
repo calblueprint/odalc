@@ -1254,7 +1254,7 @@ select {
 
 button, .button {
   border-style: solid;
-  border-width: 0px;
+  border-width: 1px;
   cursor: pointer;
   font-family: "", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
   font-weight: normal;
@@ -2875,9 +2875,9 @@ label.error {
     color: #333333; }
 
 [data-magellan-expedition], [data-magellan-expedition-clone] {
-  background: white;
+  background: #565a5c;
   z-index: 50;
-  min-width: 100%;
+  min-width: auto;
   padding: 10px; }
   [data-magellan-expedition] .sub-nav, [data-magellan-expedition-clone] .sub-nav {
     margin-bottom: 0; }
@@ -5482,6 +5482,83 @@ th.hide-for-touch {
   th.show-for-print {
     display: table-cell !important; } }
 
+/*!
+ * jQuery confirmOn Plugin
+ * https://github.com/invetek/jquery-confirmon
+ *
+ * Copyright 2013 Loran Kloeze - Invetek
+ * Released under the MIT license
+ */
+.confirmon-overlay {
+  background-color: black;
+  background-color: rgba(0, 0, 0, 0.6);
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  top: 0;
+  left: 0;
+  position: fixed;
+  z-index: 150;
+  display: none; }
+
+.confirmon-box {
+  border-radius: 5px;
+  background-color: whitesmoke;
+  color: #565a5c;
+  border: solid 1px #dce0e0;
+  box-shadow: 0px 1px 10px #565a5c;
+  padding: 20px 10px 35px 10px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 15px;
+  z-index: 151;
+  display: none;
+  position: fixed;
+  margin-left: -15%;
+  width: 30%;
+  left: 50%;
+  top: 185px; }
+
+.confirmon-box button {
+  border-style: solid;
+  border-width: 1px;
+  cursor: pointer;
+  font-family: "", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+  font-weight: normal;
+  line-height: normal;
+  margin: 0 0 1.25rem;
+  position: relative;
+  text-decoration: none;
+  text-align: center;
+  -webkit-appearance: none;
+  -webkit-border-radius: 0;
+  display: inline-block;
+  padding-top: 1rem;
+  padding-right: 2rem;
+  padding-bottom: 1.0625rem;
+  padding-left: 2rem;
+  font-size: 1rem;
+  background-color: #007d8c;
+  border-color: #009fb1;
+  color: white;
+  transition: background-color 300ms ease-out;
+  border-radius: 5px;
+  margin: 5px; }
+  .confirmon-box button:hover, .confirmon-box button:focus {
+    background-color: #009fb1; }
+  .confirmon-box button:hover, .confirmon-box button:focus {
+    color: white; }
+
+.confirmon-button--yes {
+  background-color: #3fb34f !important; }
+  .confirmon-button--yes:hover {
+    background-color: #4dc05c !important; }
+
+.confirmon-button--no {
+  background-color: #f16664 !important; }
+  .confirmon-button--no:hover {
+    background-color: #f27373 !important; }
+
 form, .form-list {
   list-style: none; }
   form > li > label, .form-list > li > label {
@@ -5604,6 +5681,45 @@ p.larger {
   border-top: 1px solid #edefed;
   border-bottom: 1px solid #edefed;
   background-color: #edefed; }
+
+.charcoal-section {
+  padding: 4em 0;
+  border-top: 1px solid #edefed;
+  border-bottom: 1px solid #edefed;
+  background-color: #565a5c; }
+
+.charcoal-section-no-pad {
+  border-top: 1px solid #edefed;
+  border-bottom: 1px solid #edefed;
+  background-color: #565a5c; }
+
+a .button {
+  border-style: solid;
+  border-width: 1px;
+  cursor: pointer;
+  font-family: "", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+  font-weight: normal;
+  line-height: normal;
+  margin: 0 0 1.25rem;
+  position: relative;
+  text-decoration: none;
+  text-align: center;
+  -webkit-appearance: none;
+  -webkit-border-radius: 0;
+  display: inline-block;
+  padding-top: 1rem;
+  padding-right: 2rem;
+  padding-bottom: 1.0625rem;
+  padding-left: 2rem;
+  font-size: 1rem;
+  background-color: #007d8c;
+  border-color: #009fb1;
+  color: white;
+  transition: background-color 300ms ease-out; }
+  a .button:hover, a .button:focus {
+    background-color: #009fb1; }
+  a .button:hover, a .button:focus {
+    color: white; }
 
 #footer {
   padding: 2em 0;
@@ -5767,16 +5883,13 @@ p.larger {
 
 .course-logistic {
   border: none;
-  margin-top: 1.25rem;
   padding: 2rem;
   background: transparent; }
-  .course-logistic .item {
-    margin: 0.25rem; }
-    .course-logistic .item .col {
-      color: #565a5c; }
-      .course-logistic .item .col.title {
-        font-size: 1.3em;
-        color: #007d8c; }
+  .course-logistic .item .col {
+    color: #565a5c; }
+    .course-logistic .item .col.title {
+      font-size: 1.3em;
+      color: #007d8c; }
 
 .author .pic {
   padding-left: 0.9375rem;
@@ -5802,3 +5915,59 @@ p.larger {
   background: #565a5c; }
 .sub-nav #tab-courses-denied.active a {
   background: #f16664; }
+
+.sub-nav-title {
+  color: white;
+  margin-left: 1rem;
+  margin-top: 2rem; }
+
+.sub-nav-odalc {
+  display: block;
+  width: auto;
+  overflow: hidden;
+  margin: -0.25rem 0 1.125rem;
+  padding-top: 0.25rem;
+  margin-right: 0;
+  margin-left: -0.75rem;
+  background-color: #565a5c;
+  margin-top: 1px;
+  padding-bottom: 1rem; }
+  .sub-nav-odalc dt {
+    text-transform: uppercase; }
+  .sub-nav-odalc dt, .sub-nav-odalc dd, .sub-nav-odalc li {
+    float: left;
+    display: inline;
+    margin-left: 1rem;
+    margin-bottom: 0.625rem;
+    font-family: "", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+    font-weight: normal;
+    font-size: 0.875rem;
+    color: #565a5c; }
+    .sub-nav-odalc dt a, .sub-nav-odalc dd a, .sub-nav-odalc li a {
+      text-decoration: none;
+      color: #565a5c;
+      padding: 0.1875rem 1rem; }
+      .sub-nav-odalc dt a:hover, .sub-nav-odalc dd a:hover, .sub-nav-odalc li a:hover {
+        color: #767c7e; }
+    .sub-nav-odalc dt.active a, .sub-nav-odalc dd.active a, .sub-nav-odalc li.active a {
+      border-radius: 3px;
+      font-weight: normal;
+      background: #007d8c;
+      padding: 0.1875rem 1rem;
+      cursor: default;
+      color: white; }
+      .sub-nav-odalc dt.active a:hover, .sub-nav-odalc dd.active a:hover, .sub-nav-odalc li.active a:hover {
+        background: #009fb1; }
+  .sub-nav-odalc dd .nav-tab {
+    border-radius: 5px;
+    background-color: #767c7e;
+    color: #dce0e0; }
+    .sub-nav-odalc dd .nav-tab:hover {
+      color: whitesmoke; }
+
+.nav-tab-button-group {
+  margin-top: -1.5rem;
+  border-left: none; }
+
+.button-group li .button {
+  border-left: none; }

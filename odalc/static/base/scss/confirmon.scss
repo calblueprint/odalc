@@ -22,17 +22,18 @@
 }
 
 .confirmon-box {
-        background-color: #2B4C7E;
-        color: #ddd;
-        border: solid 1px #666666;
-        box-shadow: 0px 1px 10px #222;
+        @include radius;
+        background-color: $light-grey;
+        color: $charcoal;
+        border: solid 1px $dark-grey;
+        box-shadow: 0px 1px 10px $charcoal;
         padding: 20px 10px 35px 10px;
         text-align: center;
         font-weight: bold;
         font-size: 15px;
         z-index: 151;
         display: none;
-        position: absolute;
+        position: fixed;
         margin-left: -15%;
         width: 30%;
         left: 50%;
@@ -41,16 +42,21 @@
 }
 
 .confirmon-box button {
-        margin: 10px 5px;
-        padding: 5px 10px;
-        text-align: center;
-        background-color: rgb(86, 126, 187)
-        border: 1px solid #ddd;
-        color: #ddd;
-        font-weight: bold;
+    @include button;
+    @include radius;
+    margin: 5px;
 }
 
-.confirmon-box button:hover {
-        background-color: rgb(63, 100, 156);
-        cursor: pointer;
+.confirmon-button--yes {
+    background-color: $dark-green !important;
+    &:hover {
+        background-color: scale-color($dark-green, $lightness: $button-function-factor) !important;
+    }
+}
+
+.confirmon-button--no {
+    background-color: $bright-red !important;
+    &:hover {
+        background-color: scale-color($bright-red, $lightness: $button-function-factor) !important;
+    }
 }
