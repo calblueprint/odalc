@@ -1,0 +1,19 @@
+{% load staticfiles %}
+
+<div id="footer">
+    <div class="row">
+        <div class="small-6 columns">
+            <div class="left" id="odalc-footer">
+                <p>&copy; {% now "Y" %} <a href="http://odalc.org">Oakland Digital Arts and Literacy Center Inc.</a></p>
+            </div>
+        </div>
+        <div class="small-6 columns">
+            <div class="right" id="bp-wrapper">
+                <a href="http://www.calblueprint.org">
+                  <div class="powered_by"><p>Powered by</p></div>
+                  <img class="spinner" id="bp-logo" src="{% static 'base/img/bp_logo_small.png' %}"></img>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -3,6 +3,10 @@
 
 {% block title %}Home{% endblock %}
 
+{% block nav %}
+    {% include "base/partials/nav/nav_home.html" %}
+{% endblock %}
+
 {% block body %}
   <div id="main-splash">
     <div class="row">
@@ -14,7 +18,7 @@
       <!-- Something like this on the landing page? Not sure, maybe one button would be better? -atsu -->
       <div class="large-4 columns">
             {% if not user.is_authenticated %}
-            <a href="{% url "courses:listing" %}" class="button alert radius">Want to learn? Start here</a>
+            <a href="{% url "courses:listing" %}" class="button success radius">Want to learn? Start here</a>
             <a href="{% url "teachers:register" %}" class="button info radius">Want to teach? Start here</a>
             {% endif %}
       </div>

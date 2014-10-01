@@ -1,11 +1,7 @@
-#navbar {
-    background-color: $charcoal;
-    .top-bar .name h1 a {
-        color: $white !important;
-    }
+.nav {
+    border-bottom: 1px solid $dark-grey;
 }
 
-
-.top-bar-section {
-
+#odalc-name {
+    color: $dark-blue;
 }

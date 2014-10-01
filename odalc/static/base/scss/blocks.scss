@@ -3,8 +3,8 @@
 }
 
 @mixin section-border() {
-    border-top: 1px $medium-grey;
-    border-bottom: 1px $medium-grey;
+    border-top: 1px solid $medium-grey;
+    border-bottom: 1px solid $medium-grey;
 }
 
 .main-wrap {
@@ -13,7 +13,7 @@
 
 .blue-header {
     padding: 2em 0;
-    background-color: $dark-blue;
+    background-color: $charcoal;
     h1 {
         color: $white;
         font-size: 2em;

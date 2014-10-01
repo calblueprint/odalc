@@ -9,7 +9,9 @@
 
 {% block title %}Reviewing {{ course.title }}{% endblock %}
 
-{% block is_admin_dash %}active{% endblock %}
+{% block nav %}
+    {% include "base/partials/nav/nav_admin.html" %}
+{% endblock %}
 
 {% block body %}
 <form enctype="multipart/form-data" method="POST" id='course_review'>
