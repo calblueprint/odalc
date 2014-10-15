@@ -9,26 +9,26 @@
 
 {% block title %}Reviewing {{ course.title }}{% endblock %}
 
-{% block is_admin_dash %}active{% endblock %}
+{% block nav %}
+    {% include "base/partials/nav/nav_admin.html" %}
+{% endblock %}
 
 {% block body %}
 <form enctype="multipart/form-data" method="POST" id='course_review'>
 {% csrf_token %}
-<div class="blue-header">
+<div class="charcoal-section-no-pad">
     <div class="row">
-        <div class="large-6 columns">
-            <h1>Reviewing: {{ course.title }}</h1>
-            <dl class="sub-nav" data-tab>
-                <dd class="active"><a href="#panel-course-info">Course Information</a></dd>
-                <dd><a href="#panel-instructor-info">Instructor Information</a></dd>
+        <div class="small-12 columns">
+            <dl class="sub-nav-odalc" data-tab>
+                <p class="sub-nav-title">{{ course.title }}</p>
+                <dd class="active"><a class="nav-tab" href="#panel-course-info">Course Information</a></dd>
+                <dd><a class="nav-tab" href="#panel-instructor-info">Instructor Information</a></dd>
+                <ul class="button-group right nav-tab-button-group">
+                    <li><input id="approve_course" class="tiny button success radius" name="_approve" type="submit" value="Approve" /></li>
+                    <li><input id="deny_course" class="tiny button alert radius" name="_deny" type="submit" value="Deny" /></li>
+                    <li><input id="save_course" name="_save" class="tiny button info radius" type="submit" value="Save for Later" /></li>
+                </ul>
             </dl>
-        </div>
-        <div class="large-6 columns">
-            <ul class="button-group">
-                <li><input id="approve_course" class="small button success" name="_approve" type="submit" value="Approve" /></li>
-                <li><input id="deny_course" class="small button alert" name="_deny" type="submit" value="Deny" /></li>
-                <li><a href="{% url "admins:dashboard" %}"><input type="button" class="small button info" value="Return to Dashboard" /></a></li>
-            </ul>
         </div>
     </div>
 </div>

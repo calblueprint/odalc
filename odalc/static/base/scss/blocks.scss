@@ -2,42 +2,85 @@
     padding: 4em 0;
 }
 
+@mixin section-border() {
+    border-top: 1px solid $medium-grey;
+    border-bottom: 1px solid $medium-grey;
+}
+
 .main-wrap {
     min-height: 680px;
 }
 
-.blue-header {
+.sub-header {
     padding: 2em 0;
-    background-color: #2B4C7E;
+    background-color: $medium-grey;
     h1 {
-        color: #fff;
-        font-size: 2em;
+        color: $charcoal;
+        font-weight: 700;
     }
 
-    p{
-        color: #fff;
+    p {
+        color: $charcoal;
     }
-
-    a {
-        color: #fff;
-        &:hover {
-            color: $light-secondary-color;
-       }
-    }
-
 }
 
 .white-section {
     @include section-padding();
-    background-color: #FFFFFF;
+    @include section-border();
+    background-color: $light-grey;
 }
 
 .gray-section {
     @include section-padding();
-    background-color: $light-secondary-color;
+    @include section-border();
+    background-color: $dark-grey;
 
     p {
-        color: #777;
-        font-size: 1.25em;
+        color: $charcoal;
     }
+}
+
+.light-grey-section {
+    @include section-padding();
+    @include section-border();
+    background-color: $light-grey;
+}
+
+.medium-grey-section {
+    @include section-padding();
+    @include section-border();
+    background-color: $medium-grey;
+}
+
+.charcoal-section {
+    @include section-padding();
+    @include section-border();
+    background-color: $charcoal;
+}
+
+.charcoal-section-no-pad {
+    @include section-border();
+    background-color: $charcoal;
+}
+
+a .button {
+    @include button();
+}
+
+@mixin splash-image($image-url) {
+    z-index: -20;
+    background: $image-url;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+}
+
+@mixin splash-image-overlay() {
+    z-index: -10;
+    background-color: rgba(0,0,0,0.5);
+    height: 100%;
+    width: 100%;
+    position: absolute;
 }

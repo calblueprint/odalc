@@ -14,13 +14,16 @@
 
     <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.2/css/toastr.min.css" />
+    <link href='http://fonts.googleapis.com/css?family=Lato:400,700,900' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="{% static "main.css" %}" />
     {% block css %}{% endblock %}
     {% block javascript-head %}{% endblock %}
     <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
   </head>
   <body>
-    {% include "base/partials/nav.html" %}
+    {% block nav %}
+        {% include "base/partials/nav/nav.html" %}
+    {% endblock %}
 
     <div class="main-wrap">
     {% block body %}
@@ -28,29 +31,14 @@
     </div>
 
     {% block footer %}
-    <div id="footer">
-        <div class="row">
-            <div class="small-4 columns">
-                <div class="left" id="odalc-footer">
-                    <small>&copy; {% now "Y" %} <a href="http://odalc.org">Oakland Digital Arts and Literacy Center Inc.</a></small>
-                </div>
-            </div>
-            <div class="small-4 offset-4 columns">
-                <div class="right" id="bp-wrapper">
-                    <a href="http://www.calblueprint.org">
-                      <div class="powered_by"><small>Powered by</small></div>
-                      <img class="spinner" id="bp-logo" src="{% static 'base/img/bp_logo_small.png' %}"></img>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
+        {% include "base/partials/footer.html" %}
     {% endblock %}
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/foundation/5.4.5/js/foundation.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/foundation/5.4.5/js/foundation.slider.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/foundation/5.4.5/js/foundation/foundation.magellan.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.2/js/toastr.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.3/fastclick.min.js"></script>
 

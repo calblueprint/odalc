@@ -68,6 +68,16 @@ class ApplicationReviewView(UserDataMixin, UpdateView):
             #2. notify teacher of denial
             send_odalc_email('notify_teacher_course_denied', context, [teacher.email], cc_admins=True)
             messages.error(self.request, course.title + ' has been denied')
+        if '_save' in self.request.POST:
+            start_time = form.cleaned_data.get('start_time')
+            end_time = form.cleaned_data.get('end_time')
+            date = form.cleaned_data.get('date')
+
+            #1. Check to see if they added times and dates
+            if start_time and end_time and date:
+                course.set_datetimes(date, start_time, end_time)
+
+            messages.info(self.request, 'Changes to ' + course.title + ' have been saved.')
         return redirect(ApplicationReviewView.success_url)
 
     def dispatch(self, *args, **kwargs):

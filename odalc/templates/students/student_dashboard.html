@@ -1,10 +1,14 @@
 {% extends "base/base.html" %}
 
-{% block is_student_dash %}active{% endblock %}
+{% block title %}Student Dashboard{% endblock %}
+
+{% block nav %}
+    {% include "base/partials/nav/nav_student.html" %}
+{% endblock %}
 
 {% block body %}
 
-<div class="blue-header">
+<div class="sub-header">
     <div class="row">
         <div class="large-6 columns">
             <h1>Student Dashboard</h1>

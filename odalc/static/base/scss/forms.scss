@@ -25,30 +25,30 @@ form, .form-list{
 	}
     span.helptext {
         font-size: 0.8em;
-        color: #888;
+        color: $charcoal;
     }
 }
 
 ul.errorlist {
     margin: 0;
-    background-color: #ff8888;
+    background-color: $bright-red;
     padding: 0.3em 0.5em;
     li {
-        color: #fff;
+        color: $white;
         font-weight: bold;
     }
 }
 
 .tip-thin {
-    color: rgb(77, 77, 77);
     font-weight: normal;
 }
 
 fieldset {
     legend {
         strong {
-            color: rgb(34, 34, 34);
+            color: $charcoal;
         }
+        background: $light-grey;
     }
 }
 
@@ -56,28 +56,28 @@ fieldset {
     cursor:pointer;
     margin:4px 0px;
     padding:4px;
-    border: 1px solid $light-secondary-color;
+    border: 1px solid $medium-grey;
     @include border-radius(4px);
     @include transition-duration(0.3s);
     &:hover{
-        background-color:$light-secondary-color;
+        background-color:$dark-grey;
     }
     &:active{
-        background-color:$dark-secondary-color;
+        background-color:$charcoal;
     }
 }
 
 .slider-dollar {
-    background: $element-green !important;
+    background: $dark-green !important;
     font-family: 'Courier New';
     font-size: 10pt;
-    color: #fff;
+    color: $white;
     width: 65px;
     padding: 5px 0px 5px 8px;
 }
 
 .range-slider-active-segment {
-    background: $element-green-light !important;
+    background: scale-color($dark-green, $lightness: -14%) !important;
 }
 
 input {

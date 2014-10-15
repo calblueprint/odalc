@@ -2,6 +2,10 @@
 
 {% block title %}Log In{% endblock %}
 
+{% block nav %}
+    {% include "base/partials/nav/nav_login.html" %}
+{% endblock %}
+
 {% block body %}
 <div class="row">
     <div class="large-5 columns white-section">
@@ -27,7 +31,7 @@
               <small class="error">{{ error }}</small>
           {% endfor %}
 
-          <input class="button success right" type="submit" value="Log In" />
+          <input class="button success right radius" type="submit" value="Log In" />
         </form>
     </div>
     <div class="offset-2 large-5 columns white-section">
@@ -37,7 +41,7 @@
                 <p>Interested in taking courses?</p>
                 <div>
                     <form method="GET" action="{% url "students:register" %}">
-                        <input class="button info" type="submit" value="Register as a Student" />
+                        <input class="button info radius" type="submit" value="Register as a Student" />
                         <input type="hidden" name="next" value="{{ request.GET.next }}" />
                     </form>
                 </div>
@@ -45,7 +49,7 @@
             <div class="large-12 medium-6 small-12 columns">
                 <p>Interested in teaching courses?</p>
                 <div>
-                    <a href="{% url "teachers:register" %}" class="button">Apply to be a Teacher</a>
+                    <a href="{% url "teachers:register" %}" class="button radius">Apply to be a Teacher</a>
                 </div>
             </div>
         </div>

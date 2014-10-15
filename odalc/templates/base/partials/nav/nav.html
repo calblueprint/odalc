@@ -1,0 +1,40 @@
+{% load staticfiles %}
+<!-- NAV section -->
+<div class="nav contain-to-grid">
+  <nav class="top-bar" data-topbar>
+      <ul class="title-area">
+        <li class="name {% block is_home_page %}{% endblock %}">
+            <h1><a id="odalc-name" href="{% url "home" %}">Oakland Digital | Courses</a></h1>
+        </li>
+         <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+        <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+      </ul>
+
+    <section class="top-bar-section">
+      <!-- Left Nav Section -->
+      <ul class="left">
+        <li class="{% block is_courses_page %}{% endblock %}"><a href={% url "courses:listing" %}>Courses</a></li>
+        <li class="{% block is_about_page %}{% endblock %}"><a href={% url "about" %}>About</a></li>
+        <li class="{% block is_faq_page %}{% endblock %}"><a href={% url "faq" %}>FAQ</a></li>
+        <li class="{% block is_donate_page %}{% endblock %}"><a href={% url "donate" %}>Donate</a></li>
+      </ul>
+
+      <!-- Right Nav Section -->
+      <ul class="right">
+      {% if user.is_authenticated %}
+          {% if is_student_user %}
+          <li class="{% block is_student_dash %}{% endblock %}"><a href="{% url "students:dashboard" %}">Student Dashboard</a></li>
+          {% elif is_teacher_user %}
+          <li class="{% block is_teacher_dash %}{% endblock %}"><a href="{% url "teachers:dashboard" %}">Teacher Dashboard</a></li>
+          {% elif is_admin_user %}
+          <li class="{% block is_admin_dash %}{% endblock %}"><a href="{% url "admins:dashboard" %}">Admin Dashboard</a></li>
+          {% endif %}
+          <li><a href="{% url "users:logout" %}">Logout</a></li>
+      {% else %}
+          <li class="{% block is_login_page %}{% endblock %}"><a href="{% url "users:login" %}?next={{ request.path }}">Login</a></li>
+      {% endif %}
+      </ul>
+    </section>
+  </nav>
+</div>
+<!-- end NAV section -->

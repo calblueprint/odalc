@@ -10,6 +10,7 @@ from django.core.validators import (
 from django.db import models
 
 from odalc.lib.s3 import S3BotoStorage_ODALC
+from odalc.users.models import StudentUser
 
 from athumb.fields import ImageWithThumbsField
 from athumb.backends.s3boto import S3BotoStorage_AllPublic
@@ -230,6 +231,12 @@ class Course(models.Model):
 
     def get_teacher_cost_split(self):
         return self.cost - self.odalc_cost_split
+
+    def set_datetimes(self, date, start_time, end_time):
+        self.start_datetime = dt.combine(date, start_time)
+        self.end_datetime = dt.combine(date, end_time)
+        self.save()
+        return self
 
     def is_accepted(self):
         return self.status == Course.STATUS_ACCEPTED

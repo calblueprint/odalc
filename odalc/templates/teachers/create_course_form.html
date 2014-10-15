@@ -8,10 +8,12 @@
 <link rel="stylesheet" href="{% static "base/css/jquery.timepicker.css" %}" />
 {% endblock %}
 
-{% block is_teacher_dash %}active{% endblock %}
+{% block nav %}
+    {% include "base/partials/nav/nav_teacher.html" %}
+{% endblock %}
 
 {% block body %}
-<div class="blue-header">
+<div class="sub-header">
     <div class="row">
         <div class="large-7 columns">
             <h1>Create a new course</h1>

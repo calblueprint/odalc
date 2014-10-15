@@ -68,11 +68,11 @@ class SubmitCourseFeedbackView(UserDataMixin, CreateView):
     form_class = FeedbackForm
 
     def dispatch(self, *args, **kwargs):
+        # The course is guaranteed to exist!
+        self.course = Course.objects.get(pk=kwargs.get('pk', None))
         handler = super(SubmitCourseFeedbackView, self).dispatch(*args, **kwargs)
         if not self.user.is_authenticated():
             return redirect('/users/login?next=%s' % self.request.path)
-        # The course is guaranteed to exist!
-        self.course = Course.objects.get(pk=self.kwargs.get('pk', None))
         if self.is_student_user and self.course.is_student_in_course(self.user):
             return handler
         else:
@@ -86,6 +86,7 @@ class SubmitCourseFeedbackView(UserDataMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super(SubmitCourseFeedbackView, self).get_context_data(**kwargs)
         context['title'] = self.course.title
+        context['pk'] = self.course.pk
         return context
 
 

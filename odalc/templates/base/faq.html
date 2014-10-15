@@ -3,17 +3,23 @@
 
 {% block title %}About Us{% endblock %}
 
-{% block is_faq_page %}active{% endblock %}
+{% block nav %}
+    {% include "base/partials/nav/nav_faq.html" %}
+{% endblock %}
 
 {% block body %}
-<div class="mid-dark-section">
-    <div class="row">
-        <div class="large-8 columns">
-            <h1>Frequently Asked Questions</h1>
+<div class="faq-header">
+    <div class="faq-header-img"></div>
+    <div class="faq-header-overlay"></div>
+    <div class="faq-header-content">
+        <div class="row">
+            <div class="large-8 columns">
+                <h1>Frequently Asked Questions</h1>
+            </div>
         </div>
     </div>
 </div>
-<div class="white-section">
+<div class="faq-content">
     <div class="row">
         <div class="large-12 columns">
             <dl class="accordion" data-accordion>

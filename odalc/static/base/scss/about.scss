@@ -1,22 +1,31 @@
 #about-bottom-image {
-    background-color: #eee;
-    background: url('base/img/hipster_stuff.jpg');
+    background: url('base/img/billboard.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: fixed;
-    height: 480px;
+    height: 400px;
 }
 
-.mid-dark-section {
-    @include section-padding();
-    background-color: $light-secondary-color;
-
-    p {
-        color: #888;
-        font-size: 1.3em;
+.about-header {
+    .about-header-img {
+        @include splash-image(url('base/img/odalc-teachers.jpg'));
     }
+    .about-header-overlay {
+        @include splash-image-overlay();
+    }
+    .about-header-content {
+        background-color: transparent;
+        height: 100%;
+        padding-top: 100px;
+        padding-bottom: 100px;
+        h1 {
+            color: $white;
+            font-weight: 700;
+        }
 
-    .enroll-btn {
-        margin-top: 3rem;
+        p {
+            color: $white;
+            font-size: 1.3em;
+        }
     }
 }

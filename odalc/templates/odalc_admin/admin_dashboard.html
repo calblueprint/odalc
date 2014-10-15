@@ -3,10 +3,12 @@
 
 {% block title %}Admin Dashboard{% endblock %}
 
-{% block is_admin_dash %}active{% endblock %}
+{% block nav %}
+    {% include "base/partials/nav/nav_admin.html" %}
+{% endblock %}
 
 {% block body %}
-<div class="blue-header">
+<div class="sub-header">
     <div class="row">
         <div class="large-4 columns">
             <h1>Admin Dashboard</h1>
@@ -21,7 +23,8 @@
     </div>
 </div>
 
-<div class="row white-section">
+<div class="white-section">
+    <div class="row">
     <div class="large-12 columns">
         <dl class="sub-nav" data-tab>
             <dt>Filter:</dt>
@@ -200,6 +203,7 @@
 
         </div>
     </div>
+</div>
 </div>
 {% endblock %}
 

@@ -4,10 +4,12 @@
 
 {% block title %}Donate{% endblock %}
 
-{% block is_donate_page %}active{% endblock %}
+{% block nav %}
+    {% include "base/partials/nav/nav_donate.html" %}
+{% endblock %}
 
 {% block body %}
-<div class="white-section">
+<div class="light-grey-section">
     <div class="row">
         <div class="large-5 columns">
             <h1>Donate</h1>
@@ -31,7 +33,7 @@
                     </div>
                 </div>
                 <div class="small-2 small-offset-3 columns">
-                    <button class="btn success right" id='donate-btn'>Donate</button>
+                    <button class="btn success right radius" id='donate-btn'>Donate</button>
                 </div>
             </div>
 
