@@ -29,28 +29,30 @@ fjs.parentNode.insertBefore(js, fjs);
         </div>
         <div class="large-4 large-offset-1 columns center">
 
-            {% if user.is_authenticated %}
+        {% if user.is_authenticated %}
             {% if is_student_user %}
-            {% if in_class %}
-            {% if is_past_start_date %}
-            {% if not submitted_feedback %}
-            <form action="{% url "courses:feedback" course.id %}" method="GET">
-                <button class="enroll-btn large success radius">Submit Feedback</button>
-            </form>
-            {% else %}
-            <button class="enroll-btn large success disabled radius">Thanks for participating!</button>
-            {% endif %}
-            {% else %}
-            <button class="enroll-btn large success disabled radius">Already Enrolled</button>
-            {% endif %}
-            {% elif course_full %}
-            <button class="enroll-btn large success disabled radius">Course Full</button>
-            {% else %}
-            <form method='POST'>
-                {% csrf_token %}
-                <button id="enroll-btn" class="enroll-btn large success radius">Enroll Now</button>
-            </form>
-            {% endif %}
+                {% if in_class %}
+                    {% if is_past_start_date %}
+                        {% if not submitted_feedback %}
+                        <form action="{% url "courses:feedback" course.id %}" method="GET">
+                            <button class="enroll-btn large success radius">Submit Feedback</button>
+                        </form>
+                        {% else %}
+                        <button class="enroll-btn large success disabled radius">Thanks for participating!</button>
+                        {% endif %}
+                    {% else %}
+                        <button class="enroll-btn large success disabled radius">Already Enrolled</button>
+                    {% endif %}
+                {% elif course_full %}
+                    <button class="enroll-btn large success disabled radius">Course Full</button>
+                {% elif is_past_start_date %}
+                    <button class="enroll-btn large success disabled radius">This course has finished.</button>
+                {% else %}
+                <form method='POST'>
+                    {% csrf_token %}
+                    <button id="enroll-btn" class="enroll-btn large success radius">Enroll Now</button>
+                </form>
+                {% endif %}
             {% elif course_full %}
                 <button class="enroll-btn large success disabled radius">Course Full</button>
             {% else %}
