@@ -10,6 +10,7 @@ from django.core.validators import (
 from django.db import models
 
 from odalc.lib.s3 import S3BotoStorage_ODALC
+from odalc.users.models import StudentUser
 
 from athumb.fields import ImageWithThumbsField
 from athumb.backends.s3boto import S3BotoStorage_AllPublic
