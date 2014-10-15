@@ -8,22 +8,26 @@
 {% endblock %}
 
 {% block body %}
-  <div id="main-splash">
-    <div class="row">
-      <div class="large-8 columns">
-        <h1><strong>Courses from Oakland Digital</strong></h1>
-        <br>
-        <h2>Taught by the Bay Area's leading <strong>tech & design professionals</strong></h2>
-      </div>
-      <!-- Something like this on the landing page? Not sure, maybe one button would be better? -atsu -->
-      <div class="large-4 columns">
-            {% if not user.is_authenticated %}
-            <a href="{% url "courses:listing" %}" class="button success radius">Want to learn? Start here</a>
-            <a href="{% url "teachers:register" %}" class="button info radius">Want to teach? Start here</a>
-            {% endif %}
-      </div>
+<div id="main-splash">
+    <div class="main-splash-img"></div>
+    <div class="main-splash-overlay"></div>
+    <div class="main-splash-content">
+        <div class="row">
+          <div class="medium-8 small-centered medium-uncentered columns">
+            <h1>Courses from Oakland Digital</h1>
+            <br>
+            <h2>Taught by the Bay Area's leading <strong>tech & design professionals</strong></h2>
+          </div>
+          <!-- Something like this on the landing page? Not sure, maybe one button would be better? -atsu -->
+          <div class="medium-4 small-centered medium-uncentered columns button-set">
+                {% if not user.is_authenticated %}
+                <a href="{% url "courses:listing" %}" class="button success radius">Want to learn? Start here</a>
+                <a href="{% url "teachers:register" %}" class="button info radius">Want to teach? Start here</a>
+                {% endif %}
+          </div>
+        </div>
     </div>
-  </div>
+</div>
 
   <div class="light-grey-section">
       <!-- Upcoming courses title/description -->

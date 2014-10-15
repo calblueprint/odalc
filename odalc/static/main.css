@@ -40,7 +40,7 @@ body {
   color: #565a5c;
   padding: 0;
   margin: 0;
-  font-family: "", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+  font-family: "Lato", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
   font-weight: normal;
   font-style: normal;
   line-height: 150%;
@@ -864,7 +864,7 @@ select {
       color: #222222;
       padding: 1rem;
       display: block;
-      font-family: "", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+      font-family: "Lato", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
       font-size: 1rem; }
       .accordion .accordion-navigation > a:hover, .accordion dd > a:hover {
         background: #e3e3e3; }
@@ -1256,7 +1256,7 @@ button, .button {
   border-style: solid;
   border-width: 1px;
   cursor: pointer;
-  font-family: "", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+  font-family: "Lato", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
   font-weight: normal;
   line-height: normal;
   margin: 0 0 1.25rem;
@@ -2845,7 +2845,7 @@ label.error {
 
 .label {
   font-weight: normal;
-  font-family: "", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+  font-family: "Lato", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
   text-align: center;
   text-decoration: none;
   line-height: 1;
@@ -3220,7 +3220,7 @@ ul.pagination {
     color: #eeeeee;
     font-weight: normal;
     font-size: 1rem;
-    font-family: "", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; }
+    font-family: "Lato", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; }
   .pricing-table .price {
     background-color: #f6f6f6;
     padding: 0.9375rem 1.25rem;
@@ -3228,7 +3228,7 @@ ul.pagination {
     color: #333333;
     font-weight: normal;
     font-size: 2rem;
-    font-family: "", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; }
+    font-family: "Lato", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; }
   .pricing-table .description {
     background-color: white;
     padding: 0.9375rem;
@@ -3499,7 +3499,7 @@ dialog {
   padding: 0.875rem 0;
   list-style-type: none;
   list-style-position: outside;
-  font-family: "", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; }
+  font-family: "Lato", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; }
   .side-nav li {
     margin: 0 0 0.4375rem 0;
     font-size: 0.875rem;
@@ -3515,7 +3515,7 @@ dialog {
     .side-nav li.active > a:first-child:not(.button) {
       color: #00e2fb;
       font-weight: normal;
-      font-family: "", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; }
+      font-family: "Lato", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; }
     .side-nav li.divider {
       border-top: 1px solid;
       height: 0;
@@ -3625,7 +3625,7 @@ dialog {
     display: inline;
     margin-left: 1rem;
     margin-bottom: 0.625rem;
-    font-family: "", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+    font-family: "Lato", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
     font-weight: normal;
     font-size: 0.875rem;
     color: #565a5c; }
@@ -3919,7 +3919,7 @@ p {
 
 /* Default header styles */
 h1, h2, h3, h4, h5, h6 {
-  font-family: "", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+  font-family: "Lato", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
   font-weight: normal;
   font-style: normal;
   color: #565a5c;
@@ -4172,7 +4172,7 @@ blockquote, blockquote p {
       background-color: #efefef;
       color: #222222;
       padding: 1rem 2rem;
-      font-family: "", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+      font-family: "Lato", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
       font-size: 1rem; }
       .tabs dd > a:hover, .tabs .tab-title > a:hover {
         background-color: #e1e1e1; }
@@ -4470,7 +4470,7 @@ meta.foundation-mq-topbar {
       color: #565a5c;
       padding: 12px 0 12px 0;
       padding-left: 15px;
-      font-family: "", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+      font-family: "Lato", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
       font-size: 0.8125rem;
       font-weight: normal;
       text-transform: none; }
@@ -5523,7 +5523,7 @@ th.hide-for-touch {
   border-style: solid;
   border-width: 1px;
   cursor: pointer;
-  font-family: "", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+  font-family: "Lato", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
   font-weight: normal;
   line-height: normal;
   margin: 0 0 1.25rem;
@@ -5643,18 +5643,14 @@ p.larger {
 .main-wrap {
   min-height: 680px; }
 
-.blue-header {
+.sub-header {
   padding: 2em 0;
-  background-color: #565a5c; }
-  .blue-header h1 {
-    color: white;
-    font-size: 2em; }
-  .blue-header p {
-    color: white; }
-  .blue-header a {
-    color: whitesmoke; }
-    .blue-header a:hover {
-      color: white; }
+  background-color: #edefed; }
+  .sub-header h1 {
+    color: #565a5c;
+    font-weight: 700; }
+  .sub-header p {
+    color: #565a5c; }
 
 .white-section {
   padding: 4em 0;
@@ -5697,7 +5693,7 @@ a .button {
   border-style: solid;
   border-width: 1px;
   cursor: pointer;
-  font-family: "", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+  font-family: "Lato", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
   font-weight: normal;
   line-height: normal;
   margin: 0 0 1.25rem;
@@ -5763,19 +5759,33 @@ a .button {
   color: #007d8c; }
 
 #main-splash {
-  background-color: whitesmoke;
-  background: url('base/img/computer_class.jpg');
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: fixed; }
-  #main-splash .row {
-    padding-top: 80px;
-    padding-bottom: 50px; }
-  #main-splash h1, #main-splash h2 {
-    color: white;
-    background-color: rgba(0, 0, 0, 0.7);
-    display: inline;
-    padding: 0.025em; }
+  background-color: transparent; }
+  #main-splash .main-splash-img {
+    z-index: -20;
+    background: url('base/img/library.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100%;
+    width: 100%;
+    position: absolute; }
+  #main-splash .main-splash-overlay {
+    z-index: -10;
+    background-color: rgba(0, 0, 0, 0.5);
+    height: 100%;
+    width: 100%;
+    position: absolute; }
+  #main-splash .main-splash-content {
+    background-color: transparent;
+    height: 100%;
+    padding-top: 175px;
+    padding-bottom: 175px; }
+    #main-splash .main-splash-content h1 {
+      font-weight: 900; }
+    #main-splash .main-splash-content h1, #main-splash .main-splash-content h2 {
+      color: white;
+      display: inline; }
+    #main-splash .main-splash-content .button-set {
+      padding-top: 20px; }
 
 .course-items-description {
   padding-bottom: 3em; }
@@ -5830,19 +5840,68 @@ a .button {
         font-weight: bold; }
 
 #about-bottom-image {
-  background-color: #eeeeee;
-  background: url('base/img/hipster_stuff.jpg');
+  background: url('base/img/billboard.jpg');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: fixed;
-  height: 480px; }
+  height: 400px; }
 
-.header-section {
-  padding: 4em 0;
-  background-color: #edefed; }
-  .header-section p {
-    color: #888888;
+.about-header .about-header-img {
+  z-index: -20;
+  background: url('base/img/odalc-teachers.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100%;
+  width: 100%;
+  position: absolute; }
+.about-header .about-header-overlay {
+  z-index: -10;
+  background-color: rgba(0, 0, 0, 0.5);
+  height: 100%;
+  width: 100%;
+  position: absolute; }
+.about-header .about-header-content {
+  background-color: transparent;
+  height: 100%;
+  padding-top: 100px;
+  padding-bottom: 100px; }
+  .about-header .about-header-content h1 {
+    color: white;
+    font-weight: 700; }
+  .about-header .about-header-content p {
+    color: white;
     font-size: 1.3em; }
+
+.faq-header .faq-header-img {
+  z-index: -20;
+  background: url('base/img/desktop.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  background-position: 50% -200px; }
+.faq-header .faq-header-overlay {
+  z-index: -10;
+  background-color: rgba(0, 0, 0, 0.5);
+  height: 100%;
+  width: 100%;
+  position: absolute; }
+.faq-header .faq-header-content {
+  background-color: transparent;
+  height: 100%;
+  padding-top: 100px;
+  padding-bottom: 100px; }
+  .faq-header .faq-header-content h1 {
+    font-weight: 700;
+    color: white; }
+
+.faq-content {
+  padding: 4em 0;
+  border-top: 1px solid #edefed;
+  border-bottom: 1px solid #edefed;
+  background-color: whitesmoke;
+  min-height: 500px; }
 
 .course-background-image {
   content: "";
@@ -5907,6 +5966,41 @@ a .button {
     color: #888888;
     margin-top: 0.5em; }
 
+.course-list-header .course-list-header-img {
+  z-index: -20;
+  background: url('base/img/colorful_desktop.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100%;
+  width: 100%;
+  position: absolute; }
+.course-list-header .course-list-header-overlay {
+  z-index: -10;
+  background-color: rgba(0, 0, 0, 0.5);
+  height: 100%;
+  width: 100%;
+  position: absolute; }
+.course-list-header .course-list-header-content {
+  background-color: transparent;
+  padding-top: 100px;
+  padding-bottom: 100px; }
+  .course-list-header .course-list-header-content h1 {
+    color: white;
+    font-weight: 700; }
+  .course-list-header .course-list-header-content .sub-nav dt {
+    color: white; }
+  .course-list-header .course-list-header-content .sub-nav dd a {
+    color: whitesmoke; }
+    .course-list-header .course-list-header-content .sub-nav dd a:hover {
+      color: white; }
+
+.listing-content {
+  padding: 4em 0;
+  border-top: 1px solid #edefed;
+  border-bottom: 1px solid #edefed;
+  background-color: whitesmoke;
+  min-height: 500px; }
+
 .sub-nav #tab-courses-pending.active a {
   background: #007d8c; }
 .sub-nav #tab-courses-active.active a {
@@ -5939,7 +6033,7 @@ a .button {
     display: inline;
     margin-left: 1rem;
     margin-bottom: 0.625rem;
-    font-family: "", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+    font-family: "Lato", "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
     font-weight: normal;
     font-size: 0.875rem;
     color: #565a5c; }

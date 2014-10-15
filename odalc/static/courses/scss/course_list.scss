@@ -1,3 +1,42 @@
+
+.course-list-header {
+    .course-list-header-img {
+        @include splash-image(url('base/img/colorful_desktop.jpg'));
+    }
+
+    .course-list-header-overlay {
+        @include splash-image-overlay();
+    }
+
+    .course-list-header-content {
+        background-color: transparent;
+        padding-top: 100px;
+        padding-bottom: 100px;
+        h1 {
+            color: $white;
+            font-weight: 700;
+        }
+        .sub-nav {
+            dt {
+                color: $white;
+            }
+            dd a {
+                color: $light-grey;
+                &:hover {
+                    color: $white;
+                }
+            }
+        }
+    }
+}
+
+.listing-content {
+    @include section-padding();
+    @include section-border();
+    background-color: $light-grey;
+    min-height: 500px;
+}
+
 .sub-nav {
     #tab-courses-pending.active a {
         background: $dark-blue;

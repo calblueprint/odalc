@@ -11,25 +11,17 @@
     min-height: 680px;
 }
 
-.blue-header {
+.sub-header {
     padding: 2em 0;
-    background-color: $charcoal;
+    background-color: $medium-grey;
     h1 {
-        color: $white;
-        font-size: 2em;
+        color: $charcoal;
+        font-weight: 700;
     }
 
-    p{
-        color: $white;
+    p {
+        color: $charcoal;
     }
-
-    a {
-        color: $light-grey;
-        &:hover {
-            color: $white;
-       }
-    }
-
 }
 
 .white-section {
@@ -73,4 +65,22 @@
 
 a .button {
     @include button();
+}
+
+@mixin splash-image($image-url) {
+    z-index: -20;
+    background: $image-url;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+}
+
+@mixin splash-image-overlay() {
+    z-index: -10;
+    background-color: rgba(0,0,0,0.5);
+    height: 100%;
+    width: 100%;
+    position: absolute;
 }
