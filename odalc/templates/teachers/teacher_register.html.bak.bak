@@ -5,7 +5,7 @@
 {% block title %}Teacher Registration{% endblock %}
 
 {% block css %}
-<link rel="stylesheet" href="{% static "css/base/jquery.scombobox.css" %}" />
+<link rel="stylesheet" href="{% static "base/css/jquery.scombobox.css" %}" />
 {% endblock %}
 
 {% block body %}
@@ -97,5 +97,5 @@ $().ready(function() {
 });
 </script>
 <script src="{% static "js/base/jquery.scombobox.min.js" %}"></script>
-<script src="{% static "js/teachers/register.js" %}"></script>
+<script src="{% static "teachers/js/register.js" %}"></script>
 {% endblock %}

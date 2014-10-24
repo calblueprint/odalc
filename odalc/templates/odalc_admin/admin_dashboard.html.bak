@@ -209,5 +209,5 @@
 
 {% block javascripts %}
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
-<script src="{% static "js/odalc_admin/dashboard.js" %}"></script>
+<script src="{% static "odalc_admin/js/dashboard.js" %}"></script>
 {% endblock %}

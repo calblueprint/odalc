@@ -123,7 +123,7 @@ properly upload files, we need these few lines in the following order:
         in a hidden form field so that this URL can be submitted to our Django server
     2.
         <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
-        <script src="{% static "js/base/s3upload.js" %}"></script>
+        <script src="{% static "base/js/s3upload.js" %}"></script>
         These are just Javascript dependencies we need to upload files
     3.
         {% include "base/partials/file_uploadjs.html" with field=form.some_file_field %}
@@ -141,8 +141,8 @@ properly upload files, we need these few lines in the following order:
 
 {% block javascripts %}
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
-<script src="{% static "js/base/s3upload.js" %}"></script>
-<script src="{% static "js/base/jquery.timepicker.min.js" %}"></script>
+<script src="{% static "base/js/s3upload.js" %}"></script>
+<script src="{% static "base/js/jquery.timepicker.min.js" %}"></script>
 {% include "base/partials/file_uploadjs.html" with field=form.course_material %}
 <script>
 $().ready(function() {

@@ -1,6 +1,6 @@
 .faq-header {
     .faq-header-img {
-        @include splash-image(url('base/img/desktop.jpg'));
+        @include splash-image(url('../img/base/desktop.jpg'));
         background-position: 50% -200px;
     }
 

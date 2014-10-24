@@ -147,8 +147,8 @@
 
 {% block javascripts %}
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
-<script src="{% static "js/base/s3upload.js" %}"></script>
-<script src="{% static "js/base/jquery.timepicker.min.js" %}"></script>
+<script src="{% static "base/js/s3upload.js" %}"></script>
+<script src="{% static "base/js/jquery.timepicker.min.js" %}"></script>
 {% include "base/partials/file_uploadjs.html" with field=form.course_material %}
 
 <script>
@@ -185,5 +185,5 @@ $("#{{ form.cost.id_for_label }}").blur(function() {
 });
 
 </script>
-<script src="{% static "js/base/costSplitSlider.js" %}"></script>
+<script src="{% static "base/js/costSplitSlider.js" %}"></script>
 {% endblock %}

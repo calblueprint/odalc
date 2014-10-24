@@ -1,7 +1,7 @@
 
 .course-list-header {
     .course-list-header-img {
-        @include splash-image(url('base/img/colorful_desktop.jpg'));
+        @include splash-image(url('../img/base/colorful_desktop.jpg'));
     }
 
     .course-list-header-overlay {

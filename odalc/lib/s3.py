@@ -56,15 +56,22 @@ class SignS3View(View):
         signature = urllib.quote(signature.strip())
         # Build the URL of the file in anticipation of its imminent upload:
 
+        url = 'https://%s.s3.amazonaws.com/%s' % (S3_BUCKET, object_name)
+        """
         get_params = urllib.urlencode({
             'AWSAccessKeyId': AWS_ACCESS_KEY,
             'Expires': expires,
             'Signature': signature
         })
 
-        url = 'https://%s.s3.amazonaws.com/%s' % (S3_BUCKET, object_name)
         content = json.dumps({
             'signed_request': '%s?%s' % (url, get_params),
+            'url': url
+        })
+        """
+
+        content = json.dumps({
+            'signed_request': '%s?AWSAccessKeyId=%s&Expires=%d&Signature=%s' % (url, AWS_ACCESS_KEY, expires, signature),
             'url': url
         })
 

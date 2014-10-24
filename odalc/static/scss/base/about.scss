@@ -1,5 +1,5 @@
 #about-bottom-image {
-    background: url('base/img/billboard.jpg');
+    background: url('../img/base/billboard.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: fixed;
@@ -8,7 +8,7 @@
 
 .about-header {
     .about-header-img {
-        @include splash-image(url('base/img/odalc-teachers.jpg'));
+        @include splash-image(url('../img/base/odalc-teachers.jpg'));
     }
     .about-header-overlay {
         @include splash-image-overlay();

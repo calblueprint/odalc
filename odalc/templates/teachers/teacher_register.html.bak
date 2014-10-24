@@ -5,7 +5,7 @@
 {% block title %}Teacher Registration{% endblock %}
 
 {% block css %}
-<link rel="stylesheet" href="{% static "css/base/jquery.scombobox.css" %}" />
+<link rel="stylesheet" href="{% static "base/css/jquery.scombobox.css" %}" />
 {% endblock %}
 
 {% block body %}

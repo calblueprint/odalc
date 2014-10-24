@@ -73,7 +73,7 @@
 
 {% block javascripts %}
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
-<script src="{% static "js/base/s3upload.js" %}"></script>
+<script src="{% static "base/js/s3upload.js" %}"></script>
 {% include "base/partials/file_uploadjs.html" with field=form.resume %}
 <script>
 $().ready(function() {

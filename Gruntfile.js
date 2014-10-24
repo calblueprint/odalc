@@ -17,7 +17,7 @@ module.exports = function(grunt) {
           //'odalc/static/base/css/courses.css': 'odalc/static/base/scss/courses.scss',
           //'odalc/static/base/css/forms.css': 'odalc/static/base/scss/forms.scss'
           //'odalc/static/base/css/main.css': 'odalc/static/base/scss/main.scss',
-          'odalc/static/main.css': 'odalc/static/main.scss'
+          'odalc/static/css/main.css': 'odalc/static/scss/main.scss'
         }
       }
     },
