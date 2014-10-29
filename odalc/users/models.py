@@ -11,9 +11,8 @@ from django.db import models
 from django.db.models.signals import post_save, post_syncdb
 from django.dispatch import receiver
 
-from odalc.lib.s3 import S3BotoStorage_ODALC
-
-from athumb.fields import ImageWithThumbsField
+from imagekit.models import ProcessedImageField
+from imagekit.processors import ResizeToFill
 from localflavor.us import models as localflavor_models
 
 
@@ -70,8 +69,6 @@ class StudentUser(User):
 
 
 class TeacherUser(User):
-    PUBLIC_MEDIA_BUCKET = S3BotoStorage_ODALC(bucket=settings.S3_BUCKET)
-
     INFO_SOURCE_FRIEND = 'From a friend'
     INFO_SOURCE_WEB = 'Our website'
     INFO_SOURCE_OTHER = 'Other'
@@ -121,14 +118,11 @@ class TeacherUser(User):
         'Professional Experience',
         help_text='Your professional experience. This wil also be shown on the course page.'
     )
-    picture = ImageWithThumbsField(
-        'Headshot',
-        help_text='Please upload a square image.',
-        upload_to="images/profiles",
-        thumbs=(
-            ('full', {'size': (600, 600)}),
-        ),
-        storage=PUBLIC_MEDIA_BUCKET
+    picture = ProcessedImageField(
+        upload_to='images/profiles/%Y-%m-%d/',
+        processors=[ResizeToFill(600, 600)],
+        format='JPEG',
+        options={'quality': 100}
     )
     resume = models.URLField(
         'Resume',

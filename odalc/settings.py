@@ -41,7 +41,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'localflavor',
-    'athumb',
+    'imagekit',
     'djangobower',
     'widget_tweaks',
     'odalc.base',
@@ -148,9 +148,7 @@ BOWER_INSTALLED_APPS = (
 
 # If you don't want this to be the global default, just make sure you
 # specify the S3BotoStorage_AllPublic backend on a per-field basis.
-#DEFAULT_FILE_STORAGE = 'athumb.backends.s3boto.S3BotoStorage_AllPublic'
-
-DEFAULT_FILE_STORAGE = 'odalc.lib.s3.S3BotoStorage_ODALC'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 
 # Amazon S3 Configs
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', '')

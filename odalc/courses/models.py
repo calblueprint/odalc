@@ -9,11 +9,10 @@ from django.core.validators import (
 )
 from django.db import models
 
-from odalc.lib.s3 import S3BotoStorage_ODALC
 from odalc.users.models import StudentUser
 
-from athumb.fields import ImageWithThumbsField
-from athumb.backends.s3boto import S3BotoStorage_AllPublic
+from imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFill
 
 
 class CourseManager(models.Manager):
@@ -110,8 +109,6 @@ class CourseManager(models.Manager):
 
 
 class Course(models.Model):
-    PUBLIC_MEDIA_BUCKET = S3BotoStorage_ODALC(bucket=settings.S3_BUCKET)
-
     SKILL_BEGINNER = 'Beginner'
     SKILL_INTERMEDIATE = 'Intermediate'
     SKILL_ADVANCED = 'Advanced'
@@ -190,15 +187,12 @@ class Course(models.Model):
         decimal_places=2,
         help_text='Amount of the enrollment cost you\'d like to donate to Oakland Digital. 100% of the proceeds go back to this program.'
     )
-    image = ImageWithThumbsField(
-        'Course Image',
-        help_text='Image to use as the banner on the course page. Please use a high-resolution image if possible, but the Oakland Digital team can help find an appropriate image for this.',
-        upload_to="images/courses",
-        thumbs=(
-            ('thumb', {'size': (300, 200), 'crop': True}),
-            ('full', {'size': (1400, 500), 'crop': True}),
-        ),
-        storage=PUBLIC_MEDIA_BUCKET
+    image = models.ImageField(upload_to="images/courses/%Y-%m-%d/")
+    image_thumbnail = ImageSpecField(
+        source='image',
+        processors=[ResizeToFill(300, 200)],
+        format='JPEG',
+        options={'quality': 75}
     )
     course_material = models.URLField(
         'Course Materials',

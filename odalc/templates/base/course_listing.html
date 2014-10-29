@@ -54,7 +54,7 @@
                 </div>
                 <div class="small-3 columns">
                     <a href="{% url "courses:detail" course.pk %}">
-                        <img src="{% thumbnail course.image 'thumb' %}"></img>
+                        <img src="{{ course.image_thumbnail.url }}"></img>
                     </a>
                 </div>
             </div>
@@ -87,7 +87,7 @@
                 </div>
                 <div class="small-3 columns">
                     <a href="{% url "courses:detail" course.pk %}">
-                        <img src="{% thumbnail course.image 'thumb' %}"></img>
+                        <img src="{{ course.image_thumbnail.url }}"></img>
                     </a>
                 </div>
             </div>
@@ -120,7 +120,7 @@
                 </div>
                 <div class="small-3 columns">
                     <a href="{% url "courses:detail" course.pk %}">
-                        <img src="{% thumbnail course.image 'thumb' %}"></img>
+                        <img src="{{ course.image_thumbnail.url }}"></img>
                     </a>
                 </div>
             </div>
