@@ -6,6 +6,8 @@ boto==2.32.1
 dj-database-url==0.3.0
 dj-static==0.0.6
 django-athumb==2.0
+django-storages
+django-pipeline
 django-bower==5.0.1
 django-localflavor==1.0
 django-sampledatahelper==0.2.1
