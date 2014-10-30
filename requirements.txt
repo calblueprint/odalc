@@ -9,6 +9,7 @@ django-bower==5.0.1
 django-imagekit
 django-localflavor==1.0
 django-sampledatahelper==0.2.1
+django-storages==1.1.8
 django-toolbelt==0.0.1
 django-widget-tweaks==1.3
 gunicorn==19.1.1
