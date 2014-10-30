@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+# The pre_compile hook is run by heroku-buildpack-python
+
+echo "-----> Running custom pre-compile hook"
+
+# Work around Heroku bug whereby pylibmc isn't available during
+# compile phase. See: https://github.com/heroku/heroku-buildpack-python/issues/57
+export MEMCACHE_SERVERS='' MEMCACHIER_SERVERS=''
+
+if [ -f bin/install_image_libs ]; then
+    echo "-----> Running install_image_libs"
+    chmod +x bin/install_image_libs
+    bin/install_image_libs
+fi
+
+echo "-----> Pre-compile done"
