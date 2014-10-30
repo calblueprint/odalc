@@ -36,4 +36,5 @@ class EditCourseForm(forms.ModelForm):
             'start_datetime',
             'end_datetime',
             'is_featured'
+            'image_thumbnail'
         )

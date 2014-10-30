@@ -4,9 +4,6 @@ from django.conf.urls.static import static
 from django.contrib.auth.views import password_change
 from django.views.generic import TemplateView
 
-from django.template import add_to_builtins
-add_to_builtins('athumb.templatetags.thumbnail')
-
 from odalc.base.views import (
     AboutPageView,
     DonatePageView,

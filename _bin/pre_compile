@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+# The pre_compile hook is run by heroku-buildpack-python
+
+echo "-----> Running custom pre-compile hook"
+
+if [ -f bin/_apt-get_compile ]; then
+    echo "-----> Running apt-get_compile"
+    chmod +x bin/apt-get_compile
+    mkdir precompile-tmp/
+    mkdir precompile-tmp/build
+    mkdir precompile-tmp/cache
+    bin/apt-get_compile recompile-tmp/build precompile-tmp/cache
+fi
+
+if [ -f bin/install_image_libs ]; then
+    echo "-----> Running install_image_libs"
+    chmod +x bin/install_image_libs
+    bin/install_image_libs
+fi
+
+echo "-----> Pre-compile done"

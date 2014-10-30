@@ -53,8 +53,8 @@ ODALC_APPS = (
 )
 
 THIRD_PARTY_APPS = (
-    'athumb',
     'djangobower',
+    'imagekit',
     'localflavor',
     'pipeline',
     'storages',
@@ -160,11 +160,6 @@ TIME_INPUT_FORMATS = (
 # Storage configs
 #
 
-# django-storage settings
-# If you don't want this to be the global default, just make sure you
-# specify the S3BotoStorage_AllPublic backend on a per-field basis.
-#DEFAULT_FILE_STORAGE = 'athumb.backends.s3boto.S3BotoStorage_AllPublic'
-#DEFAULT_FILE_STORAGE = 'odalc.lib.s3.S3BotoStorage_ODALC'
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
 

@@ -49,7 +49,7 @@
                 </div>
                 <div class="row">
                     <div class="medium-12 columns">
-                          {% include "base/partials/hidden_file_uploadfield.html" with field=form.course_material %}
+                        {% include "base/partials/formfield.html" with field=form.image %}
                     </div>
                 </div>
         </fieldset>
@@ -111,43 +111,10 @@
 </div>
 {% endblock %}
 
-{#
-
-We handle file uploads by directly uploading them to Amazon S3, without having the file going through our Django server.
-This means that our models only store URLs for the "file fields", like the fields for images and PDFs. To be able to
-properly upload files, we need these few lines in the following order:
-    1.
-        {% include "base/partials/hidden_file_uploadfield.html" with field=form.some_file_field %}
-        (Use hidden_img_uploadfield for images)
-        In the form, this creates a widget that allows the user to select a file for upload, and puts the URL of the uploaded file
-        in a hidden form field so that this URL can be submitted to our Django server
-    2.
-        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
-        <script src="{% static "js/base/s3upload.js" %}"></script>
-        These are just Javascript dependencies we need to upload files
-    3.
-        {% include "base/partials/file_uploadjs.html" with field=form.some_file_field %}
-        This "html" file is actually a <script> block that uses Django template variables to dynamically create a
-        Javascript function for this particular upload field. Note that if you used hidden_img_uploadfield above,
-        you need to use img_uploadjs.html here
-    4.
-        <script>
-        $().ready(function() {
-            $('#file_{{ form.some_file_field.id_for_label }}').on("change", s3_upload_{{ form.some_file_field.id_for_label }});
-        });
-        </script>
-
-#}
-
 {% block javascripts %}
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
-<script src="{% static "js/base/s3upload.js" %}"></script>
-<script src="{% static "js/base/jquery.timepicker.min.js" %}"></script>
-{% include "base/partials/file_uploadjs.html" with field=form.course_material %}
+<script src="{% static "base/js/jquery.timepicker.min.js" %}"></script>
 <script>
-$().ready(function() {
-    $('#file_{{ form.course_material.id_for_label }}').on("change", s3_upload_{{ form.course_material.id_for_label }});
-});
 $(function() {
     var dateOptions = {
 

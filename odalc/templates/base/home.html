@@ -47,7 +47,7 @@
                 <div class="title-wrap">
                   <h4>{{ course.title }}</h4>
                 </div>
-                <img src="{% thumbnail course.image 'thumb' %}"></img>
+                <img src="{{ course.image_thumbnail.url }}"></img>
               </div>
               <div class="bottom-shelf">
                 <h4>With {{ course.teacher.first_name }} {{ course.teacher.last_name }}<span class="date"> | {{ course.start_datetime|date:'N d Y' }}</span></h4>

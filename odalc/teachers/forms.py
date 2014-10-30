@@ -83,4 +83,5 @@ class CreateCourseForm(forms.ModelForm):
             'end_datetime',
             'status',
             'is_featured'
+            'image_thumbnail'
         )

@@ -19,7 +19,7 @@ fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
 
 <!-- Title section -->
-<div class="course-background-image" style="background-image: url('{% thumbnail course.image 'full' %}');"></div>
+<div class="course-background-image" style="background-image: url('{{ course.image.url }}');"></div>
 <div class="course-top-section">
     <div class="row">
         <div class="large-7 columns">
@@ -107,7 +107,7 @@ fjs.parentNode.insertBefore(js, fjs);
           <h3>Additional Information</h3>
           <p>{{ course.additional_info }}</p>
           {% if course.course_material and in_class or is_owner or is_admin_user %}
-          <h5><a target="_blank" href="{{ course.course_material }}">View Course Materials &raquo;</a></h5>
+          <h5><a target="_blank" href="{{ course.course_material.url }}">View Course Materials &raquo;</a></h5>
           {% endif %}
         </div>
         <!-- about the teacher -->
@@ -115,7 +115,7 @@ fjs.parentNode.insertBefore(js, fjs);
           <h2>About the Instructor</h2>
           <div class="row author">
             <div class="pic">
-                <img class="th" src="{% thumbnail course.teacher.picture 'full' %}" />
+                <img class="th" src="{{ course.teacher.picture.url }}" />
             </div>
             <div class="details">
                 <h4>{{ course.teacher.first_name }} {{ course.teacher.last_name }}</h4>
