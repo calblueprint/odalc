@@ -65,7 +65,7 @@
                     </div>
                     <div class="row">
                         <div class="medium-12 columns">
-                            <strong class="right"><a target="_blank" href="{{ course.course_material }}">View Course Materials &raquo;</a></strong>
+                            <strong class="right"><a target="_blank" href="{{ course.course_material.url }}">View Course Materials &raquo;</a></strong>
                         </div>
                     </div>
                 </fieldset>
@@ -171,11 +171,11 @@
 
                 </fieldset>
                 {% include "base/partials/formfield.html" with field=form.image %}
+                {% include "base/partials/formfield.html" with field=form.course_material %}
 
                 {# Hidden form inputs so that we can use EditCourseForm in the View #}
                 <input id="{{ form.status.id_for_label }}" type="hidden" name="{{ form.status.html_name }}" value="{{ form.status.value }}"/>
-                <input id="{{ form.course_material.id_for_label }}" type="hidden" name="{{ form.course_material.html_name }}" value="{{ form.course_material.value }}"/>
-                    </div>
+            </div>
 
                 <!--Input Buttons (Approve and Deny)-->
 
@@ -183,14 +183,14 @@
                 <div class="row">
                     <div class="medium-3 columns">
                         <div class="pic">
-                            <img class="th" src="{% thumbnail course.teacher.picture 'full' %}" />
+                            <img class="th" src="{{ course.teacher.picture.url }}" />
                         </div>
                         <div class="details">
                             <ul class="vcard">
                                 <li class="fn">{{ course.teacher.first_name }} {{ course.teacher.last_name }}</li>
                                 <li class="org">{{ course.teacher.organization }}</li>
                                 <li class="role"><i>{{ course.teacher.position }}</i></li>
-                                <li class="resume"><a target="_blank" href="{{ course.teacher.resume }}">View Resume</a></li>
+                                <li class="resume"><a target="_blank" href="{{ course.teacher.resume.url }}">View Resume</a></li>
                                 <li class="email"><a target="_blank" href="mailto:{{ course.teacher.email }}">{{ course.teacher.email }}</a></li>
                                 <li class="phone">{{ course.teacher.phone }}</li>
                                 <li class="street-address">{{ course.teacher.street_address }}</li>
@@ -226,7 +226,6 @@
 
 {% block javascripts %}
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
-<script src="{% static "base/js/s3upload.js" %}"></script>
 <script src="{% static "base/js/jquery.timepicker.min.js" %}"></script>
 <script>
 $(function() {
