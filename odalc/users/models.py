@@ -124,8 +124,9 @@ class TeacherUser(User):
         format='JPEG',
         options={'quality': 100}
     )
-    resume = models.URLField(
+    resume = models.FileField(
         'Resume',
+        upload_to="documents/resumes/%Y-%m-%d/",
         help_text='Resumes should be in PDF format'
     )
     info_source = models.CharField(

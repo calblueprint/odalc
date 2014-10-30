@@ -194,9 +194,11 @@ class Course(models.Model):
         format='JPEG',
         options={'quality': 75}
     )
-    course_material = models.URLField(
+    course_material = models.FileField(
         'Course Materials',
+        upload_to="documents/coursematerials/%Y-%m-%d/",
         blank=True,
+        null=True,
         help_text='Optional PDF of any course materials for students. This can include links to other materials as well. Only enrolled students will be able to see this link.'
     )
     additional_info = models.TextField(

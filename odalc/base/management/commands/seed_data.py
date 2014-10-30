@@ -17,10 +17,9 @@ DIR = os.path.dirname(os.path.abspath(__file__))
 
 TEST_COURSE_IMAGE_PATH = 'sample/sample_course_pic.jpg'
 TEST_TEACHER_IMAGE_PATH = 'sample/sample_headshot.jpg'
-
 RANDOM_COURSE_IMAGE_PATH = 'sample/sample_course_%d.JPG'
-
 RANDOM_TEACHER_IMAGE_PATH = 'sample/sample_headshot_%d.JPG'
+TEST_PDF_PATH = 'sample/sample_pdf.pdf'
 
 TEST_PDF_URL = 'https://s3.amazonaws.com/odalc-stage-media/sample/sample_pdf.pdf'
 TEST_TEACHER_EMAIL = 'teacher@teacher.com'
@@ -50,13 +49,12 @@ class Command(BaseCommand):
                 zipcode='94709',
                 phone=self.sd.phone('es', 1),
                 about=self.sd.paragraph(),
-                resume=TEST_PDF_URL,
                 experience=self.sd.paragraph(),
                 info_source='WEB'
             )
             teacher.set_password(TEST_PASSWORD)
             teacher.save()
-            cursor.execute('UPDATE users_teacheruser SET picture = %s WHERE user_ptr_id = %s', [RANDOM_TEACHER_IMAGE_PATH % randint(1,10), teacher.id])
+            cursor.execute('UPDATE users_teacheruser SET picture = %s, resume = %s WHERE user_ptr_id = %s', [RANDOM_TEACHER_IMAGE_PATH % randint(1,10), TEST_PDF_PATH, teacher.id])
         if not TeacherUser.objects.filter(email=TEST_TEACHER_EMAIL).exists():
             teacher = TeacherUser.objects.create(
                 email=TEST_TEACHER_EMAIL,
@@ -70,13 +68,12 @@ class Command(BaseCommand):
                 phone=self.sd.phone('es', 1),
                 about=self.sd.paragraph(),
                 picture=TEST_TEACHER_IMAGE_PATH,
-                resume=TEST_PDF_URL,
                 experience=self.sd.paragraph(),
                 info_source='WEB'
             )
             teacher.set_password(TEST_PASSWORD)
             teacher.save()
-            cursor.execute('UPDATE users_teacheruser SET picture = %s WHERE user_ptr_id = %s', [TEST_TEACHER_IMAGE_PATH, teacher.id])
+            cursor.execute('UPDATE users_teacheruser SET picture = %s, resume = %s WHERE user_ptr_id = %s', [TEST_TEACHER_IMAGE_PATH, TEST_PDF_PATH, teacher.id])
         return
 
     def generate_students(self, instances):
@@ -131,7 +128,6 @@ class Command(BaseCommand):
                 skill_level=self.sd.choice(COURSE_SKILL_CHOICES),
                 cost=decimal.Decimal('6.00'),
                 odalc_cost_split=decimal.Decimal('2.50'),
-                course_material=TEST_PDF_URL,
                 additional_info=self.sd.paragraph(),
                 status=Course.STATUS_PENDING
             )
@@ -139,7 +135,7 @@ class Command(BaseCommand):
             for s in course_students:
                 course.students.add(s)
             course.save()
-            cursor.execute('UPDATE courses_course SET image = %s WHERE id = %s', [RANDOM_COURSE_IMAGE_PATH % randint(1,10), course.id])
+            cursor.execute('UPDATE courses_course SET image = %s, course_material = %s WHERE id = %s', [RANDOM_COURSE_IMAGE_PATH % randint(1,10), TEST_PDF_PATH, course.id])
         # Generate 'Accepted' Courses
         for x in range(instances):
             student_qs = StudentUser.objects.all()
@@ -168,7 +164,7 @@ class Command(BaseCommand):
             for s in course_students:
                 course.students.add(s)
             course.save()
-            cursor.execute('UPDATE courses_course SET image = %s WHERE id = %s', [RANDOM_COURSE_IMAGE_PATH % randint(1,10), course.id])
+            cursor.execute('UPDATE courses_course SET image = %s, course_material = %s WHERE id = %s', [RANDOM_COURSE_IMAGE_PATH % randint(1,10), TEST_PDF_PATH, course.id])
         # Generate 'Finished' Courses
         for x in range(instances):
             student_qs = StudentUser.objects.all()
@@ -197,7 +193,7 @@ class Command(BaseCommand):
             for s in course_students:
                 course.students.add(s)
             course.save()
-            cursor.execute('UPDATE courses_course SET image = %s WHERE id = %s', [RANDOM_COURSE_IMAGE_PATH % randint(1,10), course.id])
+            cursor.execute('UPDATE courses_course SET image = %s, course_material = %s WHERE id = %s', [RANDOM_COURSE_IMAGE_PATH % randint(1,10), TEST_PDF_PATH, course.id])
         # Generate 'Denied' Courses
         for x in range(instances):
             student_qs = StudentUser.objects.all()

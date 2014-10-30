@@ -59,7 +59,7 @@
                 </div>
                 <div class="row">
                     <div class="medium-12 columns">
-                          {% include "base/partials/hidden_file_uploadfield.html" with field=form.course_material %}
+                        {% include "base/partials/formfield.html" with field=form.course_material %}
                     </div>
                 </div>
                 <div class="row">
@@ -147,13 +147,9 @@
 
 {% block javascripts %}
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
-<script src="{% static "base/js/s3upload.js" %}"></script>
 <script src="{% static "base/js/jquery.timepicker.min.js" %}"></script>
-{% include "base/partials/file_uploadjs.html" with field=form.course_material %}
-
 <script>
 $().ready(function() {
-    $('#file_{{ form.course_material.id_for_label }}').on("change", s3_upload_{{ form.course_material.id_for_label }});
 
     var dateOptions = {
         beforeShowDay: $.datepicker.noWeekends,
