@@ -203,8 +203,8 @@ else:
 # Storage configs
 #
 
-DEFAULT_FILE_STORAGE = 'odalc.lib.s3.StaticFilesS3BotoStorage'
-STATICFILES_STORAGE = 'odalc.lib.s3.UploadsS3BotoStorage'
+DEFAULT_FILE_STORAGE = 'odalc.lib.s3.UploadsS3BotoStorage'
+STATICFILES_STORAGE = 'odalc.lib.s3.StaticFilesS3BotoStorage'
 
 
 #
