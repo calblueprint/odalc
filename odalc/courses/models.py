@@ -11,7 +11,7 @@ from django.db import models
 
 from odalc.users.models import StudentUser
 
-from imagekit.models import ImageSpecField
+from imagekit.models import ImageSpecField, ProcessedImageField
 from imagekit.processors import ResizeToFill
 
 
@@ -187,7 +187,12 @@ class Course(models.Model):
         decimal_places=2,
         help_text='Amount of the enrollment cost you\'d like to donate to Oakland Digital. 100% of the proceeds go back to this program.'
     )
-    image = models.ImageField(upload_to="uploads/images/courses/%Y-%m-%d/")
+    image = ProcessedImageField(
+        upload_to='uploads/images/courses/%Y-%m-%d/',
+        processors=[ResizeToFill(1400, 600)],
+        format='JPEG',
+        options={'quality': 100}
+    )
     image_thumbnail = ImageSpecField(
         source='image',
         processors=[ResizeToFill(300, 200)],
