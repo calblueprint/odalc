@@ -5,7 +5,7 @@ module.exports = function(grunt) {
     sass: {
       options: {
         includePaths: [
-          'odalc/static/bower_components/foundation/scss',
+          'odalc/static/components/foundation/scss',
         ]
       },
       dist: {

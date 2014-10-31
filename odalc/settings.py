@@ -19,7 +19,8 @@ IS_PROD = 'IS_PROD' in os.environ
 IS_HEROKU = IS_STAGE or IS_PROD
 TEMPLATE_DEBUG = not IS_PROD
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = not IS_PROD
+# DEBUG = not IS_PROD
+DEBUG = False
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '%=4^u&zuw7teu$lka26@*rox*g=4tdw)nikp$w7!$n61lkw#vn'
@@ -96,19 +97,19 @@ AUTH_USER_MODEL = 'users.User'
 # Database setup
 #
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'odalc_db',
+        'USER': 'odalc',
+        'PASSWORD': 'odalc',
+        'HOST': '127.0.0.1',
+        'PORT': '',
+    }
+}
+
 if IS_HEROKU:
     DATABASES['default'] =  dj_database_url.config()
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'odalc_db',
-            'USER': 'odalc',
-            'PASSWORD': 'odalc',
-            'HOST': '127.0.0.1',
-            'PORT': '',
-        }
-    }
 
 
 #
@@ -157,14 +158,6 @@ TIME_INPUT_FORMATS = (
 
 
 #
-# Storage configs
-#
-
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
-
-
-#
 # Amazon S3 configs
 #
 
@@ -172,8 +165,6 @@ AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', '')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY', '')
 S3_BUCKET = os.environ.get('S3_BUCKET', '')
 AWS_STORAGE_BUCKET_NAME = S3_BUCKET
-AWS_REGION = ''
-MEDIA_CACHE_BUSTER = 'refetch'
 
 
 #
@@ -192,7 +183,7 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'djangobower.finders.BowerFinder',
-    'pipeline.finders.PipelineFinder',
+#    'pipeline.finders.PipelineFinder',
 )
 
 
@@ -207,6 +198,14 @@ if IS_PROD:
 else:
     MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
     MEDIA_URL = '/uploads/'
+
+
+#
+# Storage configs
+#
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 
 
 #
