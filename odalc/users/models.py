@@ -119,14 +119,14 @@ class TeacherUser(User):
         help_text='Your professional experience. This wil also be shown on the course page.'
     )
     picture = ProcessedImageField(
-        upload_to='images/profiles/%Y-%m-%d/',
+        upload_to='uploads/images/profiles/%Y-%m-%d/',
         processors=[ResizeToFill(600, 600)],
         format='JPEG',
         options={'quality': 100}
     )
     resume = models.FileField(
         'Resume',
-        upload_to="documents/resumes/%Y-%m-%d/",
+        upload_to='uploads/documents/resumes/%Y-%m-%d/',
         help_text='Resumes should be in PDF format'
     )
     info_source = models.CharField(

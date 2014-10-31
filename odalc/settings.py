@@ -19,8 +19,7 @@ IS_PROD = 'IS_PROD' in os.environ
 IS_HEROKU = IS_STAGE or IS_PROD
 TEMPLATE_DEBUG = not IS_PROD
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = not IS_PROD
-DEBUG = False
+DEBUG = not IS_PROD
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '%=4^u&zuw7teu$lka26@*rox*g=4tdw)nikp$w7!$n61lkw#vn'
@@ -204,8 +203,8 @@ else:
 # Storage configs
 #
 
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+DEFAULT_FILE_STORAGE = 'odalc.lib.s3.StaticFilesS3BotoStorage'
+STATICFILES_STORAGE = 'odalc.lib.s3.UploadsS3BotoStorage'
 
 
 #

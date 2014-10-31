@@ -187,7 +187,7 @@ class Course(models.Model):
         decimal_places=2,
         help_text='Amount of the enrollment cost you\'d like to donate to Oakland Digital. 100% of the proceeds go back to this program.'
     )
-    image = models.ImageField(upload_to="images/courses/%Y-%m-%d/")
+    image = models.ImageField(upload_to="uploads/images/courses/%Y-%m-%d/")
     image_thumbnail = ImageSpecField(
         source='image',
         processors=[ResizeToFill(300, 200)],
@@ -196,7 +196,7 @@ class Course(models.Model):
     )
     course_material = models.FileField(
         'Course Materials',
-        upload_to="documents/coursematerials/%Y-%m-%d/",
+        upload_to="uploads/documents/coursematerials/%Y-%m-%d/",
         blank=True,
         null=True,
         help_text='Optional PDF of any course materials for students. This can include links to other materials as well. Only enrolled students will be able to see this link.'
