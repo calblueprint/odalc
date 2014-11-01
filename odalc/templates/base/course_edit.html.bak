@@ -1,0 +1,165 @@
+{% extends "base/base.html" %}
+{% load staticfiles %}
+{% block title %}Edit course{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static "base/css/jquery.timepicker.css" %}" />
+{% endblock %}
+
+{% block body %}
+<div class="sub-header">
+    <div class="row">
+        <div class="large-7 columns">
+            <h1>Editing {{ course.title }}</h1>
+        </div>
+        <div class="large-5 columns">
+            {% include "base/partials/return_to_dashboard.html" %}
+        </div>
+    </div>
+</div>
+
+<div class="row white-section">
+    <div class="large-12 columns">
+        <form enctype="multipart/form-data" method="POST">
+          {% csrf_token %}
+
+          {% for error in form.non_field_errors %}
+          <div data-alert class="alert-box alert">
+            {{ error }}
+            <a href="#" class="close">&times;</a>
+          </div>
+          {% endfor %}
+
+        <fieldset>
+            <legend>Course Content</legend>
+                <div class="row">
+                    <div class="medium-12 columns">
+          {% include "base/partials/formfield.html" with field=form.title %}
+          {% include "base/partials/tooltip_formfield.html" with field=form.short_description %}
+          {% include "base/partials/tooltip_formfield.html" with field=form.long_description %}
+                    </div>
+               </div>
+                <div class="row">
+                    <div class="medium-6 columns">
+                        {% include "base/partials/tooltip_formfield.html" with field=form.prereqs %}
+                    </div>
+                    <div class="medium-6 columns">
+                        {% include "base/partials/tooltip_formfield.html" with field=form.additional_info %}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="medium-12 columns">
+                          {% include "base/partials/hidden_file_uploadfield.html" with field=form.course_material %}
+                    </div>
+                </div>
+        </fieldset>
+          {% if is_admin_user %}
+        <fieldset>
+            <legend>Course date and times</legend>
+              {% include "base/partials/course_datetimefield.html" with date=form.date start_time=form.start_time end_time=form.end_time %}
+        </fieldset>
+          {% else %}
+              {# Hide the date/time fields if the teacher is editing the course #}
+              {% include "base/partials/hidden_formfield.html" with field=form.date %}
+              {% include "base/partials/hidden_formfield.html" with field=form.start_time %}
+              {% include "base/partials/hidden_formfield.html" with field=form.end_time %}
+          {% endif %}
+        <fieldset>
+            <legend>Course Logistics</legend>
+            <div class="row">
+                <div class="medium-3 columns">
+                    {% include "base/partials/tooltip_formfield.html" with field=form.size %}
+                </div>
+                <div class="medium-3 columns">
+                    {% include "base/partials/tooltip_formfield.html" with field=form.skill_level %}
+                </div>
+                <div class="medium-3 columns">
+                    <span data-tooltip class="has-tip tip-top tip-thin" title="{{ form.cost.help_text }}">
+                        <label for="{{ form.cost.id_for_label }}">Course Fee</label>
+                    </span>
+                    <p>${{ form.cost.value }}</p>
+                    {% include "base/partials/hidden_formfield.html" with field=form.cost %}
+                </div>
+                <div class="medium-3 columns">
+                    <span data-tooltip class="has-tip tip-top tip-thin" title="{{ form.odalc_cost_split.help_text }}">
+                        <label for="{{ form.odalc_cost_split.id_for_label }}">Donate to ODALC <i class="lighter">(and <span id="your-amt">${{ teacher_split }}</span> to the instructor)</i></label>
+                    </span>
+                    <p>${{ form.odalc_cost_split.value }}</p>
+                    {% include "base/partials/hidden_formfield.html" with field=form.odalc_cost_split %}
+                </div>
+            </div>
+        </fieldset>
+          {% if is_admin_user %}
+              {% include "base/partials/tooltip_formfield.html" with field=form.status %}
+          {% else %}
+              {# Hide the course status field if the teacher is editing the course #}
+              <input id="{{ form.status.id_for_label }}" type="hidden" name="{{ form.status.html_name }}" value="{{ form.status.value }}"/>
+          {% endif %}
+        <div class="row">
+            <div class="medium-12 columns">
+                {% include "base/partials/formfield.html" with field=form.image %}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="medium-12 columns">
+          <button class="large right" id="save_edit" type="submit">Save changes</button>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{#
+
+We handle file uploads by directly uploading them to Amazon S3, without having the file going through our Django server.
+This means that our models only store URLs for the "file fields", like the fields for images and PDFs. To be able to
+properly upload files, we need these few lines in the following order:
+    1.
+        {% include "base/partials/hidden_file_uploadfield.html" with field=form.some_file_field %}
+        (Use hidden_img_uploadfield for images)
+        In the form, this creates a widget that allows the user to select a file for upload, and puts the URL of the uploaded file
+        in a hidden form field so that this URL can be submitted to our Django server
+    2.
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+        <script src="{% static "base/js/s3upload.js" %}"></script>
+        These are just Javascript dependencies we need to upload files
+    3.
+        {% include "base/partials/file_uploadjs.html" with field=form.some_file_field %}
+        This "html" file is actually a <script> block that uses Django template variables to dynamically create a
+        Javascript function for this particular upload field. Note that if you used hidden_img_uploadfield above,
+        you need to use img_uploadjs.html here
+    4.
+        <script>
+        $().ready(function() {
+            $('#file_{{ form.some_file_field.id_for_label }}').on("change", s3_upload_{{ form.some_file_field.id_for_label }});
+        });
+        </script>
+
+#}
+
+{% block javascripts %}
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+<script src="{% static "base/js/s3upload.js" %}"></script>
+<script src="{% static "base/js/jquery.timepicker.min.js" %}"></script>
+{% include "base/partials/file_uploadjs.html" with field=form.course_material %}
+<script>
+$().ready(function() {
+    $('#file_{{ form.course_material.id_for_label }}').on("change", s3_upload_{{ form.course_material.id_for_label }});
+});
+$(function() {
+    var dateOptions = {
+
+    };
+    var timeOptions = {
+        'minTime': '9:00am',
+        'maxTime': '9:00pm',
+        'forceRoundTime': true,
+    };
+    $("#{{ form.date.id_for_label }}").datepicker(dateOptions);
+    $("#{{ form.start_time.id_for_label }}").timepicker(timeOptions);
+    $("#{{ form.end_time.id_for_label }}").timepicker(timeOptions);
+});
+</script>
+{% endblock %}
