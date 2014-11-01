@@ -56,7 +56,6 @@ THIRD_PARTY_APPS = (
     'djangobower',
     'imagekit',
     'localflavor',
-    'pipeline',
     'storages',
     'widget_tweaks',
 )
@@ -182,7 +181,6 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'djangobower.finders.BowerFinder',
-#    'pipeline.finders.PipelineFinder',
 )
 
 
@@ -217,13 +215,6 @@ BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, 'static')
 BOWER_INSTALLED_APPS = (
     'foundation',
 )
-
-
-#
-# Django-Pipeline settings
-#
-
-PIPELINE_DISABLE_WRAPPER = True
 
 
 #

@@ -5,9 +5,8 @@ argparse==1.2.1
 boto==2.32.1
 dj-database-url==0.3.0
 dj-static==0.0.6
-django-pipeline
 django-bower==5.0.1
-django-imagekit
+django-imagekit==3.2.4
 django-localflavor==1.0
 django-sampledatahelper==0.2.1
 django-storages==1.1.8
