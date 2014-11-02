@@ -1,7 +1,7 @@
 .donate-header {
     .donate-header-img {
-        @include splash-image(url('../img/base/atsu_donate.jpg'));
-        margin-top: -300px;
+        @include splash-image(url('../img/base/bridge.jpg'));
+        margin-top: -400px;
     }
     .donate-header-overlay {
         @include splash-image-overlay();
