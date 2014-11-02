@@ -33,7 +33,7 @@
 .listing-content {
     @include section-padding();
     @include section-border();
-    background-color: $light-grey;
+    background-color: $medium-grey;
     min-height: 500px;
 }
 
@@ -49,5 +49,40 @@
     }
     #tab-courses-denied.active a {
         background: $bright-red;
+    }
+}
+
+.course-tile {
+    cursor: pointer;
+    background-color: $light-grey;
+    border: 1px solid $dark-grey;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 25px;
+    padding-right: 25px;
+    margin-bottom: 30px;
+    &:hover {
+        background-color: $white;
+    }
+    a {
+        color: $charcoal;
+        &:hover {
+            color: $charcoal;
+        }
+    }
+    h3 {
+        color: $dark-blue;
+        @media #{$small-only} {
+            margin-top: 20px;
+        }
+    }
+    .course-thumbnail {
+        border: 1px solid $dark-grey;
+    }
+    .logistic-row {
+        margin-top: 45px;
+        @media #{$small-only} {
+            margin-top: 20px;
+        }
     }
 }

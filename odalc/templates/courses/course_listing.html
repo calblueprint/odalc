@@ -29,109 +29,34 @@
 </div>
 
 <div class="listing-content">
-<div class="row">
-<div class="large-12 columns">
-<div class="tabs-content">
-    <div class="content active" id="panel2-1">
-        {% for course in upcoming_courses %}
-            <div class="row">
-                <div class="small-9 columns">
-                    <div class="row">
-                        <div class="small-12 columns">
-                        <h3><a href="{% url "courses:detail" course.pk %}"> {{ course.title }}</a></h3>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="small-12 columns">
-                            <p> {{ course.short_description }} </p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="small-6 columns">Teacher: {{ course.teacher.first_name }} {{ course.teacher.last_name }}</div>
-                        <div class="small-3 columns">{{ course.skill_level }}</div>
-                        <div class="small-3 columns">{{ course.start_datetime|date:'D, N d Y' }}</div>
+    <div class="row">
+        <div class="large-12 columns">
+            <div class="tabs-content">
+                <div class="content active" id="panel2-1">
+                    {% for course in upcoming_courses %}
+                        {% include "base/partials/course_tile.html" %}
+                    {% empty %}
+                        <p> There are no upcoming courses right now. Check again later! </p>
+                    {% endfor %}
+              </div>
+              <div class="content" id="panel2-2">
+                    <div class="content" id="panel2-1">
+                    {% for course in past_courses %}
+                        {% include "base/partials/course_tile.html" %}
+                    {% empty %}
+                        <p> There are no past courses right now. Check again later! </p>
+                    {% endfor %}
                     </div>
                 </div>
-                <div class="small-3 columns">
-                    <a href="{% url "courses:detail" course.pk %}">
-                        <img src="{{ course.image_thumbnail.url }}"></img>
-                    </a>
+                <div class="content" id="panel2-3">
+                    {% for course in all_courses %}
+                        {% include "base/partials/course_tile.html" %}
+                    {% empty %}
+                        <p> There are no courses right now. Check again later! </p>
+                    {% endfor %}
                 </div>
             </div>
-            <hr/>
-            <br/>
-        {% empty %}
-            <p> There are no upcoming courses right now. Check again later! </p>
-        {% endfor %}
-  </div>
-  <div class="content" id="panel2-2">
-        <div class="content" id="panel2-1">
-        {% for course in past_courses %}
-            <div class="row">
-                <div class="small-9 columns">
-                    <div class="row">
-                        <div class="small-12 columns">
-                        <h3><a href="{% url "courses:detail" course.pk %}"> {{ course.title }}</a></h3>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="small-12 columns">
-                            <p> {{ course.short_description }} </p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="small-6 columns">Teacher: {{ course.teacher.first_name }} {{ course.teacher.last_name }}</div>
-                        <div class="small-3 columns">{{ course.skill_level }}</div>
-                        <div class="small-3 columns">{{ course.start_datetime|date:'D, N d Y' }}</div>
-                    </div>
-                </div>
-                <div class="small-3 columns">
-                    <a href="{% url "courses:detail" course.pk %}">
-                        <img src="{{ course.image_thumbnail.url }}"></img>
-                    </a>
-                </div>
-            </div>
-            <hr/>
-            <br/>
-        {% empty %}
-            <p> There are no past courses right now. Check again later! </p>
-        {% endfor %}
         </div>
     </div>
-    <div class="content" id="panel2-3">
-        {% for course in all_courses %}
-            <div class="row">
-                <div class="small-9 columns">
-                    <div class="row">
-                        <div class="small-12 columns">
-                        <h3><a href="{% url "courses:detail" course.pk %}"> {{ course.title }}</a></h3>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="small-12 columns">
-                            <p> {{ course.short_description }} </p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="small-6 columns">Teacher: {{ course.teacher.first_name }} {{ course.teacher.last_name }}</div>
-                        <div class="small-3 columns">{{ course.skill_level }}</div>
-                        <div class="small-3 columns">{{ course.start_datetime|date:'D, N d Y' }}</div>
-                    </div>
-                </div>
-                <div class="small-3 columns">
-                    <a href="{% url "courses:detail" course.pk %}">
-                        <img src="{{ course.image_thumbnail.url }}"></img>
-                    </a>
-                </div>
-            </div>
-            <hr/>
-            <br/>
-        {% empty %}
-            <p> There are no courses right now. Check again later! </p>
-        {% endfor %}
-    </div>
 </div>
-
-
-</div></div></div>
 {% endblock %}

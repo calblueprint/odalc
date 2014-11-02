@@ -1,0 +1,25 @@
+<div class="course-tile">
+    <a href="{% url "courses:detail" course.pk %}">
+    <div class="row">
+        <div class="medium-4 medium-push-8 columns">
+            <img class="course-thumbnail" src="{{ course.image_thumbnail.url }}"></img>
+        </div>
+        <div class="medium-8 medium-pull-4 columns">
+            <div class="row">
+                <div class="small-12 columns">
+                    <h3>{{ course.title }}</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="small-12 columns">
+                    <p>{{ course.short_description }}</p>
+                </div>
+            </div>
+            <div class="row logistic-row">
+                <div class="medium-6 columns">Taught by {{ course.teacher.first_name }} {{ course.teacher.last_name }}</div>
+                <div class="medium-6 columns">{{ course.start_datetime|date:'l, F d' }}</div>
+            </div>
+        </div>
+    </div>
+    </a>
+</div>
