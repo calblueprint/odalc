@@ -54,7 +54,7 @@ class UserDataMixin(object):
 
 
 class LoginView(UserDataMixin, FormView):
-    template_name = 'base/login.html'
+    template_name = 'users/login.html'
     form_class = AuthenticationForm
 
     @method_decorator(sensitive_post_parameters('password'))
