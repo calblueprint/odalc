@@ -4,7 +4,7 @@
 {% load widget_tweaks %}
 
 {% block css %}
-<link rel="stylesheet" href="{% static "base/css/jquery.timepicker.css" %}" />
+<link rel="stylesheet" href="{% static "css/base/jquery.timepicker.css" %}" />
 {% endblock %}
 
 {% block title %}Reviewing {{ course.title }}{% endblock %}
@@ -26,7 +26,7 @@
                 <ul class="button-group right nav-tab-button-group">
                     <li><input id="approve_course" class="tiny button success radius" name="_approve" type="submit" value="Approve" /></li>
                     <li><input id="deny_course" class="tiny button alert radius" name="_deny" type="submit" value="Deny" /></li>
-                    <li><input id="save_course" name="_save" class="tiny button info radius" type="submit" value="Save for Later" /></li>
+                    <li><input id="save_course" class="tiny button info radius" name="_save" type="submit" value="Save for Later" /></li>
                 </ul>
             </dl>
         </div>
@@ -226,7 +226,7 @@
 
 {% block javascripts %}
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
-<script src="{% static "base/js/jquery.timepicker.min.js" %}"></script>
+<script src="{% static "js/base/jquery.timepicker.min.js" %}"></script>
 <script>
 $(function() {
     var dateOptions = {
