@@ -1164,10 +1164,10 @@ $topbar-title-weight: normal;
 $topbar-title-font-size: rem-calc(17);
 
 // Style the top bar dropdown elements
-// $topbar-dropdown-bg: #333;
-// $topbar-dropdown-link-color: #fff;
-// $topbar-dropdown-link-bg: #333;
-// $topbar-dropdown-link-weight: normal;
+$topbar-dropdown-bg: $light-grey;
+$topbar-dropdown-link-color: $white
+$topbar-dropdown-link-bg: $light-grey;
+$topbar-dropdown-link-weight: normal;
 // $topbar-dropdown-toggle-size: 5px;
 // $topbar-dropdown-toggle-color: #fff;
 // $topbar-dropdown-toggle-alpha: 0.4;
@@ -1191,20 +1191,20 @@ $topbar-link-bg-active-hover: scale-color($topbar-link-bg-used-color, $lightness
 // $topbar-button-font-size: 0.75rem;
 // $topbar-button-top: 7px;
 
-// $topbar-dropdown-label-color: #777;
+$topbar-dropdown-label-color: $white;
 // $topbar-dropdown-label-text-transform: uppercase;
 // $topbar-dropdown-label-font-weight: bold;
 // $topbar-dropdown-label-font-size: rem-calc(10);
-// $topbar-dropdown-label-bg: #333;
+$topbar-dropdown-label-bg: $light-grey;
 
 // Top menu icon styles
-// $topbar-menu-link-transform: uppercase;
-// $topbar-menu-link-font-size: rem-calc(13);
-// $topbar-menu-link-weight: bold;
-// $topbar-menu-link-color: #fff;
-// $topbar-menu-icon-color: #fff;
-// $topbar-menu-link-color-toggled: #888;
-// $topbar-menu-icon-color-toggled: #888;
+$topbar-menu-link-transform: uppercase;
+$topbar-menu-link-font-size: rem-calc(13);
+$topbar-menu-link-weight: bold;
+$topbar-menu-link-color: $dark-blue;
+$topbar-menu-icon-color: $dark-blue;
+$topbar-menu-link-color-toggled: $dark-blue;
+$topbar-menu-icon-color-toggled: $dark-blue;
 
 // Transitions and breakpoint styles
 // $topbar-transition-speed: 300ms;

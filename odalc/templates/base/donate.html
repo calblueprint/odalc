@@ -24,16 +24,7 @@
 
 <div class="donate-content">
     <div class="row">
-        <div class="medium-6 columns">
-            <p>
-            Your support helps keeps this program running and allows us to reach more underserved communities with the knowledge and skills they need.
-            Together, we can help these communities achieve economic success and empowerment through digital literacy.
-            By donating to Oakland Digital, you are helping to close the digital literacy and opportunity gap.
-            </p>
-            <p class="small">All contributions are tax-exempt to the extent allowed by law. Oakland Digital Arts and Literacy Center Inc is a 501(c)(3) nonprofit organization: Federal Tax 27-0720655. We respond to each donation with a charitable donation letter for your tax records, and we never share your information with other organizations.
-            </p>
-        </div>
-        <div class="medium-6 columns text-center">
+        <div class="medium-6 medium-push-6 columns text-center">
             <div class="donate-form">
                 <form method='POST'>
                 {% csrf_token %}
@@ -52,6 +43,15 @@
                     </div>
                 </form>
             </div>
+        </div>
+        <div class="medium-6 medium-pull-6 columns">
+            <p>
+            Your support helps keeps this program running and allows us to reach more underserved communities with the knowledge and skills they need.
+            Together, we can help these communities achieve economic success and empowerment through digital literacy.
+            By donating to Oakland Digital, you are helping to close the digital literacy and opportunity gap.
+            </p>
+            <p class="small">All contributions are tax-exempt to the extent allowed by law. Oakland Digital Arts and Literacy Center Inc is a 501(c)(3) nonprofit organization: Federal Tax 27-0720655. We respond to each donation with a charitable donation letter for your tax records, and we never share your information with other organizations.
+            </p>
         </div>
     </div>
 </div>

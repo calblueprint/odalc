@@ -29,18 +29,21 @@
     background-color: $light-grey;
     min-height: 500px;
     .donate-form {
-        padding-top: 60px;
+        .donate-amt {
+            margin-top: 60px;
+            @media #{$small-only} {
+                margin-top: 0px;
+            }
+        }
+        .donate-btn {
+            margin-top: 20px;
+            @media #{$small-only} {
+                margin-bottom: 40px;
+            }
+        }
     }
     p.small {
         font-size: 0.8em;
-    }
-    .donate-amt {
-
-    }
-
-    .donate-btn {
-        margin-top: 20px;
-
     }
 
 }
