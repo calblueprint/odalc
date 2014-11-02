@@ -1,19 +1,12 @@
-#about-bottom-image {
-    background: url('../img/base/billboard.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: fixed;
-    height: 400px;
-}
-
-.about-header {
-    .about-header-img {
-        @include splash-image(url('../img/base/odalc-teachers.jpg'));
+.donate-header {
+    .donate-header-img {
+        @include splash-image(url('../img/base/atsu_donate.jpg'));
+        margin-top: -300px;
     }
-    .about-header-overlay {
+    .donate-header-overlay {
         @include splash-image-overlay();
     }
-    .about-header-content {
+    .donate-header-content {
         background-color: transparent;
         height: 100%;
         padding-top: 100px;
@@ -25,14 +18,29 @@
 
         p {
             color: $white;
-            font-size: 1.3em;
+            font-size: 1em;
         }
     }
 }
 
-.about-content {
+.donate-content {
     @include section-padding();
     @include section-border();
     background-color: $light-grey;
     min-height: 500px;
+    .donate-form {
+        padding-top: 60px;
+    }
+    p.small {
+        font-size: 0.8em;
+    }
+    .donate-amt {
+
+    }
+
+    .donate-btn {
+        margin-top: 20px;
+
+    }
+
 }

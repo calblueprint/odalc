@@ -9,40 +9,49 @@
 {% endblock %}
 
 {% block body %}
-<div class="light-grey-section">
+<div class="donate-header">
+    <div class="donate-header-img"></div>
+    <div class="donate-header-overlay"></div>
+    <div class="donate-header-content">
+        <div class="row">
+            <div class="medium-8 columns">
+                <h1>Donate</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="donate-content">
     <div class="row">
-        <div class="large-5 columns">
-            <h1>Donate</h1>
+        <div class="medium-6 columns">
             <p>
             Your support helps keeps this program running and allows us to reach more underserved communities with the knowledge and skills they need.
             Together, we can help these communities achieve economic success and empowerment through digital literacy.
             By donating to Oakland Digital, you are helping to close the digital literacy and opportunity gap.
             </p>
-
-            <form method='POST'>
-            {% csrf_token %}
-            <div class="row">
-                <div class="small-7 columns">
-                    <div class="row collapse">
-                        <div class="small-2 columns">
+            <p class="small">All contributions are tax-exempt to the extent allowed by law. Oakland Digital Arts and Literacy Center Inc is a 501(c)(3) nonprofit organization: Federal Tax 27-0720655. We respond to each donation with a charitable donation letter for your tax records, and we never share your information with other organizations.
+            </p>
+        </div>
+        <div class="medium-6 columns text-center">
+            <div class="donate-form">
+                <form method='POST'>
+                {% csrf_token %}
+                    <div class="donate-amt row collapse">
+                        <div class="small-1 small-offset-3 columns">
                             <span class="prefix">$</span>
                         </div>
-                        <div class="small-10 columns">
+                        <div class="small-5 end columns">
                             <input type="number" name="quantity" min="0" id='donate-amt-box' value="5.00">
                         </div>
                     </div>
-                </div>
-                <div class="small-2 small-offset-3 columns">
-                    <button class="btn success right radius" id='donate-btn'>Donate</button>
-                </div>
+                    <div class="row">
+                        <div class="small-12 columns">
+                            <button class="btn success radius donate-btn" id='donate-btn'>Donate</button>
+                        </div>
+                    </div>
+                </form>
             </div>
-
-            </form>
-            <p><small>All contributions are tax-exempt to the extent allowed by law. Oakland Digital Arts and Literacy Center Inc is a 501(c)(3) nonprofit organization: Federal Tax 27-0720655. We respond to each donation with a charitable donation letter for your tax records, and we never share your information with other organizations.
-            </small></p>
-        </div>
-        <div class="large-7 columns">
-            <img src="{% static "img/base/atsu_donate.jpg" %}"/>
         </div>
     </div>
 </div>
