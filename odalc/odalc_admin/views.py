@@ -34,6 +34,15 @@ class ApplicationReviewView(UserDataMixin, UpdateView):
     template_name = 'odalc_admin/course_application_review.html'
     success_url = reverse_lazy('admins:dashboard')
 
+    def dispatch(self, *args, **kwargs):
+        handler = super(ApplicationReviewView, self).dispatch(*args, **kwargs)
+        if not self.user.is_authenticated():
+            return redirect('/users/login?next=%s' % self.request.path)
+        elif self.is_admin_user:
+            return super(ApplicationReviewView, self).dispatch(*args, **kwargs)
+        else:
+            return self.deny_access()
+
     def form_valid(self, form):
         course = self.object
         teacher = self.object.teacher
@@ -50,7 +59,7 @@ class ApplicationReviewView(UserDataMixin, UpdateView):
             date = form.cleaned_data.get('date')
 
             #1. Check to see if they added times and dates
-            if not start_time and not end_time and not date:
+            if not start_time or not end_time or not date:
                 messages.error(self.request, 'Please choose a date start time and end time before approval')
                 return redirect('/admins/review/%s' % course.id)
 
@@ -59,7 +68,7 @@ class ApplicationReviewView(UserDataMixin, UpdateView):
 
             #3. notify teacher of approval
             send_odalc_email('notify_teacher_course_approved', context, [teacher.email], cc_admins=True)
-            #4. make course visible to all (permissions - John)
+
             messages.success(self.request, course.title + ' has been approved')
         elif '_deny' in self.request.POST:
             #1. change status of course to "denied"
@@ -67,8 +76,9 @@ class ApplicationReviewView(UserDataMixin, UpdateView):
 
             #2. notify teacher of denial
             send_odalc_email('notify_teacher_course_denied', context, [teacher.email], cc_admins=True)
+
             messages.error(self.request, course.title + ' has been denied')
-        if '_save' in self.request.POST:
+        elif '_save' in self.request.POST:
             start_time = form.cleaned_data.get('start_time')
             end_time = form.cleaned_data.get('end_time')
             date = form.cleaned_data.get('date')
@@ -78,16 +88,8 @@ class ApplicationReviewView(UserDataMixin, UpdateView):
                 course.set_datetimes(date, start_time, end_time)
 
             messages.info(self.request, 'Changes to ' + course.title + ' have been saved.')
-        return redirect(ApplicationReviewView.success_url)
 
-    def dispatch(self, *args, **kwargs):
-        handler = super(ApplicationReviewView, self).dispatch(*args, **kwargs)
-        if not self.user.is_authenticated():
-            return redirect('/users/login?next=%s' % self.request.path)
-        elif self.is_admin_user:
-            return super(ApplicationReviewView, self).dispatch(*args, **kwargs)
-        else:
-            return self.deny_access()
+        return redirect(ApplicationReviewView.success_url)
 
 
 class AdminDashboardView(UserDataMixin, TemplateView):
