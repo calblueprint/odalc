@@ -39,7 +39,7 @@ class ApplicationReviewView(UserDataMixin, UpdateView):
         if not self.user.is_authenticated():
             return redirect('/users/login?next=%s' % self.request.path)
         elif self.is_admin_user:
-            return super(ApplicationReviewView, self).dispatch(*args, **kwargs)
+            return handler
         else:
             return self.deny_access()
 
