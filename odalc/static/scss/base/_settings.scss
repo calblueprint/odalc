@@ -516,7 +516,7 @@ $button-border-style: solid;
 // $input-bg-color: #fff;
 // $input-focus-bg-color: scale-color(#fff, $lightness: -2%);
 // $input-border-color: scale-color(#fff, $lightness: -20%);
-// $input-focus-border-color: scale-color(#fff, $lightness: -40%);
+$input-focus-border-color: scale-color($dark-blue, $lightness: 10%);
 // $input-border-style: solid;
 // $input-border-width: 1px;
 // $input-border-radius: $global-radius;
@@ -525,11 +525,11 @@ $button-border-style: solid;
 // $input-include-glowing-effect: true;
 
 // We use these to style the fieldset border and spacing.
-// $fieldset-border-style: solid;
-// $fieldset-border-width: 1px;
-// $fieldset-border-color: #ddd;
-// $fieldset-padding: rem-calc(20);
-// $fieldset-margin: rem-calc(18 0);
+$fieldset-border-style: solid;
+$fieldset-border-width: 1px;
+$fieldset-border-color: $dark-grey;
+$fieldset-padding: rem-calc(20);
+$fieldset-margin: rem-calc(18 0);
 
 // We use these to style the legends when you use them
 // $legend-bg: #fff;
@@ -1178,7 +1178,7 @@ $topbar-link-color-hover: $white;
 $topbar-link-color-active: $white;
 $topbar-link-color-active-hover: $white;
 // $topbar-link-weight: normal;
-// $topbar-link-font-size: rem-calc(13);
+$topbar-link-font-size: rem-calc(13);
 $topbar-link-hover-lightness: 0%; // Darken by 0%
 $topbar-link-bg-used-color: $dark-blue;
 $topbar-link-bg-hover: scale-color($topbar-link-bg-used-color, $lightness: $topbar-link-hover-lightness);

@@ -1,0 +1,12 @@
+<div class="dashboard-nav">
+    <div class="row">
+        <div class="small-12 columns">
+            <div class="dashboard-nav-links">
+                <a class="dashboard-nav-link {% block is_dashboard %}{% endblock %}" href="{% url "teachers:dashboard" %}">Dashboard</a>
+                <a class="dashboard-nav-link {% block is_create_course %}{% endblock %}" href="{% url "teachers:create-course" %}">Submit new course</a>
+                <a class="dashboard-nav-link {% block is_edit %}{% endblock %}" href="{% url "teachers:edit" %}">Edit profile information</a>
+                <a class="dashboard-nav-link {% block is_password_change %}{% endblock %}" href="{% url "teachers:password_change" %}">Change password</a>
+            </ul>
+        </div>
+    </div>
+</div>

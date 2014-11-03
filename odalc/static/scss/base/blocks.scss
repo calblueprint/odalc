@@ -3,8 +3,7 @@
 }
 
 @mixin section-border() {
-    border-top: 1px solid $medium-grey;
-    border-bottom: 1px solid $medium-grey;
+    border-top: 1px solid $dark-grey;
 }
 
 .main-wrap {
@@ -83,4 +82,9 @@ a .button {
     height: 100%;
     width: 100%;
     position: absolute;
+}
+
+.password-change-block {
+    @extend .light-grey-section;
+    min-height: 600px;
 }
