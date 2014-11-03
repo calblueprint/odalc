@@ -7,22 +7,7 @@
 {% endblock %}
 
 {% block body %}
-
-<div class="sub-header">
-    <div class="row">
-        <div class="large-6 columns">
-            <h1>Student Dashboard</h1>
-            <p>{{ user.first_name }} {{ user.last_name }} | {{ user.email }}</p>
-        </div>
-        <div class="large-5 offset-1 columns">
-            <ul class="inline-list right" style="margin-top:15px;">
-                <li><a href="{% url "students:edit" %}">Edit profile information &raquo;</a></li>
-                <li><a href="{% url "students:password_change" %}">Change password &raquo;</a></li>
-            </ul>
-        </div>
-    </div>
-</div>
-
+{% include "students/subnav/subnav_dashboard.html" %}
 
 <div class="white-section">
 <div class="row">
