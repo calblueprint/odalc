@@ -1,4 +1,3 @@
-
 .course-list-header {
     .course-list-header-img {
         @include splash-image(url('../img/base/colorful_desktop.jpg'));
@@ -33,21 +32,62 @@
 .listing-content {
     @include section-padding();
     @include section-border();
-    background-color: $light-grey;
+    background-color: $medium-grey;
     min-height: 500px;
 }
 
-.sub-nav {
-    #tab-courses-pending.active a {
-        background: $dark-blue;
+.course-tile {
+    cursor: pointer;
+    background-color: $light-grey;
+    border: 1px solid $dark-grey;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 25px;
+    padding-right: 25px;
+    margin-bottom: 30px;
+    &:hover {
+        background-color: $white;
     }
-    #tab-courses-active.active a {
-        background: $dark-green;
+    a {
+        color: $charcoal;
+        &:hover {
+            color: $charcoal;
+        }
     }
-    #tab-courses-finished.active a {
-        background: $charcoal;
+    h3 {
+        color: $dark-blue;
+        @media #{$small-only} {
+            margin-top: 20px;
+        }
     }
-    #tab-courses-denied.active a {
-        background: $bright-red;
+    .course-thumbnail {
+        border: 1px solid $dark-grey;
+    }
+    .logistic-row {
+        margin-top: 45px;
+        @media #{$small-only} {
+            margin-top: 20px;
+        }
+    }
+}
+
+.course-tile-action {
+    background-color: $light-grey;
+    border: 1px solid $dark-grey;
+    border-top: none;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 25px;
+    padding-right: 25px;
+    margin-top: -30px;
+    margin-bottom: 30px;
+    a.action-button {
+        @include button($button-sml);
+        @include radius;
+        @extend .right;
+        margin-bottom: 0px;
+        font-size: 0.9em;
+        padding-top: 0.6rem;
+        padding-bottom: 0.7rem;
     }
 }

@@ -13,30 +13,28 @@
 {% endblock %}
 
 {% block body %}
-<div class="sub-header">
+{% include "teachers/subnav/subnav_create_course.html" %}
+
+<div class="white-section">
     <div class="row">
-        <div class="large-7 columns">
-            <h1>Create a new course</h1>
-            <p>Want to teach a class at ODALC? Tell us about the class you wish to offer below. You can hover over questions for more information.</p>
-        </div>
-        <div class="large-5 columns">
-            {% include "base/partials/return_to_dashboard.html" %}
+        <div class="small-12 columns">
+                <p>Want to teach a class at ODALC? Tell us about the class you wish to offer below. Clicking on the input or hovering over a question will give you more information.</p>
         </div>
     </div>
-</div>
-<div class="row white-section">
-    <div class="large-12 columns">
-        <form method="POST" enctype="multipart/form-data">
-          {% csrf_token %}
 
-          {% for error in form.non_field_errors %}
-          <div data-alert class="alert-box alert">
-            {{ error }}
-            <a href="#" class="close">&times;</a>
-          </div>
-          {% endfor %}
+    <div class="row">
+        <div class="large-12 columns">
+            <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
 
-           <fieldset>
+            {% for error in form.non_field_errors %}
+            <div data-alert class="alert-box alert">
+                {{ error }}
+                <a href="#" class="close">&times;</a>
+            </div>
+            {% endfor %}
+
+            <fieldset>
                 <legend>Course Content</legend>
                 <div class="row">
                     <div class="medium-12 columns">
@@ -58,12 +56,11 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="medium-12 columns">
+                    <div class="medium-6 columns">
                         {% include "base/partials/formfield.html" with field=form.course_material %}
                     </div>
-                </div>
-                <div class="row">
-                    <div class="medium-12 columns">
+                    <div class="medium-6 columns">
+                        {% include "base/partials/formfield.html" with field=form.image %}
                     </div>
                 </div>
             </fieldset>
@@ -118,29 +115,32 @@
                         <span id="split-dollar-amt">$0.00</span>
                     </div>
 
-                    </div>
                 </div>
             </fieldset>
 
 
-          <fieldset>
-              <legend>
-              <span data-tooltip class="has-tip tip-top tip-thin" title="We prefer course sessions to be during our business hours, from 1pm to 6pm on weekdays.">
-              <strong>Available Dates and Times for Teaching Course</strong>
-              </span>
-              </legend>
-              {% include "base/partials/course_datetimefield.html" with date=form.date1 start_time=form.start_time1 end_time=form.end_time1 %}
-              <hr/>
-              {% include "base/partials/course_datetimefield.html" with date=form.date2 start_time=form.start_time2 end_time=form.end_time2 %}
-              <hr/>
-              {% include "base/partials/course_datetimefield.html" with date=form.date3 start_time=form.start_time3 end_time=form.end_time3 %}
-          </fieldset>
+            <fieldset>
+                <legend>
+                <span data-tooltip class="has-tip tip-top tip-thin" title="We prefer course sessions to be during our business hours, from 1pm to 6pm on weekdays.">
+                <strong>Available Dates and Times for Teaching Course</strong>
+                </span>
+                </legend>
 
-            {% include "base/partials/formfield.html" with field=form.image %}
+                <div class="row">
+                    <div class="small-12 columns">
+                        {% include "base/partials/course_datetimefield.html" with date=form.date1 start_time=form.start_time1 end_time=form.end_time1 %}
+                        <hr/>
+                        {% include "base/partials/course_datetimefield.html" with date=form.date2 start_time=form.start_time2 end_time=form.end_time2 %}
+                        <hr/>
+                        {% include "base/partials/course_datetimefield.html" with date=form.date3 start_time=form.start_time3 end_time=form.end_time3 %}
+                    </div>
+                </div>
+            </fieldset>
 
-          <button class="large right success" id="save_course" type="submit">Submit course</button>
+            <button class="large right success radius" id="save_course" type="submit">Submit course</button>
 
-        </form>
+            </form>
+        </div>
     </div>
 </div>
 {% endblock %}

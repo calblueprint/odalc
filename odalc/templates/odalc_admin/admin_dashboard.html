@@ -8,22 +8,9 @@
 {% endblock %}
 
 {% block body %}
-<div class="sub-header">
-    <div class="row">
-        <div class="large-4 columns">
-            <h1>Admin Dashboard</h1>
-        </div>
-        <div class="large-8 columns">
-            <ul class="inline-list right" style="margin-top:15px;">
-                <li><a href="{% url "admins:edit" %}">Edit profile information &raquo;</a></li>
-                <li><a href="{% url "admins:password_change" %}">Change password &raquo;</a></li>
-                <li><a href="{% url "admins:register" %}">Register new admin &raquo;</a></li>
-            </ul>
-        </div>
-    </div>
-</div>
+{% include "odalc_admin/subnav/subnav_dashboard.html" %}
 
-<div class="white-section">
+<div class="admin-dashboard-content">
     <div class="row">
     <div class="large-12 columns">
         <dl class="sub-nav" data-tab>
@@ -36,31 +23,8 @@
         <div class="tabs-content">
             <div class="content active" id="panel-courses-pending">
                 {% for course in pending_courses %}
-                <div class="row">
-                    <div class="small-9 columns">
-                        <div class="row">
-                            <div class="small-12 columns">
-                                <h4>{{ course.title }}</h4>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="small-12 columns">
-                                <p>{{ course.short_description }}</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="small-6 columns"><strong>Teacher:</strong> {{ course.teacher.first_name }} {{ course.teacher.last_name }}</div>
-                            <div class="small-6 columns">{{ course.start_datetime|date:'D, N d Y' }} | {{ course.start_datetime|date:'P'}} - {{ course.end_datetime|date:'P' }}</div>
-                        </div>
-                    </div>
-                    <div class="small-3 columns">
-                        <img src="{{ course.image_thumbnail.url }}"></img>
-                        <h5 class="right"><a href="{% url "admins:course_review" course.pk %}">Review course &raquo;</a></h5>
-                        <h5 class="right"><a href="{% url "courses:detail" course.pk %}">View course page &raquo;</a></h5>
-                    </div>
-                </div>
-                <hr/>
-                <br/>
+                    {% include "base/partials/course_tile.html" %}
+                    {% include "odalc_admin/course_tile_action_pending.html" %}
                 {% empty %}
                 <p>There are currently no courses pending review.</p>
                 {% endfor %}
@@ -70,31 +34,9 @@
                 <h3>Featured Courses</h3>
                 <div id="featured-section">
                     {% for course in featured_courses %}
-                    <div id="{{ course.id }}" class="row course-row">
-                        <hr/>
-                        <div class="small-9 columns">
-                            <div class="row">
-                                <div class="small-12 columns">
-                                    <h4 class="left">{{ course.title }}</h4>
-                                    <a class="button tiny right unfeature-course-button">Remove from featured</a>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="small-12 columns">
-                                    <p>{{ course.short_description }}</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="small-6 columns"><strong>Teacher:</strong> {{ course.teacher.first_name }} {{ course.teacher.last_name }}</div>
-                                <div class="small-6 columns">{{ course.start_datetime|date:'D, N d Y' }} | {{ course.start_datetime|date:'P'}} - {{ course.end_datetime|date:'P' }}</div>
-                            </div>
-                        </div>
-                        <div class="small-3 columns">
-                            <img src="{{ course.image_thumbnail.url }}"></img>
-                            <h5 class="right"><a href="{% url "courses:edit" course.pk %}">Edit course information &raquo;</a></h5>
-                            <h5 class="right"><a href="{% url "courses:detail" course.pk %}">View course page &raquo;</a></h5>
-                        </div>
-                    <br/>
+                    <div id="{{ course.id }}" class="course-row">
+                        {% include "base/partials/course_tile.html" %}
+                        {% include "odalc_admin/course_tile_action_active_featured.html" %}
                     </div>
                     {% empty %}
                     <hr/>
@@ -104,98 +46,29 @@
                 <h3>Active Courses</h3>
                 <div id="active-section">
                     {% for course in active_courses %}
-                    <div id="{{ course.id }}" class="row course-row">
-                        <hr/>
-                        <div class="small-9 columns">
-                            <div class="row">
-                                <div class="small-12 columns">
-                                    <h4 class="left">{{ course.title }}</h4>
-                                    <a class="button tiny right feature-course-button">Add to featured</a>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="small-12 columns">
-                                    <p>{{ course.short_description }}</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="small-6 columns"><strong>Teacher:</strong> {{ course.teacher.first_name }} {{ course.teacher.last_name }}</div>
-                                <div class="small-6 columns">{{ course.start_datetime|date:'D, N d Y' }} | {{ course.start_datetime|date:'P'}} - {{ course.end_datetime|date:'P' }}</div>
-                            </div>
-                        </div>
-                        <div class="small-3 columns">
-                            <img src="{{ course.image_thumbnail.url }}"></img>
-                            <h5 class="right"><a href="{% url "courses:edit" course.pk %}">Edit course information &raquo;</a></h5>
-                            <h5 class="right"><a href="{% url "courses:detail" course.pk %}">View course page &raquo;</a></h5>
-                        </div>
-                    <br/>
+                    <div id="{{ course.id }}" class="course-row">
+                        {% include "base/partials/course_tile.html" %}
+                        {% include "odalc_admin/course_tile_action_active.html" %}
                     </div>
                     {% empty %}
-                    <hr/>
                     {% endfor %}
                 </div>
+                <hr/>
             </div>
 
             <div class="content" id="panel-courses-finished">
                 {% for course in finished_courses %}
-                <div class="row">
-                    <div class="small-9 columns">
-                        <div class="row">
-                            <div class="small-12 columns">
-                                <h4>{{ course.title }}</h4>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="small-12 columns">
-                                <p>{{ course.short_description }}</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="small-6 columns"><strong>Teacher:</strong> {{ course.teacher.first_name }} {{ course.teacher.last_name }}</div>
-                            <div class="small-6 columns">{{ course.start_datetime|date:'D, N d Y' }} | {{ course.start_datetime|date:'P'}} - {{ course.end_datetime|date:'P' }}</div>
-                        </div>
-                    </div>
-                    <div class="small-3 columns">
-                        <img src="{{ course.image_thumbnail.url }}"></img>
-                        <h5 class="right"><a href="{% url "courses:edit" course.pk %}">Edit course information &raquo;</a></h5>
-                        <h5 class="right"><a href="{% url "courses:detail" course.pk %}">View course page &raquo;</a></h5>
-                        <h5 class="right"><a href="{% url "courses:feedback_review" course.pk %}">View course feedback &raquo;</a></h5>
-                    </div>
-                </div>
-                <hr/>
-                <br/>
+                    {% include "base/partials/course_tile.html" %}
+                    {% include "odalc_admin/course_tile_action_finished.html" %}
                 {% empty %}
-                <p>There are currently no active courses.</p>
+                <p>There are currently no finished courses.</p>
                 {% endfor %}
             </div>
 
             <div class="content" id="panel-courses-denied">
                 {% for course in denied_courses %}
-                <div class="row">
-                    <div class="small-9 columns">
-                        <div class="row">
-                            <div class="small-12 columns">
-                                <h4>{{ course.title }}</h4>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="small-12 columns">
-                                <p>{{ course.short_description }}</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="small-6 columns"><strong>Teacher:</strong> {{ course.teacher.first_name }} {{ course.teacher.last_name }}</div>
-                            <div class="small-6 columns">{{ course.start_datetime|date:'D, N d Y' }} | {{ course.start_datetime|date:'P'}} - {{ course.end_datetime|date:'P' }}</div>
-                        </div>
-                    </div>
-                    <div class="small-3 columns">
-                        <img src="{{ course.image_thumbnail.url }}"></img>
-                        <h5 class="right"><a href="{% url "courses:edit" course.pk %}">Edit course information &raquo;</a></h5>
-                        <h5 class="right"><a href="{% url "courses:detail" course.pk %}">View course page &raquo;</a></h5>
-                    </div>
-                </div>
-                <hr/>
-                <br/>
+                    {% include "base/partials/course_tile.html" %}
+                    {% include "odalc_admin/course_tile_action_denied.html" %}
                 {% empty %}
                 <p>There are currently no denied courses.</p>
                 {% endfor %}

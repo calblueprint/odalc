@@ -1,25 +1,31 @@
 #footer {
     padding: 2em 0;
     background-color: $charcoal;
-    p {
-        color: $light-grey;
+    border-top: 1px solid $dark-grey;
+
+    p, small {
+        color: $white;
+        font-weight: 300;
+        font-size: 0.9em;
     }
-    small {
-        color: $light-grey;
+
+    a {
+        color: $white;
+        &:hover {
+            color: scale-color($white, $lightness: -20%);
+        }
     }
 
     #bp-wrapper {
         vertical-align: top;
-        a {
-            text-decoration: none;
-        }
         .powered_by {
             display: inline-block;
             vertical-align: middle;
             height: 45px;
-            margin: 15px 5px 0;
-            opacity: 0.8;
-            color: $light-grey;
+            margin: 20px 5px 0;
+            p:hover {
+                color: scale-color($white, $lightness: -20%);
+            }
         }
 
         #bp-logo {

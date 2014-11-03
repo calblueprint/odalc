@@ -1,24 +1,3 @@
-.sub-nav-title {
-    color: $white;
-    margin-left: 1rem;
-    margin-top: 2rem;
-}
-
-.sub-nav-odalc {
-    @include sub-nav();
-    background-color: $charcoal;
-    margin-top: 1px;
-    padding-bottom: 1rem;
-    dd .nav-tab {
-        @include radius();
-        background-color: scale-color($charcoal, $lightness: 20%);
-        color: $dark-grey;
-        &:hover {
-            color: $light-grey;
-        }
-    }
-}
-
 .nav-tab-button-group {
     margin-top: -1.5rem;
     border-left: none;
@@ -26,4 +5,78 @@
 
 .button-group li .button {
     border-left: none;
+}
+
+.sub-nav {
+    #tab-courses-pending.active a {
+        background: $dark-blue;
+    }
+    #tab-courses-active.active a {
+        background: $dark-green;
+    }
+    #tab-courses-finished.active a {
+        background: $charcoal;
+    }
+    #tab-courses-denied.active a {
+        background: $bright-red;
+    }
+}
+
+.review-header {
+    background-color: $medium-grey;
+    .sub-nav-review {
+        .sub-nav-title {
+            color: $charcoal;
+            font-size: 1.5rem;
+            margin-left: 1rem;
+            margin-top: 2rem;
+        }
+        @include sub-nav();
+
+        margin-top: 1px;
+        padding-bottom: 1rem;
+        dd .nav-tab {
+            @include radius();
+            background-color: scale-color($charcoal, $lightness: 40%);
+            color: $light-grey;
+            &:hover {
+                color: $white;
+            }
+        }
+    }
+}
+
+.admin-dashboard-header {
+    padding: 2em 0;
+    background-color: $charcoal;
+    h1 {
+        color: $white;
+        font-weight: 400;
+    }
+    p {
+        color: $white;
+    }
+
+    a {
+        color: $white;
+        &:hover {
+            color: scale-color($white, $lightness: -20%);
+        }
+    }
+    .subnav-list {
+        @include inline-list;
+        margin-top: 25px;
+    }
+
+}
+
+.admin-dashboard-content {
+    @include section-padding();
+    @include section-border();
+    background-color: $medium-grey;
+}
+
+.admin-register-block {
+    @extend .light-grey-section;
+    min-height: 600px;
 }

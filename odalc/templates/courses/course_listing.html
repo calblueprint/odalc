@@ -1,0 +1,62 @@
+{% extends "base/base.html" %}
+
+{% block title %}Browse Courses {% endblock %}
+
+{% block nav %}
+    {% include "base/partials/nav/nav_courses.html" %}
+{% endblock %}
+
+{% block body %}
+
+<div class="course-list-header">
+    <div class="course-list-header-img"></div>
+    <div class="course-list-header-overlay"></div>
+    <div class="course-list-header-content">
+        <div class="row">
+            <div class="medium-6 columns">
+                <h1>Browse All Courses</h1>
+            </div>
+            <div class="medium-6 columns">
+                <dl class="sub-nav" style="margin-top:20px;" data-tab>
+                    <dt>Browse By:</dt>
+                    <dd class="active"><a href="#panel2-1">Upcoming</a></dd>
+                    <dd><a href="#panel2-2">Past</a></dd>
+                    <dd><a href="#panel2-3">All</a></dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="listing-content">
+    <div class="row">
+        <div class="large-12 columns">
+            <div class="tabs-content">
+                <div class="content active" id="panel2-1">
+                    {% for course in upcoming_courses %}
+                        {% include "base/partials/course_tile.html" %}
+                    {% empty %}
+                        <p> There are no upcoming courses right now. Check again later! </p>
+                    {% endfor %}
+              </div>
+              <div class="content" id="panel2-2">
+                    <div class="content" id="panel2-1">
+                    {% for course in past_courses %}
+                        {% include "base/partials/course_tile.html" %}
+                    {% empty %}
+                        <p> There are no past courses right now. Check again later! </p>
+                    {% endfor %}
+                    </div>
+                </div>
+                <div class="content" id="panel2-3">
+                    {% for course in all_courses %}
+                        {% include "base/partials/course_tile.html" %}
+                    {% empty %}
+                        <p> There are no courses right now. Check again later! </p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

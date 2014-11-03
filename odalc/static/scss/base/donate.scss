@@ -1,0 +1,49 @@
+.donate-header {
+    .donate-header-img {
+        @include splash-image(url('../img/base/bridge.jpg'));
+        margin-top: -400px;
+    }
+    .donate-header-overlay {
+        @include splash-image-overlay();
+    }
+    .donate-header-content {
+        background-color: transparent;
+        height: 100%;
+        padding-top: 100px;
+        padding-bottom: 100px;
+        h1 {
+            color: $white;
+            font-weight: 700;
+        }
+
+        p {
+            color: $white;
+            font-size: 1em;
+        }
+    }
+}
+
+.donate-content {
+    @include section-padding();
+    @include section-border();
+    background-color: $light-grey;
+    min-height: 500px;
+    .donate-form {
+        .donate-amt {
+            margin-top: 60px;
+            @media #{$small-only} {
+                margin-top: 0px;
+            }
+        }
+        .donate-btn {
+            margin-top: 20px;
+            @media #{$small-only} {
+                margin-bottom: 40px;
+            }
+        }
+    }
+    p.small {
+        font-size: 0.8em;
+    }
+
+}

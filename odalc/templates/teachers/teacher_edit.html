@@ -9,64 +9,59 @@
 {% endblock %}
 
 {% block body %}
-<div class="sub-header">
+{% include "teachers/subnav/subnav_edit.html" %}
+
+<div class="edit-user-block">
     <div class="row">
-        <div class="large-7 columns">
-            <h1>Edit profile information</h1>
+        <div class="small-12 columns">
             <p>This information appears on your course pages, except for your address, phone number, and resume.</p>
         </div>
+    </div>
+    <div class="row">
         <div class="large-5 columns">
-            {% include "base/partials/return_to_dashboard.html" %}
+            <form enctype="multipart/form-data" method="POST">
+            {% csrf_token %}
+
+            {% for error in form.non_field_errors %}
+            <div data-alert class="alert-box alert">
+                {{ error }}
+                <a href="#" class="close">&times;</a>
+            </div>
+            {% endfor %}
+
+            <fieldset>
+            <legend>Account Information</legend>
+            {% include "base/partials/formfield.html" with field=form.first_name %}
+            {% include "base/partials/formfield.html" with field=form.last_name %}
+            {% include "base/partials/formfield.html" with field=form.email %}
+            </fieldset>
+            <fieldset>
+            <legend>Current Work Experience</legend>
+            {% include "base/partials/tooltip_formfield.html" with field=form.organization %}
+            {% include "base/partials/tooltip_formfield.html" with field=form.position %}
+            </fieldset>
+            <fieldset>
+            <legend>Contact Information</legend>
+            {% include "base/partials/tooltip_formfield.html" with field=form.street_address %}
+            {% include "base/partials/formfield.html" with field=form.city %}
+            {% include "base/partials/formfield.html" with field=form.zipcode %}
+            {% include "base/partials/tooltip_formfield.html" with field=form.phone %}
+            </fieldset>
+        </div>
+        <div class="large-6 offset-1 columns">
+            <fieldset>
+            <legend>Bio</legend>
+            {% include "base/partials/tooltip_formfield.html" with field=form.about %}
+            {% include "base/partials/tooltip_formfield.html" with field=form.experience %}
+            </fieldset>
+
+            {% include "base/partials/formfield.html" with field=form.picture %}
+            {% include "base/partials/formfield.html" with field=form.resume %}
+
+            <input class="button success left radius" type="submit" value="Save" />
+            </form>
         </div>
     </div>
-</div>
-
-<div class="white-section">
-<div class="row">
-    <div class="large-5 columns">
-        <form enctype="multipart/form-data" method="POST">
-          {% csrf_token %}
-
-          {% for error in form.non_field_errors %}
-          <div data-alert class="alert-box alert">
-            {{ error }}
-            <a href="#" class="close">&times;</a>
-          </div>
-          {% endfor %}
-
-          <fieldset>
-          <legend>Account Information</legend>
-          {% include "base/partials/formfield.html" with field=form.first_name %}
-          {% include "base/partials/formfield.html" with field=form.last_name %}
-          {% include "base/partials/formfield.html" with field=form.email %}
-          </fieldset>
-          <fieldset>
-          <legend>Current Work Experience</legend>
-          {% include "base/partials/tooltip_formfield.html" with field=form.organization %}
-          {% include "base/partials/tooltip_formfield.html" with field=form.position %}
-          </fieldset>
-          <fieldset>
-          <legend>Contact Information</legend>
-          {% include "base/partials/tooltip_formfield.html" with field=form.street_address %}
-          {% include "base/partials/formfield.html" with field=form.city %}
-          {% include "base/partials/formfield.html" with field=form.zipcode %}
-          {% include "base/partials/tooltip_formfield.html" with field=form.phone %}
-          </fieldset>
-    </div>
-    <div class="large-6 offset-1 columns">
-        <fieldset>
-        <legend>Bio</legend>
-        {% include "base/partials/tooltip_formfield.html" with field=form.about %}
-        {% include "base/partials/tooltip_formfield.html" with field=form.experience %}
-        </fieldset>
-
-        {% include "base/partials/formfield.html" with field=form.picture %}
-        {% include "base/partials/formfield.html" with field=form.resume %}
-
-          <input class="button success left" type="submit" value="Save" />
-        </form>
-    </div>
-</div>
 </div>
 
 {% endblock %}

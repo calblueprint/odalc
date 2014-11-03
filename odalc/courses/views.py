@@ -18,7 +18,7 @@ from odalc.users.views import UserDataMixin
 class CourseDetailView(UserDataMixin, DetailView):
     model = Course
     context_object_name = 'course'
-    template_name = 'base/course.html'
+    template_name = 'courses/course.html'
 
     def dispatch(self, request, *args, **kwargs):
         handler = super(CourseDetailView, self).dispatch(request, *args, **kwargs)
@@ -72,7 +72,7 @@ class CourseEditView(UserDataMixin, UpdateView):
     model = Course
     form_class = EditCourseForm
     context_object_name = 'course'
-    template_name = 'base/course_edit.html'
+    template_name = 'courses/course_edit.html'
 
     def dispatch(self, request, *args, **kwargs):
         handler = super(CourseEditView, self).dispatch(request, *args, **kwargs)
@@ -103,7 +103,7 @@ class CourseEditView(UserDataMixin, UpdateView):
 class CourseListingView(UserDataMixin, TemplateView):
     """Main view for displaying the courses offered. There are three categories of courses:
     all courses, past courses, and upcoming courses (courses coming up in the next month)"""
-    template_name = 'base/course_listing.html'
+    template_name = 'courses/course_listing.html'
 
     def get_context_data(self, **kwargs):
         context = super(CourseListingView, self).get_context_data(**kwargs)

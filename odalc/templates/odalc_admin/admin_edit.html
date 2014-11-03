@@ -9,18 +9,9 @@
 {% endblock %}
 
 {% block body %}
-<div class="sub-header">
-    <div class="row">
-        <div class="large-7 columns">
-            <h1>Edit profile information</h1>
-        </div>
-        <div class="large-5 columns">
-            {% include "base/partials/return_to_dashboard.html" %}
-        </div>
-    </div>
-</div>
+{% include "odalc_admin/subnav/subnav_edit.html" %}
 
-<div class="white-section">
+<div class="edit-user-block">
     <div class="row">
         <div class="large-7 small-centered columns">
             <form method="POST" enctype="multipart/form-data">
@@ -36,7 +27,7 @@
                 {% include "base/partials/formfield.html" with field=form.email %}
                 {% include "base/partials/formfield.html" with field=form.first_name %}
                 {% include "base/partials/formfield.html" with field=form.last_name %}
-                <input class="button success right" type="submit" value="Save" />
+                <input class="button success right radius" type="submit" value="Save" />
             </form>
         </div>
     </div>

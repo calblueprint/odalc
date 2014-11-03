@@ -365,8 +365,8 @@ $alert-function-factor: 10%;
 $button-function-factor: 10%;
 
 // We use these to control button border styles.
-$button-border-width: 1px;
-$button-border-style: solid;
+//$button-border-width: 1px;
+//$button-border-style: solid;
 
 // We use this to set the default radius used throughout the core.
 // $button-radius: $global-radius;
@@ -516,7 +516,7 @@ $button-border-style: solid;
 // $input-bg-color: #fff;
 // $input-focus-bg-color: scale-color(#fff, $lightness: -2%);
 // $input-border-color: scale-color(#fff, $lightness: -20%);
-// $input-focus-border-color: scale-color(#fff, $lightness: -40%);
+$input-focus-border-color: scale-color($dark-blue, $lightness: 10%);
 // $input-border-style: solid;
 // $input-border-width: 1px;
 // $input-border-radius: $global-radius;
@@ -525,11 +525,11 @@ $button-border-style: solid;
 // $input-include-glowing-effect: true;
 
 // We use these to style the fieldset border and spacing.
-// $fieldset-border-style: solid;
-// $fieldset-border-width: 1px;
-// $fieldset-border-color: #ddd;
-// $fieldset-padding: rem-calc(20);
-// $fieldset-margin: rem-calc(18 0);
+$fieldset-border-style: solid;
+$fieldset-border-width: 1px;
+$fieldset-border-color: $dark-grey;
+$fieldset-padding: rem-calc(20);
+$fieldset-margin: rem-calc(18 0);
 
 // We use these to style the legends when you use them
 // $legend-bg: #fff;
@@ -1164,10 +1164,10 @@ $topbar-title-weight: normal;
 $topbar-title-font-size: rem-calc(17);
 
 // Style the top bar dropdown elements
-// $topbar-dropdown-bg: #333;
-// $topbar-dropdown-link-color: #fff;
-// $topbar-dropdown-link-bg: #333;
-// $topbar-dropdown-link-weight: normal;
+$topbar-dropdown-bg: $light-grey;
+$topbar-dropdown-link-color: $white;
+$topbar-dropdown-link-bg: $light-grey;
+$topbar-dropdown-link-weight: normal;
 // $topbar-dropdown-toggle-size: 5px;
 // $topbar-dropdown-toggle-color: #fff;
 // $topbar-dropdown-toggle-alpha: 0.4;
@@ -1178,7 +1178,7 @@ $topbar-link-color-hover: $white;
 $topbar-link-color-active: $white;
 $topbar-link-color-active-hover: $white;
 // $topbar-link-weight: normal;
-// $topbar-link-font-size: rem-calc(13);
+$topbar-link-font-size: rem-calc(13);
 $topbar-link-hover-lightness: 0%; // Darken by 0%
 $topbar-link-bg-used-color: $dark-blue;
 $topbar-link-bg-hover: scale-color($topbar-link-bg-used-color, $lightness: $topbar-link-hover-lightness);
@@ -1191,20 +1191,20 @@ $topbar-link-bg-active-hover: scale-color($topbar-link-bg-used-color, $lightness
 // $topbar-button-font-size: 0.75rem;
 // $topbar-button-top: 7px;
 
-// $topbar-dropdown-label-color: #777;
+$topbar-dropdown-label-color: $white;
 // $topbar-dropdown-label-text-transform: uppercase;
 // $topbar-dropdown-label-font-weight: bold;
 // $topbar-dropdown-label-font-size: rem-calc(10);
-// $topbar-dropdown-label-bg: #333;
+$topbar-dropdown-label-bg: $light-grey;
 
 // Top menu icon styles
-// $topbar-menu-link-transform: uppercase;
-// $topbar-menu-link-font-size: rem-calc(13);
-// $topbar-menu-link-weight: bold;
-// $topbar-menu-link-color: #fff;
-// $topbar-menu-icon-color: #fff;
-// $topbar-menu-link-color-toggled: #888;
-// $topbar-menu-icon-color-toggled: #888;
+$topbar-menu-link-transform: uppercase;
+$topbar-menu-link-font-size: rem-calc(13);
+$topbar-menu-link-weight: bold;
+$topbar-menu-link-color: $dark-blue;
+$topbar-menu-icon-color: $dark-blue;
+$topbar-menu-link-color-toggled: $dark-blue;
+$topbar-menu-icon-color-toggled: $dark-blue;
 
 // Transitions and breakpoint styles
 // $topbar-transition-speed: 300ms;
