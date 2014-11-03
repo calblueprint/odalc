@@ -1,10 +1,35 @@
-.sub-nav-title {
-    color: $white;
-    margin-left: 1rem;
-    margin-top: 2rem;
+.nav-tab-button-group {
+    margin-top: -1.5rem;
+    border-left: none;
 }
 
-.sub-nav-odalc {
+.button-group li .button {
+    border-left: none;
+}
+
+.sub-nav {
+
+    #tab-courses-pending.active a {
+        background: $dark-blue;
+    }
+    #tab-courses-active.active a {
+        background: $dark-green;
+    }
+    #tab-courses-finished.active a {
+        background: $charcoal;
+    }
+    #tab-courses-denied.active a {
+        background: $bright-red;
+    }
+}
+
+.sub-nav-review {
+    .sub-nav-title {
+        color: $white;
+        margin-left: 1rem;
+        margin-top: 2rem;
+    }
+
     @include sub-nav();
     background-color: $charcoal;
     margin-top: 1px;
@@ -19,11 +44,33 @@
     }
 }
 
-.nav-tab-button-group {
-    margin-top: -1.5rem;
-    border-left: none;
+.admin-dashboard-header {
+    padding: 2em 0;
+    background-color: $charcoal;
+    h1 {
+        color: $white;
+        font-weight: 400;
+    }
+    p {
+        color: $white;
+    }
+
+    a {
+        color: $white;
+        &:hover {
+            color: scale-color($white, $lightness: -20%);
+        }
+    }
+    .subnav-list {
+        @include inline-list;
+        margin-top: 25px;
+    }
+
 }
 
-.button-group li .button {
-    border-left: none;
+.admin-dashboard-content {
+    @include section-padding();
+    @include section-border();
+    background-color: $medium-grey;
+
 }
