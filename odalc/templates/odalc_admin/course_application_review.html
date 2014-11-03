@@ -16,7 +16,7 @@
 {% block body %}
 <form enctype="multipart/form-data" method="POST" id='course_review'>
 {% csrf_token %}
-<div class="charcoal-section-no-pad">
+<div class="review-header">
     <div class="row">
         <div class="small-12 columns">
             <dl class="sub-nav-review" data-tab>
@@ -32,190 +32,192 @@
         </div>
     </div>
 </div>
-<div class="row white-section">
-    <div class="medium-12 columns">
-        <div class="tabs-content">
-            <div class="content active" id="panel-course-info">
-                <div class="row">
-                    <div class="medium-12 columns">
-                        {% for error in form.non_field_errors %}
-                        <div data-alert class="alert-box alert">
-                            {{ error }}
-                            <a href="#" class="close">&times;</a>
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-                <fieldset>
-                    <legend>Course Content</legend>
+<div class="white-section">
+    <div class="row">
+        <div class="medium-12 columns">
+            <div class="tabs-content">
+                <div class="content active" id="panel-course-info">
                     <div class="row">
                         <div class="medium-12 columns">
-                            {% include "base/partials/formfield.html" with field=form.title %}
-                            {% include "base/partials/tooltip_formfield.html" with field=form.short_description %}
-                            {% include "base/partials/tooltip_formfield.html" with field=form.long_description %}
+                            {% for error in form.non_field_errors %}
+                            <div data-alert class="alert-box alert">
+                                {{ error }}
+                                <a href="#" class="close">&times;</a>
+                            </div>
+                            {% endfor %}
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="medium-6 columns">
-                            {% include "base/partials/tooltip_formfield.html" with field=form.prereqs %}
+                    <fieldset>
+                        <legend>Course Content</legend>
+                        <div class="row">
+                            <div class="medium-12 columns">
+                                {% include "base/partials/formfield.html" with field=form.title %}
+                                {% include "base/partials/tooltip_formfield.html" with field=form.short_description %}
+                                {% include "base/partials/tooltip_formfield.html" with field=form.long_description %}
+                            </div>
                         </div>
-                        <div class="medium-6 columns">
-                            {% include "base/partials/tooltip_formfield.html" with field=form.additional_info %}
+                        <div class="row">
+                            <div class="medium-6 columns">
+                                {% include "base/partials/tooltip_formfield.html" with field=form.prereqs %}
+                            </div>
+                            <div class="medium-6 columns">
+                                {% include "base/partials/tooltip_formfield.html" with field=form.additional_info %}
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="medium-12 columns">
-                            <strong class="right"><a target="_blank" href="{{ course.course_material.url }}">View Course Materials &raquo;</a></strong>
+                        <div class="row">
+                            <div class="medium-12 columns">
+                                <strong class="right"><a target="_blank" href="{{ course.course_material.url }}">View Course Materials &raquo;</a></strong>
+                            </div>
                         </div>
-                    </div>
-                </fieldset>
-                <fieldset>
-                    <legend>Course Logistics</legend>
-                    <div class="row">
-                        <div class="medium-4 columns">
-                            {% include "base/partials/tooltip_formfield.html" with field=form.size %}
+                    </fieldset>
+                    <fieldset>
+                        <legend>Course Logistics</legend>
+                        <div class="row">
+                            <div class="medium-4 columns">
+                                {% include "base/partials/tooltip_formfield.html" with field=form.size %}
+                            </div>
+                            <div class="medium-4 columns">
+                                {% include "base/partials/tooltip_formfield.html" with field=form.skill_level %}
+                            </div>
+                            <div class="medium-4 columns">
+                                <label has-tooltip for="{{ form.cost.id_for_label }}">
+                                    <span data-tooltip class="has-tip tip-top tip-thin" title="{{ form.cost.help_text }}">
+                                        Course Fee <small>Required</small>
+                                    </span>
+                                    <div class="row collapse">
+                                        <div class="small-2 columns">
+                                            <span class="prefix">$</span>
+                                        </div>
+                                        <div class="small-10 columns">
+                                            {{ form.cost | attr:"min:5" | attr:"step:0.5" }}
+                                        </div>
+                                    </div>
+                                    {% for error in field.errors %}
+                                    <small class="error">{{ error }}</small>
+                                    {% endfor %}
+                                </label>
+                            </div>
                         </div>
-                        <div class="medium-4 columns">
-                            {% include "base/partials/tooltip_formfield.html" with field=form.skill_level %}
-                        </div>
-                        <div class="medium-4 columns">
-                            <label has-tooltip for="{{ form.cost.id_for_label }}">
-                                <span data-tooltip class="has-tip tip-top tip-thin" title="{{ form.cost.help_text }}">
-                                    Course Fee <small>Required</small>
+
+                        <div class="row">
+                            <div class="small-2 columns text-right">
+                                <label>For you:</label>
+                                <span id="your-amt">$0.00</span>
+                            </div>
+                            <div class="small-8 columns">
+                                <span data-tooltip class="has-tip tip-top tip-thin" title="{{ form.odalc_cost_split.help_text }}">
+                                    <label for="{{ form.odalc_cost_split.id_for_label }}">ODALC Donation Split <small>Required</small></label>
                                 </span>
-                                <div class="row collapse">
-                                    <div class="small-2 columns">
-                                        <span class="prefix">$</span>
+                                    <div id="split-dollar-slider" class="range-slider round" data-slider data-options="start:20; end:100">
+                                        <span id='dollar-handle' class="range-slider-handle slider-dollar"></span>
+                                        <span class="range-slider-active-segment"></span>
+                                    <input type="hidden" id="split-slider-val">
                                     </div>
-                                    <div class="small-10 columns">
-                                        {{ form.cost | attr:"min:5" | attr:"step:0.5" }}
-                                    </div>
+                                    {% include "base/partials/hidden_formfield.html" with field=form.odalc_cost_split %}
+                            </div>
+                            <div class="small-2 columns text-left ">
+                                <label>Donate to ODALC:</label>
+                                <span id="split-dollar-amt">$0.00</span>
+                            </div>
+
+                            </div>
+
+
+                        <div class="row">
+                            <div class="medium-6 columns">
+                                <h5>Teacher's Available Time Slots:</h5>
+                                <div class="time-slot-select" id="start-datetime-1">
+                                    <strong>Option 1: </strong>
+                                    <p>{{ course.courseavailability.start_datetime1|date:'D, N d, Y' }} |
+                                    {{ course.courseavailability.start_datetime1|date:'P'}} - {{ course.courseavailability.end_datetime1|date:'P' }}</p>
                                 </div>
-                                {% for error in field.errors %}
-                                <small class="error">{{ error }}</small>
+                                <div class="time-slot-select" id="start-datetime-2">
+                                <strong>Option 2: </strong>
+                                    <p>{{ course.courseavailability.start_datetime2|date:'D, N d, Y' }} |
+                                    {{ course.courseavailability.start_datetime2|date:'P'}} - {{ course.courseavailability.end_datetime2|date:'P' }}</p>
+                                </div>
+                                <div class="time-slot-select" id="start-datetime-3">
+                                <strong>Option 3: </strong>
+                                    <p>{{ course.courseavailability.start_datetime3|date:'D, N d, Y' }} |
+                                    {{ course.courseavailability.start_datetime3|date:'P'}} - {{ course.courseavailability.end_datetime3|date:'P' }}</p>
+                                </div>
+                            </div>
+                            <div class="medium-6 columns">
+                                <label for="{{ form.date.id_for_label }}">
+                                {{ form.date.label }}
+                                {{ form.date }}
+                                </label>
+                                {% for error in form.date.errors %}
+                                    <small class="error">{{ error }}</small>
                                 {% endfor %}
-                            </label>
-                        </div>
-                    </div>
 
+                                <label for="{{ form.start_time.id_for_label }}">
+                                {{ form.start_time.label }}
+                                {{ form.start_time }}
+                                </label>
+                                {% for error in form.start_time.errors %}
+                                    <small class="error">{{ error }}</small>
+                                {% endfor %}
+
+                                <label for="{{ form.end_time.id_for_label }}">
+                                {{ form.end_time.label }}
+                                {{ form.end_time }}
+                                </label>
+                                {% for error in form.end_time.errors %}
+                                    <small class="error">{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+
+                    </fieldset>
+                    {% include "base/partials/formfield.html" with field=form.image %}
+                    {% include "base/partials/formfield.html" with field=form.course_material %}
+
+                    {# Hidden form inputs so that we can use EditCourseForm in the View #}
+                    <input id="{{ form.status.id_for_label }}" type="hidden" name="{{ form.status.html_name }}" value="{{ form.status.value }}"/>
+                </div>
+
+                    <!--Input Buttons (Approve and Deny)-->
+
+                <div class="content" id="panel-instructor-info">
                     <div class="row">
-                        <div class="small-2 columns text-right">
-                            <label>For you:</label>
-                            <span id="your-amt">$0.00</span>
-                        </div>
-                        <div class="small-8 columns">
-                            <span data-tooltip class="has-tip tip-top tip-thin" title="{{ form.odalc_cost_split.help_text }}">
-                                <label for="{{ form.odalc_cost_split.id_for_label }}">ODALC Donation Split <small>Required</small></label>
-                            </span>
-                                <div id="split-dollar-slider" class="range-slider round" data-slider data-options="start:20; end:100">
-                                    <span id='dollar-handle' class="range-slider-handle slider-dollar"></span>
-                                    <span class="range-slider-active-segment"></span>
-                                <input type="hidden" id="split-slider-val">
-                                </div>
-                                {% include "base/partials/hidden_formfield.html" with field=form.odalc_cost_split %}
-                        </div>
-                        <div class="small-2 columns text-left ">
-                            <label>Donate to ODALC:</label>
-                            <span id="split-dollar-amt">$0.00</span>
-                        </div>
-
-                        </div>
-
-
-                    <div class="row">
-                        <div class="medium-6 columns">
-                            <h5>Teacher's Available Time Slots:</h5>
-                            <div class="time-slot-select" id="start-datetime-1">
-                                <strong>Option 1: </strong>
-                                <p>{{ course.courseavailability.start_datetime1|date:'D, N d, Y' }} |
-                                {{ course.courseavailability.start_datetime1|date:'P'}} - {{ course.courseavailability.end_datetime1|date:'P' }}</p>
+                        <div class="medium-3 columns">
+                            <div class="pic">
+                                <img class="th" src="{{ course.teacher.picture.url }}" />
                             </div>
-                            <div class="time-slot-select" id="start-datetime-2">
-                            <strong>Option 2: </strong>
-                                <p>{{ course.courseavailability.start_datetime2|date:'D, N d, Y' }} |
-                                {{ course.courseavailability.start_datetime2|date:'P'}} - {{ course.courseavailability.end_datetime2|date:'P' }}</p>
-                            </div>
-                            <div class="time-slot-select" id="start-datetime-3">
-                            <strong>Option 3: </strong>
-                                <p>{{ course.courseavailability.start_datetime3|date:'D, N d, Y' }} |
-                                {{ course.courseavailability.start_datetime3|date:'P'}} - {{ course.courseavailability.end_datetime3|date:'P' }}</p>
+                            <div class="details">
+                                <ul class="vcard">
+                                    <li class="fn">{{ course.teacher.first_name }} {{ course.teacher.last_name }}</li>
+                                    <li class="org">{{ course.teacher.organization }}</li>
+                                    <li class="role"><i>{{ course.teacher.position }}</i></li>
+                                    <li class="resume"><a target="_blank" href="{{ course.teacher.resume.url }}">View Resume</a></li>
+                                    <li class="email"><a target="_blank" href="mailto:{{ course.teacher.email }}">{{ course.teacher.email }}</a></li>
+                                    <li class="phone">{{ course.teacher.phone }}</li>
+                                    <li class="street-address">{{ course.teacher.street_address }}</li>
+                                    <li class="locality">{{ course.teacher.city }}, CA <span class="zip">{{ course.teacher.zipcode }}</span></li>
+                                </ul>
                             </div>
                         </div>
-                        <div class="medium-6 columns">
-                            <label for="{{ form.date.id_for_label }}">
-                            {{ form.date.label }}
-                            {{ form.date }}
-                            </label>
-                            {% for error in form.date.errors %}
-                                <small class="error">{{ error }}</small>
-                            {% endfor %}
-
-                            <label for="{{ form.start_time.id_for_label }}">
-                            {{ form.start_time.label }}
-                            {{ form.start_time }}
-                            </label>
-                            {% for error in form.start_time.errors %}
-                                <small class="error">{{ error }}</small>
-                            {% endfor %}
-
-                            <label for="{{ form.end_time.id_for_label }}">
-                            {{ form.end_time.label }}
-                            {{ form.end_time }}
-                            </label>
-                            {% for error in form.end_time.errors %}
-                                <small class="error">{{ error }}</small>
-                            {% endfor %}
-                        </div>
-                    </div>
-
-
-                </fieldset>
-                {% include "base/partials/formfield.html" with field=form.image %}
-                {% include "base/partials/formfield.html" with field=form.course_material %}
-
-                {# Hidden form inputs so that we can use EditCourseForm in the View #}
-                <input id="{{ form.status.id_for_label }}" type="hidden" name="{{ form.status.html_name }}" value="{{ form.status.value }}"/>
-            </div>
-
-                <!--Input Buttons (Approve and Deny)-->
-
-            <div class="content" id="panel-instructor-info">
-                <div class="row">
-                    <div class="medium-3 columns">
-                        <div class="pic">
-                            <img class="th" src="{{ course.teacher.picture.url }}" />
-                        </div>
-                        <div class="details">
-                            <ul class="vcard">
-                                <li class="fn">{{ course.teacher.first_name }} {{ course.teacher.last_name }}</li>
-                                <li class="org">{{ course.teacher.organization }}</li>
-                                <li class="role"><i>{{ course.teacher.position }}</i></li>
-                                <li class="resume"><a target="_blank" href="{{ course.teacher.resume.url }}">View Resume</a></li>
-                                <li class="email"><a target="_blank" href="mailto:{{ course.teacher.email }}">{{ course.teacher.email }}</a></li>
-                                <li class="phone">{{ course.teacher.phone }}</li>
-                                <li class="street-address">{{ course.teacher.street_address }}</li>
-                                <li class="locality">{{ course.teacher.city }}, CA <span class="zip">{{ course.teacher.zipcode }}</span></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="medium-9 columns">
-                        <div>
-                            <h4>About</h4>
-                            <p>{{ course.teacher.about }}</p>
-                        </div>
-                        <div>
-                            <h4>Experience</h4>
-                            <p>{{ course.teacher.experience }}</p>
-                        </div>
-                        <div>
-                            <h4>Heard About Oakland Digital From:</h4>
-                            <p>{{ course.teacher.get_info_source_display }}</p>
+                        <div class="medium-9 columns">
+                            <div>
+                                <h4>About</h4>
+                                <p>{{ course.teacher.about }}</p>
+                            </div>
+                            <div>
+                                <h4>Experience</h4>
+                                <p>{{ course.teacher.experience }}</p>
+                            </div>
+                            <div>
+                                <h4>Heard About Oakland Digital From:</h4>
+                                <p>{{ course.teacher.get_info_source_display }}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-                </div>
+                    </div>
 
+                </div>
             </div>
         </div>
     </div>

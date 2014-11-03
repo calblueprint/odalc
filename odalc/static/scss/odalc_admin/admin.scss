@@ -22,23 +22,26 @@
     }
 }
 
-.sub-nav-review {
-    .sub-nav-title {
-        color: $white;
-        margin-left: 1rem;
-        margin-top: 2rem;
-    }
+.review-header {
+    background-color: $medium-grey;
+    .sub-nav-review {
+        .sub-nav-title {
+            color: $charcoal;
+            font-size: 1.5rem;
+            margin-left: 1rem;
+            margin-top: 2rem;
+        }
+        @include sub-nav();
 
-    @include sub-nav();
-    background-color: $charcoal;
-    margin-top: 1px;
-    padding-bottom: 1rem;
-    dd .nav-tab {
-        @include radius();
-        background-color: scale-color($charcoal, $lightness: 20%);
-        color: $dark-grey;
-        &:hover {
+        margin-top: 1px;
+        padding-bottom: 1rem;
+        dd .nav-tab {
+            @include radius();
+            background-color: scale-color($charcoal, $lightness: 40%);
             color: $light-grey;
+            &:hover {
+                color: $white;
+            }
         }
     }
 }
@@ -71,5 +74,9 @@
     @include section-padding();
     @include section-border();
     background-color: $medium-grey;
+}
 
+.admin-register-block {
+    @extend .light-grey-section;
+    min-height: 600px;
 }
