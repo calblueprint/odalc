@@ -8,20 +8,7 @@
 {% endblock %}
 
 {% block body %}
-<div class="admin-dashboard-header">
-    <div class="row">
-        <div class="large-5 columns">
-            <h1>Admin Dashboard</h1>
-        </div>
-        <div class="large-7 columns">
-            <ul class="subnav-list">
-                <li><a href="{% url "admins:edit" %}">Edit profile information &raquo;</a></li>
-                <li><a href="{% url "admins:password_change" %}">Change password &raquo;</a></li>
-                <li><a href="{% url "admins:register" %}">Register new admin &raquo;</a></li>
-            </ul>
-        </div>
-    </div>
-</div>
+{% include "odalc_admin/subnav/subnav_dashboard.html" %}
 
 <div class="admin-dashboard-content">
     <div class="row">
