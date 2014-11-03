@@ -25,5 +25,13 @@
     @include section-border();
     background-color: $light-grey;
     min-height: 500px;
+    .faq-tile {
+        h2.faq-question {
+            font-weight: 700;
+            font-size: 2.0rem;
+        }
+        p.faq-answer {
 
+        }
+    }
 }
