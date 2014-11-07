@@ -4,7 +4,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
-from django.views.generic import DetailView, TemplateView, UpdateView
+from django.views.generic import DetailView, ListView, UpdateView
 
 from odalc.courses.forms import EditCourseForm
 from odalc.courses.models import Course
@@ -100,17 +100,33 @@ class CourseEditView(UserDataMixin, UpdateView):
             return reverse('home')
 
 
-class CourseListingView(UserDataMixin, TemplateView):
+class CourseListingView(UserDataMixin, ListView):
     """Main view for displaying the courses offered. There are three categories of courses:
     all courses, past courses, and upcoming courses (courses coming up in the next month)"""
+    context_object_name = 'courses'
+    paginate_by = 10
     template_name = 'courses/course_listing.html'
+    PARAM_TYPE = "type"
+    TYPE_UPCOMING = "upcoming"
+    TYPE_PAST = "past"
+
+    def get_queryset(self):
+        queryset = None
+        courses_type = self.request.GET.get(CourseListingView.PARAM_TYPE)
+        if courses_type == CourseListingView.TYPE_PAST:
+            queryset =  Course.objects.get_finished()
+        else:
+            # For now, its either the is "upcoming", is blank, or is something else
+            # showing the upcoming courses is the defult behavior
+            now = datetime.datetime.now()
+            future = now + datetime.timedelta(days=60)
+            queryset =  Course.objects.get_in_date_range(now, future)
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super(CourseListingView, self).get_context_data(**kwargs)
-        now = datetime.datetime.now()
-        month_from_now = now + datetime.timedelta(days=30)
-        context['all_courses'] = Course.objects.get_all_approved()
-        context['past_courses'] = Course.objects.get_finished()
-        context['upcoming_courses'] = Course.objects.get_in_date_range(now, month_from_now)
+        is_past = self.request.GET.get(CourseListingView.PARAM_TYPE) == CourseListingView.TYPE_PAST
+        context['is_upcoming'] = not is_past
+        context['is_past'] = is_past
         return context
 

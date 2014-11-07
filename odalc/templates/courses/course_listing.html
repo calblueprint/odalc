@@ -1,4 +1,5 @@
 {% extends "base/base.html" %}
+{% load course_renderer %}
 
 {% block title %}Browse Courses {% endblock %}
 
@@ -17,11 +18,14 @@
                 <h1>Browse All Courses</h1>
             </div>
             <div class="medium-6 columns">
-                <dl class="sub-nav" style="margin-top:20px;" data-tab>
+                <dl class="sub-nav" style="margin-top:20px;">
                     <dt>Browse By:</dt>
-                    <dd class="active"><a href="#panel2-1">Upcoming</a></dd>
-                    <dd><a href="#panel2-2">Past</a></dd>
-                    <dd><a href="#panel2-3">All</a></dd>
+                    <dd class="{% if is_upcoming %}active{% endif %}">
+                        <a href="{% url "courses:listing" %}?type=upcoming">Upcoming</a>
+                    </dd>
+                    <dd class="{% if is_past %}active{% endif %}">
+                        <a href="{% url "courses:listing" %}?type=past">Past</a>
+                    </dd>
                 </dl>
             </div>
         </div>
@@ -33,30 +37,39 @@
         <div class="large-12 columns">
             <div class="tabs-content">
                 <div class="content active" id="panel2-1">
-                    {% for course in upcoming_courses %}
+                    {% for course in courses %}
                         {% include "base/partials/course_tile.html" %}
                     {% empty %}
+                        {% if is_upcoming %}
                         <p> There are no upcoming courses right now. Check again later! </p>
+                         {% elif is_past %}
+                        <p> There are no finished courses right now. Check again later! </p>
+                        {% else %}
+                        <p> There are no courses right now. Check again later! </p>
+                        {% endif %}
                     {% endfor %}
               </div>
-              <div class="content" id="panel2-2">
-                    <div class="content" id="panel2-1">
-                    {% for course in past_courses %}
-                        {% include "base/partials/course_tile.html" %}
-                    {% empty %}
-                        <p> There are no past courses right now. Check again later! </p>
-                    {% endfor %}
-                    </div>
-                </div>
-                <div class="content" id="panel2-3">
-                    {% for course in all_courses %}
-                        {% include "base/partials/course_tile.html" %}
-                    {% empty %}
-                        <p> There are no courses right now. Check again later! </p>
-                    {% endfor %}
-                </div>
             </div>
         </div>
+
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="{% paginate_url page_obj.previous_page_number %}">Previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="{% paginate_url page_obj.next_page_number %}">Next</a>
+        {% endif %}
+    </span>
+</div>
+
     </div>
 </div>
+
+
 {% endblock %}
