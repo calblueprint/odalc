@@ -6,11 +6,11 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import (
-    View,
-    UpdateView,
-    TemplateView,
+    CreateView,
     DetailView,
-    CreateView
+    ListView,
+    UpdateView,
+    View,
 )
 from django.contrib import messages
 
@@ -92,29 +92,66 @@ class ApplicationReviewView(UserDataMixin, UpdateView):
         return redirect(ApplicationReviewView.success_url)
 
 
-class AdminDashboardView(UserDataMixin, TemplateView):
+class AdminDashboardView(UserDataMixin, ListView):
     """AdminDashboardView shows the admin all pending course applications, current (live) courses,
     as well as finished courses and links to feedback for those finished courses
     """
+    context_object_name = 'courses'
+    paginate_by = 10
     template_name = 'odalc_admin/admin_dashboard.html'
 
+    PARAM_TYPE = "type"
+    TYPE_PENDING = "pending"
+    TYPE_ACTIVE = "active"
+    TYPE_FINISHED = "finished"
+    TYPE_DENIED = "denied"
+
+
     def dispatch(self, *args, **kwargs):
+        self.is_active = (self.request.GET.get(AdminDashboardView.PARAM_TYPE)
+                            == AdminDashboardView.TYPE_ACTIVE)
+        self.is_finished = (self.request.GET.get(AdminDashboardView.PARAM_TYPE)
+                            == AdminDashboardView.TYPE_FINISHED)
+        self.is_denied = (self.request.GET.get(AdminDashboardView.PARAM_TYPE)
+                            == AdminDashboardView.TYPE_DENIED)
+        self.is_pending = ((self.request.GET.get(AdminDashboardView.PARAM_TYPE)
+                            == AdminDashboardView.TYPE_PENDING) or (
+                            not self.is_active and not self.is_finished and not self.is_denied))
         handler = super(AdminDashboardView, self).dispatch(*args, **kwargs)
         if not self.user.is_authenticated():
             return redirect('/users/login?next=%s' % self.request.path)
         elif self.is_admin_user:
             return handler
-        return self.deny_access()
+        else:
+            return self.deny_access()
+
+    def get_queryset(self):
+        queryset = None
+        if self.is_active:
+           queryset = Course.objects.get_all_active()
+        elif self.is_finished:
+           queryset = Course.objects.get_finished()
+        elif self.is_denied:
+           queryset = Course.objects.get_denied()
+        else:
+            # The default is pending courses
+           queryset = Course.objects.get_pending()
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super(AdminDashboardView, self).get_context_data(**kwargs)
-        context['pending_courses'] = Course.objects.get_pending()
-        context['featured_courses'] = Course.objects.get_active(is_featured=True)
-        context['active_courses'] = Course.objects.get_active(is_featured=False)
-        context['finished_courses'] = Course.objects.get_finished()
-        context['denied_courses'] = Course.objects.get_denied()
-        context['teachers'] = TeacherUser.objects.all()
-        context['students'] = StudentUser.objects.all()
+        context['is_pending'] = self.is_pending
+        context['is_active'] = self.is_active
+        context['is_finished'] = self.is_finished
+        context['is_denied'] = self.is_denied
+        if self.is_pending:
+            context['title'] = 'Courses Pending Review'
+        if self.is_active:
+            context['title'] = 'Active Courses'
+        if self.is_finished:
+            context['title'] = 'Finished Courses'
+        if self.is_denied:
+            context['title'] = 'Denied Courses'
         return context
 
 

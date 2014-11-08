@@ -106,6 +106,7 @@ class CourseListingView(UserDataMixin, ListView):
     context_object_name = 'courses'
     paginate_by = 10
     template_name = 'courses/course_listing.html'
+
     PARAM_TYPE = "type"
     TYPE_UPCOMING = "upcoming"
     TYPE_PAST = "past"

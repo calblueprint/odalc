@@ -13,67 +13,40 @@
 <div class="admin-dashboard-content">
     <div class="row">
     <div class="large-12 columns">
-        <dl class="sub-nav" data-tab>
+        <dl class="sub-nav">
             <dt>Filter:</dt>
-            <dd class="active" id="tab-courses-pending"><a href="#panel-courses-pending">Courses Pending Review</a></dd>
-            <dd id="tab-courses-active"><a href="#panel-courses-active">Active Courses</a></dd>
-            <dd id="tab-courses-finished"><a href="#panel-courses-finished">Finished Courses</a></dd>
-            <dd id="tab-courses-denied"><a href="#panel-courses-denied">Denied Courses</a></dd>
+            <dd class="{% if is_pending %}active{% endif %}" id="tab-courses-pending">
+                <a href="{% url "admins:dashboard" %}?type=pending">Courses Pending Review</a>
+            </dd>
+            <dd class="{% if is_active %}active{% endif %}"id="tab-courses-active">
+                <a href="{% url "admins:dashboard" %}?type=active">Active Courses</a>
+            </dd>
+            <dd class="{% if is_finished %}active{% endif %}"id="tab-courses-finished">
+                <a href="{% url "admins:dashboard" %}?type=finished">Finished Courses</a>
+            </dd>
+            <dd class="{% if is_denied %}active{% endif %}"id="tab-courses-denied">
+                <a href="{% url "admins:dashboard" %}?type=denied">Denied Courses</a>
+            </dd>
         </dl>
         <div class="tabs-content">
-            <div class="content active" id="panel-courses-pending">
-                {% for course in pending_courses %}
+            <div class="content active" id="courses-panel">
+                {% for course in courses %}
+                    <div id="{{ course.id }}" class="course-row">
                     {% include "base/partials/course_tile.html" %}
-                    {% include "odalc_admin/course_tile_action_pending.html" %}
-                {% empty %}
-                <p>There are currently no courses pending review.</p>
-                {% endfor %}
-            </div>
-
-            <div class="content" id="panel-courses-active">
-                <h3>Featured Courses</h3>
-                <div id="featured-section">
-                    {% for course in featured_courses %}
-                    <div id="{{ course.id }}" class="course-row">
-                        {% include "base/partials/course_tile.html" %}
-                        {% include "odalc_admin/course_tile_action_active_featured.html" %}
-                    </div>
-                    {% empty %}
-                    <hr/>
-                    {% endfor %}
-                </div>
-
-                <h3>Active Courses</h3>
-                <div id="active-section">
-                    {% for course in active_courses %}
-                    <div id="{{ course.id }}" class="course-row">
-                        {% include "base/partials/course_tile.html" %}
+                    {% if is_pending %}
+                        {% include "odalc_admin/course_tile_action_pending.html" %}
+                    {% elif is_active %}
                         {% include "odalc_admin/course_tile_action_active.html" %}
+                    {% elif is_finished %}
+                        {% include "odalc_admin/course_tile_action_finished.html" %}
+                    {% elif is_denied %}
+                        {% include "odalc_admin/course_tile_action_denied.html" %}
+                    {% endif %}
                     </div>
-                    {% empty %}
-                    {% endfor %}
-                </div>
-                <hr/>
-            </div>
-
-            <div class="content" id="panel-courses-finished">
-                {% for course in finished_courses %}
-                    {% include "base/partials/course_tile.html" %}
-                    {% include "odalc_admin/course_tile_action_finished.html" %}
                 {% empty %}
-                <p>There are currently no finished courses.</p>
+                <p>There are currently no {{ title }}.</p>
                 {% endfor %}
             </div>
-
-            <div class="content" id="panel-courses-denied">
-                {% for course in denied_courses %}
-                    {% include "base/partials/course_tile.html" %}
-                    {% include "odalc_admin/course_tile_action_denied.html" %}
-                {% empty %}
-                <p>There are currently no denied courses.</p>
-                {% endfor %}
-            </div>
-
         </div>
     </div>
 </div>

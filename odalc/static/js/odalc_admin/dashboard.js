@@ -16,9 +16,9 @@ $(document).ready(function() {
         }
     });
 
-    $("#active-section").on('click', '.feature-course-button', function(){
+    $("#courses-panel").on('click', '.feature-course-button', function(){
         $(this).removeClass('feature-course-button').addClass('unfeature-course-button');
-        $(this).parents(".course-row").prependTo('#featured-section');
+        //$(this).parents(".course-row").prependTo('#featured-section');
         $(this).text("Remove from featured");
 
         var courseId = $(this).parents('.course-row').attr('id');
@@ -34,9 +34,9 @@ $(document).ready(function() {
         return false;
     });
 
-    $("#featured-section").on('click', '.unfeature-course-button', function(){
+    $("#courses-panel").on('click', '.unfeature-course-button', function(){
         $(this).removeClass('unfeature-course-button').addClass('feature-course-button');
-        $(this).parents(".course-row").prependTo('#active-section');
+        //$(this).parents(".course-row").prependTo('#active-section');
         $(this).text("Add to featured");
 
         var courseId = $(this).parents('.course-row').attr('id');

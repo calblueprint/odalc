@@ -70,7 +70,7 @@ class CourseManager(models.Manager):
     def get_all_active(self, qs=None):
         if qs is None:
             qs = super(CourseManager, self).get_queryset()
-        return qs.filter(status=Course.STATUS_ACCEPTED).order_by('-start_datetime')
+        return qs.filter(status=Course.STATUS_ACCEPTED).order_by('-is_featured', '-start_datetime')
 
     def get_finished(self, qs=None):
         if qs is None:
