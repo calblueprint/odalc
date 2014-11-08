@@ -93,3 +93,19 @@ a .button {
     @extend .light-grey-section;
     min-height: 600px;
 }
+
+.pagination {
+    @extend .text-center;
+    text-transform: uppercase;
+    font-size: rem-calc(14);
+
+    .prev-link {
+        margin-right: 10px;
+    }
+    .next-link {
+        margin-left: 10px;
+    }
+    .current {
+
+    }
+}
