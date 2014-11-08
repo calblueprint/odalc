@@ -12,44 +12,46 @@
 
 <div class="admin-dashboard-content">
     <div class="row">
-    <div class="large-12 columns">
-        <dl class="sub-nav">
-            <dt>Filter:</dt>
-            <dd class="{% if is_pending %}active{% endif %}" id="tab-courses-pending">
-                <a href="{% url "admins:dashboard" %}?type=pending">Courses Pending Review</a>
-            </dd>
-            <dd class="{% if is_active %}active{% endif %}"id="tab-courses-active">
-                <a href="{% url "admins:dashboard" %}?type=active">Active Courses</a>
-            </dd>
-            <dd class="{% if is_finished %}active{% endif %}"id="tab-courses-finished">
-                <a href="{% url "admins:dashboard" %}?type=finished">Finished Courses</a>
-            </dd>
-            <dd class="{% if is_denied %}active{% endif %}"id="tab-courses-denied">
-                <a href="{% url "admins:dashboard" %}?type=denied">Denied Courses</a>
-            </dd>
-        </dl>
-        <div class="tabs-content">
-            <div class="content active" id="courses-panel">
-                {% for course in courses %}
-                    <div id="{{ course.id }}" class="course-row">
-                    {% include "base/partials/course_tile.html" %}
-                    {% if is_pending %}
-                        {% include "odalc_admin/course_tile_action_pending.html" %}
-                    {% elif is_active %}
-                        {% include "odalc_admin/course_tile_action_active.html" %}
-                    {% elif is_finished %}
-                        {% include "odalc_admin/course_tile_action_finished.html" %}
-                    {% elif is_denied %}
-                        {% include "odalc_admin/course_tile_action_denied.html" %}
-                    {% endif %}
-                    </div>
-                {% empty %}
-                <p>There are currently no {{ title }}.</p>
-                {% endfor %}
+        <div class="large-12 columns">
+            <dl class="sub-nav">
+                <dt>Filter:</dt>
+                <dd class="{% if is_pending %}active{% endif %}" id="tab-courses-pending">
+                    <a href="{% url "admins:dashboard" %}?type=pending">Courses Pending Review</a>
+                </dd>
+                <dd class="{% if is_active %}active{% endif %}"id="tab-courses-active">
+                    <a href="{% url "admins:dashboard" %}?type=active">Active Courses</a>
+                </dd>
+                <dd class="{% if is_finished %}active{% endif %}"id="tab-courses-finished">
+                    <a href="{% url "admins:dashboard" %}?type=finished">Finished Courses</a>
+                </dd>
+                <dd class="{% if is_denied %}active{% endif %}"id="tab-courses-denied">
+                    <a href="{% url "admins:dashboard" %}?type=denied">Denied Courses</a>
+                </dd>
+            </dl>
+
+            <div class="tabs-content">
+                <div class="content active" id="courses-panel">
+                    {% for course in courses %}
+                        <div id="{{ course.id }}" class="course-row">
+                        {% include "base/partials/course_tile.html" %}
+                        {% if is_pending %}
+                            {% include "odalc_admin/course_tile_action_pending.html" %}
+                        {% elif is_active %}
+                            {% include "odalc_admin/course_tile_action_active.html" %}
+                        {% elif is_finished %}
+                            {% include "odalc_admin/course_tile_action_finished.html" %}
+                        {% elif is_denied %}
+                            {% include "odalc_admin/course_tile_action_denied.html" %}
+                        {% endif %}
+                        </div>
+                    {% empty %}
+                    <p>There are currently no {{ title }}.</p>
+                    {% endfor %}
+                </div>
             </div>
+            {% include "base/partials/paginate.html" %}
         </div>
     </div>
-</div>
 </div>
 {% endblock %}
 

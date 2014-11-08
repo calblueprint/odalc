@@ -1,5 +1,4 @@
 {% extends "base/base.html" %}
-{% load course_renderer %}
 
 {% block title %}Courses {% endblock %}
 
@@ -36,7 +35,7 @@
     <div class="row">
         <div class="large-12 columns">
             <div class="tabs-content">
-                <div class="content active" id="panel2-1">
+                <div class="content active">
                     {% for course in courses %}
                         {% include "base/partials/course_tile.html" %}
                     {% empty %}
@@ -48,26 +47,10 @@
                         <p> There are no courses right now. Check again later! </p>
                         {% endif %}
                     {% endfor %}
-              </div>
+                </div>
             </div>
+        {% include "base/partials/paginate.html" %}
         </div>
-
-<div class="pagination">
-    <span class="step-links">
-        {% if page_obj.has_previous %}
-            <a href="{% paginate_url page_obj.previous_page_number %}">Previous</a>
-        {% endif %}
-
-        <span class="current">
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
-        </span>
-
-        {% if page_obj.has_next %}
-            <a href="{% paginate_url page_obj.next_page_number %}">Next</a>
-        {% endif %}
-    </span>
-</div>
-
     </div>
 </div>
 
