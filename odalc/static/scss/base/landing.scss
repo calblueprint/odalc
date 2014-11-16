@@ -1,7 +1,8 @@
 #main-splash {
     background-color: transparent;
     .main-splash-img {
-        @include splash-image(url('../img/base/library.jpg'));
+        //@include splash-image(url('../img/base/library.jpg'));
+        @include splash-image(url('../img/base/mentor-image1.jpg'));
     }
     .main-splash-overlay {
         @include splash-image-overlay();
