@@ -6,6 +6,14 @@
     border-top: 1px solid $dark-grey;
 }
 
+
+@mixin transition-ease-all() {
+    -webkit-transition: all 500ms ease;
+    -moz-transition: all 500ms ease;
+    -o-transition: all 500ms ease;
+    transition: all 500ms ease;
+}
+
 .main-wrap {
     min-height: 680px;
 }
@@ -62,10 +70,6 @@
     background-color: $charcoal;
 }
 
-a .button {
-    @include button();
-}
-
 @mixin splash-image($image-url) {
     z-index: -20;
     background: $image-url;
@@ -107,5 +111,27 @@ a .button {
     }
     .current {
 
+    }
+}
+
+a.button, input.button, button, .odalc-button {
+    @include transition-ease-all;
+    background-color: rgba(121, 88, 159, 0);
+    color: $medium-purple;
+    border: 1px solid $medium-purple;
+    &:hover {
+        background-color: rgba(121, 88, 159, 0.1);
+        color: $medium-purple;
+        border: 1px solid $medium-purple;
+    }
+    &.success {
+        background-color: rgba(121, 88, 159, 0);
+        border: 1px solid $medium-purple;
+        color: $medium-purple;
+        &:hover {
+            background-color: rgba(121, 88, 159, 0.1);
+            color: $medium-purple;
+            border: 1px solid $medium-purple;
+        }
     }
 }

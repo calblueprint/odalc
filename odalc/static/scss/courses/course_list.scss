@@ -45,6 +45,7 @@
     padding-left: 25px;
     padding-right: 25px;
     margin-bottom: 30px;
+    @include transition-ease-all;
     &:hover {
         background-color: $white;
     }
@@ -55,7 +56,7 @@
         }
     }
     h3 {
-        color: $dark-blue;
+        color: $medium-purple;
         @media #{$small-only} {
             margin-top: 20px;
         }
@@ -82,12 +83,19 @@
     margin-top: -30px;
     margin-bottom: 30px;
     a.action-button {
-        @include button($button-sml);
         @include radius;
+        @extend .odalc-button;
         @extend .right;
         margin-bottom: 0px;
         font-size: 0.9em;
         padding-top: 0.6rem;
         padding-bottom: 0.7rem;
+        padding-right: 1.75rem;
+        padding-left: 1.75rem;
+        &:hover {
+            background-color: rgba(121, 88, 159, 0.1);
+            color: $medium-purple;
+            border: 1px solid $medium-purple;
+        }
     }
 }

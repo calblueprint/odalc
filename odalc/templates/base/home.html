@@ -13,8 +13,8 @@
     <div class="main-splash-overlay"></div>
     <div class="main-splash-content">
         <div class="row">
-          <div class="medium-8 small-centered medium-uncentered columns">
-            <h1>Learn from leading tech & design professionals</h1>
+          <div class="medium-9 medium-centered columns">
+            <h1>Learn from your community's leading tech & design professionals</h1>
             <br>
               <!--
             <h1>Bridging Gaps</h1>
@@ -23,7 +23,9 @@
             -->
           </div>
           <!-- Something like this on the landing page? Not sure, maybe one button would be better? -atsu -->
-          <div class="medium-4 small-centered medium-uncentered columns button-set">
+        </div>
+        <div class="row">
+          <div class="small-12 small-centered columns button-set">
                 {% if not user.is_authenticated %}
                 <a href="{% url "courses:listing" %}" class="button success radius">Want to learn? Start here</a>
                 <a href="{% url "teachers:register" %}" class="button info radius">Want to teach? Start here</a>
@@ -71,7 +73,9 @@
       <div class="large-7 columns">
         <h3><strong>What is BRIDGE?</strong></h3>
         <p>
-BRIDGE is an education platform that partners with tech and design professionals from around the Bay Area to offer courses that teach practical technical skills. We envision a future where under resourced communities have access to professional opportunities. BRIDGE aims to empower people with digital literacy education that will improve their lives and the communities they live in.
+BRIDGE is an education platform that partners with tech and design professionals from the tech and design industry to offer courses that teach practical technical skills. We envision a future where under resourced communities have access to professional opportunities. BRIDGE aims to empower people with digital literacy education that will improve their lives and the communities they live in.
+
+Whether it's learning how to manage your business' brand through social media or code your first website, empower yourself to harness the the digital tools to succeed in the 21st century.
         </p>
         <p>
             <a href="{% url "about" %}">Learn more &raquo;</a>
