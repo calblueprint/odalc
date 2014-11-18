@@ -9,7 +9,14 @@
 
 {% block body %}
 <div id="main-splash">
-    <div class="main-splash-img"></div>
+    <div class="main-splash-img">
+        <div class="splash-image" style="background-image: url({% static "img/base/home/home_1.jpg" %});"></div>
+        <div class="splash-image" style="background-image: url({% static "img/base/home/home_2.jpg" %});"></div>
+        <div class="splash-image" style="background-image: url({% static "img/base/home/home_3.jpg" %});"></div>
+        <div class="splash-image" style="background-image: url({% static "img/base/home/home_6.jpg" %});"></div>
+        <div class="splash-image" style="background-image: url({% static "img/base/home/home_4.jpg" %});"></div>
+        <div class="splash-image" style="background-image: url({% static "img/base/home/home_5.jpg" %});"></div>
+    </div>
     <div class="main-splash-overlay"></div>
     <div class="main-splash-content">
         <div class="row">
@@ -83,4 +90,8 @@ Whether it's learning how to manage your business' brand through social media or
      </div>
     </div>
   </div>
+{% endblock %}
+
+{% block javascripts %}
+<script src="{% static "js/base/home.js" %}"></script>
 {% endblock %}

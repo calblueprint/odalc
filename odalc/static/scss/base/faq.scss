@@ -1,7 +1,7 @@
 .faq-header {
     .faq-header-img {
-        @include splash-image(url('../img/base/desktop.jpg'));
-        background-position: 50% -200px;
+        @include splash-image(url('../img/base/faq.jpg'));
+        margin-top: -150px;
     }
 
     .faq-header-overlay {

@@ -1,17 +1,30 @@
 #main-splash {
+    $splash-image-height: 600px;
+    height: $splash-image-height;
     background-color: transparent;
     .main-splash-img {
-        //@include splash-image(url('../img/base/library.jpg'));
-        @include splash-image(url('../img/base/mentor-image1.jpg'));
+        z-index: -20;
+        margin-top: $topbar-height + 1;
+        position: absolute;
+        width: 100%;
+        top: 0;
+        margin-bottom: 0;
+        .splash-image {
+            background-size: cover;
+            margin-bottom: 0;
+            height: $splash-image-height;
+        }
     }
     .main-splash-overlay {
         @include splash-image-overlay();
+        height: $splash-image-height;
     }
     .main-splash-content {
         background-color: transparent;
         height: 100%;
-        padding-top: 175px;
-        padding-bottom: 175px;
+        padding-top: 15%;
+        padding-bottom: 15%;
+        @extend .text-center;
         h1 {
             font-weight: 900;
         }
@@ -28,7 +41,7 @@
                 margin-right: 20px;
                 background-color: transparent;
                 border: 2px solid $white;
-                color: white;
+                color: $white;
                 &:hover {
                     background-color: rgba(0, 0, 0, 0.4);
                 }

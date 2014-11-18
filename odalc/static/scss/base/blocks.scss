@@ -37,6 +37,11 @@
     background-color: $light-grey;
 }
 
+.white-section-no-border {
+    @include section-padding();
+    background-color: $light-grey;
+}
+
 .gray-section {
     @include section-padding();
     @include section-border();
@@ -82,7 +87,7 @@
 
 @mixin splash-image-overlay() {
     z-index: -10;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0,0,0,0.4);
     height: 100%;
     width: 100%;
     position: absolute;
