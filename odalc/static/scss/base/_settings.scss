@@ -15,26 +15,29 @@
 
 // COLORS
 
-$bright-red: #F16664;
 $black: #000000;
 $white: #ffffff;
 $off-white: #FFF6E6;
-$light-blue: #79CCCD;
-$medium-blue: #6BB7B9;
-$dark-blue: #007D8C;
-$dark-green: #3fb34f;
 $light-grey: #f5f5f5;
 $medium-grey: #edefed;
 $dark-grey: #dce0e0;
 $charcoal: #565a5c;
-$purple: #383a85;
 
-$primary-color: $light-blue;   // bondi-blue
+$bright-red: #C8695C;
+$dark-green: #5FA067;
+
+$light-purple: #9294d2;
+$medium-purple: #79589F;
+$dark-purple: #383a85;
+$dark-purple: $medium-purple;
+
+
+$primary-color: $dark-purple;   // bondi-blue
 $secondary-color: $off-white; // white-lilac
 $alert-color: $bright-red;     // cinnabar
 $success-color: $dark-green;   // sea-green
 $warning-color: $bright-red;   // carrot
-$info-color: $medium-blue;      // cornflower
+$info-color: $medium-purple;      // cornflower
 
 
 // $experimental: true;
@@ -78,14 +81,6 @@ $body-font-style: normal;
 // $text-direction: ltr;
 // $opposite-direction: right;
 // $default-float: left;
-
-// We use these as default colors throughout
-$primary-color: $dark-blue;   // bondi-blue
-$secondary-color: $off-white; // white-lilac
-$alert-color: $bright-red;     // cinnabar
-$success-color: $dark-green;   // sea-green
-$warning-color: $bright-red;   // carrot
-$info-color: $dark-blue;      // cornflower
 
 // We use these to make sure border radius matches unless we want it different.
 $global-radius: 5px;
@@ -188,8 +183,8 @@ $header-font-color: $charcoal;
 
 // We use these to style anchors
 //$anchor-text-decoration: none;
-$anchor-font-color: $dark-blue;
-$anchor-font-color-hover: scale-color($dark-blue, $lightness: 15%);
+$anchor-font-color: $medium-purple;
+$anchor-font-color-hover: scale-color($medium-purple, $lightness: 15%);
 
 // We use these to style the <hr> element
 // $hr-border-width: 1px;
@@ -516,7 +511,7 @@ $button-function-factor: 10%;
 // $input-bg-color: #fff;
 // $input-focus-bg-color: scale-color(#fff, $lightness: -2%);
 // $input-border-color: scale-color(#fff, $lightness: -20%);
-$input-focus-border-color: scale-color($dark-blue, $lightness: 10%);
+$input-focus-border-color: scale-color($medium-purple, $lightness: 10%);
 // $input-border-style: solid;
 // $input-border-width: 1px;
 // $input-border-radius: $global-radius;
@@ -1003,7 +998,7 @@ $sub-nav-font-color-hover: scale-color($sub-nav-font-color, $lightness: 20%);
 // We use these to control the active item styles
 
 // $sub-nav-active-font-weight: normal;
-$sub-nav-active-bg: $dark-blue;
+$sub-nav-active-bg: $dark-purple;
 $sub-nav-active-bg-hover: scale-color($sub-nav-active-bg, $lightness: 10%);
 // $sub-nav-active-color: #fff;
 // $sub-nav-active-padding: rem-calc(3 16);
@@ -1180,7 +1175,7 @@ $topbar-link-color-active-hover: $white;
 // $topbar-link-weight: normal;
 $topbar-link-font-size: rem-calc(13);
 $topbar-link-hover-lightness: 0%; // Darken by 0%
-$topbar-link-bg-used-color: $dark-blue;
+$topbar-link-bg-used-color: $dark-purple;
 $topbar-link-bg-hover: scale-color($topbar-link-bg-used-color, $lightness: $topbar-link-hover-lightness);
 $topbar-link-bg-active: scale-color($topbar-link-bg-used-color, $lightness: $topbar-link-hover-lightness);
 $topbar-link-bg-active-hover: scale-color($topbar-link-bg-used-color, $lightness: $topbar-link-hover-lightness);
@@ -1201,10 +1196,10 @@ $topbar-dropdown-label-bg: $light-grey;
 $topbar-menu-link-transform: uppercase;
 $topbar-menu-link-font-size: rem-calc(13);
 $topbar-menu-link-weight: bold;
-$topbar-menu-link-color: $dark-blue;
-$topbar-menu-icon-color: $dark-blue;
-$topbar-menu-link-color-toggled: $dark-blue;
-$topbar-menu-icon-color-toggled: $dark-blue;
+$topbar-menu-link-color: $dark-purple;
+$topbar-menu-icon-color: $dark-purple;
+$topbar-menu-link-color-toggled: $dark-purple;
+$topbar-menu-icon-color-toggled: $dark-purple;
 
 // Transitions and breakpoint styles
 // $topbar-transition-speed: 300ms;

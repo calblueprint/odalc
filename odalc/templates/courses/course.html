@@ -35,35 +35,35 @@ fjs.parentNode.insertBefore(js, fjs);
                     {% if is_past_start_date %}
                         {% if not submitted_feedback %}
                         <form action="{% url "courses:feedback" course.id %}" method="GET">
-                            <button class="enroll-btn large success radius">Submit Feedback</button>
+                            <button class="enroll-btn">Submit Feedback</button>
                         </form>
                         {% else %}
-                        <button class="enroll-btn large success disabled radius">Thanks for participating!</button>
+                        <button class="enroll-btn disabled">Thanks for participating!</button>
                         {% endif %}
                     {% else %}
-                        <button class="enroll-btn large success disabled radius">Already Enrolled</button>
+                        <button class="enroll-btn disabled">Already Enrolled</button>
                     {% endif %}
                 {% elif course_full %}
-                    <button class="enroll-btn large success disabled radius">Course Full</button>
+                    <button class="enroll-btn disabled">Course Full</button>
                 {% elif is_past_start_date %}
-                    <button class="enroll-btn large success disabled radius">This course has finished.</button>
+                    <button class="enroll-btn disabled">This course has finished.</button>
                 {% else %}
                 <form method='POST'>
                     {% csrf_token %}
-                    <button id="enroll-btn" class="enroll-btn large success radius">Enroll Now</button>
+                    <button id="enroll-btn" class="enroll-btn">Enroll Now</button>
                 </form>
                 {% endif %}
             {% elif course_full %}
-                <button class="enroll-btn large success disabled radius">Course Full</button>
+                <button class="enroll-btn disabled">Course Full</button>
             {% else %}
-            <button class="enroll-btn large success disabled radius">Cannot Enroll</button>
+            <button class="enroll-btn disabled">Cannot Enroll</button>
             {% endif %}
         {% else %}
             {% if course_finished %}
-            <button class="enroll-btn large success disabled radius">This course has finished.</button>
+            <button class="enroll-btn disabled ">This course has finished.</button>
             {% else %}
             <form action="{% url "users:login" %}" method="GET">
-                <button class="enroll-btn large success radius">Enroll now</button>
+                <button class="enroll-btn">Enroll now</button>
                 <input type="hidden" name="next" value="{{ request.path }}" />
             </form>
             {% endif %}
@@ -73,14 +73,14 @@ fjs.parentNode.insertBefore(js, fjs);
     </div>
 <!-- end title section-->
     <!-- logistics section -->
-    <div class="blue-section">
+    <div class="course-logistic-section">
       <div class="row course-logistic">
-          <div class="medium-3 medium-offset-1 columns item">
+          <div class="small-8 small-centered medium-uncentered medium-3 medium-offset-1 columns item">
                 <div class="col title">Course Session</div>
                 <div class="col">{{ course.start_datetime|date:'l, F d' }}</div>
                 <div class="col">{{ course.start_datetime|date:'P'}} - {{ course.end_datetime|date:'P' }}</div>
           </div>
-          <div class="medium-3 medium-offset-1 columns item">
+          <div class="small-8 small-centered medium-uncentered medium-3 medium-offset-1 columns item">
                 <div class="col title">Enrollment</div>
                 {% if course_full %}
                 <div class="col">All seats full</div>
@@ -88,7 +88,7 @@ fjs.parentNode.insertBefore(js, fjs);
                 <div class="col">{{ open_seats }} of {{ course.size }} seats open</div>
                 {% endif %}
           </div>
-          <div class="medium-3 medium-offset-1 columns item">
+          <div class="small-8 small-centered medium-uncentered medium-3 medium-offset-1 columns item">
                 <div class="col title">Cost</div>
                 <div class="col">${{ course.cost }}</div>
           </div>

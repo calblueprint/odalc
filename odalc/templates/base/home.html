@@ -9,17 +9,30 @@
 
 {% block body %}
 <div id="main-splash">
-    <div class="main-splash-img"></div>
+    <div class="main-splash-img">
+        <div class="splash-image" style="background-image: url({% static "img/base/home/home_1.jpg" %});"></div>
+        <div class="splash-image" style="background-image: url({% static "img/base/home/home_2.jpg" %});"></div>
+        <div class="splash-image" style="background-image: url({% static "img/base/home/home_3.jpg" %});"></div>
+        <div class="splash-image" style="background-image: url({% static "img/base/home/home_6.jpg" %});"></div>
+        <div class="splash-image" style="background-image: url({% static "img/base/home/home_4.jpg" %});"></div>
+        <div class="splash-image" style="background-image: url({% static "img/base/home/home_5.jpg" %});"></div>
+    </div>
     <div class="main-splash-overlay"></div>
     <div class="main-splash-content">
         <div class="row">
-          <div class="medium-8 small-centered medium-uncentered columns">
-            <h1>Courses from Oakland Digital</h1>
+          <div class="medium-9 medium-centered columns">
+            <h1>Learn from your community's leading tech & design professionals</h1>
             <br>
-            <h2>Taught by the Bay Area's leading <strong>tech & design professionals</strong></h2>
+              <!--
+            <h1>Bridging Gaps</h1>
+            <h2>Learn from leading tech & design professionals</h2>
+            <br>
+            -->
           </div>
           <!-- Something like this on the landing page? Not sure, maybe one button would be better? -atsu -->
-          <div class="medium-4 small-centered medium-uncentered columns button-set">
+        </div>
+        <div class="row">
+          <div class="small-12 small-centered columns button-set">
                 {% if not user.is_authenticated %}
                 <a href="{% url "courses:listing" %}" class="button success radius">Want to learn? Start here</a>
                 <a href="{% url "teachers:register" %}" class="button info radius">Want to teach? Start here</a>
@@ -65,11 +78,11 @@
   <div class="medium-grey-section">
     <div class="row">
       <div class="large-7 columns">
-        <h3><strong>What is Oakland Digital | Courses?</strong></h3>
+        <h3><strong>What is BRIDGE?</strong></h3>
         <p>
-        Oakland Digital Courses are classes taught by the Bay Area's professionals from the tech and design industries.
-        These one-day courses held at the Oakland Digital Arts & Literacy Center are open for anyone to take.
-        Whether it's learning how to make your own website, manage your business' branding, or code your first program, there's something for everybody to take.
+BRIDGE is an education platform that partners with tech and design professionals from the tech and design industry to offer courses that teach practical technical skills. We envision a future where under resourced communities have access to professional opportunities. BRIDGE aims to empower people with digital literacy education that will improve their lives and the communities they live in.
+
+Whether it's learning how to manage your business' brand through social media or code your first website, empower yourself to harness the the digital tools to succeed in the 21st century.
         </p>
         <p>
             <a href="{% url "about" %}">Learn more &raquo;</a>
@@ -77,4 +90,8 @@
      </div>
     </div>
   </div>
+{% endblock %}
+
+{% block javascripts %}
+<script src="{% static "js/base/home.js" %}"></script>
 {% endblock %}

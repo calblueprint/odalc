@@ -1,16 +1,30 @@
 #main-splash {
+    $splash-image-height: 600px;
+    height: $splash-image-height;
     background-color: transparent;
     .main-splash-img {
-        @include splash-image(url('../img/base/library.jpg'));
+        z-index: -20;
+        margin-top: $topbar-height + 1;
+        position: absolute;
+        width: 100%;
+        top: 0;
+        margin-bottom: 0;
+        .splash-image {
+            background-size: cover;
+            margin-bottom: 0;
+            height: $splash-image-height;
+        }
     }
     .main-splash-overlay {
         @include splash-image-overlay();
+        height: $splash-image-height;
     }
     .main-splash-content {
         background-color: transparent;
         height: 100%;
-        padding-top: 175px;
-        padding-bottom: 175px;
+        padding-top: 15%;
+        padding-bottom: 15%;
+        @extend .text-center;
         h1 {
             font-weight: 900;
         }
@@ -19,7 +33,19 @@
             display:inline;
         }
         .button-set {
-            padding-top: 20px;
+            @extend .text-center;
+            margin-top: 70px;
+            a {
+                display: inline-block;
+                margin-left: 20px;
+                margin-right: 20px;
+                background-color: transparent;
+                border: 2px solid $white;
+                color: $white;
+                &:hover {
+                    background-color: rgba(0, 0, 0, 0.4);
+                }
+            }
         }
     }
 }
@@ -34,7 +60,12 @@
 
 
 .course-box {
-    @include grid-column(4);
+    @media #{$medium-up} {
+        @include grid-column(4);
+    }
+    @media #{$small-only} {
+        @include grid-column(12);
+    }
 
     position: relative;
     border-radius: 5px;
@@ -51,7 +82,8 @@
 
 
         img {
-            height: 100%;
+            max-height: auto;
+            width: 100%;
             border-top-left-radius: 5px;
             border-top-right-radius: 5px;
         }

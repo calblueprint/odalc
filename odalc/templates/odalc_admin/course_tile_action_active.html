@@ -1,13 +1,13 @@
 <div class="course-tile-action">
     <div class="row">
-        <div class="small-4 small-offset-5 columns">
+        <div class="small-6 medium-4 medium-offset-5 columns">
             {% if course.is_featured %}
                 <a class="action-button unfeature-course-button">Remove from featured</a>
             {% else %}
                 <a class="action-button feature-course-button">Add to featured</a>
             {% endif %}
         </div>
-        <div class="small-3 columns">
+        <div class="small-6 medium-3 columns">
             <a class="action-button" href="{% url "courses:edit" course.pk %}">Edit course info</a>
         </div>
     </div>

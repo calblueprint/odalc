@@ -1,6 +1,6 @@
 .about-header {
     .about-header-img {
-        @include splash-image(url('../img/base/odalc-teachers.jpg'));
+        @include splash-image(url('../img/base/about_1.jpg'));
     }
     .about-header-overlay {
         @include splash-image-overlay();
@@ -26,15 +26,23 @@
     @include section-padding();
     @include section-border();
     background-color: $light-grey;
-    min-height: 500px;
+    position: relative;
     h2 {
         font-weight: 700;
         font-size: 2rem;
     }
+    .about-col {
+        min-height: 230px;
+        a {
+            position: absolute;
+            bottom: 0;
+            right: 5px;
+        }
+    }
 }
 
 #about-bottom-image {
-    background: url('../img/base/billboard.jpg');
+    background: url('../img/base/about_2.jpg');
     background-repeat: no-repeat;
     background-position: left;
     background-size: cover;

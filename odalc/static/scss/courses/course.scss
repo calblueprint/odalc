@@ -35,31 +35,36 @@
     }
 
     .enroll-btn {
+        @include radius;
         margin-top: 3rem;
+        background-color: $medium-purple;
+        color: $white;
+        &:hover {
+            background-color: scale-color($medium-purple, $lightness: 15%);
+            border-color: scale-color($medium-purple, $lightness: 15%);
+        }
     }
 }
 
-.blue-section {
+.course-logistic-section {
     background-color: $white;
-    border-bottom: 1px solid $dark-grey;
     border-top: 1px solid $dark-grey;
-}
-
-.course-logistic {
-    border: none;
-    padding: 2rem;
-    background: transparent;
-
-    .item {
-        .col {
-            color: $charcoal;
-            &.title {
-                font-size: 1.3em;
-                color: $dark-blue;
+    .course-logistic {
+        border: none;
+        padding: 2rem;
+        background: transparent;
+        .item {
+            .col {
+                color: $charcoal;
+                &.title {
+                    font-size: 1.3em;
+                    color: $medium-purple;
+                }
             }
         }
     }
 }
+
 
 .author {
     .pic {
