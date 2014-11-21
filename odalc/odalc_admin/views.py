@@ -44,14 +44,15 @@ class ApplicationReviewView(UserDataMixin, UpdateView):
             return self.deny_access()
 
     def form_valid(self, form):
-        course = self.object
-        teacher = self.object.teacher
+        course = form.save(commit=False)
+        teacher = course.teacher
         context = {}
         context['course'] = course
         context['course_url'] = 'http://' + self.request.get_host() + reverse('courses:detail', args=(course.id,))
         context['facebook_share'] = 'http://www.facebook.com/sharer.php?u=' + context['course_url']
         context['twitter_share'] = 'https://twitter.com/home?status=Check%20out%20this%20new%20course%20that%20just%20went%20live%20at%20Oakland%20Digital!%20'+ context['course_url'] + '%20%23OaklandDigital%20via%20@ODALC'
         context['google_share'] = 'https://plus.google.com/share?url=' + context['course_url']
+
 
         if '_approve' in self.request.POST:
             start_time = form.cleaned_data.get('start_time')
@@ -88,7 +89,7 @@ class ApplicationReviewView(UserDataMixin, UpdateView):
                 course.set_datetimes(date, start_time, end_time)
 
             messages.info(self.request, 'Changes to ' + course.title + ' have been saved.')
-
+        course.save()
         return redirect(ApplicationReviewView.success_url)
 
 

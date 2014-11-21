@@ -27,10 +27,16 @@ class TeacherRegisterView(UserDataMixin, CreateView):
             return redirect('home')
         return super(TeacherRegisterView, self).dispatch(request, *args, **kwargs)
 
+    def form_invalid(self, form):
+        messages.error(self.request, 'There was an error in your submission')
+        return super(TeacherRegisterView, self).form_invalid(form)
+
     def form_valid(self, form):
         user = form.save()
         login(self.request, authenticate(
             username=user.email, password=self.request.POST['password1']))
+
+        messages.success(self.request, 'Successfully registered')
         return super(TeacherRegisterView, self).form_valid(form)
 
 

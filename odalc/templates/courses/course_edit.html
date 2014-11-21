@@ -3,7 +3,7 @@
 {% block title %}Edit course{% endblock %}
 
 {% block css %}
-<link rel="stylesheet" href="{% static "base/css/jquery.timepicker.css" %}" />
+<link rel="stylesheet" href="{% static "css/base/jquery.timepicker.css" %}" />
 {% endblock %}
 
 {% block body %}
@@ -69,7 +69,19 @@
                     <legend>Course Logistics</legend>
                     <div class="row">
                         <div class="medium-3 columns">
-                            {% include "base/partials/tooltip_formfield.html" with field=form.size %}
+                            <label has-tooltip for="{{ form.size.id_for_label }}">
+                                <span data-tooltip class="has-tip tip-top tip-thin" title="{{ form.size.help_text }}">
+                                {{ form.size.label }} {% if form.size.field.required %}<small>Required</small>{% endif %}
+                                </span>
+                                {% if form.size.errors %}
+                                <input id="{{ form.size.id_for_label }}" name="{{ form.size.html_name }}" type="number" step="1" min="1" max="20" class="error" value="{{ form.size.value }}">
+                                {% else %}
+                                <input id="{{ form.size.id_for_label }}" name="{{ form.size.html_name }}" type="number" step="1" min="1" max="20" value="{{ form.size.value }}">
+                                {% endif %}
+                            </label>
+                            {% for error in form.size.errors %}
+                            <small class="error">{{ error }}</small>
+                            {% endfor %}
                         </div>
                         <div class="medium-3 columns">
                             {% include "base/partials/tooltip_formfield.html" with field=form.skill_level %}
@@ -115,7 +127,7 @@
 
 {% block javascripts %}
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
-<script src="{% static "base/js/jquery.timepicker.min.js" %}"></script>
+<script src="{% static "js/base/jquery.timepicker.min.js" %}"></script>
 <script>
 $(function() {
         var dateOptions = {
