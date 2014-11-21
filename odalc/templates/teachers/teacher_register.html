@@ -10,79 +10,79 @@
 
 {% block body %}
 
-<div class="white-section">
-<form method="POST" enctype="multipart/form-data">
-{% csrf_token %}
-    <div class="row">
-        <div class="large-5 columns">
-            <h1>Apply to be a teacher</h1>
-            <p class="larger">Thanks for your interest in becoming a teacher with Oakland Digital.</p>
-            <p class="larger">We'll need a few pieces of information about you before we can register you as a teacher.
-            After you register, you'll be able to apply to teach a course, and the Oakland Digital team will review your profile and course application to see if you'd be a good fit for us.</p>
-            <p class="larger">For more information about a question, you can hover over it.</p>
-        </div>
-        <div class="large-5 offset-2 columns">
+<div class="white-section-no-border">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+            <div class="large-5 columns">
+                <h1>Apply to be a teacher</h1>
+                <p class="larger">Thanks for your interest in becoming a teacher with Oakland Digital.</p>
+                <p class="larger">We'll need a few pieces of information about you before we can register you as a teacher.
+                After you register, you'll be able to apply to teach a course, and the Oakland Digital team will review your profile and course application to see if you'd be a good fit for us.</p>
+                <p class="larger">For more information about a question, you can hover over it.</p>
+            </div>
+            <div class="large-5 offset-2 columns">
 
-              {% for error in form.non_field_errors %}
-              <div data-alert class="alert-box alert">
-                {{ error }}
-                <a href="#" class="close">&times;</a>
-              </div>
-              {% endfor %}
-              <fieldset>
-              <legend>Account Information</legend>
-              {% include "base/partials/formfield.html" with field=form.email %}
-              {% include "base/partials/formfield.html" with field=form.first_name %}
-              {% include "base/partials/formfield.html" with field=form.last_name %}
-              {% include "base/partials/formfield.html" with field=form.password1 %}
-              {% include "base/partials/formfield.html" with field=form.password2 %}
-              </fieldset>
-              <fieldset>
-              <legend>Current Work Experience</legend>
-              {% include "base/partials/tooltip_formfield.html" with field=form.organization %}
-              {% include "base/partials/tooltip_formfield.html" with field=form.position %}
-              </fieldset>
+                {% for error in form.non_field_errors %}
+                <div data-alert class="alert-box alert">
+                    {{ error }}
+                    <a href="#" class="close">&times;</a>
+                </div>
+                {% endfor %}
+                <fieldset>
+                    <legend>Account Information</legend>
+                    {% include "base/partials/formfield.html" with field=form.email %}
+                    {% include "base/partials/formfield.html" with field=form.first_name %}
+                    {% include "base/partials/formfield.html" with field=form.last_name %}
+                    {% include "base/partials/formfield.html" with field=form.password1 %}
+                    {% include "base/partials/formfield.html" with field=form.password2 %}
+                </fieldset>
+                <fieldset>
+                    <legend>Current Work Experience</legend>
+                    {% include "base/partials/tooltip_formfield.html" with field=form.organization %}
+                    {% include "base/partials/tooltip_formfield.html" with field=form.position %}
+                </fieldset>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="large-5 columns">
-            <p class="larger">
-            Your contact information and resume will only be visible to the Oakland Digital staff. Your name, experience, and bio, however, will be visible to the public on the course page if your course is approved.
-            </p>
+        <div class="row">
+            <div class="large-5 columns">
+                <p class="larger">
+                Your contact information and resume will only be visible to the Oakland Digital staff. Your name, experience, and bio, however, will be visible to the public on the course page if your course is approved.
+                </p>
+            </div>
+            <div class="large-5 offset-2 columns">
+                <fieldset>
+                    <legend>Contact Information</legend>
+                    {% include "base/partials/tooltip_formfield.html" with field=form.street_address %}
+                    {% include "base/partials/formfield.html" with field=form.city %}
+                    {% include "base/partials/formfield.html" with field=form.zipcode %}
+                    {% include "base/partials/formfield.html" with field=form.phone %}
+                </fieldset>
+                <fieldset>
+                    <legend>Bio</legend>
+                    {% include "base/partials/tooltip_formfield.html" with field=form.about %}
+                    {% include "base/partials/tooltip_formfield.html" with field=form.experience %}
+                </fieldset>
+            </div>
         </div>
-        <div class="large-5 offset-2 columns">
-              <fieldset>
-              <legend>Contact Information</legend>
-              {% include "base/partials/tooltip_formfield.html" with field=form.street_address %}
-              {% include "base/partials/formfield.html" with field=form.city %}
-              {% include "base/partials/formfield.html" with field=form.zipcode %}
-              {% include "base/partials/formfield.html" with field=form.phone %}
-              </fieldset>
-              <fieldset>
-              <legend>Bio</legend>
-              {% include "base/partials/tooltip_formfield.html" with field=form.about %}
-              {% include "base/partials/tooltip_formfield.html" with field=form.experience %}
-              </fieldset>
-        </div>
-    </div>
-    <div class="row">
-        <div class="large-5 columns">
-            <p class="larger">
-            Please try to upload a square image for your headshot. Resumes should be in PDF format.
-            </p>
-        </div>
-        <div class="large-5 offset-2 columns">
-              <fieldset>
-              <legend>File Uploads</legend>
-              {% include "base/partials/formfield.html" with field=form.picture %}
-              {% include "base/partials/formfield.html" with field=form.resume %}
-              </fieldset>
-              {% include "base/partials/formfield.html" with field=form.info_source %}
+        <div class="row">
+            <div class="large-5 columns">
+                <p class="larger">
+                Please try to upload a square image for your headshot. Resumes should be in PDF format.
+                </p>
+            </div>
+            <div class="large-5 offset-2 columns">
+                <fieldset>
+                    <legend>File Uploads</legend>
+                    {% include "base/partials/formfield.html" with field=form.picture %}
+                    {% include "base/partials/formfield.html" with field=form.resume %}
+                </fieldset>
+                {% include "base/partials/formfield.html" with field=form.info_source %}
 
-              <input class="button success right radius" type="submit" value="Register" />
+                <input class="button success right radius" type="submit" value="Register" />
+            </div>
         </div>
-    </div>
-</form>
+    </form>
 </div>
 
 {% endblock %}

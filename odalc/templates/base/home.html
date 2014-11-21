@@ -56,7 +56,8 @@
                     <img src="{{ course.image_thumbnail.url }}"></img>
                 </div>
                 <div class="bottom-shelf">
-                    <h4>With {{ course.teacher.first_name }} {{ course.teacher.last_name }}<span class="date"> | {{ course.start_datetime|date:'N d Y' }}</span></h4>
+                    <h4>With {{ course.teacher.first_name }} {{ course.teacher.last_name }}</h4>
+                    <h4> {{ course.start_datetime|date:'l, F jS' }}</h4>
                 </div>
             </a>
         </div>
