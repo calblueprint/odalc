@@ -51,9 +51,12 @@
     border-top: 1px solid $dark-grey;
     .course-logistic {
         border: none;
-        padding: 2rem;
         background: transparent;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
         .item {
+            padding-top: 1rem;
+            padding-bottom: 1rem;
             .col {
                 color: $charcoal;
                 &.title {
