@@ -24,13 +24,13 @@ $dark-grey: #dce0e0;
 $charcoal: #565a5c;
 
 $bright-red: #C8695C;
-$dark-green: #5FA067;
+$bright-green: #71D14E;
+$dark-green: #29521A;
 $gold: #c88f2a;
 
-$light-purple: #9294d2;
-$medium-purple: #79589F;
+$light-purple: #9799D1;
+$medium-purple: #585BD1;
 $dark-purple: #383a85;
-$dark-purple: $medium-purple;
 
 
 $primary-color: $dark-purple;   // bondi-blue
@@ -512,7 +512,7 @@ $button-function-factor: 10%;
 // $input-bg-color: #fff;
 // $input-focus-bg-color: scale-color(#fff, $lightness: -2%);
 // $input-border-color: scale-color(#fff, $lightness: -20%);
-$input-focus-border-color: scale-color($medium-purple, $lightness: 10%);
+$input-focus-border-color: $light-purple;
 // $input-border-style: solid;
 // $input-border-width: 1px;
 // $input-border-radius: $global-radius;

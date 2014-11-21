@@ -37,6 +37,7 @@
         @include radius;
         margin-top: 3rem;
         background-color: $medium-purple;
+        border-color: $medium-purple;
         color: $white;
         &:hover {
             background-color: scale-color($medium-purple, $lightness: 15%);
