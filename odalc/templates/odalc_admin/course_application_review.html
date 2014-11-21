@@ -23,12 +23,12 @@
                 <p class="sub-nav-title">{{ course.title }}</p>
                 <dd class="active"><a class="nav-tab" href="#panel-course-info">Course Information</a></dd>
                 <dd><a class="nav-tab" href="#panel-instructor-info">Instructor Information</a></dd>
-                <ul class="button-group right nav-tab-button-group">
-                    <li><input id="approve_course" class="tiny button success radius" name="_approve" type="submit" value="Approve" /></li>
-                    <li><input id="deny_course" class="tiny button alert radius" name="_deny" type="submit" value="Deny" /></li>
-                    <li><input id="save_course" class="tiny button info radius" name="_save" type="submit" value="Save for Later" /></li>
-                </ul>
             </dl>
+            <ul class="nav-tab-button-group">
+                <li><input id="approve_course" class="review-button" name="_approve" type="submit" value="Approve" /></li>
+                <li><input id="deny_course" class="review-button" name="_deny" type="submit" value="Deny" /></li>
+                <li><input id="save_course" class="review-button" name="_save" type="submit" value="Save for Later" /></li>
+            </ul>
         </div>
     </div>
 </div>
@@ -66,7 +66,7 @@
                         </div>
                         <div class="row">
                             <div class="medium-12 columns">
-                                <strong class="right"><a target="_blank" href="{{ course.course_material.url }}">View Course Materials &raquo;</a></strong>
+                                <a class="right" target="_blank" href="{{ course.course_material.url }}">View Course Materials &raquo;</a>
                             </div>
                         </div>
                     </fieldset>
