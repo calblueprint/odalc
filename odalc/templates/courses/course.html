@@ -62,9 +62,11 @@ fjs.parentNode.insertBefore(js, fjs);
             {% if course_finished %}
             <button class="enroll-btn disabled ">This course has finished.</button>
             {% else %}
-            <form action="{% url "users:login" %}" method="GET">
+            <form method="POST">
+                {% csrf_token %}
                 <button class="enroll-btn">Enroll now</button>
                 <input type="hidden" name="next" value="{{ request.path }}" />
+                <input type="hidden" name="login-redirect" value="{{ request.path }}" />
             </form>
             {% endif %}
         {% endif %}

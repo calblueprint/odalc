@@ -1,3 +1,5 @@
+import os
+
 from django.contrib.auth import models as auth_models
 from django.contrib.auth.models import (
     AbstractBaseUser,
@@ -78,6 +80,22 @@ class TeacherUser(User):
         (INFO_SOURCE_OTHER, 'Other (just type it in!)')
     )
 
+    def picture_upload_path(instance, filename):
+        return os.path.join(
+            'uploads',
+            str(instance.id) + '-' + instance.first_name + '-' + instance.last_name,
+            'images',
+            'profile-picture-' + filename
+        )
+
+    def resume_upload_path(instance, filename):
+        return os.path.join(
+            'uploads',
+            str(instance.id) + '-' + instance.first_name + '-' + instance.last_name,
+            'documents',
+            'resume-' + filename
+        )
+
     organization = models.CharField(
         'Organization',
         max_length=255,
@@ -119,14 +137,14 @@ class TeacherUser(User):
         help_text='Your professional experience. This wil also be shown on the course page.'
     )
     picture = ProcessedImageField(
-        upload_to='uploads/images/profiles/%Y-%m-%d/',
+        upload_to=picture_upload_path,
         processors=[ResizeToFill(600, 600)],
         format='JPEG',
         options={'quality': 100}
     )
     resume = models.FileField(
         'Resume',
-        upload_to='uploads/documents/resumes/%Y-%m-%d/',
+        upload_to=resume_upload_path,
         help_text='Resumes should be in PDF format'
     )
     info_source = models.CharField(
