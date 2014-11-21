@@ -3,39 +3,40 @@
 {% block title %}Log In{% endblock %}
 
 {% block nav %}
-    {% include "base/partials/nav/nav_login.html" %}
+{% include "base/partials/nav/nav_login.html" %}
 {% endblock %}
 
 {% block body %}
 <div class="white-section-no-border">
     <div class="row">
-        <div class="small-8 small-centered large-uncentered large-5 columns">
+        <div class="small-8 small-centered large-uncentered large-5 large-offset-1 columns">
             <h3>Log in to an existing account</h3>
             <form method="POST">
-              {% csrf_token %}
+                {% csrf_token %}
 
-              <label for="{{ form.username.id_for_label }}">
-              {{ form.username.label }}
-              {{ form.username }}
-              </label>
+                <label for="{{ form.username.id_for_label }}">
+                    {{ form.username.label }}
+                    {{ form.username }}
+                </label>
 
-              {% for error in form.username.errors %}
-                  <small class="error">{{ error }}</small>
-              {% endfor %}
+                {% for error in form.username.errors %}
+                <small class="error">{{ error }}</small>
+                {% endfor %}
 
-              <label for="{{ form.password.id_for_label }}">
-              {{ form.password.label }}
-              {{ form.password }}
-              </label>
+                <label for="{{ form.password.id_for_label }}">
+                    {{ form.password.label }}
+                    {{ form.password }}
+                </label>
 
-              {% for error in form.password.errors %}
-                  <small class="error">{{ error }}</small>
-              {% endfor %}
-
-              <input class="button success right radius" type="submit" value="Log In" />
+                {% for error in form.password.errors %}
+                <small class="error">{{ error }}</small>
+                {% endfor %}
+                <div class="text-right">
+                    <input class="button radius" type="submit" value="Log In" />
+                </div>
             </form>
         </div>
-        <div class="small-8 small-centered large-uncentered large-offset-2 large-5 columns">
+        <div class="small-8 small-centered large-uncentered large-5 large-offset-1 columns">
             <h3>I don't have an account</h3>
             <div class="row">
                 <div class="small-12  medium-6 large-12 columns">
