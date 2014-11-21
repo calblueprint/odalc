@@ -25,6 +25,7 @@
         padding-top: 15%;
         padding-bottom: 15%;
         @extend .text-center;
+        text-shadow: 0 0 4px $black;
         h1 {
             font-weight: 900;
         }

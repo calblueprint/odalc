@@ -87,7 +87,7 @@
 
 @mixin splash-image-overlay() {
     z-index: -10;
-    background-color: rgba(0,0,0,0.4);
+    background-color: rgba(0,0,0,0.3);
     height: 100%;
     width: 100%;
     position: absolute;

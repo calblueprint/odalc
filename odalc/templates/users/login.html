@@ -1,6 +1,6 @@
 {% extends "base/base.html" %}
 
-{% block title %}Log In{% endblock %}
+{% block title %}Sign In{% endblock %}
 
 {% block nav %}
 {% include "base/partials/nav/nav_login.html" %}
@@ -10,7 +10,7 @@
 <div class="white-section-no-border">
     <div class="row">
         <div class="small-8 small-centered large-uncentered large-5 large-offset-1 columns">
-            <h3>Log in to an existing account</h3>
+            <h3>Sign In</h3>
             <form method="POST">
                 {% csrf_token %}
 
@@ -32,7 +32,7 @@
                 <small class="error">{{ error }}</small>
                 {% endfor %}
                 <div class="text-right">
-                    <input class="button radius" type="submit" value="Log In" />
+                    <input class="button radius" type="submit" value="Sign In" />
                 </div>
             </form>
         </div>

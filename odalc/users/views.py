@@ -74,13 +74,13 @@ class LoginView(UserDataMixin, FormView):
         auth_login(self.request, form.get_user())
         if self.request.session.test_cookie_worked():
             self.request.session.delete_test_cookie()
-        messages.success(self.request, 'Logged in as ' + self.request.POST.get('username'))
+        messages.success(self.request, 'Signed in as ' + self.request.POST.get('username'))
         return redirect(self.next_url)
 
 
 class LogoutView(UserDataMixin, View):
     def get(self, request, *args, **kwargs):
         auth_logout(request)
-        messages.success(self.request, 'Logged out successfully')
+        messages.success(self.request, 'Signed out successfully')
         return redirect('home')
 
