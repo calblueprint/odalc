@@ -37,6 +37,7 @@
     @include section-border();
     background-color: $medium-grey;
     min-height: 500px;
+    height: 100%;
 }
 
 .course-tile {

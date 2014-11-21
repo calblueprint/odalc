@@ -14,8 +14,13 @@
     transition: all 500ms ease;
 }
 
+html, body {
+    height: 100%;
+}
+
 .main-wrap {
-    min-height: 680px;
+    min-height: 100%;
+    min-width: 100%;
 }
 
 .sub-header {
