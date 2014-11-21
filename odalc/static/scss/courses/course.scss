@@ -43,6 +43,12 @@
             background-color: scale-color($medium-purple, $lightness: 15%);
             border-color: scale-color($medium-purple, $lightness: 15%);
         }
+        &.disabled {
+            &:hover {
+                background-color: $medium-purple;
+                border-color: $medium-purple;
+            }
+        }
     }
 }
 
@@ -60,7 +66,8 @@
             .col {
                 color: $charcoal;
                 &.title {
-                    font-size: 1.3em;
+                    font-size: 1.3rem;
+                    padding-bottom: 0.25rem;
                     color: $medium-purple;
                 }
             }
