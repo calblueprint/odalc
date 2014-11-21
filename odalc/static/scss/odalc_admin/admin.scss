@@ -104,6 +104,8 @@
     @include section-padding();
     @include section-border();
     background-color: $medium-grey;
+    min-height: 500px;
+    height: 100%;
 }
 
 .admin-register-block {

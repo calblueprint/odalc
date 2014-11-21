@@ -14,15 +14,15 @@ import dj_database_url
 # Application environment flags
 #
 
-IS_STAGE = 'IS_STAGE' in os.environ
+IS_DEV = 'IS_DEV' in os.environ
 IS_PROD = 'IS_PROD' in os.environ
-IS_HEROKU = IS_STAGE or IS_PROD
+IS_HEROKU = IS_DEV or IS_PROD
 TEMPLATE_DEBUG = not IS_PROD
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = not IS_PROD
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '%=4^u&zuw7teu$lka26@*rox*g=4tdw)nikp$w7!$n61lkw#vn'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'my_secret_key')
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.abspath(
@@ -132,10 +132,8 @@ SITE_URL = os.environ.get('SITE_URL', 'http://localhost:8000')
 #
 # Stripe Config
 #
-
-# TODO: Set up these as environment vars
-STRIPE_SECRET_KEY = 'sk_test_jQUK6ubDrTtpW1i2ar4QFuMl'
-STRIPE_PUBLIC_KEY = 'pk_test_2IbsMYbzDjE6RKtGbVgPt7pK'
+STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY', 'sk_test_jQUK6ubDrTtpW1i2ar4QFuMl')
+STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLIC_KEY', 'pk_test_2IbsMYbzDjE6RKtGbVgPt7pK')
 
 
 #
@@ -173,7 +171,7 @@ if IS_HEROKU:
     STATIC_URL = 'https://s3.amazonaws.com/{aws_bucket}/static/'.format(aws_bucket=AWS_STORAGE_BUCKET_NAME)
 else:
     STATIC_URL = '/static/'
-STATIC_ROOT = 'staticfiles/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
@@ -188,10 +186,11 @@ STATICFILES_FINDERS = (
 # User upload configs
 #
 
-if IS_PROD:
+if IS_HEROKU:
     # TODO: Set up user uploaded files for production
     MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
-    MEDIA_URL = '/uploads/'
+    MEDIA_URL = 'https://s3.amazonaws.com/{aws_bucket}/uploads/'.format(aws_bucket=AWS_STORAGE_BUCKET_NAME)
+
 else:
     MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
     MEDIA_URL = '/uploads/'
@@ -201,6 +200,8 @@ else:
 # Storage configs
 #
 
+# This setting makes it so that even when we are developing locally, our file
+# uploads to go S3
 DEFAULT_FILE_STORAGE = 'odalc.lib.s3.UploadsS3BotoStorage'
 
 if IS_HEROKU:
@@ -208,7 +209,7 @@ if IS_HEROKU:
 
 
 #
-# Bower Configs TODO: Move off Bower
+# Bower Configs TODO: Move off Bower?
 #
 
 BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, 'static')
@@ -216,6 +217,13 @@ BOWER_INSTALLED_APPS = (
     'foundation',
 )
 
+#
+# Admin user settings
+#
+INITIAL_ADMIN_EMAIL = os.environ.get('INITIAL_ADMIN_EMAIL', 'admin@admin.com')
+INITIAL_ADMIN_PASSWORD = os.environ.get('INITIAL_ADMIN_PASSWORD', 'odalc')
+INITIAL_ADMIN_FIRST_NAME = os.environ.get('INITIAL_ADMIN_FIRST_NAME', 'ADMIN')
+INITIAL_ADMIN_LAST_NAME = os.environ.get('INITIAL_ADMIN_LAST_NAME', 'ODALC')
 
 #
 # Heroku Settings

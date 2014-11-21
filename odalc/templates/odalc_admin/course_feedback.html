@@ -15,112 +15,116 @@
     </div>
 </div>
 
-<div class="row white-section"><div class="large-12 columns">
-    <table>
-        <tr>
-            <th></th>
-            <th> Question </th>
-            {% for form in feedback_forms %}
-            <th> Response {{ forloop.counter }} </th>
-            {% endfor %}
-            <th> Average </th>
-        </tr>
-        <tr>
-            <td>1</td>
-            <td>  The instructor was knowledgeable of the subject matter. </td>
-            {% for form in feedback_forms %}
-            <td> {{ form.knowledgeable_of_subject }} </td>
-            {% endfor %}
-            <td> {{ q1_avg|floatformat:"-2" }} </td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>  The instructor encouraged questions and/or discussion. </td>
-            {% for form in feedback_forms %}
-            <td> {{ form.encourages_questions }} </td>
-            {% endfor %}
-            <td> {{ q2_avg|floatformat:"-2" }} </td>
-        </tr>
-        <tr>
-            <td>3</td>
-            <td>  The instructor was effective in teaching the material. </td>
-            {% for form in feedback_forms %}
-            <td> {{ form.teaching_effectiveness }} </td>
-            {% endfor %}
-            <td> {{ q3_avg|floatformat:"-2" }} </td>
-        </tr>
-        <tr>
-            <td>4</td>
-            <td>  The course was applicable to my needs. </td>
-            {% for form in feedback_forms %}
-            <td> {{ form.applicable_to_needs }} </td>
-            {% endfor %}
-            <td> {{ q4_avg|floatformat:"-2" }} </td>
-        </tr>
-        <tr>
-            <td>5</td>
-            <td>  I would recommend this course to a friend. </td>
-            {% for form in feedback_forms %}
-            <td> {{ form.would_recommend }} </td>
-            {% endfor %}
-            <td> {{ q5_avg|floatformat:"-2" }} </td>
-        </tr>
-        <tr>
-            <td>6</td>
-            <td>  The course session was inspiring. </td>
-            {% for form in feedback_forms %}
-            <td> {{ form.course_inspiring }} </td>
-            {% endfor %}
-            <td> {{ q6_avg|floatformat:"-2" }} </td>
-        </tr>
-    </table>
+<div class="white-section">
+    <div class="row">
+        <div class="large-12 columns">
+            <table>
+                <tr>
+                    <th></th>
+                    <th> Question </th>
+                    {% for form in feedback_forms %}
+                    <th> Response {{ forloop.counter }} </th>
+                    {% endfor %}
+                    <th> Average </th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>  The instructor was knowledgeable of the subject matter. </td>
+                    {% for form in feedback_forms %}
+                    <td> {{ form.knowledgeable_of_subject }} </td>
+                    {% endfor %}
+                    <td> {{ q1_avg|floatformat:"-2" }} </td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>  The instructor encouraged questions and/or discussion. </td>
+                    {% for form in feedback_forms %}
+                    <td> {{ form.encourages_questions }} </td>
+                    {% endfor %}
+                    <td> {{ q2_avg|floatformat:"-2" }} </td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>  The instructor was effective in teaching the material. </td>
+                    {% for form in feedback_forms %}
+                    <td> {{ form.teaching_effectiveness }} </td>
+                    {% endfor %}
+                    <td> {{ q3_avg|floatformat:"-2" }} </td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>  The course was applicable to my needs. </td>
+                    {% for form in feedback_forms %}
+                    <td> {{ form.applicable_to_needs }} </td>
+                    {% endfor %}
+                    <td> {{ q4_avg|floatformat:"-2" }} </td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>  I would recommend this course to a friend. </td>
+                    {% for form in feedback_forms %}
+                    <td> {{ form.would_recommend }} </td>
+                    {% endfor %}
+                    <td> {{ q5_avg|floatformat:"-2" }} </td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>  The course session was inspiring. </td>
+                    {% for form in feedback_forms %}
+                    <td> {{ form.course_inspiring }} </td>
+                    {% endfor %}
+                    <td> {{ q6_avg|floatformat:"-2" }} </td>
+                </tr>
+            </table>
 
-    <canvas id="myChart" width="400" height="200"></canvas>
-    <br><br>
+            <canvas id="myChart" width="400" height="200"></canvas>
+            <br><br>
 
-    <h5><b> Additional comments or suggestions about the course and/or the instructor: </b></h5>
-    {% for form in feedback_forms %}
-    <h5> Response {{ forloop.counter }} </h5>
-    <p> &emsp;{{ form.other_topics }} </p>
-    {% endfor %}
+            <h5><b> Additional comments or suggestions about the course and/or the instructor: </b></h5>
+            {% for form in feedback_forms %}
+            <h5> Response {{ forloop.counter }} </h5>
+            <p> &emsp;{{ form.other_topics }} </p>
+            {% endfor %}
 
-</div></div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 {% block javascripts %}
 <script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/0.2.0/Chart.min.js"></script>
 <script>
 $(document).ready(function() {
-    var ctx = $("#myChart").get(0).getContext("2d");
-    var graph = new Chart(ctx);
-    var data = {
-        labels : ["Question 1","Question 2","Question 3","Question 4","Question 5","Question 6"],
-        datasets : [
-            {% for question in visualization %}
-                {
-                    fillColor : "rgba(200,200,200,0.0)",
-                    strokeColor : "rgba(200,200,200,0.7)",
-                    pointColor : "rgba(200,200,200,1)",
-                    pointStrokeColor : "#fff",
-                    data : {{ question }}
-                },
-            {% endfor %}
-            {
-                fillColor : "rgba(151,187,205,0.3)",
-                strokeColor : "rgba(151,187,205,1)",
-                pointColor : "rgba(151,187,205,1)",
-                pointStrokeColor : "#fff",
-                data : {{ avg_list }}
-            }
-        ]
-    }
-    var options ={
-        bezierCurve: false,
-        scaleOverride : true,
-        scaleSteps : 6,
-        scaleStepWidth : 1,
-        scaleStartValue : 0
-    }
-    new Chart(ctx).Line(data, options);
+        var ctx = $("#myChart").get(0).getContext("2d");
+        var graph = new Chart(ctx);
+        var data = {
+labels : ["Question 1","Question 2","Question 3","Question 4","Question 5","Question 6"],
+datasets : [
+{% for question in visualization %}
+{
+fillColor : "rgba(200,200,200,0.0)",
+strokeColor : "rgba(200,200,200,0.7)",
+pointColor : "rgba(200,200,200,1)",
+pointStrokeColor : "#fff",
+data : {{ question }}
+},
+{% endfor %}
+{
+fillColor : "rgba(151,187,205,0.3)",
+strokeColor : "rgba(151,187,205,1)",
+pointColor : "rgba(151,187,205,1)",
+pointStrokeColor : "#fff",
+data : {{ avg_list }}
+}
+]
+}
+var options ={
+bezierCurve: false,
+             scaleOverride : true,
+             scaleSteps : 6,
+             scaleStepWidth : 1,
+             scaleStartValue : 0
+}
+new Chart(ctx).Line(data, options);
 });
 </script>
 {% endblock %}
