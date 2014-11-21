@@ -35,7 +35,9 @@
         .button-set {
             @extend .text-center;
             margin-top: 70px;
-            a {
+            a.landing-button {
+                @include button;
+                @include radius;
                 display: inline-block;
                 margin-left: 20px;
                 margin-right: 20px;
@@ -128,4 +130,9 @@
             }
         }
     }
+}
+
+.home-about-section {
+    @extend .medium-grey-section;
+
 }
