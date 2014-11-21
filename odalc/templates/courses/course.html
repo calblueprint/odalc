@@ -62,9 +62,11 @@ fjs.parentNode.insertBefore(js, fjs);
             {% if course_finished %}
             <button class="enroll-btn disabled ">This course has finished.</button>
             {% else %}
-            <form action="{% url "users:login" %}" method="GET">
+            <form method="POST">
+                {% csrf_token %}
                 <button class="enroll-btn">Enroll now</button>
                 <input type="hidden" name="next" value="{{ request.path }}" />
+                <input type="hidden" name="login-redirect" value="{{ request.path }}" />
             </form>
             {% endif %}
         {% endif %}
@@ -77,7 +79,7 @@ fjs.parentNode.insertBefore(js, fjs);
       <div class="row course-logistic">
           <div class="small-8 small-centered medium-uncentered medium-3 medium-offset-1 columns item">
                 <div class="col title">Course Session</div>
-                <div class="col">{{ course.start_datetime|date:'l, F d' }}</div>
+                <div class="col">{{ course.start_datetime|date:'l, F jS' }}</div>
                 <div class="col">{{ course.start_datetime|date:'P'}} - {{ course.end_datetime|date:'P' }}</div>
           </div>
           <div class="small-8 small-centered medium-uncentered medium-3 medium-offset-1 columns item">

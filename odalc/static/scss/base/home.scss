@@ -25,6 +25,7 @@
         padding-top: 15%;
         padding-bottom: 15%;
         @extend .text-center;
+        text-shadow: 0 0 4px $black;
         h1 {
             font-weight: 900;
         }
@@ -35,7 +36,9 @@
         .button-set {
             @extend .text-center;
             margin-top: 70px;
-            a {
+            a.landing-button {
+                @include button;
+                @include radius;
                 display: inline-block;
                 margin-left: 20px;
                 margin-right: 20px;
@@ -122,10 +125,12 @@
         h4 {
             color: $white;
             font-size: 0.9em;
-            span.date {
-                color: $light-grey;
-                font-weight: bold;
-            }
+            margin: 0;
         }
     }
+}
+
+.home-about-section {
+    @extend .medium-grey-section;
+
 }

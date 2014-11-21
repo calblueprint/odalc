@@ -47,6 +47,12 @@ class CourseDetailView(UserDataMixin, DetailView):
 
     def post(self, request, *args, **kwargs):
         course = self.get_object()
+        # Redirect them to the login page with this page as the 'next' URL
+        if request.POST.get("login-redirect"):
+            messages.info(request, "You must be signed in to enroll in a course.")
+            response = redirect('users:login')
+            response['Location'] += '?next=' + reverse('courses:detail', args=[course.pk])
+            return response
         if course.is_full():
             messages.error(request, "This course is already full. Your card hasn't been charged")
             return redirect('courses:detail', course.pk)

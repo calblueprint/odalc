@@ -1,5 +1,6 @@
 from datetime import datetime as dt
 from itertools import chain
+import os
 
 from django.conf import settings
 from django.core.validators import (
@@ -131,6 +132,20 @@ class Course(models.Model):
         (STATUS_FINISHED, 'Finished')
     )
 
+    def image_upload_path(instance, filename):
+        return os.path.join(
+            str(instance.teacher.id) + '-' + instance.teacher.first_name + '-' + instance.teacher.last_name,
+            'images',
+            'course-picture-' + str(instance.id) + '-' + filename
+        )
+
+    def course_materials_upload_path(instance, filename):
+        return os.path.join(
+            str(instance.teacher.id) + '-' + instance.teacher.first_name + '-' + instance.teacher.last_name,
+            'documents',
+            'course-material-' + str(instance.id) + '-' + filename
+        )
+
     teacher = models.ForeignKey('users.TeacherUser')
     students = models.ManyToManyField('users.StudentUser', blank=True)
     title = models.CharField('Course Title', max_length=50)
@@ -188,7 +203,7 @@ class Course(models.Model):
         help_text='Amount of the enrollment cost you\'d like to donate to Oakland Digital. 100% of the proceeds go back to this program.'
     )
     image = ProcessedImageField(
-        upload_to='uploads/images/courses/%Y-%m-%d/',
+        upload_to=image_upload_path,
         processors=[ResizeToFill(1400, 600)],
         format='JPEG',
         options={'quality': 100}
@@ -201,7 +216,7 @@ class Course(models.Model):
     )
     course_material = models.FileField(
         'Course Materials',
-        upload_to="uploads/documents/coursematerials/%Y-%m-%d/",
+        upload_to=course_materials_upload_path,
         blank=True,
         null=True,
         help_text='Optional PDF of any course materials for students. This can include links to other materials as well. Only enrolled students will be able to see this link.'

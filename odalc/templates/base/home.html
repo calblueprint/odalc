@@ -4,7 +4,7 @@
 {% block title %}Home{% endblock %}
 
 {% block nav %}
-    {% include "base/partials/nav/nav_home.html" %}
+{% include "base/partials/nav/nav_home.html" %}
 {% endblock %}
 
 {% block body %}
@@ -20,76 +20,68 @@
     <div class="main-splash-overlay"></div>
     <div class="main-splash-content">
         <div class="row">
-          <div class="medium-9 medium-centered columns">
-            <h1>Learn from your community's leading tech & design professionals</h1>
-            <br>
-              <!--
-            <h1>Bridging Gaps</h1>
-            <h2>Learn from leading tech & design professionals</h2>
-            <br>
-            -->
-          </div>
-          <!-- Something like this on the landing page? Not sure, maybe one button would be better? -atsu -->
+            <div class="medium-9 medium-centered columns">
+                <h1>Learn from your community's leading tech & design professionals</h1>
+            </div>
         </div>
         <div class="row">
-          <div class="small-12 small-centered columns button-set">
+            <div class="small-12 small-centered columns button-set">
                 {% if not user.is_authenticated %}
-                <a href="{% url "courses:listing" %}" class="button success radius">Want to learn? Start here</a>
-                <a href="{% url "teachers:register" %}" class="button info radius">Want to teach? Start here</a>
+                <a href="{% url "courses:listing" %}" class="landing-button">Want to learn? Start here</a>
+                <a href="{% url "teachers:register" %}" class="landing-button">Want to teach? Start here</a>
                 {% endif %}
-          </div>
+            </div>
         </div>
     </div>
 </div>
 
-  <div class="light-grey-section">
-      <!-- Upcoming courses title/description -->
-      <div class="row course-items-description">
+<div class="light-grey-section">
+    <!-- Upcoming courses title/description -->
+    <div class="row course-items-description">
         <div class="large-12 columns">
-          <h3>Featured Courses</h3>
+            <h3>Featured Courses</h3>
         </div>
-      </div>
-
-      <!-- Upcoming courses items -->
-
-      <div class="row course-items">
-        {% for course in featured_courses %}
-            <div class="course-box">
-              <a href="{% url "courses:detail" course.pk %}">
-              <div class="top-shelf">
-                <div class="title-wrap">
-                  <h4>{{ course.title }}</h4>
-                </div>
-                <img src="{{ course.image_thumbnail.url }}"></img>
-              </div>
-              <div class="bottom-shelf">
-                <h4>With {{ course.teacher.first_name }} {{ course.teacher.last_name }}<span class="date"> | {{ course.start_datetime|date:'N d Y' }}</span></h4>
-              </div>
-              </a>
-            </div>
-        {% endfor %}
-                <h5>
-                    <a class="right" href="{% url "courses:listing" %}">Browse all courses &raquo;</a>
-                </h5>
-        </div>
-  </div>
-
-  <!-- Footer -->
-  <div class="medium-grey-section">
-    <div class="row">
-      <div class="large-7 columns">
-        <h3><strong>What is BRIDGE?</strong></h3>
-        <p>
-BRIDGE is an education platform that partners with tech and design professionals from the tech and design industry to offer courses that teach practical technical skills. We envision a future where under resourced communities have access to professional opportunities. BRIDGE aims to empower people with digital literacy education that will improve their lives and the communities they live in.
-
-Whether it's learning how to manage your business' brand through social media or code your first website, empower yourself to harness the the digital tools to succeed in the 21st century.
-        </p>
-        <p>
-            <a href="{% url "about" %}">Learn more &raquo;</a>
-        </p>
-     </div>
     </div>
-  </div>
+
+    <!-- Upcoming courses items -->
+
+    <div class="row course-items">
+        {% for course in featured_courses %}
+        <div class="course-box">
+            <a href="{% url "courses:detail" course.pk %}">
+                <div class="top-shelf">
+                    <div class="title-wrap">
+                        <h4>{{ course.title }}</h4>
+                    </div>
+                    <img src="{{ course.image_thumbnail.url }}"></img>
+                </div>
+                <div class="bottom-shelf">
+                    <h4>With {{ course.teacher.first_name }} {{ course.teacher.last_name }}</h4>
+                    <h4> {{ course.start_datetime|date:'l, F jS' }}</h4>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+        <a class="right" href="{% url "courses:listing" %}">Browse all courses &raquo;</a>
+    </div>
+</div>
+
+<div class="home-about-section">
+    <div class="row">
+        <div class="medium-7 columns">
+            <h3><strong>What is BRIDGE?</strong></h3>
+            <p>
+            BRIDGE is an education platform that partners with tech and design professionals from the tech and design industry to offer courses that teach practical technical skills. We envision a future where under resourced communities have access to professional opportunities. BRIDGE aims to empower people with digital literacy education that will improve their lives and the communities they live in.
+
+            Whether it's learning how to manage your business' brand through social media or code your first website, empower yourself to harness the the digital tools to succeed in the 21st century.
+            </p>
+            <a href="{% url "about" %}">Learn more &raquo;</a>
+        </div>
+        <div class="medium-5 columns text-center">
+            <img src="{% static "img/base/bridge-logo-circle.png" %}"/>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block javascripts %}

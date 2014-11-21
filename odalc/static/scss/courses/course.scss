@@ -18,26 +18,26 @@
 
 .course-top-section {
     @include section-padding();
-
+    background-color: rgba(0,0,0,0.2);
     h1, h2 {
         display:inline;
-        background-color: rgba(0,0,0,0.7);
         color: $white;
         padding: 0.05em;
+        text-shadow: 0 0 4px $black;
     }
-
     p {
         display:inline;
-        background-color: rgba(0,0,0,0.7);
         color: $light-grey;
         font-size: 1.3em;
         padding: 0.075em;
+        text-shadow: 0 0 4px $black;
     }
 
     .enroll-btn {
         @include radius;
         margin-top: 3rem;
         background-color: $medium-purple;
+        border-color: $medium-purple;
         color: $white;
         &:hover {
             background-color: scale-color($medium-purple, $lightness: 15%);
@@ -51,9 +51,12 @@
     border-top: 1px solid $dark-grey;
     .course-logistic {
         border: none;
-        padding: 2rem;
         background: transparent;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
         .item {
+            padding-top: 1rem;
+            padding-bottom: 1rem;
             .col {
                 color: $charcoal;
                 &.title {
