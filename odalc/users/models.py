@@ -82,7 +82,6 @@ class TeacherUser(User):
 
     def picture_upload_path(instance, filename):
         return os.path.join(
-            'uploads',
             str(instance.id) + '-' + instance.first_name + '-' + instance.last_name,
             'images',
             'profile-picture-' + filename
@@ -90,7 +89,6 @@ class TeacherUser(User):
 
     def resume_upload_path(instance, filename):
         return os.path.join(
-            'uploads',
             str(instance.id) + '-' + instance.first_name + '-' + instance.last_name,
             'documents',
             'resume-' + filename

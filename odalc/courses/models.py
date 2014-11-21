@@ -134,7 +134,6 @@ class Course(models.Model):
 
     def image_upload_path(instance, filename):
         return os.path.join(
-            'uploads',
             str(instance.teacher.id) + '-' + instance.teacher.first_name + '-' + instance.teacher.last_name,
             'images',
             'course-picture-' + str(instance.id) + '-' + filename
@@ -142,7 +141,6 @@ class Course(models.Model):
 
     def course_materials_upload_path(instance, filename):
         return os.path.join(
-            'uploads',
             str(instance.teacher.id) + '-' + instance.teacher.first_name + '-' + instance.teacher.last_name,
             'documents',
             'course-material-' + str(instance.id) + '-' + filename
