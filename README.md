@@ -1,25 +1,36 @@
-About Blueprint
-=======
+# Bridge
+This project is a platform to allow tech and design professionals around the Bay Area to come and teach courses at the
+Oakland Digital office.
+
+
+## About Blueprint
 We strive to make beautiful engineering accessible and useful for those who create communities and promote public welfare. Our vision is a world where the good, passionate, and visionary have the biggest impact on our communities and society.
 
-About ODALC
-=======
+
+## About ODALC
 Oakland Digital Arts & Literacy Center (ODALC) is a 501(c)(3) community building organization working to bridge the digital literacy and opportunity divide. Oakland Digital educates, inspires, and empowers underserved communities to participate and succeed in the digital economy.
 
-Project Structure
-=======
-``odalc/base`` - common models and views that could be shared between different apps in this project, or are general to the entire project. Things like a Course model, an abstract User model and the views for the homepage and course pages could go here
 
-``odalc/odalc_admin`` - things related to the ODALC admins. Models for the AdminUser and the views for the pages that the admin uses could go here
+## Project Structure
+`odalc/courses` - module for the `Course` and `CourseFeedback` models and their related views/forms.
 
-``odalc/students`` - things related to the students taking the class. Models for StudentUser and CourseFeedback and their related views could go here
+`odalc/users` - module for the base `User` model and its subclasses for individual user types. Also includes forms/views
+for authentication and mixins for permissions.
 
-``odalc/teachers`` - things related to the teachers. Models for TeacherUser and the views for the teacher dashboard could go here
+`odalc/lib` - module for interfaces with third-party services. This includes emails, Stripe, and Amazon S3.
 
-``odalc/templates`` and ``odalc/static`` is structured in the same way as above, so that templates and static files are namespaced and we won't have to worry about clashing names
+`odalc/base` - module the views for the home page and other static pages, along with custom `manage.py` commands
 
-Installation
-=======
+`odalc/odalc_admin` - module for pages that ODALC admins interact with
+
+`odalc/students` - module for pages that students interact with
+
+`odalc/teachers` - module for pages that teachers interact with
+
+`odalc/templates` and `odalc/static` is structured in the same way as above, so that templates and static files are namespaced and we won't have to worry about clashing names
+
+
+## Installation
 All Python dependencies can be installed with
 ```bash
 pip install -r requirements.txt
@@ -37,29 +48,60 @@ npm install -g grunt-cli
 Change to the project root directory, then install the project's dependencies in ``package.json`` by running ``npm install``.
 Run ``grunt`` to begin watching files.
 
-To add a new SASS file, add the source-destination mapping in ``Gruntfile.js`` under ``sass: dist: files:``.
+All SASS files are all imported into a `main.scss` which is compiled into a single `main.css`.
 
-Deployment (Heroku)
-==========
+
+## Deployment (Heroku)
 There are environment variables we need to set up on Heroku.
 ```
-BUILDPACK_URL           https://github.com/heroku/heroku-buildpack-python
-# Using Gmail to send emails
-EMAIL_HOST              smtp.gmail.com
-EMAIL_HOST_PASSWORD     <gmail_password>
-EMAIL_HOST_USER         <gmail_account>
-EMAIL_PORT              587
-EMAIL_USE_TLS           1
-SECRET_KEY              <django secret key>
-SITE_URL                <domain of site>
-STRIPE_PUBLIC_KEY       <stripe public key>
-STRIPE_SECRET_KEY       <stripe secret key>
-# If on staging server, set IS_STAGE instead
-IS_PROD                 1
-# Amazon S3 Settings
-S3_BUCKET               <s3 bucket name>
-AWS_ACCESS_KEY_ID       <aws access key id>
-AWS_SECRET_ACCESS_KEY   <aws secret access key>
+# Heroku confs
+BUILDPACK_URL               https://github.com/heroku/heroku-buildpack-python
+PYTHONPATH                  /app
+
+
+# Project confs
+DJANGO_SECRET_KEY           <django secret key>
+SITE_URL                    <domain of site>
+# IS_PROD is set on staging and production servers
+# IS_DEV is set on the dev server - don't set this when working on this locally
+# These environment variables are only checked that they exist, so the actual
+# value of these don't matter (i.e. setting them to 0 is still setting them to
+# "true")
+IS_PROD                     1
+IS_DEV                      1
+# These are for the initial admin user that is created when the project is
+# deployed
+INITIAL_ADMIN_EMAIL         <admin_user_email>
+INITIAL_ADMIN_PASSWORD      <admin_user_password>
+INITIAL_ADMIN_FIRST_NAME    <admin_user_first_name>
+INITIAL_ADMIN_LAST_NAME     <admin_user_last_name>
+
+
+# Amazon S3 confs
+AWS_ACCESS_KEY_ID           <aws_access_key_id>
+AWS_SECRET_ACCESS_KEY       <aws_secret_access_key>
+S3_BUCKET                   <s3_bucket_name>
+
+
+# Email confs - using Gmail to send emails
+EMAIL_HOST                  smtp.gmail.com
+EMAIL_HOST_PASSWORD         <gmail_password>
+EMAIL_HOST_USER             <gmail_account>
+EMAIL_PORT                  587
+EMAIL_USE_TLS               1
+
+
+# Stripe confs
+STRIPE_PUBLIC_KEY           <stripe public key>
+STRIPE_SECRET_KEY           <stripe secret key>
 ```
 
-Installation of Node, npm, and Bower and configuration of static files happens in the build scripts in ``bin/``.
+If deploying for the first time, there are a few commands that need to be run to set up the project:
+```bash
+heroku run python manage.py migrate --app <app_name>
+heroku run python manage.py initialize --app <app_name>
+
+# Run the following if you want to add seed data
+heroku run python manage.py seed_data --app <app_name>
+```
+
