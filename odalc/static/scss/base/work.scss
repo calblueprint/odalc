@@ -1,0 +1,32 @@
+.work-header {
+    .work-header-img {
+        @include splash-image(url('../img/base/work.jpg'));
+    }
+    .work-header-overlay {
+        @include splash-image-overlay();
+    }
+    .work-header-content {
+        background-color: transparent;
+        height: 100%;
+        padding-top: 100px;
+        padding-bottom: 100px;
+        text-shadow: 0 0 4px $black;
+        h1 {
+            color: $white;
+            font-weight: 700;
+        }
+
+        p {
+            color: $white;
+            font-size: 1.3em;
+            margin: 0;
+        }
+    }
+}
+
+.work-content {
+    @include section-padding();
+    @include section-border();
+    background-color: $light-grey;
+    position: relative;
+}

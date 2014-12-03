@@ -56,3 +56,8 @@ class HomePageView(UserDataMixin, TemplateView):
             HomePageView.NUM_COURSES_SHOWN)
         return context
 
+
+class WorkPageView(UserDataMixin, TemplateView):
+    """Placeholder page for plans to make this platform open to people wanting
+    to find work that partners with ODALC."""
+    template_name = 'base/work.html'
