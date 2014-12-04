@@ -126,7 +126,7 @@ class CourseListingView(UserDataMixin, ListView):
             # For now, its either the is "upcoming", is blank, or is something else
             # showing the upcoming courses is the defult behavior
             now = datetime.datetime.now()
-            future = now + datetime.timedelta(days=60)
+            future = now + datetime.timedelta(days=365)
             queryset =  Course.objects.get_in_date_range(now, future)
         return queryset
 
