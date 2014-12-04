@@ -18,7 +18,7 @@
 <div class="white-section">
     <div class="row">
         <div class="small-12 columns">
-                <p>Want to teach a class at ODALC? Tell us about the class you wish to offer below. Clicking on the input or hovering over a question will give you more information.</p>
+                <p>Want to teach a course at ODALC? Tell us about the class you wish to offer below. Clicking on the input or hovering over a question will give you more information.</p>
         </div>
     </div>
 
@@ -87,7 +87,7 @@
                                     {{ form.cost | attr:"min:5" | attr:"value:5.00" | attr:"step:0.5" }}
                                 </div>
                             </div>
-                            {% for error in field.errors %}
+                            {% for error in form.cost.errors %}
                             <small class="error">{{ error }}</small>
                             {% endfor %}
                         </label>

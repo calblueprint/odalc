@@ -174,7 +174,6 @@ class Course(models.Model):
     )
     prereqs = models.TextField(
         'Course Prerequisites',
-        blank=True,
         help_text='Any skills, knowledge, or tools that students should be familiar with before enrolling. This will be displayed as a list, and you can separate list items using line breaks.',
         validators=[
             RegexValidator('^[^<>&]*$',
@@ -193,7 +192,7 @@ class Course(models.Model):
         'Course Fee',
         max_digits=5,
         decimal_places=2,
-        validators=[MinValueValidator(5.00), MaxValueValidator(50.00)],
+        validators=[MinValueValidator(5.00), MaxValueValidator(100.00)],
         help_text='Enrollment cost for students. We have a $5.00 minimum so that we can confirm commitment from students.'
     )
     odalc_cost_split = models.DecimalField(

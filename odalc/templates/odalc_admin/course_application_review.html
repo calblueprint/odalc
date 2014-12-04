@@ -92,7 +92,7 @@
                                             {{ form.cost | attr:"min:5" | attr:"step:0.5" }}
                                         </div>
                                     </div>
-                                    {% for error in field.errors %}
+                                    {% for error in form.cost.errors %}
                                     <small class="error">{{ error }}</small>
                                     {% endfor %}
                                 </label>
