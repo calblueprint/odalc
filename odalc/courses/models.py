@@ -109,7 +109,6 @@ class CourseManager(models.Manager):
         return course
 
 
-
 # Funnctions for upload paths - issues with Django 1.7 migrations and Python 2.7
 # See https://docs.djangoproject.com/en/1.7/topics/migrations/#serializing-values
 def image_upload_path(instance, filename):
