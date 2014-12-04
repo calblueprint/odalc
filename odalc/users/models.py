@@ -70,6 +70,24 @@ class StudentUser(User):
         verbose_name = "Student"
 
 
+# Funnctions for upload paths - issues with Django 1.7 migrations and Python 2.7
+# See https://docs.djangoproject.com/en/1.7/topics/migrations/#serializing-values
+def picture_upload_path(instance, filename):
+    return os.path.join(
+        str(instance.id) + '-' + instance.first_name + '-' + instance.last_name,
+        'images',
+        'profile-picture-' + filename
+    )
+
+
+def resume_upload_path(instance, filename):
+    return os.path.join(
+        str(instance.id) + '-' + instance.first_name + '-' + instance.last_name,
+        'documents',
+        'resume-' + filename
+    )
+
+
 class TeacherUser(User):
     INFO_SOURCE_FRIEND = 'From a friend'
     INFO_SOURCE_WEB = 'Our website'
@@ -77,22 +95,8 @@ class TeacherUser(User):
     INFO_SOURCE_CHOICES = (
         (INFO_SOURCE_FRIEND, INFO_SOURCE_FRIEND),
         (INFO_SOURCE_WEB, INFO_SOURCE_WEB),
-        (INFO_SOURCE_OTHER, 'Other (just type it in!)')
+        (INFO_SOURCE_OTHER, 'Other')
     )
-
-    def picture_upload_path(instance, filename):
-        return os.path.join(
-            str(instance.id) + '-' + instance.first_name + '-' + instance.last_name,
-            'images',
-            'profile-picture-' + filename
-        )
-
-    def resume_upload_path(instance, filename):
-        return os.path.join(
-            str(instance.id) + '-' + instance.first_name + '-' + instance.last_name,
-            'documents',
-            'resume-' + filename
-        )
 
     organization = models.CharField(
         'Organization',
@@ -135,15 +139,22 @@ class TeacherUser(User):
         help_text='Your professional experience. This wil also be shown on the course page.'
     )
     picture = ProcessedImageField(
+        verbose_name='Profile Picture',
         upload_to=picture_upload_path,
         processors=[ResizeToFill(600, 600)],
         format='JPEG',
-        options={'quality': 100}
+        options={'quality': 100},
+        help_text='Please use a square image.'
     )
     resume = models.FileField(
         'Resume',
         upload_to=resume_upload_path,
         help_text='Resumes should be in PDF format'
+    )
+    website = models.URLField(
+        'Website',
+        max_length=255,
+        blank=True,
     )
     info_source = models.CharField(
         'How did you hear about us?',

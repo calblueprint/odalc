@@ -108,8 +108,10 @@ fjs.parentNode.insertBefore(js, fjs);
           <ul>{{ course.prereqs|to_list_elements }}</ul>
           <h3>Additional Information</h3>
           <p>{{ course.additional_info }}</p>
-          {% if course.course_material and in_class or is_owner or is_admin_user %}
-          <h5><a target="_blank" href="{{ course.course_material.url }}">View Course Materials &raquo;</a></h5>
+          {% if course.course_material %}
+            {% if in_class or is_owner or is_admin_user %}
+            <h5><a target="_blank" href="{{ course.course_material.url }}">View Course Materials &raquo;</a></h5>
+            {% endif %}
           {% endif %}
         </div>
         <!-- about the teacher -->
@@ -123,6 +125,9 @@ fjs.parentNode.insertBefore(js, fjs);
                 <h4>{{ course.teacher.first_name }} {{ course.teacher.last_name }}</h4>
               <div class="role"><i>{{ course.teacher.position }}</i></div>
               <div class="inst">{{ course.teacher.organization }}</div>
+              <div class="website">
+                  <a target="_blank" href="{{ course.teacher.website }}">{{ course.teacher.website }}</a>
+              </div>
             </div>
           </div>
           <!-- bio portion -->

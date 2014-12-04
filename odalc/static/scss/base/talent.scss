@@ -1,12 +1,12 @@
-.work-header {
+.talent-header {
     position: relative;
-    .work-header-img {
-        @include splash-image(url('../img/base/work.jpg'));
+    .talent-header-img {
+        @include splash-image(url('../img/base/talent.jpg'));
     }
-    .work-header-overlay {
+    .talent-header-overlay {
         @include splash-image-overlay();
     }
-    .work-header-content {
+    .talent-header-content {
         background-color: transparent;
         height: 100%;
         padding-top: 100px;
@@ -25,7 +25,7 @@
     }
 }
 
-.work-content {
+.talent-content {
     @include section-padding();
     @include section-border();
     background-color: $light-grey;

@@ -9,6 +9,7 @@ from odalc.base.views import (
     DonatePageView,
     FaqPageView,
     HomePageView,
+    TalentPageView,
     WorkPageView
 )
 
@@ -22,5 +23,6 @@ urlpatterns = patterns('',
     url(r'^donate/$', DonatePageView.as_view(), name='donate'),
     url(r'^faq/$', FaqPageView.as_view(), name='faq'),
     url(r'^work/$', WorkPageView.as_view(), name='work'),
+    url(r'^talent/$', TalentPageView.as_view(), name='talent'),
     url(r'^$', HomePageView.as_view(), name='home'),
 )

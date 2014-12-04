@@ -84,11 +84,11 @@
         @include grid-column(7);
 
         .role {
-            color: #888;
+            color: $charcoal;
         }
 
-        .inst {
-            color: #888;
+        .inst, .website{
+            color: $charcoal;
             margin-top: 0.5em;
         }
     }

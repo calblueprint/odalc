@@ -109,6 +109,24 @@ class CourseManager(models.Manager):
         return course
 
 
+# Funnctions for upload paths - issues with Django 1.7 migrations and Python 2.7
+# See https://docs.djangoproject.com/en/1.7/topics/migrations/#serializing-values
+def image_upload_path(instance, filename):
+    return os.path.join(
+        str(instance.teacher.id) + '-' + instance.teacher.first_name + '-' + instance.teacher.last_name,
+        'images',
+        'course-picture-' + str(instance.id) + '-' + filename
+    )
+
+
+def course_materials_upload_path(instance, filename):
+    return os.path.join(
+        str(instance.teacher.id) + '-' + instance.teacher.first_name + '-' + instance.teacher.last_name,
+        'documents',
+        'course-material-' + str(instance.id) + '-' + filename
+    )
+
+
 class Course(models.Model):
     SKILL_BEGINNER = 'Beginner'
     SKILL_INTERMEDIATE = 'Intermediate'
@@ -131,20 +149,6 @@ class Course(models.Model):
         (STATUS_DENIED, 'Denied'),
         (STATUS_FINISHED, 'Finished')
     )
-
-    def image_upload_path(instance, filename):
-        return os.path.join(
-            str(instance.teacher.id) + '-' + instance.teacher.first_name + '-' + instance.teacher.last_name,
-            'images',
-            'course-picture-' + str(instance.id) + '-' + filename
-        )
-
-    def course_materials_upload_path(instance, filename):
-        return os.path.join(
-            str(instance.teacher.id) + '-' + instance.teacher.first_name + '-' + instance.teacher.last_name,
-            'documents',
-            'course-material-' + str(instance.id) + '-' + filename
-        )
 
     teacher = models.ForeignKey('users.TeacherUser')
     students = models.ManyToManyField('users.StudentUser', blank=True)
@@ -202,10 +206,12 @@ class Course(models.Model):
         help_text='Amount of the enrollment cost you\'d like to donate to Oakland Digital. 100% of the proceeds go back to this program.'
     )
     image = ProcessedImageField(
+        verbose_name='Course Page Banner Image',
         upload_to=image_upload_path,
         processors=[ResizeToFill(1400, 600)],
         format='JPEG',
-        options={'quality': 100}
+        options={'quality': 100},
+        help_text='Banner image for your course page. Please use the highest resolution possible.'
     )
     image_thumbnail = ImageSpecField(
         source='image',

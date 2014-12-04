@@ -1,5 +1,8 @@
 #main-splash {
     $splash-image-height: 600px;
+    @media #{$small-only} {
+        $splash-image-height: 650px;
+    }
     height: $splash-image-height;
     background-color: transparent;
     .main-splash-img {

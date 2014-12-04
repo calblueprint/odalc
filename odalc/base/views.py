@@ -59,5 +59,10 @@ class HomePageView(UserDataMixin, TemplateView):
 
 class WorkPageView(UserDataMixin, TemplateView):
     """Placeholder page for plans to make this platform open to people wanting
-    to find work that partners with ODALC."""
+    to find partnerships for work opportunities - for potential employees."""
     template_name = 'base/work.html'
+
+class TalentPageView(UserDataMixin, TemplateView):
+    """Placeholder page for plans to make this platform open to people wanting
+    to find partnerships for work opportunities - for potential employees."""
+    template_name = 'base/talent.html'
