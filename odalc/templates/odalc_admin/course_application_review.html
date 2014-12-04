@@ -64,11 +64,13 @@
                                 {% include "base/partials/tooltip_formfield.html" with field=form.additional_info %}
                             </div>
                         </div>
+                        {% if course.course_material %}
                         <div class="row">
                             <div class="medium-12 columns">
                                 <a class="right" target="_blank" href="{{ course.course_material.url }}">View Course Materials &raquo;</a>
                             </div>
                         </div>
+                        {% endif %}
                     </fieldset>
                     <fieldset>
                         <legend>Course Logistics</legend>
