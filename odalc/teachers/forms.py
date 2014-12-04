@@ -1,6 +1,8 @@
 import re
 
 from django import forms
+from django.utils.safestring import mark_safe
+
 
 from odalc.courses.models import Course
 from odalc.users.forms import UserRegisterForm
@@ -50,29 +52,36 @@ class TeacherEditForm(forms.ModelForm):
 
 
 class CreateCourseForm(forms.ModelForm):
-    date1 = forms.DateField(label='First Choice for Date to Teach Course')
-    start_time1 = forms.TimeField(label='Starting Time for Course Session')
-    end_time1 = forms.TimeField(label='Ending Time for Course Session')
+    date1 = forms.DateField(
+        # I'm sorry I really am
+        label=mark_safe('<strong>First Choice for Date</strong> to Teach Course')
+    )
+    start_time1 = forms.TimeField(
+        label=mark_safe('<strong>Starting Time</strong> for Course Session')
+    )
+    end_time1 = forms.TimeField(
+        label=mark_safe('<strong>Ending Time</strong> for Course Session')
+    )
 
-    date2 = forms.DateField(label='Second Choice for Date to Teach Course')
-    start_time2 = forms.TimeField(label='Starting Time for Course Session')
-    end_time2 = forms.TimeField(label='Ending Time for Course Session')
+    date2 = forms.DateField(
+        label=mark_safe('<strong>Second Choice</strong> for Date to Teach Course')
+    )
+    start_time2 = forms.TimeField(
+        label=mark_safe('<strong>Starting Time</strong> for Course Session')
+    )
+    end_time2 = forms.TimeField(
+        label=mark_safe('<strong>Ending Time</strong> for Course Session')
+    )
 
-    date3 = forms.DateField(label='Third Choice for Date to Teach Course')
-    start_time3 = forms.TimeField(label='Starting Time for Course Session')
-    end_time3 = forms.TimeField(label='Ending Time for Course Session')
-
-    def clean_prereqs(self):
-        prereq_fields =  self.data.getlist('prereq_fields[]')
-        if prereq_fields:
-            return "\n".join(prereq_fields)
-        else:
-            return ""
-        raise ValidationError(
-            _('Invalid value: %(value)s'),
-            code='invalid',
-            params={'value': '42'},
-        )
+    date3 = forms.DateField(
+        label=mark_safe('<strong>Third Choice for Date</strong> to Teach Course')
+    )
+    start_time3 = forms.TimeField(
+        label=mark_safe('<strong>Starting Time</strong> for Course Session')
+    )
+    end_time3 = forms.TimeField(
+        label=mark_safe('<strong>Ending Time</strong> for Course Session')
+    )
 
     class Meta:
         model = Course
