@@ -202,10 +202,12 @@ class Course(models.Model):
         help_text='Amount of the enrollment cost you\'d like to donate to Oakland Digital. 100% of the proceeds go back to this program.'
     )
     image = ProcessedImageField(
+        verbose_name='Course Page Banner Image',
         upload_to=image_upload_path,
         processors=[ResizeToFill(1400, 600)],
         format='JPEG',
-        options={'quality': 100}
+        options={'quality': 100},
+        help_text='Banner image for your course page. Please use the highest resolution possible.'
     )
     image_thumbnail = ImageSpecField(
         source='image',

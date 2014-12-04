@@ -135,10 +135,12 @@ class TeacherUser(User):
         help_text='Your professional experience. This wil also be shown on the course page.'
     )
     picture = ProcessedImageField(
+        verbose_name='Profile Picture',
         upload_to=picture_upload_path,
         processors=[ResizeToFill(600, 600)],
         format='JPEG',
-        options={'quality': 100}
+        options={'quality': 100},
+        help_text='Please use a square image.'
     )
     resume = models.FileField(
         'Resume',
