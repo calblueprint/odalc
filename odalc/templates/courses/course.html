@@ -125,6 +125,9 @@ fjs.parentNode.insertBefore(js, fjs);
                 <h4>{{ course.teacher.first_name }} {{ course.teacher.last_name }}</h4>
               <div class="role"><i>{{ course.teacher.position }}</i></div>
               <div class="inst">{{ course.teacher.organization }}</div>
+              <div class="website">
+                  <a target="_blank" href="{{ course.teacher.website }}">{{ course.teacher.website }}</a>
+              </div>
             </div>
           </div>
           <!-- bio portion -->

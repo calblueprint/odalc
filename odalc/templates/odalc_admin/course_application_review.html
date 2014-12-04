@@ -193,6 +193,8 @@
                                     <li class="fn">{{ course.teacher.first_name }} {{ course.teacher.last_name }}</li>
                                     <li class="org">{{ course.teacher.organization }}</li>
                                     <li class="role"><i>{{ course.teacher.position }}</i></li>
+                                    <li class="website"><a target="_blank" href="{{ course.teacher.website }}">{{ course.teacher.website }}</a>
+                                   </li>
                                     <li class="resume"><a target="_blank" href="{{ course.teacher.resume.url }}">View Resume</a></li>
                                     <li class="email"><a target="_blank" href="mailto:{{ course.teacher.email }}">{{ course.teacher.email }}</a></li>
                                     <li class="phone">{{ course.teacher.phone }}</li>
