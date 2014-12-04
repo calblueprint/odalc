@@ -109,6 +109,25 @@ class CourseManager(models.Manager):
         return course
 
 
+
+# Funnctions for upload paths - issues with Django 1.7 migrations and Python 2.7
+# See https://docs.djangoproject.com/en/1.7/topics/migrations/#serializing-values
+def image_upload_path(instance, filename):
+    return os.path.join(
+        str(instance.teacher.id) + '-' + instance.teacher.first_name + '-' + instance.teacher.last_name,
+        'images',
+        'course-picture-' + str(instance.id) + '-' + filename
+    )
+
+
+def course_materials_upload_path(instance, filename):
+    return os.path.join(
+        str(instance.teacher.id) + '-' + instance.teacher.first_name + '-' + instance.teacher.last_name,
+        'documents',
+        'course-material-' + str(instance.id) + '-' + filename
+    )
+
+
 class Course(models.Model):
     SKILL_BEGINNER = 'Beginner'
     SKILL_INTERMEDIATE = 'Intermediate'
@@ -131,20 +150,6 @@ class Course(models.Model):
         (STATUS_DENIED, 'Denied'),
         (STATUS_FINISHED, 'Finished')
     )
-
-    def image_upload_path(instance, filename):
-        return os.path.join(
-            str(instance.teacher.id) + '-' + instance.teacher.first_name + '-' + instance.teacher.last_name,
-            'images',
-            'course-picture-' + str(instance.id) + '-' + filename
-        )
-
-    def course_materials_upload_path(instance, filename):
-        return os.path.join(
-            str(instance.teacher.id) + '-' + instance.teacher.first_name + '-' + instance.teacher.last_name,
-            'documents',
-            'course-material-' + str(instance.id) + '-' + filename
-        )
 
     teacher = models.ForeignKey('users.TeacherUser')
     students = models.ManyToManyField('users.StudentUser', blank=True)

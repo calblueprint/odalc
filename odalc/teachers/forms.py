@@ -30,6 +30,7 @@ class TeacherRegisterForm(UserRegisterForm):
                   'picture',
                   'resume',
                   'experience',
+                  'website',
                   'info_source')
 
 
@@ -48,7 +49,9 @@ class TeacherEditForm(forms.ModelForm):
                   'about',
                   'picture',
                   'resume',
-                  'experience')
+                  'experience',
+                  'website',
+                  )
 
 
 class CreateCourseForm(forms.ModelForm):
