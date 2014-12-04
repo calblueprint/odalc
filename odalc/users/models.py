@@ -70,6 +70,24 @@ class StudentUser(User):
         verbose_name = "Student"
 
 
+# Funnctions for upload paths - issues with Django 1.7 migrations and Python 2.7
+# See https://docs.djangoproject.com/en/1.7/topics/migrations/#serializing-values
+def picture_upload_path(instance, filename):
+    return os.path.join(
+        str(instance.id) + '-' + instance.first_name + '-' + instance.last_name,
+        'images',
+        'profile-picture-' + filename
+    )
+
+
+def resume_upload_path(instance, filename):
+    return os.path.join(
+        str(instance.id) + '-' + instance.first_name + '-' + instance.last_name,
+        'documents',
+        'resume-' + filename
+    )
+
+
 class TeacherUser(User):
     INFO_SOURCE_FRIEND = 'From a friend'
     INFO_SOURCE_WEB = 'Our website'
@@ -79,20 +97,6 @@ class TeacherUser(User):
         (INFO_SOURCE_WEB, INFO_SOURCE_WEB),
         (INFO_SOURCE_OTHER, 'Other (just type it in!)')
     )
-
-    def picture_upload_path(instance, filename):
-        return os.path.join(
-            str(instance.id) + '-' + instance.first_name + '-' + instance.last_name,
-            'images',
-            'profile-picture-' + filename
-        )
-
-    def resume_upload_path(instance, filename):
-        return os.path.join(
-            str(instance.id) + '-' + instance.first_name + '-' + instance.last_name,
-            'documents',
-            'resume-' + filename
-        )
 
     organization = models.CharField(
         'Organization',
