@@ -90,6 +90,9 @@ ROOT_URLCONF = 'odalc.urls'
 WSGI_APPLICATION = 'odalc.wsgi.application'
 AUTH_USER_MODEL = 'users.User'
 
+ADMINS = (
+    ('Blueprint', 'odalc+alerts@calblueprint.org')
+)
 
 #
 # Database setup
@@ -108,6 +111,64 @@ DATABASES = {
 
 if IS_HEROKU:
     DATABASES['default'] =  dj_database_url.config()
+
+
+#
+# Logging
+#
+
+ODALC_LOGGER = 'odalc'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': ('%(asctime)s [%(process)d] [%(levelname)s] ' +
+                       'pathname=%(pathname)s lineno=%(lineno)s ' +
+                       'funcname=%(funcName)s %(message)s'),
+            'datefmt': '%Y-%m-%d %H:%M:%S'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'filters': {
+    },
+    'handlers': {
+        'null': {
+            'level': 'DEBUG',
+            'class': 'logging.NullHandler',
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+        }
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['null'],
+            'propagate': True,
+            'level': 'INFO',
+        },
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        ODALC_LOGGER: {
+            'handlers': ['console', 'mail_admins'],
+            'level': 'INFO',
+        }
+    }
+}
+
+
 
 
 #
