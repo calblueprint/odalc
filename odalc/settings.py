@@ -92,8 +92,8 @@ AUTH_USER_MODEL = 'users.User'
 
 ADMINS = (
     ('Blueprint', 'odalc+alerts@calblueprint.org'),
-    ('atsu', 'atsunori.kakitani@gmail.com')
 )
+
 
 #
 # Database setup

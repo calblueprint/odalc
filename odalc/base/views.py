@@ -60,8 +60,6 @@ class HomePageView(UserDataMixin, TemplateView):
         context = super(HomePageView, self).get_context_data(**kwargs)
         context['featured_courses'] = Course.objects.get_featured(
             HomePageView.NUM_COURSES_SHOWN)
-        logger.debug("HELLO")
-        logger.error("THIS IS AN ERROR UH OH")
         return context
 
 
