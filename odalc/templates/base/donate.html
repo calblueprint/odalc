@@ -64,7 +64,6 @@ Together, we can help these communities achieve economic success and empowerment
     <script>
         $(document).ready(function() {
           $("#donate-btn").click(function(){
-              console.log('click!')
               var token = function(res){
                 var $input = $('<input type=hidden name=stripeToken />').val(res.id);
                 $('form').append($input).submit();
@@ -83,26 +82,6 @@ Together, we can help these communities achieve economic success and empowerment
 
               return false;
             });
-
-          $('[data-slider]').on('change', function(){
-              $('#donate-amt-box').val($('#donate-amt').attr('data-slider'));
-            });
-
-          $('#donate-amt-box').on('change',function(){
-              var newValue = $('#donate-amt-box').val();
-              if(!isNaN(newValue)){
-                if(newValue <= 50){
-                  $('#donate-amt').foundation(
-                    'slider',
-                    'set_value',
-                    newValue
-                  );
-                } else{
-                  $('#donate-amt').foundation('slider','set_value',50);
-                  $('#donate-amt-box').val(newValue);
-                }
-              };
-          });
         });
     </script>
 {% endblock %}

@@ -197,7 +197,6 @@ fjs.parentNode.insertBefore(js, fjs);
 	<script>
 		$(document).ready(function() {
 		  $("#enroll-btn").click(function(){
-		  	  console.log('click!')
 		      var token = function(res){
 		        var $input = $('<input type=hidden name=stripeToken />').val(res.id);
 		        $('form').append($input).submit();

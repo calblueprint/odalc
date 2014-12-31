@@ -1,3 +1,5 @@
+import logging
+
 from django.contrib import messages
 from django.conf import settings
 from django.shortcuts import redirect
@@ -9,6 +11,7 @@ from odalc.lib.payments import MissingTokenException, handle_stripe_donation
 
 import stripe
 
+logger = logging.getLogger(settings.ODALC_LOGGER)
 
 class AboutPageView(UserDataMixin, TemplateView):
     template_name = 'base/about.html'
@@ -37,6 +40,9 @@ class DonatePageView(UserDataMixin, TemplateView):
             # The card has been declined
             messages.error(request, "Your information was invalid or your card has been declined")
             return self.render_to_response(self.get_context_data())
+        except Exception as e:
+            messages.error(request, "An unknown error occured. Please try again, or contact Oakland Digital if the problem persists.")
+            return redirect('donate')
 
 
 class FaqPageView(UserDataMixin, TemplateView):
@@ -61,6 +67,7 @@ class WorkPageView(UserDataMixin, TemplateView):
     """Placeholder page for plans to make this platform open to people wanting
     to find partnerships for work opportunities - for potential employees."""
     template_name = 'base/work.html'
+
 
 class TalentPageView(UserDataMixin, TemplateView):
     """Placeholder page for plans to make this platform open to people wanting
