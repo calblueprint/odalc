@@ -91,7 +91,8 @@ WSGI_APPLICATION = 'odalc.wsgi.application'
 AUTH_USER_MODEL = 'users.User'
 
 ADMINS = (
-    ('Blueprint', 'odalc+alerts@calblueprint.org')
+    ('Blueprint', 'odalc+alerts@calblueprint.org'),
+    ('atsu', 'atsunori.kakitani@gmail.com')
 )
 
 #
