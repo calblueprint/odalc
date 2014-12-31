@@ -37,6 +37,9 @@ class DonatePageView(UserDataMixin, TemplateView):
             # The card has been declined
             messages.error(request, "Your information was invalid or your card has been declined")
             return self.render_to_response(self.get_context_data())
+        except Exception as e:
+            messages.error(request, "An unknown error occured. Please try again, or contact Oakland Digital if the problem persists.")
+            return redirect('donate')
 
 
 class FaqPageView(UserDataMixin, TemplateView):
@@ -61,6 +64,7 @@ class WorkPageView(UserDataMixin, TemplateView):
     """Placeholder page for plans to make this platform open to people wanting
     to find partnerships for work opportunities - for potential employees."""
     template_name = 'base/work.html'
+
 
 class TalentPageView(UserDataMixin, TemplateView):
     """Placeholder page for plans to make this platform open to people wanting
