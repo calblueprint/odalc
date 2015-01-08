@@ -20,6 +20,7 @@ class StudentRegisterView(UserDataMixin, CreateView):
 
     @method_decorator(sensitive_post_parameters('password1', 'password2'))
     def dispatch(self, request, *args, **kwargs):
+        self.set_perms(request, *args, **kwargs)
         if request.user.is_authenticated():
             return redirect('home')
         else:
@@ -53,6 +54,10 @@ class StudentEditView(UserDataMixin, UpdateView):
     form_class = StudentEditForm
     success_url = reverse_lazy('students:dashboard')
 
+    def dispatch(self, request, *args, **kwargs):
+        self.set_perms(request, *args, **kwargs)
+        return super(StudentEditView, self).dispatch(request, *args, **kwargs)
+
     def get_object(self):
         return self.user
 
@@ -67,14 +72,14 @@ class SubmitCourseFeedbackView(UserDataMixin, CreateView):
     template_name = 'students/course_feedback_form.html'
     form_class = FeedbackForm
 
-    def dispatch(self, *args, **kwargs):
+    def dispatch(self, request, *args, **kwargs):
+        self.set_perms(request, *args, **kwargs)
         # The course is guaranteed to exist!
         self.course = Course.objects.get(pk=kwargs.get('pk', None))
-        handler = super(SubmitCourseFeedbackView, self).dispatch(*args, **kwargs)
         if not self.user.is_authenticated():
             return redirect('/users/login?next=%s' % self.request.path)
         if self.is_student_user and self.course.is_student_in_course(self.user):
-            return handler
+            return super(SubmitCourseFeedbackView, self).dispatch(request, *args, **kwargs)
         else:
             return self.deny_access()
 
@@ -94,12 +99,12 @@ class StudentDashboardView(UserDataMixin, TemplateView):
     courses taken."""
     template_name = "students/student_dashboard.html"
 
-    def dispatch(self, *args, **kwargs):
-        handler = super(StudentDashboardView, self).dispatch(*args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        self.set_perms(request, *args, **kwargs)
         if not self.user.is_authenticated():
             return redirect('/users/login?next=%s' % self.request.path)
         elif self.is_student_user:
-            return handler
+            return super(StudentDashboardView, self).dispatch(request, *args, **kwargs)
         else:
             return self.deny_access()
 

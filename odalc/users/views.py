@@ -19,12 +19,13 @@ class UserDataMixin(object):
         )
         return redirect('home')
 
-    def dispatch(self, request, *args, **kwargs):
-        """ dispatch() gets request.user and downcasts self.user to the actual
+    def set_perms(self, request, *args, **kwargs):
+        """ set_perms() gets request.user and downcasts self.user to the actual
         user type, if possible. If the user isn't logged in, then self.user is
         an AnonymousUser, which is a built-in Django user type. If the user is
         logged in, self.user is either a TeacherUser, StudentUser, or
-        AdminUser.
+        AdminUser. Should be called at the beginning of a View's dispatch()
+        method
         """
         self.user = request.user
         if isinstance(self.user, User):
@@ -36,7 +37,6 @@ class UserDataMixin(object):
             self.is_student_user = False
             self.is_teacher_user = False
             self.is_admin_user = False
-        return super(UserDataMixin, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         """ 'odalc_user' is included here for convenience. By default, the
@@ -59,6 +59,7 @@ class LoginView(UserDataMixin, FormView):
 
     @method_decorator(sensitive_post_parameters('password'))
     def dispatch(self, request, *args, **kwargs):
+        self.set_perms(request, *args, **kwargs)
         if request.user.is_authenticated():
             return redirect('home')
         else:
@@ -79,6 +80,10 @@ class LoginView(UserDataMixin, FormView):
 
 
 class LogoutView(UserDataMixin, View):
+    def dispatch(self, request, *args, **kwargs):
+        self.set_perms(request, *args, **kwargs)
+        return super(LogoutView, self).dispatch(request, *args, **kwargs)
+
     def get(self, request, *args, **kwargs):
         auth_logout(request)
         messages.success(self.request, 'Signed out successfully')
