@@ -48,7 +48,7 @@ class ApplicationReviewView(UserDataMixin, UpdateView):
         teacher = course.teacher
         context = {}
         context['course'] = course
-        context['course_url'] = 'http://' + self.request.get_host() + reverse('courses:detail', args=(course.id,))
+        context['course_url'] = 'https://' + self.request.get_host() + reverse('courses:detail', args=(course.id, course.slug()))
         context['facebook_share'] = 'http://www.facebook.com/sharer.php?u=' + context['course_url']
         context['twitter_share'] = 'https://twitter.com/home?status=Check%20out%20this%20new%20course%20that%20just%20went%20live%20at%20Oakland%20Digital!%20'+ context['course_url'] + '%20%23OaklandDigital%20via%20@ODALC'
         context['google_share'] = 'https://plus.google.com/share?url=' + context['course_url']

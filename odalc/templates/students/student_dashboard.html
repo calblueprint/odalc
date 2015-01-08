@@ -24,7 +24,7 @@
                         </tr>
                     {% for course in courses_upcoming %}
                         <tr>
-                            <td><a href="{% url "courses:detail" course.pk %}"> {{ course.title }}</a></td>
+                            <td><a href="{% url "courses:detail" course.pk course.slug %}"> {{ course.title }}</a></td>
                             <td>{{ course.teacher.first_name }} {{ course.teacher.last_name }}</td>
                             <td class="right">{{ course.start_datetime|date:'D, N d Y' }} | {{ course.start_datetime|date:'P'}} - {{ course.end_datetime|date:'P' }}</td>
                         </tr>
@@ -47,7 +47,7 @@
                         </tr>
                     {% for course in courses_taken %}
                         <tr>
-                            <td> <a href="{% url "courses:detail" course.pk %}"> {{ course.title }}</a> </td>
+                            <td> <a href="{% url "courses:detail" course.pk course.slug %}"> {{ course.title }}</a> </td>
                             <td> {{ course.teacher.first_name }} {{ course.teacher.last_name }} </td>
                             <td class="right">{{ course.start_datetime|date:'D, N d Y' }} | {{ course.start_datetime|date:'P'}} - {{ course.end_datetime|date:'P' }}</td>
                         </tr>

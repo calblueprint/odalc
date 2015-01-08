@@ -1,7 +1,7 @@
 <div class="course-tile-action">
     <div class="row">
         <div class="medium-4 medium-offset-8 columns">
-            <a class="action-button" href="{% url "courses:edit" course.pk %}">Edit course info</a>
+            <a class="action-button" href="{% url "courses:edit" course.pk course.slug %}">Edit course info</a>
         </div>
     </div>
 </div>

@@ -23,7 +23,10 @@ class CourseDetailView(UserDataMixin, DetailView):
     def dispatch(self, request, *args, **kwargs):
         handler = super(CourseDetailView, self).dispatch(request, *args, **kwargs)
         course = self.get_object()
-        if (course.is_accepted() or course.is_finished() or
+        # Redirect if the slug does not match
+        if self.kwargs.get(self.slug_url_kwarg, None) != course.slug():
+            return redirect(course, permanent=True)
+        elif (course.is_accepted() or course.is_finished() or
             (self.user.is_authenticated and (course.is_owner(self.user) or self.is_admin_user))):
             return handler
         else:
@@ -51,24 +54,24 @@ class CourseDetailView(UserDataMixin, DetailView):
         if request.POST.get("login-redirect"):
             messages.info(request, "You must be signed in to enroll in a course.")
             response = redirect('users:login')
-            response['Location'] += '?next=' + reverse('courses:detail', args=[course.pk])
+            response['Location'] += '?next=' + reverse('courses:detail', args=[course.pk, course.slug()])
             return response
         if course.is_full():
             messages.error(request, "This course is already full. Your card hasn't been charged")
-            return redirect('courses:detail', course.pk)
+            return redirect(course)
         if course.is_student_in_course(self.user):
             messages.error(request, "You are already signed up for this course. Your card hasn't been charged")
-            return redirect('courses:detail', course.pk)
+            return redirect(course)
         try:
             token = request.POST.get('stripeToken', False)
             handle_stripe_course_registration(self.user, course, token)
             course.students.add(self.user)
             course.save()
             messages.success(request, "You have successfully registered for this course!")
-            return redirect('courses:detail', course.pk)
+            return redirect(course)
         except MissingTokenException:
             messages.error(request, "No payment information was included in your submission. Your card was not charged.")
-            return redirect('courses:detail', course.pk)
+            return redirect(course)
         except stripe.CardError:
             messages.error(request, "Your information was invalid or your card has been declined.")
             return self.render_to_response(self.get_context_data())

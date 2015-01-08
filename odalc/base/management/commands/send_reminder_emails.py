@@ -16,7 +16,7 @@ class Command(BaseCommand):
         for course in courses_next_day:
             context = {
                 'course': course,
-                'course_url': settings.SITE_URL + reverse('courses:detail', args=(course.id,)),
+                'course_url': settings.SITE_URL + reverse('courses:detail', args=(course.id, course.slug())),
                 'course_date': course.start_datetime.strftime('%A, %B %d'),
                 'course_start_time': course.start_datetime.strftime('%I:%M %p'),
                 'course_end_time': course.end_datetime.strftime('%I:%M %p'),

@@ -25,8 +25,8 @@
                     <tbody>
                     {% for course in pending_courses %}
                     <tr>
-                        <td><a href="{% url "courses:detail" course.pk %}">{{ course.title }}</a></td>
-                        <td><a href="{% url "courses:edit" course.pk %}">Edit course page &raquo;</a></td>
+                        <td><a href="{% url "courses:detail" course.pk course.slug %}">{{ course.title }}</a></td>
+                        <td><a href="{% url "courses:edit" course.pk course.slug %}">Edit course page &raquo;</a></td>
                     </tr>
                     {% empty %}
                     <tr><td>No courses pending.</td></tr>
@@ -48,8 +48,8 @@
                     <tbody>
                     {% for course in active_courses %}
                     <tr>
-                        <td><a href="{% url "courses:detail" course.pk %}">{{ course.title }}</a></td>
-                        <td><a href="{% url "courses:edit" course.pk %}">Edit course page &raquo;</a></td>
+                        <td><a href="{% url "courses:detail" course.pk course.slug %}">{{ course.title }}</a></td>
+                        <td><a href="{% url "courses:edit" course.pk course.slug %}">Edit course page &raquo;</a></td>
                     </tr>
                     {% empty %}
                     <tr><td>No courses active.</td></tr>
@@ -72,9 +72,9 @@
                     <tbody>
                     {% for course in finished_courses %}
                     <tr>
-                        <td><a href="{% url "courses:detail" course.pk %}">{{ course.title }}</a></td>
-                        <td><a href="{% url "courses:feedback_review" course.pk %}">View course feedback &raquo;</a></td>
-                        <td><a href="{% url "courses:edit" course.pk %}">Edit course page &raquo;</a></td>
+                        <td><a href="{% url "courses:detail" course.pk course.slug %}">{{ course.title }}</a></td>
+                        <td><a href="{% url "courses:feedback_review" course.pk course.slug %}">View course feedback &raquo;</a></td>
+                        <td><a href="{% url "courses:edit" course.pk course.slug %}">Edit course page &raquo;</a></td>
                     </tr>
                     {% empty %}
                     <tr><td>No courses yet.</td></tr>
@@ -97,8 +97,8 @@
                     <tbody>
                     {% for course in denied_courses %}
                     <tr>
-                        <td><a href="{% url "courses:detail" course.pk %}">{{ course.title }}</a></td>
-                        <td><a href="{% url "courses:edit" course.pk %}">Edit course page &raquo;</a></td>
+                        <td><a href="{% url "courses:detail" course.pk course.slug %}">{{ course.title }}</a></td>
+                        <td><a href="{% url "courses:edit" course.pk course.slug %}">Edit course page &raquo;</a></td>
                     </tr>
                     {% endfor %}
                     </tbody>

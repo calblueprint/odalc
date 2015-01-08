@@ -8,7 +8,7 @@
             {% endif %}
         </div>
         <div class="small-6 medium-3 columns">
-            <a class="action-button" href="{% url "courses:edit" course.pk %}">Edit course info</a>
+            <a class="action-button" href="{% url "courses:edit" course.pk course.slug %}">Edit course info</a>
         </div>
     </div>
 </div>

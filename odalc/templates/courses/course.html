@@ -34,7 +34,7 @@ fjs.parentNode.insertBefore(js, fjs);
                 {% if in_class %}
                     {% if is_past_start_date %}
                         {% if not submitted_feedback %}
-                        <form action="{% url "courses:feedback" course.id %}" method="GET">
+                        <form action="{% url "courses:feedback" course.id course.slug %}" method="GET">
                             <button class="enroll-btn">Submit Feedback</button>
                         </form>
                         {% else %}

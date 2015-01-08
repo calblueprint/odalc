@@ -4,7 +4,7 @@
 {% block body %}
 <div class='row'>
 	<h1>Feedback for {{ title }}</h1>
-	<form action="{% url "courses:feedback" pk %}" method="POST" class='large-12 columns'>
+	<form action="{% url "courses:feedback" course.pk course.slug %}" method="POST" class='large-12 columns'>
 	  {% csrf_token %}
 	  <ul class='form-list'>
 	    {{ form.as_ul }}
