@@ -34,12 +34,12 @@ class ApplicationReviewView(UserDataMixin, UpdateView):
     template_name = 'odalc_admin/course_application_review.html'
     success_url = reverse_lazy('admins:dashboard')
 
-    def dispatch(self, *args, **kwargs):
-        handler = super(ApplicationReviewView, self).dispatch(*args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        self.set_perms(request, *args, **kwargs)
         if not self.user.is_authenticated():
             return redirect('/users/login?next=%s' % self.request.path)
         elif self.is_admin_user:
-            return handler
+            return super(ApplicationReviewView, self).dispatch(request, *args, **kwargs)
         else:
             return self.deny_access()
 
@@ -48,7 +48,7 @@ class ApplicationReviewView(UserDataMixin, UpdateView):
         teacher = course.teacher
         context = {}
         context['course'] = course
-        context['course_url'] = 'http://' + self.request.get_host() + reverse('courses:detail', args=(course.id,))
+        context['course_url'] = 'https://' + self.request.get_host() + reverse('courses:detail', args=(course.id, course.slug()))
         context['facebook_share'] = 'http://www.facebook.com/sharer.php?u=' + context['course_url']
         context['twitter_share'] = 'https://twitter.com/home?status=Check%20out%20this%20new%20course%20that%20just%20went%20live%20at%20Oakland%20Digital!%20'+ context['course_url'] + '%20%23OaklandDigital%20via%20@ODALC'
         context['google_share'] = 'https://plus.google.com/share?url=' + context['course_url']
@@ -108,7 +108,8 @@ class AdminDashboardView(UserDataMixin, ListView):
     TYPE_DENIED = "denied"
 
 
-    def dispatch(self, *args, **kwargs):
+    def dispatch(self, request, *args, **kwargs):
+        self.set_perms(request, *args, **kwargs)
         self.is_active = (self.request.GET.get(AdminDashboardView.PARAM_TYPE)
                             == AdminDashboardView.TYPE_ACTIVE)
         self.is_finished = (self.request.GET.get(AdminDashboardView.PARAM_TYPE)
@@ -118,11 +119,10 @@ class AdminDashboardView(UserDataMixin, ListView):
         self.is_pending = ((self.request.GET.get(AdminDashboardView.PARAM_TYPE)
                             == AdminDashboardView.TYPE_PENDING) or (
                             not self.is_active and not self.is_finished and not self.is_denied))
-        handler = super(AdminDashboardView, self).dispatch(*args, **kwargs)
         if not self.user.is_authenticated():
             return redirect('/users/login?next=%s' % self.request.path)
         elif self.is_admin_user:
-            return handler
+            return super(AdminDashboardView, self).dispatch(request, *args, **kwargs)
         else:
             return self.deny_access()
 
@@ -158,8 +158,8 @@ class AdminDashboardView(UserDataMixin, ListView):
 
 class AJAXAdminDashboardView(View):
     @csrf_exempt
-    def dispatch(self, *args, **kwargs):
-        return super(AJAXAdminDashboardView, self).dispatch(*args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        return super(AJAXAdminDashboardView, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         Course.objects.toggle_featured(
@@ -176,13 +176,13 @@ class CourseFeedbackView(UserDataMixin, DetailView):
     template_name = 'odalc_admin/course_feedback.html'
     model = Course
 
-    def dispatch(self, *args, **kwargs):
-        handler = super(CourseFeedbackView, self).dispatch(*args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        self.set_perms(request, *args, **kwargs)
         course = self.get_object()
         if not self.user.is_authenticated():
             return redirect('/users/login?next=%s' % self.request.path)
         elif self.is_admin_user or course.is_owner(self.user):
-            return handler
+            return super(CourseFeedbackView, self).dispatch(request, *args, **kwargs)
         else:
             return self.deny_access()
 
@@ -217,6 +217,10 @@ class AdminEditView(UserDataMixin, UpdateView):
     form_class = AdminEditForm
     success_url = reverse_lazy('admins:dashboard')
 
+    def dispatch(self, request, *args, **kwargs):
+        self.set_perms(request, *args, **kwargs)
+        return super(AdminEditView, self).dispatch(request, *args, **kwargs)
+
     def get_object(self):
         return self.user
 
@@ -231,12 +235,12 @@ class AdminRegisterView(UserDataMixin, CreateView):
     form_class = AdminRegisterForm
     success_url = reverse_lazy('admins:dashboard')
 
-    def dispatch(self, *args, **kwargs):
-        handler = super(AdminRegisterView, self).dispatch(*args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        self.set_perms(request, *args, **kwargs)
         if not self.user.is_authenticated():
             return redirect('/users/login?next=%s' % self.request.path)
         elif self.is_admin_user:
-            return handler
+            return super(AdminRegisterView, self).dispatch(request, *args, **kwargs)
         else:
             return self.deny_access()
 

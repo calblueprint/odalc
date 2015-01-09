@@ -1,5 +1,5 @@
 <div class="course-tile">
-    <a href="{% url "courses:detail" course.pk %}">
+    <a href="{% url "courses:detail" course.pk course.slug %}">
     <div class="row">
         <div class="medium-4 medium-push-8 columns">
             <img class="course-thumbnail" src="{{ course.image_thumbnail.url }}"></img>

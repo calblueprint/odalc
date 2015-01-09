@@ -16,9 +16,17 @@ logger = logging.getLogger(settings.ODALC_LOGGER)
 class AboutPageView(UserDataMixin, TemplateView):
     template_name = 'base/about.html'
 
+    def dispatch(self, request, *args, **kwargs):
+        self.set_perms(request, *args, **kwargs)
+        return super(AboutPageView, self).dispatch(request, *args, **kwargs)
+
 
 class DonatePageView(UserDataMixin, TemplateView):
     template_name = 'base/donate.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        self.set_perms(request, *args, **kwargs)
+        return super(DonatePageView, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(DonatePageView, self).get_context_data(**kwargs)
@@ -48,6 +56,10 @@ class DonatePageView(UserDataMixin, TemplateView):
 class FaqPageView(UserDataMixin, TemplateView):
     template_name = 'base/faq.html'
 
+    def dispatch(self, request, *args, **kwargs):
+        self.set_perms(request, *args, **kwargs)
+        return super(FaqPageView, self).dispatch(request, *args, **kwargs)
+
 
 class HomePageView(UserDataMixin, TemplateView):
     """Landing page for the website. Also displays the next three upcoming
@@ -55,6 +67,10 @@ class HomePageView(UserDataMixin, TemplateView):
     courses as well."""
     NUM_COURSES_SHOWN = 3
     template_name = 'base/home.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        self.set_perms(request, *args, **kwargs)
+        return super(HomePageView, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(HomePageView, self).get_context_data(**kwargs)
@@ -68,8 +84,17 @@ class WorkPageView(UserDataMixin, TemplateView):
     to find partnerships for work opportunities - for potential employees."""
     template_name = 'base/work.html'
 
+    def dispatch(self, request, *args, **kwargs):
+        self.set_perms(request, *args, **kwargs)
+        return super(WorkPageView, self).dispatch(request, *args, **kwargs)
+
 
 class TalentPageView(UserDataMixin, TemplateView):
     """Placeholder page for plans to make this platform open to people wanting
     to find partnerships for work opportunities - for potential employees."""
     template_name = 'base/talent.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        self.set_perms(request, *args, **kwargs)
+        return super(TalentPageView, self).dispatch(request, *args, **kwargs)
+

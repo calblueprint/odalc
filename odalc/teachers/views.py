@@ -23,6 +23,7 @@ class TeacherRegisterView(UserDataMixin, CreateView):
 
     @method_decorator(sensitive_post_parameters('password1', 'password2'))
     def dispatch(self, request, *args, **kwargs):
+        self.set_perms(request, *args, **kwargs)
         if request.user.is_authenticated():
             return redirect('home')
         return super(TeacherRegisterView, self).dispatch(request, *args, **kwargs)
@@ -34,8 +35,8 @@ class TeacherRegisterView(UserDataMixin, CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, authenticate(
-            username=user.email, password=self.request.POST['password1']))
-
+            username=user.email, password=self.request.POST['password1'])
+        )
         messages.success(self.request, 'Successfully registered')
         return super(TeacherRegisterView, self).form_valid(form)
 
@@ -45,6 +46,10 @@ class TeacherEditView(UserDataMixin, UpdateView):
     template_name = "teachers/teacher_edit.html"
     form_class = TeacherEditForm
     success_url = reverse_lazy('teachers:dashboard')
+
+    def dispatch(self, request, *args, **kwargs):
+        self.set_perms(request, *args, **kwargs)
+        return super(TeacherEditView, self).dispatch(request, *args, **kwargs)
 
     def get_object(self):
         return self.user
@@ -59,6 +64,10 @@ class CreateCourseView(UserDataMixin, FormView):
     template_name = 'teachers/create_course_form.html'
     form_class = CreateCourseForm
     success_url = reverse_lazy('teachers:dashboard')
+
+    def dispatch(self, request, *args, **kwargs):
+        self.set_perms(request, *args, **kwargs)
+        return super(CreateCourseView, self).dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         # Create a new Course Instance
@@ -83,6 +92,10 @@ class CreateCourseView(UserDataMixin, FormView):
 
 class TeacherDashboardView(UserDataMixin, TemplateView):
     template_name = "teachers/dashboard.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        self.set_perms(request, *args, **kwargs)
+        return super(TeacherDashboardView, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(TeacherDashboardView, self).get_context_data(**kwargs)

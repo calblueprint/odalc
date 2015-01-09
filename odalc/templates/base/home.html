@@ -50,7 +50,7 @@
     <div class="row course-items">
         {% for course in featured_courses %}
         <div class="course-box">
-            <a href="{% url "courses:detail" course.pk %}">
+            <a href="{% url "courses:detail" course.pk course.slug %}">
                 <div class="top-shelf">
                     <div class="title-wrap">
                         <h4>{{ course.title }}</h4>

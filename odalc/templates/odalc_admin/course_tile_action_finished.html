@@ -1,10 +1,10 @@
 <div class="course-tile-action">
     <div class="row">
         <div class="small-6 medium-4 medium-offset-5 columns">
-            <a class="action-button" href="{% url "courses:feedback_review" course.pk %}">View course feedback</a>
+            <a class="action-button" href="{% url "courses:feedback_review" course.pk course.slug %}">View course feedback</a>
         </div>
         <div class="small-6 medium-3 columns">
-            <a class="action-button" href="{% url "courses:edit" course.pk %}">Edit course info</a>
+            <a class="action-button" href="{% url "courses:edit" course.pk course.slug %}">Edit course info</a>
         </div>
     </div>
 </div>

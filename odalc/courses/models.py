@@ -9,6 +9,7 @@ from django.core.validators import (
     RegexValidator
 )
 from django.db import models
+from django.utils.text import slugify
 
 from odalc.users.models import StudentUser
 
@@ -109,7 +110,7 @@ class CourseManager(models.Manager):
         return course
 
 
-# Funnctions for upload paths - issues with Django 1.7 migrations and Python 2.7
+# Functions for upload paths - issues with Django 1.7 migrations and Python 2.7
 # See https://docs.djangoproject.com/en/1.7/topics/migrations/#serializing-values
 def image_upload_path(instance, filename):
     return os.path.join(
@@ -243,6 +244,13 @@ class Course(models.Model):
     )
 
     objects = CourseManager()
+
+    @models.permalink
+    def get_absolute_url(self):
+        return 'courses:detail', (self.id, self.slug())
+
+    def slug(self):
+        return slugify(self.title)
 
     def get_cost_in_cents(self):
         return int(self.cost * 100)
