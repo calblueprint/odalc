@@ -11,8 +11,9 @@ from odalc.students.forms import StudentRegisterForm, StudentEditForm, FeedbackF
 from odalc.users.models import StudentUser
 from odalc.users.views import UserDataMixin
 
+
 class StudentRegisterView(UserDataMixin, CreateView):
-    """Allows a student to register"""
+    """View that handles student user registration."""
     model = StudentUser
     template_name = "students/register.html"
     form_class = StudentRegisterForm
@@ -48,7 +49,7 @@ class StudentRegisterView(UserDataMixin, CreateView):
 
 
 class StudentEditView(UserDataMixin, UpdateView):
-    """Controls the editing of personal information by the student"""
+    """View that handles editing account information of a student user."""
     model = StudentUser
     template_name = "students/student_edit.html"
     form_class = StudentEditForm
@@ -67,7 +68,7 @@ class StudentEditView(UserDataMixin, UpdateView):
 
 
 class SubmitCourseFeedbackView(UserDataMixin, CreateView):
-    """Controls course feedback submission for a particular student and course"""
+    """View that handles course feedback submission for a particular student and course."""
     model = CourseFeedback
     template_name = 'students/course_feedback_form.html'
     form_class = FeedbackForm
@@ -95,8 +96,7 @@ class SubmitCourseFeedbackView(UserDataMixin, CreateView):
 
 
 class StudentDashboardView(UserDataMixin, TemplateView):
-    """StudentDashboardView shows the student his/her basic information and
-    courses taken."""
+    """View that shows student users basic information and courses taken."""
     template_name = "students/student_dashboard.html"
 
     def dispatch(self, request, *args, **kwargs):
