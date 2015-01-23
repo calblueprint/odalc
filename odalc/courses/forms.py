@@ -6,6 +6,10 @@ from odalc.courses.models import Course
 
 
 class EditCourseForm(forms.ModelForm):
+    """Form class for editing Course objects. Is used by all user types, but depending on the type, the template will
+    make some fields read-only. This form class uses separate fields for the course's date, start time, and end time,
+    but combines those into 2 start datetime and end datetime objects when saving.
+    """
     date = forms.DateField(label='Date to Teach Course', required=False)
     start_time = forms.TimeField(label='Starting Time for Course Session', required=False)
     end_time = forms.TimeField(label='Ending Time for Course Session', required=False)
@@ -38,3 +42,4 @@ class EditCourseForm(forms.ModelForm):
             'is_featured',
             'image_thumbnail'
         )
+
