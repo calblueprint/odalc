@@ -16,6 +16,7 @@ from odalc.users.views import UserDataMixin
 
 
 class TeacherRegisterView(UserDataMixin, CreateView):
+    """View that handles teacher registration."""
     model = TeacherUser
     template_name = "teachers/teacher_register.html"
     form_class = TeacherRegisterForm
@@ -42,6 +43,7 @@ class TeacherRegisterView(UserDataMixin, CreateView):
 
 
 class TeacherEditView(UserDataMixin, UpdateView):
+    """View that handles editing information of teacher users."""
     model = TeacherUser
     template_name = "teachers/teacher_edit.html"
     form_class = TeacherEditForm
@@ -60,6 +62,7 @@ class TeacherEditView(UserDataMixin, UpdateView):
 
 
 class CreateCourseView(UserDataMixin, FormView):
+    """View that handles submissions for a new course."""
     model = Course
     template_name = 'teachers/create_course_form.html'
     form_class = CreateCourseForm
@@ -91,6 +94,7 @@ class CreateCourseView(UserDataMixin, FormView):
 
 
 class TeacherDashboardView(UserDataMixin, TemplateView):
+    """View for the teacher dashboard."""
     template_name = "teachers/dashboard.html"
 
     def dispatch(self, request, *args, **kwargs):
