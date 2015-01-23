@@ -19,6 +19,7 @@ from localflavor.us import models as localflavor_models
 
 
 class UserManager(BaseUserManager):
+    """Custom Manager class for our custom User class."""
     def create_user(self, email, first_name, last_name, password=None):
         """
         Creates and saves a User with the given email, date of
@@ -42,6 +43,9 @@ class UserManager(BaseUserManager):
 
 
 class User(PermissionsMixin, AbstractBaseUser):
+    """Base custom User class. This differs from the Django built-in User class in that we use email as the login
+    field.
+    """
     email = models.EmailField("Email", max_length=255, unique=True)
     first_name = models.CharField("First Name", max_length=255)
     last_name = models.CharField("Last Name", max_length=255)
@@ -61,11 +65,13 @@ class User(PermissionsMixin, AbstractBaseUser):
 
 
 class AdminUser(User):
+    """User class for ODALC admins."""
     class Meta:
         verbose_name = "Admin"
 
 
 class StudentUser(User):
+    """User class for students."""
     class Meta:
         verbose_name = "Student"
 
@@ -89,6 +95,7 @@ def resume_upload_path(instance, filename):
 
 
 class TeacherUser(User):
+    """User class for teachers."""
     INFO_SOURCE_FRIEND = 'From a friend'
     INFO_SOURCE_WEB = 'Our website'
     INFO_SOURCE_OTHER = 'Other'
@@ -178,17 +185,20 @@ post_syncdb.connect(create_groups, sender=auth_models)
 
 @receiver(post_save, sender=AdminUser)
 def add_to_odalc_admins_group(sender, instance, created, **kwargs):
+    """When an admin user is created, add the user to the 'odalc_admins' group"""
     if created:
         instance.groups.add(Group.objects.get(name='odalc_admins'))
 
 
 @receiver(post_save, sender=StudentUser)
 def add_to_students_group(sender, instance, created, **kwargs):
+    """When a student user is created, add the user to the 'students' group"""
     if created:
         instance.groups.add(Group.objects.get(name='students'))
 
 
 @receiver(post_save, sender=TeacherUser)
 def add_to_teachers_group(sender, instance, created, **kwargs):
+    """When a teacher user is created, add the user to the 'teachers' group"""
     if created:
         instance.groups.add(Group.objects.get(name='teachers'))
