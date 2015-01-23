@@ -24,13 +24,14 @@ def send_odalc_email(template_name, context_dict, recipient_list, from_email=set
     body_template = Template(template_data[template_name]['body'])
     if 'html' in template_data[template_name]:
         html_template = Template(template_data[template_name]['html'])
-    else: html_template = False
+    else:
+        html_template = False
     subject = subject_template.render(context)
     body = body_template.render(context)
     if html_template:
         html_body = html_template.render(context)
-    else: html_body = False
-
+    else:
+        html_body = False
     if cc_admins:
         cc_list = AdminUser.objects.all().values_list('email', flat=True)
     else:

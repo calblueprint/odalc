@@ -6,10 +6,12 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
 class MissingTokenException(Exception):
+    """Exception raised when Stripe token is missing"""
     pass
 
 
 def handle_stripe_course_registration(user, course, token):
+    """Logic to handle Stripe transaction for course registration. Returns a Stripe Charge object."""
     # Get the credit card details submitted by the form
     if not token:
         raise MissingTokenException()
@@ -34,6 +36,7 @@ def handle_stripe_course_registration(user, course, token):
 
 
 def handle_stripe_donation(amount, token):
+    """Logic to handle Stripe transaction for donations. Returns a Stripe Charge object."""
     if not token or not amount:
         raise MissingTokenException()
     charge = stripe.Charge.create(
