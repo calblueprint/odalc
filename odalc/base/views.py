@@ -11,9 +11,12 @@ from odalc.lib.payments import MissingTokenException, handle_stripe_donation
 
 import stripe
 
+
 logger = logging.getLogger(settings.ODALC_LOGGER)
 
+
 class AboutPageView(UserDataMixin, TemplateView):
+    """Static page for general information about BRIDGE and ODALC."""
     template_name = 'base/about.html'
 
     def dispatch(self, request, *args, **kwargs):
@@ -22,6 +25,7 @@ class AboutPageView(UserDataMixin, TemplateView):
 
 
 class DonatePageView(UserDataMixin, TemplateView):
+    """Static page for handling donations."""
     template_name = 'base/donate.html'
 
     def dispatch(self, request, *args, **kwargs):
@@ -42,18 +46,21 @@ class DonatePageView(UserDataMixin, TemplateView):
             messages.success(request, "Thank you! Your donation has been processed.")
             return redirect('donate')
         except MissingTokenException:
-            messages.error(request, "No payment information was included in your submission. Your card hasn't been charged")
+            messages.error(request,
+                    "No payment information was included in your submission. Your card hasn't been charged")
             return redirect('donate')
         except stripe.CardError:
             # The card has been declined
             messages.error(request, "Your information was invalid or your card has been declined")
             return self.render_to_response(self.get_context_data())
         except Exception as e:
-            messages.error(request, "An unknown error occured. Please try again, or contact Oakland Digital if the problem persists.")
+            messages.error(request
+                    "An unknown error occured. Please try again, or contact Oakland Digital if the problem persists.")
             return redirect('donate')
 
 
 class FaqPageView(UserDataMixin, TemplateView):
+    """ Static page for FAQ. The questions/answers are in the template file."""
     template_name = 'base/faq.html'
 
     def dispatch(self, request, *args, **kwargs):
@@ -62,9 +69,9 @@ class FaqPageView(UserDataMixin, TemplateView):
 
 
 class HomePageView(UserDataMixin, TemplateView):
-    """Landing page for the website. Also displays the next three upcoming
-    courses as "featured courses". If there are not enough, it will display past
-    courses as well."""
+    """Landing page for the website. Displays featured courses - if there aren't enough, upcoming and possibly past
+    courses are also displayed.
+    """
     NUM_COURSES_SHOWN = 3
     template_name = 'base/home.html'
 
@@ -80,8 +87,8 @@ class HomePageView(UserDataMixin, TemplateView):
 
 
 class WorkPageView(UserDataMixin, TemplateView):
-    """Placeholder page for plans to make this platform open to people wanting
-    to find partnerships for work opportunities - for potential employees."""
+    """Placeholder page for plans to make this platform open to people wanting to find partnerships for work
+    opportunities - for potential employees."""
     template_name = 'base/work.html'
 
     def dispatch(self, request, *args, **kwargs):
@@ -90,8 +97,8 @@ class WorkPageView(UserDataMixin, TemplateView):
 
 
 class TalentPageView(UserDataMixin, TemplateView):
-    """Placeholder page for plans to make this platform open to people wanting
-    to find partnerships for work opportunities - for potential employees."""
+    """Placeholder page for plans to make this platform open to people wanting to find partnerships for work
+    opportunities - for potential employees."""
     template_name = 'base/talent.html'
 
     def dispatch(self, request, *args, **kwargs):

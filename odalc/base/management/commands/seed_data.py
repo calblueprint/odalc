@@ -31,7 +31,7 @@ COURSE_SKILL_CHOICES = [s[0] for s in Course.SKILL_CHOICES]
 
 class Command(BaseCommand):
     args = ''
-    help = 'Generate seed data for ODALC models'
+    help = 'Generate seed data for models'
     sd = SampleDataHelper()
     md = ModelDataHelper()
 
