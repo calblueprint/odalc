@@ -6,18 +6,21 @@ from odalc.users.models import StudentUser
 
 
 class StudentRegisterForm(UserRegisterForm):
+    """Form class for new student users."""
     class Meta:
         model = StudentUser
         fields = ('email', 'first_name', 'last_name')
 
 
 class StudentEditForm(forms.ModelForm):
+    """Form class for editing student users."""
     class Meta:
         model = StudentUser
         fields = ('email', 'first_name', 'last_name')
 
 
 class FeedbackForm(forms.ModelForm):
+    """Form class for CourseFeedback model."""
     def __init__(self, *args, **kwargs):
         super(FeedbackForm, self).__init__(*args, **kwargs)
         self.fields['knowledgeable_of_subject'].widget = forms.RadioSelect(choices=CourseFeedback.AGREEMENT_CHOICES)

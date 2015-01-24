@@ -12,6 +12,7 @@ from localflavor.us import forms as localflavor_forms
 
 
 class TeacherRegisterForm(UserRegisterForm):
+    """"Form class that handles teacher registration."""
     phone = localflavor_forms.USPhoneNumberField(required=True, label='Phone')
     zipcode = localflavor_forms.USZipCodeField(required=False, label='Zipcode')
 
@@ -35,6 +36,7 @@ class TeacherRegisterForm(UserRegisterForm):
 
 
 class TeacherEditForm(forms.ModelForm):
+    """Form class that handles editing information of teacher users."""
     class Meta:
         model = TeacherUser
         fields = ('email',
@@ -55,6 +57,9 @@ class TeacherEditForm(forms.ModelForm):
 
 
 class CreateCourseForm(forms.ModelForm):
+    """Form class that handles submissions for a new course. Includes fields for both the Course model and the
+    CourseAvailability model.
+    """
     date1 = forms.DateField(
         # I'm sorry I really am
         label=mark_safe('<strong>First Choice for Date</strong> to Teach Course')

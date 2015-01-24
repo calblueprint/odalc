@@ -7,6 +7,7 @@ from odalc.courses.views import (
 from odalc.odalc_admin.views import CourseFeedbackView
 from odalc.students.views import SubmitCourseFeedbackView
 
+
 urlpatterns = patterns('',
     url(r'^(?P<pk>\d+)/(?P<slug>[\w-]+)/feedback/review/$', CourseFeedbackView.as_view(), name='feedback_review'),
     url(r'^(?P<pk>\d+)/(?P<slug>[\w-]+)/feedback/$', SubmitCourseFeedbackView.as_view(), name='feedback'),

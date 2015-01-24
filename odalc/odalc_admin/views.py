@@ -52,42 +52,32 @@ class ApplicationReviewView(UserDataMixin, UpdateView):
         context['facebook_share'] = 'http://www.facebook.com/sharer.php?u=' + context['course_url']
         context['twitter_share'] = 'https://twitter.com/home?status=Check%20out%20this%20new%20course%20that%20just%20went%20live%20at%20Oakland%20Digital!%20'+ context['course_url'] + '%20%23OaklandDigital%20via%20@ODALC'
         context['google_share'] = 'https://plus.google.com/share?url=' + context['course_url']
-
-
         if '_approve' in self.request.POST:
             start_time = form.cleaned_data.get('start_time')
             end_time = form.cleaned_data.get('end_time')
             date = form.cleaned_data.get('date')
-
             #1. Check to see if they added times and dates
             if not start_time or not end_time or not date:
                 messages.error(self.request, 'Please choose a date start time and end time before approval')
                 return redirect('/admins/review/%s' % course.id)
-
             #2. change status of course to "approved"
             Course.objects.approve_course(course, date, start_time, end_time)
-
             #3. notify teacher of approval
             send_odalc_email('notify_teacher_course_approved', context, [teacher.email], cc_admins=True)
-
             messages.success(self.request, course.title + ' has been approved')
         elif '_deny' in self.request.POST:
             #1. change status of course to "denied"
             Course.objects.deny_course(course)
-
             #2. notify teacher of denial
             send_odalc_email('notify_teacher_course_denied', context, [teacher.email], cc_admins=True)
-
             messages.error(self.request, course.title + ' has been denied')
         elif '_save' in self.request.POST:
             start_time = form.cleaned_data.get('start_time')
             end_time = form.cleaned_data.get('end_time')
             date = form.cleaned_data.get('date')
-
             #1. Check to see if they added times and dates
             if start_time and end_time and date:
                 course.set_datetimes(date, start_time, end_time)
-
             messages.info(self.request, 'Changes to ' + course.title + ' have been saved.')
         course.save()
         return redirect(ApplicationReviewView.success_url)
@@ -157,6 +147,7 @@ class AdminDashboardView(UserDataMixin, ListView):
 
 
 class AJAXAdminDashboardView(View):
+    """View that handles requests to set/unset courses as featured. There's probably a better way to do this."""
     @csrf_exempt
     def dispatch(self, request, *args, **kwargs):
         return super(AJAXAdminDashboardView, self).dispatch(request, *args, **kwargs)
@@ -191,6 +182,7 @@ class CourseFeedbackView(UserDataMixin, DetailView):
         forms = course.coursefeedback_set.all()
         context = super(CourseFeedbackView, self).get_context_data(**kwargs)
         context['feedback_forms'] = forms
+        # These are the field names of the CourseFeedback model
         questions = [
             'knowledgeable_of_subject',
             'encourages_questions',
@@ -212,6 +204,7 @@ class CourseFeedbackView(UserDataMixin, DetailView):
 
 
 class AdminEditView(UserDataMixin, UpdateView):
+    """View for editing an admin user's information."""
     model = AdminUser
     template_name = "odalc_admin/admin_edit.html"
     form_class = AdminEditForm
@@ -230,6 +223,7 @@ class AdminEditView(UserDataMixin, UpdateView):
 
 
 class AdminRegisterView(UserDataMixin, CreateView):
+    """View for registering a new admin user"""
     model = AdminUser
     template_name = "odalc_admin/register.html"
     form_class = AdminRegisterForm

@@ -8,7 +8,7 @@ from odalc.users.models import AdminUser
 
 class Command(BaseCommand):
     args = ''
-    help = 'Initialize the project with a default odalc admin user'
+    help = 'Initialize the project with a default odalc admin user as specified in settings.py'
 
     def handle(self, *args, **options):
         if not AdminUser.objects.filter(email=settings.INITIAL_ADMIN_EMAIL).exists():

@@ -5,6 +5,8 @@ from odalc.users.models import User
 
 
 class UserRegisterForm(forms.ModelForm):
+    """Generic Form class for all user types. This is because all user types extend a base User class."""
+
     error_messages = {
         'duplicate_username': _("A user with that username already exists."),
         'password_mismatch': _("The two password fields didn't match."),

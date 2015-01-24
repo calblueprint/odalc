@@ -64,7 +64,8 @@ class CourseManager(models.Manager):
 
     def get_active(self, is_featured=False, qs=None):
         """ Gets active courses, with a flag to specify if we want active featured
-        courses or active non-featured courses """
+        courses or active non-featured courses.
+        """
         if qs is None:
             qs = super(CourseManager, self).get_queryset()
         return qs.filter(status=Course.STATUS_ACCEPTED, is_featured=is_featured).order_by('-start_datetime')
@@ -97,6 +98,7 @@ class CourseManager(models.Manager):
         return course
 
     def create_from_form(self, form, teacher):
+        """Given a Course ModelForm and a teacher, creates and saves the course."""
         course = form.save(commit=False)
         course.teacher = teacher
         course.status = Course.STATUS_PENDING
@@ -179,7 +181,10 @@ class Course(models.Model):
     )
     prereqs = models.TextField(
         'Course Prerequisites',
-        help_text='Any skills, knowledge, or tools that students should be familiar with before enrolling. This will be displayed as a list, and you can separate list items using line breaks.',
+        help_text=(
+            'Any skills, knowledge, or tools that students should be familiar with before enrolling. This will '
+            'be displayed as a list, and you can separate list items using line breaks.'
+        ),
         validators=[
             RegexValidator('^[^<>&]*$',
                 message='Prerequisite text cannot include the characters <, >, or &.',
@@ -198,13 +203,18 @@ class Course(models.Model):
         max_digits=5,
         decimal_places=2,
         validators=[MinValueValidator(5.00), MaxValueValidator(100.00)],
-        help_text='Enrollment cost for students. We have a $5.00 minimum so that we can confirm commitment from students.'
+        help_text=(
+            'Enrollment cost for students. We have a $5.00 minimum so that we can confirm commitment from students.'
+        )
     )
     odalc_cost_split = models.DecimalField(
         'Donate to Oakland Digital',
         max_digits=5,
         decimal_places=2,
-        help_text='Amount of the enrollment cost you\'d like to donate to Oakland Digital. 100% of the proceeds go back to this program.'
+        help_text=(
+            'Amount of the enrollment cost you\'d like to donate to Oakland Digital. 100% of the proceeds go back to '
+            'this program.'
+        )
     )
     image = ProcessedImageField(
         verbose_name='Course Page Banner Image',
@@ -225,7 +235,10 @@ class Course(models.Model):
         upload_to=course_materials_upload_path,
         blank=True,
         null=True,
-        help_text='Optional PDF of any course materials for students. This can include links to other materials as well. Only enrolled students will be able to see this link.'
+        help_text=(
+            'Optional PDF of any course materials for students. This can include links to other materials as well. Only'
+            ' enrolled students will be able to see this link.'
+        )
     )
     additional_info = models.TextField(
         'Additional Information',
@@ -293,6 +306,8 @@ class Course(models.Model):
 
 
 class CourseAvailabilityManager(models.Manager):
+    """Custom Manager class for CourseAvailability objects."""
+
     def create_from_form_data(self, cleaned_data, course):
         start_datetime1 = dt.combine(
             cleaned_data.get('date1'),
@@ -330,6 +345,8 @@ class CourseAvailabilityManager(models.Manager):
 
 
 class CourseAvailability(models.Model):
+    """Represents the dates/times for when a course is available to be taught by the teacher."""
+
     course = models.OneToOneField('Course')
     start_datetime1 = models.DateTimeField()
     end_datetime1 = models.DateTimeField()
@@ -342,7 +359,12 @@ class CourseAvailability(models.Model):
 
 
 class CourseFeedbackManager(models.Manager):
+    """Custom Manager class for CourseFeedback objects."""
+
     def create_from_form(self, form, course_id, user_id):
+        """Given a completed CourseFeedbackForm, course id, and student id, creates and saves a CourseFeedback object.
+        Returns the saved CourseFeedback object.
+        """
         course_feedback = form.save(commit=False)
         course_feedback.course = Course.objects.get(id=course_id)
         course_feedback.student = StudentUser.objects.get(id=user_id)
@@ -351,6 +373,7 @@ class CourseFeedbackManager(models.Manager):
 
 
 class CourseFeedback(models.Model):
+    """Class that represents the course feedback that students fill out after completing a course."""
     STRONGLY_DISAGREE = 1
     DISAGREE = 2
     NEITHER = 3

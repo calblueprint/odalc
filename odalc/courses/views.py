@@ -16,16 +16,13 @@ from odalc.users.views import UserDataMixin
 
 
 class CourseDetailView(UserDataMixin, DetailView):
+    """View for displaying a single Course object."""
     model = Course
     context_object_name = 'course'
     template_name = 'courses/course.html'
 
     def render_to_response(self, context, **response_kwargs):
         response_kwargs.setdefault('content_type', self.content_type)
-        print self.request
-        print self.get_template_names()
-        print context
-        print response_kwargs
         return self.response_class(
             request=self.request,
             template=self.get_template_names(),
@@ -36,7 +33,7 @@ class CourseDetailView(UserDataMixin, DetailView):
     def dispatch(self, request, *args, **kwargs):
         self.set_perms(request, *args, **kwargs)
         course = self.get_object()
-        # Redirect if the slug does not match
+        # Redirect to the URL with the correct slug if the slug does not match
         if self.kwargs.get(self.slug_url_kwarg, None) != course.slug():
             return redirect(course, permanent=True)
         elif (
@@ -66,35 +63,45 @@ class CourseDetailView(UserDataMixin, DetailView):
         return context
 
     def post(self, request, *args, **kwargs):
+        """On the template, the 'Enroll' button is disabled if the user is signed in as a teacher or admin. Only
+        unauthenticated or users authenticated as students should be sending these POST requests.
+        """
         course = self.get_object()
-        # Redirect them to the login page with this page as the 'next' URL
         if request.POST.get("login-redirect"):
+            # Redirect them to the login page with this page as the 'next' URL if
+            # a user wants to enroll but isn't signed in
             messages.info(request, "You must be signed in to enroll in a course.")
             response = redirect('users:login')
             response['Location'] += '?next=' + reverse('courses:detail', args=[course.pk, course.slug()])
             return response
-        if course.is_full():
+        elif course.is_full():
             messages.error(request, "This course is already full. Your card hasn't been charged")
             return redirect(course)
-        if course.is_student_in_course(self.user):
+        elif course.is_student_in_course(self.user):
             messages.error(request, "You are already signed up for this course. Your card hasn't been charged")
             return redirect(course)
-        try:
-            token = request.POST.get('stripeToken', False)
-            handle_stripe_course_registration(self.user, course, token)
-            course.students.add(self.user)
-            course.save()
-            messages.success(request, "You have successfully registered for this course!")
-            return redirect(course)
-        except MissingTokenException:
-            messages.error(request, "No payment information was included in your submission. Your card was not charged.")
-            return redirect(course)
-        except stripe.CardError:
-            messages.error(request, "Your information was invalid or your card has been declined.")
-            return self.render_to_response(self.get_context_data())
+        else:
+            # User is signed in as a student and has clicked "enroll"
+            try:
+                token = request.POST.get('stripeToken', False)
+                handle_stripe_course_registration(self.user, course, token)
+                course.students.add(self.user)
+                course.save()
+                messages.success(request, "You have successfully registered for this course!")
+                return redirect(course)
+            except MissingTokenException:
+                messages.error(request, "No payment information was included in your submission. Your card was not charged.")
+                return redirect(course)
+            except stripe.CardError:
+                messages.error(request, "Your information was invalid or your card has been declined.")
+                return self.render_to_response(self.get_context_data())
 
 
 class CourseEditView(UserDataMixin, UpdateView):
+    """View for editing course information. This is used by both teacher and admin users, but certain fields are set
+    to read-only in the template depending on the user type.
+    """
+
     model = Course
     form_class = EditCourseForm
     context_object_name = 'course'
@@ -127,8 +134,9 @@ class CourseEditView(UserDataMixin, UpdateView):
 
 
 class CourseListingView(UserDataMixin, ListView):
-    """Main view for displaying the courses offered. There are three categories of courses:
-    all courses, past courses, and upcoming courses (courses coming up in the next month)"""
+    """View for displaying the courses offered. There are three categories of courses: all courses, past courses, and
+    upcoming courses.
+    """
     context_object_name = 'courses'
     paginate_by = 10
     template_name = 'courses/course_listing.html'
@@ -147,8 +155,7 @@ class CourseListingView(UserDataMixin, ListView):
         if courses_type == CourseListingView.TYPE_PAST:
             queryset =  Course.objects.get_finished()
         else:
-            # For now, its either the is "upcoming", is blank, or is something else
-            # showing the upcoming courses is the defult behavior
+            # Display courses coming up in the next year
             now = datetime.datetime.now()
             future = now + datetime.timedelta(days=365)
             queryset =  Course.objects.get_in_date_range(now, future)
