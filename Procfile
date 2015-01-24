@@ -1,1 +1,1 @@
-web: gunicorn odalc.wsgi
+web: newrelic-admin run-program gunicorn odalc.wsgi

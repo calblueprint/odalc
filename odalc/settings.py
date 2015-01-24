@@ -54,6 +54,7 @@ ODALC_APPS = (
 
 THIRD_PARTY_APPS = (
     'djangobower',
+    'gunicorn',
     'imagekit',
     'localflavor',
     'storages',

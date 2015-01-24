@@ -54,7 +54,7 @@ class DonatePageView(UserDataMixin, TemplateView):
             messages.error(request, "Your information was invalid or your card has been declined")
             return self.render_to_response(self.get_context_data())
         except Exception as e:
-            messages.error(request
+            messages.error(request,
                     "An unknown error occured. Please try again, or contact Oakland Digital if the problem persists.")
             return redirect('donate')
 
