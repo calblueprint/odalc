@@ -9,3 +9,6 @@ We strive to make beautiful engineering accessible and useful for those who crea
 
 ## About ODALC
 Oakland Digital Arts & Literacy Center (ODALC) is a 501(c)(3) community building organization working to bridge the digital literacy and opportunity divide. Oakland Digital educates, inspires, and empowers underserved communities to participate and succeed in the digital economy.
+
+
+See the [project wiki](https://github.com/calblueprint/odalc/wiki) for the full project details
