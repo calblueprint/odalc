@@ -23,4 +23,4 @@ static3==0.5.1
 stripe==1.19.0
 wsgiref==0.1.2
 
-newrelic==2.40.0.34
+newrelic
