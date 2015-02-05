@@ -92,8 +92,14 @@ ROOT_URLCONF = 'odalc.urls'
 WSGI_APPLICATION = 'odalc.wsgi.application'
 AUTH_USER_MODEL = 'users.User'
 
+# Django 'superuser' admins
+
+ADMIN_EMAIL_BLUEPRINT = os.environ.get('ADMIN_EMAIL_BLUEPRINT', '')
+ADMIN_EMAIL_ODALC = os.environ.get('ADMIN_EMAIL_ODALC', '')
+
 ADMINS = (
-    ('Blueprint', 'alerts+odalc@calblueprint.org'),
+    ('Blueprint', ADMIN_EMAIL_BLUEPRINT),
+    ('ODALC', ADMIN_EMAIL_ODALC),
 )
 
 
